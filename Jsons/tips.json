@@ -1,0 +1,173 @@
+{
+    "tips": [
+    {
+    "tip": "Drink at least 8 glasses of water a day for optimal hydration.",
+    "topic": "health",
+    "counter": 1
+    },
+    {
+    "tip": "Incorporate strength training into your exercise routine at least twice a week.",
+    "topic": "fitness",
+    "counter": 2
+    },
+    {
+    "tip": "Aim to eat at least 5 servings of fruits and vegetables a day.",
+    "topic": "diet",
+    "counter": 3
+    },
+    {
+    "tip": "Practice yoga or meditation to improve mental well-being.",
+    "topic": "mental health",
+    "counter": 4
+    },
+    {
+    "tip": "Make sure to get enough sleep each night, aim for 7-8 hours.",
+    "topic": "health",
+    "counter": 5
+    },
+    {
+    "tip": "Mix cardio and weight training for a well-rounded workout.",
+    "topic": "fitness",
+    "counter": 6
+    },
+    {
+    "tip": "Try to limit processed foods and sugary drinks.",
+    "topic": "diet",
+    "counter": 7
+    },
+    {
+    "tip": "Set aside time each day for self-reflection and journaling.",
+    "topic": "mental health",
+    "counter": 8
+    },
+    {
+    "tip": "Wash your hands frequently to prevent the spread of germs.",
+    "topic": "health",
+    "counter": 9
+    },
+    {
+    "tip": "Find a workout buddy to help keep you accountable.",
+    "topic": "fitness",
+    "counter": 10
+    },{
+        "tip": "Make sure to get enough sleep each night to improve overall health and well-being.",
+        "topic": "health",
+        "counter": 11
+        },
+        {
+        "tip": "Mix up your cardio routine with activities such as cycling, swimming, and running to avoid boredom and improve overall fitness.",
+        "topic": "fitness",
+        "counter": 12
+        },
+        {
+        "tip": "Include healthy fats in your diet, such as avocados, nuts, and olive oil, to improve heart health and lower cholesterol.",
+        "topic": "diet",
+        "counter": 13
+        },
+        {
+        "tip": "Practice gratitude by writing down things you are thankful for each day to improve mental well-being.",
+        "topic": "mental health",
+        "counter": 14
+        },
+        {
+        "tip": "Make sure to include a source of protein in every meal, such as lean meats, beans, or tofu, to support muscle growth and repair.",
+        "topic": "diet",
+        "counter": 15
+        },
+        {
+        "tip": "Set realistic goals for yourself and break them down into smaller, manageable steps to increase the likelihood of success.",
+        "topic": "mental health",
+        "counter": 16
+        },
+        {
+        "tip": "Try a new form of physical activity, such as yoga or dance, to improve flexibility and balance.",
+        "topic": "fitness",
+        "counter": 17
+        },
+        {
+        "tip": "Include a variety of whole grains in your diet, such as quinoa, oats, and brown rice, to improve digestion and heart health.",
+        "topic": "diet",
+        "counter": 18
+        },
+        {
+        "tip": "Make sure to take time for yourself each day to relax and unwind, such as reading or taking a bath.",
+        "topic": "mental health",
+        "counter": 19
+        },
+        {
+        "tip": "Include a source of calcium in your diet, such as dairy products or leafy greens, to improve bone health.",
+        "topic": "diet",
+        "counter": 20
+        },{
+            "tip": "Take the stairs instead of the elevator to burn extra calories.",
+            "topic": "fitness",
+            "counter": 21
+            },
+            {
+            "tip": "Include lean protein sources in your diet such as chicken, fish, and tofu.",
+            "topic": "diet",
+            "counter": 22
+            },
+            {
+            "tip": "Get a good night's sleep to improve your overall health and well-being.",
+            "topic": "health",
+            "counter": 23
+            },
+            {
+            "tip": "Set realistic goals and break them down into smaller, manageable tasks to improve your mental health.",
+            "topic": "mental health",
+            "counter": 24
+            },
+            {
+            "tip": "Incorporate cardio exercises such as running, cycling, or swimming into your fitness routine.",
+            "topic": "fitness",
+            "counter": 25
+            },
+            {
+            "tip": "Eat a variety of fruits and vegetables to ensure you are getting a wide range of nutrients.",
+            "topic": "diet",
+            "counter": 26
+            },
+            {
+            "tip": "Reduce stress by practicing yoga, tai chi, or other relaxation techniques.",
+            "topic": "health",
+            "counter": 27
+            },
+            {
+            "tip": "Set aside time each day to focus on self-care activities that make you feel good.",
+            "topic": "mental health",
+            "counter": 28
+            },
+            {
+            "tip": "Aim to get at least 30 minutes of moderate-intensity exercise at least 5 days a week.",
+            "topic": "fitness",
+            "counter": 29
+            },
+            {
+            "tip": "Choose whole grains over processed grains to improve your health.",
+            "topic": "diet",
+            "counter": 30
+            },
+            {
+            "tip": "Stay active by going for a walk, jog, or bike ride.",
+            "topic": "health",
+            "counter": 31
+            },
+            {
+            "tip": "Find healthy ways to cope with stress such as talking to a therapist or practicing yoga.",
+            "topic": "mental health",
+            "counter": 32
+            },
+            {
+            "tip": "Incorporate resistance training such as weight lifting or bodyweight exercises into your fitness routine.",
+            "topic": "fitness",
+            "counter": 33
+            },
+            {
+            "tip": "Eat a variety of colors to ensure you are getting a wide range of nutrients.",
+            "topic": "diet",
+            "counter": 34
+            }
+    ]
+
+    }
