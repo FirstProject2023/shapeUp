@@ -1,5 +1,4 @@
-{
-    "tips": [
+[
     {
     "tip": "Drink at least 8 glasses of water a day for optimal hydration.",
     "topic": "health",
@@ -244,6 +243,5 @@
                 "topic": "diet",
                 "counter": 49
                 }
-    ]
+]
 
-    }
