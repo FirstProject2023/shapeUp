@@ -49,7 +49,8 @@
     "tip": "Find a workout buddy to help keep you accountable.",
     "topic": "fitness",
     "counter": 10
-    },{
+    },
+    {
         "tip": "Make sure to get enough sleep each night to improve overall health and well-being.",
         "topic": "health",
         "counter": 11
@@ -167,7 +168,82 @@
             "tip": "Eat a variety of colors to ensure you are getting a wide range of nutrients.",
             "topic": "diet",
             "counter": 34
-            }
+            },
+            {
+                "tip": "Take short breaks throughout the day to stretch and move your body.",
+                "topic": "fitness",
+                "counter": 35
+                },
+                {
+                "tip": "Eat a variety of different colored fruits and vegetables to ensure you're getting a wide range of nutrients.",
+                "topic": "diet",
+                "counter": 36
+                },
+                {
+                "tip": "Get at least 7 hours of sleep each night to improve overall health and well-being.",
+                "topic": "health",
+                "counter": 37
+                },
+                {
+                "tip": "Find a form of exercise that you enjoy and look forward to doing regularly.",
+                "topic": "fitness",
+                "counter": 38
+                },
+                {
+                "tip": "Practice gratitude by writing down things you're grateful for each day.",
+                "topic": "mental health",
+                "counter": 39
+                },
+                {
+                "tip": "Make sure to include a source of protein in every meal to stay full and energized.",
+                "topic": "diet",
+                "counter": 40
+                },
+                {
+                "tip": "Taking time to relax and unwind each day can improve overall mental and physical well-being.",
+                "topic": "health",
+                "counter": 41
+                },
+                {
+                "tip": "Mix up your workout routine to challenge your body and prevent boredom.",
+                "topic": "fitness",
+                "counter": 42
+                },
+                {
+                "tip": "Eating a diet rich in whole grains can reduce the risk of heart disease and diabetes.",
+                "topic": "diet",
+                "counter": 43
+                },
+                {
+                "tip": "Make time for activities that bring you joy and make you feel good.",
+                "topic": "mental health",
+                "counter": 44
+                },
+                {
+                "tip": "Incorporate cardio into your workout routine to improve cardiovascular health.",
+                "topic": "fitness",
+                "counter": 45
+                },
+                {
+                "tip": "Use a food diary to track what you're eating and make healthier choices.",
+                "topic": "diet",
+                "counter": 46
+                },
+                {
+                "tip": "Get regular check-ups with your doctor to stay on top of your health.",
+                "topic": "health",
+                "counter": 47
+                },
+                {
+                "tip": "Find a workout partner to hold you accountable and keep you motivated.",
+                "topic": "fitness",
+                "counter": 48
+                },
+                {
+                "tip": "Include healthy fats in your diet such as nuts, seeds, and avocado.",
+                "topic": "diet",
+                "counter": 49
+                }
     ]
 
     }
