@@ -1,5 +1,8 @@
 import { StyleSheet, Text, View,useWindowDimensions } from 'react-native'
 import React, { useState } from 'react'
+import  Icon  from 'react-native-vector-icons/FontAwesome';
+import { Entypo } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 /* import {Slider} from '@react-native-community/slider' */
 
 
@@ -21,17 +24,19 @@ function Bmi() {
     const {width} = useWindowDimensions();
 
     return(
-    <View style={[styles.container,{ width: width * 0.9}]}>
-    <Text style={styles.text}>Bmi</Text>
+      <View style={[styles.container,{ width: width * 0.9}]}>
+      <Text style={styles.text}>Bmi</Text>
+
+    <View style={styles.icons} >
+  <Entypo name="man" size={34} color="black"  />
+  <Ionicons name="woman" size={34} color="black" />
+      </View>
+
     <Text style={styles.text}>{value}</Text>
 
  
-
-
-
-    
-
-  </View>)
+  </View>
+  )
 }
 function ProteinIntake() {
     const {width} = useWindowDimensions();
@@ -63,14 +68,23 @@ function WhatIsFatter() {
 }
 const styles = StyleSheet.create({
     container: {
-        justifyContent:'center',
         alignItems:'center',
       height:'100%',
       width:'100%',
       backgroundColor: '#c123',
     },
     text: {
-      fontSize: 36,
+      marginTop:20,
+       fontSize: 36,
     },
+    icons:{
+      flexDirection:'row',
+      width:"100%",
+      alignItems:'center',
+      justifyContent:'center',
+      justifyContent:'space-evenly',
+
+
+    }
   })
   

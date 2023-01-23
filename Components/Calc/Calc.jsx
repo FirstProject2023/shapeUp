@@ -2,9 +2,10 @@ import { StyleSheet, Text, View, FlatList, Button ,TouchableOpacity} from 'react
 import React, { useState } from 'react'
 import CalculatorsArrayOfFunctions from './CalculatorsArrayOfFunctions'
 
+
 export default function Calc() {
   const [numbers,setNumbers] = useState([0, 1, 2, 3, 4]);
-
+  
 
   return (
 
@@ -18,6 +19,9 @@ export default function Calc() {
       pagingEnabled
       bounces= {false}
       />
+
+      
+
       <View style={styles.button}>
       <Button title='add' color='green' width='50%' /> 
       </View>
