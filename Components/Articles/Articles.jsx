@@ -1,17 +1,40 @@
-import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions, TouchableHighlight, Image} from 'react-native'
+import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions, TouchableHighlight, Image, TextInput} from 'react-native'
 import React, { useState , useEffect} from 'react'
-import SubjectList from './SubjectList';
+
 import articlesData from '../Jsons/articles.json'
 
 export default function Articles() {
   // articles or recipes
   const [isArticles, setIsArticles] = useState(true);
+
   const [recipesSubApi, setRecipesSubApi] = useState([]);
   const [articlesCategory, setArticlesCategory] = useState("");
+
+  const [recipesDataApi, setRecipesDataApi] = useState([]);
+  const [freeRecipesSearch, setFreeRecipesSearch] = useState("");
+  //diet
+  const [dietLabelRecipes, setDietLabelRecipes] = useState(""); //chang to array
+  //cuisineType
+  const [cuisineTypeRecipes, setCuisineTypeRecipes] = useState("");
+  //mealType
+  const [mealTypeRecipes, setMealTypeRecipes] = useState("");
+  //calories
+  const [caloriesRangeRecipes, setCaloriesRangeRecipes] = useState("");
   
+  
+
+
+
+
+  dietLabelRecipes
+
+
   const articlesSubArray = ["fitness","diet","health", "Mental health"];
   
   const {width} = useWindowDimensions();
+
+
+
 
   const ArticlesDataFilter = ()=>{
     let funcArticlesData = [...articlesData];
@@ -32,12 +55,25 @@ export default function Articles() {
   // console.log(filteredArticlesData);
   
   useEffect(()=>{
+    fetch(`https://api.edamam.com/api/recipes/v2?type=any&beta=false&q=${freeRecipesSearch}
+    &app_id=3d4ce13e&app_key=309e7c6a041b819ea0605c46d27345b8&${dietLabelRecipes}
+    &health=kosher&${cuisineTypeRecipes}
+    &${mealTypeRecipes}
+    &${caloriesRangeRecipes}
+    &imageSize=SMALL`)
+    .then((response)=>{
+      return response.json();
+    })
+    .then((data)=>{
+      setRecipesDataApi(data);
+    })
+
     fetch(`https://www.themealdb.com/api/json/v1/1/list.php?c=list`)
     .then((response)=>{
       return response.json();
     })
     .then((data)=>{
-      setRecipesSubApi(data)
+      setRecipesSubApi(data);
     })
     
   },[]);
@@ -54,27 +90,27 @@ export default function Articles() {
  )
   }
   
-  function RecipesSubList(item){
-    {console.log("🚀 ~ file: Articles.jsx:27 ~ ArticlesSubList ~ item", item.strCategory)}
-
+  function RecipesSubList(){
     return(
 
-      
-      <View style={[ styles.subjectContainer, {width: width * 0.3}]}>
-      <TouchableHighlight>
-    <Text style={styles.subject}>{item.strCategory}</Text>
-      </TouchableHighlight>
+      <View style={styles.subjectContainer}>
+    {console.log("function active")}
+      {/* <TextInput underlineColorAndroid='red' style={styles.recipesSearch} placeholder='Search recipes...'/> */}
+      <Text style={styles.recipesSearch}>Search recipes</Text>
     </View>
       )
-    
+      
   }
 
   function ArticlesList(item){
     return(
-      <View style={[styles.articleCard, {width: width * 0.7}]}>
+      <View style={[styles.articleCardContainer, {width: width}]}>
+      <View style={styles.articleCard}>
+
       <Image source={{uri: item.img}} style={[styles.img,  ]}/>
       <Text>{item.title}</Text>
       <Text style={{fontSize: 20}}>{item.topic}</Text>
+      </View>
 
       </View>
     )
@@ -86,14 +122,14 @@ export default function Articles() {
     <View style={styles.mainArticlesNav}>
       <Button onPress={()=> setIsArticles(false)} title='Recipes'></Button>
       <Button onPress={()=> setIsArticles(true)} title='Articles'></Button>
-      <SubjectList/>
+    
     </View>
     <View style={styles.subjectCarousel}>
-      <FlatList data={isArticles ? articlesSubArray : recipesSubApi.meals} renderItem={({item})=>
-       isArticles ? ArticlesSubList(item) : RecipesSubList(item)}
+    {isArticles ? <FlatList data={articlesSubArray} renderItem={({item})=>
+       ArticlesSubList(item)}
        horizontal 
         bounces= {false}
-       />
+       /> : RecipesSubList()}
     </View>
     <View style={styles.articlesContainer}>
     <FlatList data={isArticles ? filteredArticlesData : recipesSubApi.meals} renderItem={({item})=>
@@ -149,6 +185,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#11bb99',
 
   },
+
+  recipesSearch:{
+    width: '70%',
+    height: '90%',
+    backgroundColor: '#fff'
+
+  },
   
   articlesContainer:{
     
@@ -158,9 +201,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  articleCardContainer:{
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
   
   articleCard:{
     backgroundColor: '#20ffff',
+    width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
