@@ -22,11 +22,6 @@ export default function Calc() {
 
       
 
-      <View style={styles.button}>
-      <Button title='add' color='green' width='50%' /> 
-      </View>
-
-
     </View>
       </View>
 
@@ -39,12 +34,13 @@ const styles = StyleSheet.create({
     alignItems:'center',
     height:'100%',
     width:'100%',
-    backgroundColor: '#aff',
+    backgroundColor: 'white',
   },
   FlatListContainer:{
     height:'70%',
-    width:'90%',
-    backgroundColor: '#aff',
+    width:'100%',
+    backgroundColor: '#00BFFF',
+    borderRadius:14,
   },
   button: {
     backgroundColor: 'red',
