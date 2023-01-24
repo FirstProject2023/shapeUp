@@ -9,8 +9,12 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@expo/vector-icons": "^13.0.0",
     "@react-native-community/slider": "4.2.4",
+    "@expo/vector-icons": "^13.0.0",
+
+
+    "@react-native-community/slider": "4.2.4",
+
     "@react-navigation/bottom-tabs": "^6.5.3",
     "@react-navigation/native-stack": "^6.9.8",
     "@react-navigation/stack": "^6.3.11",

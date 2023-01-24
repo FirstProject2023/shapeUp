@@ -1,17 +1,45 @@
-import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions, TouchableHighlight, Image} from 'react-native'
+import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions, TouchableOpacity, Image, TextInput} from 'react-native'
 import React, { useState , useEffect} from 'react'
-import SubjectList from './SubjectList';
 import articlesData from '../Jsons/articles.json'
+import { FontAwesome5 } from '@expo/vector-icons';
+
 
 export default function Articles() {
   // articles or recipes
   const [isArticles, setIsArticles] = useState(true);
-  const [recipesSubApi, setRecipesSubApi] = useState([]);
+
   const [articlesCategory, setArticlesCategory] = useState("");
+
+  const [recipesDataApi, setRecipesDataApi] = useState([]);
+
+  const [currFreeRecipesSearch, setCurrFreeRecipesSearch] = useState("");
+  const [freeRecipesSearch, setFreeRecipesSearch] = useState("");
+  //diet
+  const [dietLabelRecipes, setDietLabelRecipes] = useState(""); //chang to array
+  //cuisineType
+  const [cuisineTypeRecipes, setCuisineTypeRecipes] = useState("");
+  //mealType
+  const [mealTypeRecipes, setMealTypeRecipes] = useState("");
+  //calories
+  const [caloriesRangeRecipes, setCaloriesRangeRecipes] = useState("");
+
+  //recipes links for pages
+  const [recipesLinks, setRecipesLinks] = useState([])
   
-  const articlesSubArray = ["fitness","diet","health", "Mental health"];
+  
+
+
+
+
+  dietLabelRecipes
+
+
+  const articlesSubArray = ["fitness","diet","health", "Mental health", "all"];
   
   const {width} = useWindowDimensions();
+
+
+
 
   const ArticlesDataFilter = ()=>{
     let funcArticlesData = [...articlesData];
@@ -29,52 +57,113 @@ export default function Articles() {
   }
 
   const filteredArticlesData = ArticlesDataFilter();
-  // console.log(filteredArticlesData);
+
+
   
-  useEffect(()=>{
-    fetch(`https://www.themealdb.com/api/json/v1/1/list.php?c=list`)
+  
+  const firstPageApiRecipes = `https://api.edamam.com/api/recipes/v2?type=any&beta=false&q=${freeRecipesSearch}
+  &app_id=3d4ce13e&app_key=309e7c6a041b819ea0605c46d27345b8&${dietLabelRecipes}
+  &health=kosher&${cuisineTypeRecipes}
+  &${mealTypeRecipes}
+  &${caloriesRangeRecipes}
+  &imageSize=SMALL`;
+
+  const [prevPage, setPrevPage] = useState([]);
+
+  const [apiRecipes, setApiRecipes]  = useState(firstPageApiRecipes)
+
+  // const [isFilter, setIsFilter] = useState(true);
+     
+    // if(isFilter){
+
+    // }
+    // else{
+     
+    // }
+
+    useEffect(()=>{
+      fetch(`https://api.edamam.com/api/recipes/v2?type=any&beta=false&q=${freeRecipesSearch}
+      &app_id=3d4ce13e&app_key=309e7c6a041b819ea0605c46d27345b8&${dietLabelRecipes}
+      &health=kosher&${cuisineTypeRecipes}
+      &${mealTypeRecipes}
+      &${caloriesRangeRecipes}
+      &imageSize=SMALL`)
+      .then((response)=>{
+        return response.json();
+      })
+      .then((data)=>{
+        setRecipesDataApi(data);
+      })
+
+    },[])
+
+    useEffect(()=>{
+
+    fetch(apiRecipes)
     .then((response)=>{
       return response.json();
     })
     .then((data)=>{
-      setRecipesSubApi(data)
+      setRecipesDataApi(data);
     })
-    
-  },[]);
+ 
+  },[freeRecipesSearch, dietLabelRecipes, cuisineTypeRecipes, mealTypeRecipes, caloriesRangeRecipes, apiRecipes]);
   
   function ArticlesSubList(item){
     
  return(
    
    <View style={[ styles.subjectContainer, {width: width * 0.3}]}>
-   <TouchableHighlight onPress={()=> setArticlesCategory(item)} >
+   <TouchableOpacity onPress={()=> setArticlesCategory(item)} >
     <Text style={styles.subject}>{item}</Text>
-    </TouchableHighlight>
+    </TouchableOpacity>
     </View>
  )
   }
   
-  function RecipesSubList(item){
-    {console.log("🚀 ~ file: Articles.jsx:27 ~ ArticlesSubList ~ item", item.strCategory)}
-
+  function RecipesFilters(){
     return(
 
-      
-      <View style={[ styles.subjectContainer, {width: width * 0.3}]}>
-      <TouchableHighlight>
-    <Text style={styles.subject}>{item.strCategory}</Text>
-      </TouchableHighlight>
+      <View style={styles.recipesFiltersContainer}>
+      <TouchableOpacity onPress={()=> {setFreeRecipesSearch(currFreeRecipesSearch), setApiRecipes(firstPageApiRecipes)}}>
+
+        <FontAwesome5  name="search" size={24} color="black" />
+      </TouchableOpacity>
+
+     <TextInput onChangeText={setCurrFreeRecipesSearch} style={styles.recipesSearch} placeholder='Search recipes...'/>
     </View>
-      )
-    
+      )    
+  }
+
+  function PagesNav(item){
+    setApiRecipes(item);
+
+
   }
 
   function ArticlesList(item){
     return(
-      <View style={[styles.articleCard, {width: width * 0.7}]}>
+      <View style={[styles.articleCardContainer, {width: width}]}>
+      <View style={styles.articleCard}>
+
       <Image source={{uri: item.img}} style={[styles.img,  ]}/>
       <Text>{item.title}</Text>
       <Text style={{fontSize: 20}}>{item.topic}</Text>
+      </View>
+
+      </View>
+    )
+  }
+
+  function RecipesList(item){
+    return(
+      <View style={[styles.articleCardContainer, {width: width}]}>
+    
+      <View style={styles.articleCard}>
+
+      <Image source={{uri: item.recipe.image}} style={[styles.img,  ]}/>
+      <Text>{item.recipe.label}</Text>
+      </View>
 
       </View>
     )
@@ -86,18 +175,37 @@ export default function Articles() {
     <View style={styles.mainArticlesNav}>
       <Button onPress={()=> setIsArticles(false)} title='Recipes'></Button>
       <Button onPress={()=> setIsArticles(true)} title='Articles'></Button>
-      <SubjectList/>
+    
     </View>
     <View style={styles.subjectCarousel}>
-      <FlatList data={isArticles ? articlesSubArray : recipesSubApi.meals} renderItem={({item})=>
-       isArticles ? ArticlesSubList(item) : RecipesSubList(item)}
+    {isArticles ? <FlatList data={articlesSubArray} renderItem={({item})=>
+       ArticlesSubList(item)}
        horizontal 
         bounces= {false}
-       />
+       /> : RecipesFilters()}
     </View>
     <View style={styles.articlesContainer}>
-    <FlatList data={isArticles ? filteredArticlesData : recipesSubApi.meals} renderItem={({item})=>
-       isArticles ? ArticlesList(item) : RecipesSubList(item)}
+    {!isArticles ? <View style={styles.pagesNavContainer}>
+
+<View style={styles.pagesNav}>
+
+<TouchableOpacity onPress={()=> [setPrevPage(recipesDataApi),PagesNav(recipesDataApi._links.next.href)]}>
+<FontAwesome5   name="arrow-circle-right" size={34} color="black" />   
+</TouchableOpacity>
+
+<TouchableOpacity onPress={()=> [setPrevPage(recipesDataApi),PagesNav(prevPage)]} >
+<FontAwesome5    name="arrow-circle-left" size={34} color="black" />
+</TouchableOpacity>
+
+</View>
+</View>: null}
+
+   
+    
+   
+
+    <FlatList data={isArticles ? filteredArticlesData : recipesDataApi.hits} renderItem={({item})=>
+       isArticles ? ArticlesList(item) :  [PagesNav(item), RecipesList(item)]}
       //  horizontal 
 
         bounces= {false}
@@ -140,6 +248,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#5f3a',
     justifyContent: 'center',
      alignItems: 'center',
+     height: '100%'
+
+  },
+  recipesFiltersContainer:{
+    backgroundColor: '#5f3a',
+    flexDirection: 'row',
+    justifyContent: 'center',
+     alignItems: 'center',
+     height: '100%'
 
   },
   subject:{
@@ -147,6 +264,18 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     borderRadius: 15,
     backgroundColor: '#11bb99',
+
+  },
+
+  recipesSearch:{
+    width: '80%',
+    height: '40%',
+    backgroundColor: '#fff',
+    paddingRight: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+    marginLeft: 10,
+
 
   },
   
@@ -158,15 +287,39 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  pagesNavContainer:{
+    height: 45,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+  },
+
+  pagesNav:{
+    width: '70%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    //  alignItems: 'center',
+  },
+
+
+
+  articleCardContainer:{
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
   
   articleCard:{
     backgroundColor: '#20ffff',
+    width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
     borderWidth: 1,
     borderRadius: 10,
-    // height: '5%',
+   
     
   },
   img:{
