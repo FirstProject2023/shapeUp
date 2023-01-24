@@ -1,35 +1,32 @@
 import { StyleSheet, Text, View,useWindowDimensions, TextInput, Button } from 'react-native'
-import React, { useState } from 'react'
-
-
+import React, {  useState, useContext,useEffect } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import Slider from '@react-native-community/slider'
 import { FontAwesome5 } from '@expo/vector-icons';
 
-export default function CalculatorsArrayOfFunctions({num}) {
+
+export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult}) {
   
   const {width} = useWindowDimensions();
   
-  let arrOfFunctions = [Bmi(),ProteinIntake(), RMR(), WaterCalculator(), WhatIsFatter()];
+  let arrOfFunctions = [Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult),ProteinIntake(), RMR(), WaterCalculator(), WhatIsFatter()];
   
   return (
     arrOfFunctions[num]
     )
   }
 
-function Bmi() {
-  
+function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult) {
+
   const {width} = useWindowDimensions();
   const [heightValue, setHeightValue] = useState(0);
   const [weightValue,setWeightValue] = useState(0);
-const [bmiSearchResult,setBmiSearchResult] = useState(0);
 
   const [manisFocused, setManisFocused] = useState(true);
   const [womanIsFocused, setWomanIsFocused] = useState(true);
-  const[heightOfResView,setHeightOfResView] = useState(0);
 
- 
+  
   const HandlePressOnMan = () => {
     if(womanIsFocused)
     {
@@ -48,7 +45,8 @@ const [bmiSearchResult,setBmiSearchResult] = useState(0);
   {
         setBmiSearchResult(weightValue/((heightValue*0.01)*(heightValue*0.01)));
 
-    setHeightOfResView(520);
+
+    setHeightOfResView(420);
   }
   
     return(
@@ -56,44 +54,8 @@ const [bmiSearchResult,setBmiSearchResult] = useState(0);
     
       <View style={[styles.container,{ width: width}]}>
 
-        
-        <View style={{height:heightOfResView,width:'100%',backgroundColor:'yellow'}}>
-       
-        <View style={{flexDirection:'row',marginTop:20,marginStart:15 ,marginBottom:10}}>
-
-          <Text>bad!</Text>
-
-
-<View>
-{ bmiSearchResult<50 &  heightOfResView !=0   ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-<View style={{height:50,  alignItems:'center',backgroundColor:'red', width: heightOfResView !=0 ? 60 : 0 }}></View>
-  </View>
-
-<View>
-  { bmiSearchResult<100 & bmiSearchResult>50 &  heightOfResView !=0   ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-<View style={{height:50,  alignItems:'center',backgroundColor:'#DC143C', width: heightOfResView !=0 ? 60 : 0 }}></View>
-</View>
-<View>
-{ bmiSearchResult<150 & bmiSearchResult>100 &  heightOfResView !=0  ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-<View style={{height:50,  alignItems:'center',backgroundColor:'#32CD32', width: heightOfResView !=0 ? 60 : 0 }}></View>
-</View>
-<View>
-{  bmiSearchResult<200 & bmiSearchResult>150 &  heightOfResView !=0  ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-<View style={{ height:50, alignItems:'center',backgroundColor:'#7FFF00', width: heightOfResView !=0 ? 60 : 0 }}></View>
-</View>
-<Text>good!</Text>
-          </View> 
-
-        <Text  style={{fontSize:25}}>Your BMI is:</Text>
-
-    <View style={styles.resBmi}>
-         <Text style={{fontSize:40}}> {bmiSearchResult.toFixed(1)}</Text>
-    </View>
-       
-    
-        <Button title='back' onPress={()=>setHeightOfResView(0)} width='50%' />
-
-        </View>
+        <View style={styles.viewContainer}>
+          
 
 
       <Text style={styles.text}>Bmi</Text>
@@ -153,18 +115,74 @@ const [bmiSearchResult,setBmiSearchResult] = useState(0);
   </TouchableOpacity>
  
   </View>
-
+  </View>
   </View>
 
   )
 }
-function ProteinIntake() {
-    const {width} = useWindowDimensions();
+function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult) {
+  const {width} = useWindowDimensions();
+  const [fatValue, setFatValue] = useState(0);
+  const [carbohydratesValue,setCarbohydratesValue] = useState(0);
+  const [proteinValue,setProteinValue] = useState(0);
+
+  const [manisFocused, setManisFocused] = useState(true);
+  const [womanIsFocused, setWomanIsFocused] = useState(true);
+
+  
+  const HandlePressOnMan = () => {
+    if(womanIsFocused)
+    {
+      setManisFocused(!manisFocused);
+   
+    }
+};
+  const HandlePressOnWoman = () => {
+    if(manisFocused)
+    {
+    setWomanIsFocused(!womanIsFocused);
+    }
+  };
+  function Res()
+  {
+    setHeightOfResView(420);
+  }
+  
     return(
-    <View style={[styles.container,{ width: width }]}>
-    <Text style={styles.text}>ProteinIntake</Text>
-  </View>)
+    
+      <View style={[styles.container,{ width: width}]}>
+
+        <View style={styles.viewContainer}>
+          
+      <Text style={styles.text}>ProteinIntake</Text>
+
+    <View style={styles.icons} >
+   
+    <TouchableOpacity onPress={HandlePressOnMan} >
+        <MaterialCommunityIcons 
+            name="face-man" 
+            size={44} 
+             color={manisFocused ? 'black' : 'white'} 
+        />
+    </TouchableOpacity>
+
+    <TouchableOpacity onPress={HandlePressOnWoman} >
+    <MaterialCommunityIcons name="face-woman-outline" size={44} color={womanIsFocused ? 'black' : 'white'}  />
+    </TouchableOpacity>
+
+
+      </View>
+  </View>
+  </View>
+
+  )
 }
+
+/* const {width} = useWindowDimensions();
+return(
+<View style={[styles.container,{ width: width }]}>
+<Text style={styles.text}>ProteinIntake</Text>
+</View>) */
 function RMR() {
     const {width} = useWindowDimensions();
     return(
@@ -193,6 +211,15 @@ const styles = StyleSheet.create({
       height:'100%',
       width:'100%',
     },
+    viewContainer: {
+      backgroundColor: '#00BFFF',
+      alignItems:'center',
+    height:'100%',
+    width:'90%',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10
+  
+  },
     text: {
       marginTop:20,
        fontSize: 36,
