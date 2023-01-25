@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
       width:'100%',
     },
     viewContainer: {
-      backgroundColor: '#00BFFF',
+      backgroundColor: '#00bfff',
       alignItems:'center',
     height:'100%',
     width:'90%',

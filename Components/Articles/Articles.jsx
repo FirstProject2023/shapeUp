@@ -2,6 +2,7 @@ import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions, Touchab
 import React, { useState , useEffect} from 'react'
 import articlesData from '../Jsons/articles.json'
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons'; 
 
 
 export default function Articles() {
@@ -44,7 +45,7 @@ export default function Articles() {
   const ArticlesDataFilter = ()=>{
     let funcArticlesData = [...articlesData];
 
-    if(articlesCategory != ""){
+    if(articlesCategory != "all"){
       funcArticlesData = funcArticlesData.filter((article)=>{
         return article.topic.toLowerCase() == articlesCategory.toLowerCase();
 
@@ -114,7 +115,7 @@ export default function Articles() {
  return(
    
    <View style={[ styles.subjectContainer, {width: width * 0.3}]}>
-   <TouchableOpacity onPress={()=> setArticlesCategory(item)} >
+   <TouchableOpacity style={styles.articleSubButton} onPress={()=> setArticlesCategory(item)} >
     <Text style={styles.subject}>{item}</Text>
     </TouchableOpacity>
     </View>
@@ -126,11 +127,17 @@ export default function Articles() {
 
       <View style={styles.recipesFiltersContainer}>
       <TouchableOpacity onPress={()=> {setFreeRecipesSearch(currFreeRecipesSearch), setApiRecipes(firstPageApiRecipes)}}>
-
-        <FontAwesome5  name="search" size={24} color="black" />
+        <FontAwesome5  name="search" size={24} color="#c7e2fb" />
       </TouchableOpacity>
 
      <TextInput onChangeText={setCurrFreeRecipesSearch} style={styles.recipesSearch} placeholder='Search recipes...'/>
+
+      <TouchableOpacity onPress={()=> {setFreeRecipesSearch(currFreeRecipesSearch), setApiRecipes(firstPageApiRecipes)}}>
+        <Octicons name="filter" size={24} color="#c7e2fb" />
+      </TouchableOpacity>
+      <View style={styles.recipesFilters}>
+
+      </View>
     </View>
       )    
   }
@@ -146,9 +153,9 @@ export default function Articles() {
       <View style={[styles.articleCardContainer, {width: width}]}>
       <View style={styles.articleCard}>
 
+      <Text style={{fontSize: 15, color:'#fff'}}>{item.title}</Text>
+      <Text style={{fontSize: 20, color:'#fff', marginLeft: 210, textDecorationLine: 'underline'}}>{item.topic}</Text>
       <Image source={{uri: item.img}} style={[styles.img,  ]}/>
-      <Text>{item.title}</Text>
-      <Text style={{fontSize: 20}}>{item.topic}</Text>
       </View>
 
       </View>
@@ -161,8 +168,8 @@ export default function Articles() {
     
       <View style={styles.articleCard}>
 
+      <Text style={{fontSize: 20, color: '#fff'}}>{item.recipe.label}</Text>
       <Image source={{uri: item.recipe.image}} style={[styles.img,  ]}/>
-      <Text>{item.recipe.label}</Text>
       </View>
 
       </View>
@@ -173,8 +180,13 @@ export default function Articles() {
   return (
     <View style={styles.container}>
     <View style={styles.mainArticlesNav}>
-      <Button onPress={()=> setIsArticles(false)} title='Recipes'></Button>
-      <Button onPress={()=> setIsArticles(true)} title='Articles'></Button>
+
+    <TouchableOpacity onPress={()=> setIsArticles(false)} style={[styles.ArticlesNavButtons, {borderTopLeftRadius: 10, borderBottomLeftRadius: 10}]}>
+      <Text style={{fontSize: 20}}>Recipes</Text>    
+    </TouchableOpacity>
+    <TouchableOpacity onPress={()=> setIsArticles(true)} style={[styles.ArticlesNavButtons, {borderTopRightRadius: 10, borderBottomRightRadius: 10}]}>
+      <Text style={{fontSize: 20}}>Articles</Text>
+    </TouchableOpacity>
     
     </View>
     <View style={styles.subjectCarousel}>
@@ -227,15 +239,27 @@ const styles = StyleSheet.create({
   },
   
   mainArticlesNav:{
-    backgroundColor: '#42f14f',
+    backgroundColor: '#00bfff',
     width: '100%',
     height: '10%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     
-    
   },
+
+  ArticlesNavButtons:{
+    width: '40%',
+     height: '70%',
+     alignItems: 'center',
+     justifyContent: 'center',
+     backgroundColor: '#0873c4',
+     color: '#083a60',
+     borderWidth: 2.5,
+     
+     
+    },
+
   
   subjectCarousel:{
     backgroundColor: '#6644af',
@@ -245,43 +269,65 @@ const styles = StyleSheet.create({
   },
 
   subjectContainer:{
-    backgroundColor: '#5f3a',
+    backgroundColor: '#0a2946',
     justifyContent: 'center',
      alignItems: 'center',
      height: '100%'
 
   },
   recipesFiltersContainer:{
-    backgroundColor: '#5f3a',
+    backgroundColor: '#0a2946',
     flexDirection: 'row',
     justifyContent: 'center',
      alignItems: 'center',
      height: '100%'
 
   },
-  subject:{
+
+  recipesFilters:{
+    // height: 100,
+    // width: '100%',
+
+  },
+
+  articleSubButton:{
+    width: 80,
+    height: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
     borderWidth: 2,
+    borderRadius: 22,
+    backgroundColor: '#12c5eb',
+
+
+  },
+
+  subject:{
     paddingBottom: 15,
-    borderRadius: 15,
-    backgroundColor: '#11bb99',
+    fontSize: 18,
+    color: '#fff',
+    
+    
+    
 
   },
 
   recipesSearch:{
-    width: '80%',
+    width: '75%',
     height: '40%',
     backgroundColor: '#fff',
     paddingRight: 10,
     borderWidth: 1,
     borderRadius: 10,
     marginLeft: 10,
+    marginRight: 10,
 
 
   },
   
   articlesContainer:{
     
-    backgroundColor: '#42bb99',
+    backgroundColor: '#00bfff',
     width: '100%',
     height: '75%',
     justifyContent: 'center',
@@ -312,13 +358,14 @@ const styles = StyleSheet.create({
   },
   
   articleCard:{
-    backgroundColor: '#20ffff',
+    backgroundColor: '#2986cc',
+   
     width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
-    borderWidth: 1,
-    borderRadius: 10,
+    borderWidth: 3,
+    borderRadius: 15,
    
     
   },
@@ -328,8 +375,8 @@ const styles = StyleSheet.create({
     width:'100%',
     height: 200,
     borderWidth: 1,
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
 
   },
 })
