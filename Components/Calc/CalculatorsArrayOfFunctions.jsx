@@ -125,9 +125,32 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
   const [fatValue, setFatValue] = useState(0);
   const [carbohydratesValue,setCarbohydratesValue] = useState(0);
   const [proteinValue,setProteinValue] = useState(0);
-
   const [manisFocused, setManisFocused] = useState(true);
   const [womanIsFocused, setWomanIsFocused] = useState(true);
+
+  const [data, setData] = useState([]);
+
+
+  
+  useEffect(() => {
+    fetch("https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&limit=10")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+          setData(data.result.records)
+      });
+  }, []);
+
+ 
+
+  /*   let name;
+
+  name=data.filter((e)=>{ return e.shmmitzrachs})
+
+  console.log(name);    */
+
+
 
   
   const HandlePressOnMan = () => {
@@ -157,7 +180,6 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
       <Text style={styles.text}>ProteinIntake</Text>
 
     <View style={styles.icons} >
-   
     <TouchableOpacity onPress={HandlePressOnMan} >
         <MaterialCommunityIcons 
             name="face-man" 
@@ -172,6 +194,7 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
 
 
       </View>
+
   </View>
   </View>
 
