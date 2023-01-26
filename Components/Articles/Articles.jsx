@@ -5,11 +5,11 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons'; 
 
 
-export default function Articles() {
+export default function Articles({navigation}) {
   // articles or recipes
   const [isArticles, setIsArticles] = useState(true);
 
-  const [articlesCategory, setArticlesCategory] = useState("");
+  const [articlesCategory, setArticlesCategory] = useState("all");
 
   const [recipesDataApi, setRecipesDataApi] = useState([]);
 
@@ -26,6 +26,9 @@ export default function Articles() {
 
   //recipes links for pages
   const [recipesLinks, setRecipesLinks] = useState([])
+
+  //is recipesFilters
+  const [isRecipesFilters, setIsRecipesFilters] = useState(false);
   
   
 
@@ -124,21 +127,24 @@ export default function Articles() {
   
   function RecipesFilters(){
     return(
+      <View>
+
 
       <View style={styles.recipesFiltersContainer}>
       <TouchableOpacity onPress={()=> {setFreeRecipesSearch(currFreeRecipesSearch), setApiRecipes(firstPageApiRecipes)}}>
-        <FontAwesome5  name="search" size={24} color="#c7e2fb" />
+        <FontAwesome5  name="search" size={30} color="#c7e2fb" />
       </TouchableOpacity>
 
      <TextInput onChangeText={setCurrFreeRecipesSearch} style={styles.recipesSearch} placeholder='Search recipes...'/>
 
-      <TouchableOpacity onPress={()=> {setFreeRecipesSearch(currFreeRecipesSearch), setApiRecipes(firstPageApiRecipes)}}>
-        <Octicons name="filter" size={24} color="#c7e2fb" />
+      <TouchableOpacity onPress={()=> setIsRecipesFilters(!isRecipesFilters)}>
+        <Octicons name="filter" size={30} color="#c7e2fb" />
       </TouchableOpacity>
-      <View style={styles.recipesFilters}>
+    </View>
+      <View style={[styles.recipesFilters, isRecipesFilters ? {height: 50} : {height: 0}]}>
 
       </View>
-    </View>
+      </View>
       )    
   }
 
@@ -150,6 +156,13 @@ export default function Articles() {
 
   function ArticlesList(item){
     return(
+      <TouchableOpacity onPress={()=> navigation.navigate('Article',{
+          article: item.article,
+          title:   item.title,
+          topic:   item.topic,
+          img:     item.img,
+      })}>
+
       <View style={[styles.articleCardContainer, {width: width}]}>
       <View style={styles.articleCard}>
 
@@ -159,11 +172,14 @@ export default function Articles() {
       </View>
 
       </View>
+      </TouchableOpacity>
     )
   }
 
   function RecipesList(item){
     return(
+      <TouchableOpacity onPress={()=> navigation.navigate('Recipe')}>
+
       <View style={[styles.articleCardContainer, {width: width}]}>
     
       <View style={styles.articleCard}>
@@ -173,6 +189,7 @@ export default function Articles() {
       </View>
 
       </View>
+      </TouchableOpacity>
     )
   }
   
@@ -182,14 +199,14 @@ export default function Articles() {
     <View style={styles.mainArticlesNav}>
 
     <TouchableOpacity onPress={()=> setIsArticles(false)} style={[styles.ArticlesNavButtons, {borderTopLeftRadius: 10, borderBottomLeftRadius: 10}]}>
-      <Text style={{fontSize: 20}}>Recipes</Text>    
+      <Text style={{fontSize: 20, fontWeight: '900', textTransform: 'uppercase', letterSpacing: -0.3, color: '#afffff'}}>Recipes</Text>    
     </TouchableOpacity>
     <TouchableOpacity onPress={()=> setIsArticles(true)} style={[styles.ArticlesNavButtons, {borderTopRightRadius: 10, borderBottomRightRadius: 10}]}>
-      <Text style={{fontSize: 20}}>Articles</Text>
+      <Text style={{fontSize: 20, fontWeight: '900', textTransform: 'uppercase', letterSpacing: -0.3, color: '#afffff'}}>Articles</Text>
     </TouchableOpacity>
     
     </View>
-    <View style={styles.subjectCarousel}>
+    <View style={[styles.subjectCarousel, /*isRecipesFilters ? {height: '15%'} : {height: 70}*/]}>
     {isArticles ? <FlatList data={articlesSubArray} renderItem={({item})=>
        ArticlesSubList(item)}
        horizontal 
@@ -262,9 +279,12 @@ const styles = StyleSheet.create({
 
   
   subjectCarousel:{
-    backgroundColor: '#6644af',
+    backgroundColor: '#0a2946',
     width: '100%',
     height: '15%',
+    alignItems: 'center',
+    justifyContent: 'center',
+
     
   },
 
@@ -272,7 +292,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0a2946',
     justifyContent: 'center',
      alignItems: 'center',
-     height: '100%'
+     height: '100%',
 
   },
   recipesFiltersContainer:{
@@ -280,13 +300,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
      alignItems: 'center',
-     height: '100%'
+    //  width: '100%'
+
 
   },
 
   recipesFilters:{
-    // height: 100,
-    // width: '100%',
+    // height: 40,
+    width: '100%',
+    // position:'absolute',
+    backgroundColor: 'red'
 
   },
 
@@ -314,7 +337,7 @@ const styles = StyleSheet.create({
 
   recipesSearch:{
     width: '75%',
-    height: '40%',
+    height: 40,
     backgroundColor: '#fff',
     paddingRight: 10,
     borderWidth: 1,
