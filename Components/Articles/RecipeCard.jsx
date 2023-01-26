@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-export default function RecipeCard() {
+export default function RecipeCard({route, navigation}) {
   return (
     <View style={styles.recipeContainer}>
 
