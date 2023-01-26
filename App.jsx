@@ -6,6 +6,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Nav from './Components/Nav/Nav';
 import Home from './Components/Home/Home';
+import ArticleCard from './Components/Articles/ArticleCard';
+import RecipeCard from './Components/Articles/RecipeCard';
 import { Header } from '@react-navigation/stack';
 
 
@@ -20,6 +22,8 @@ export default function App() {
   <Stack.Navigator>
     <Stack.Screen name="Nav" component={Nav} options={{headerShown: false}}/>
     <Stack.Screen name='Home' component={Home}/>
+    <Stack.Screen name='Article' component={ArticleCard}/>
+    <Stack.Screen name='Recipe' component={RecipeCard}/>
   </Stack.Navigator>
 </NavigationContainer>
 
