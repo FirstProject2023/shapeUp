@@ -52,13 +52,10 @@ function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
   
     return(
     
-    
       <View style={[styles.container,{ width: width}]}>
 
         <View style={styles.viewContainer}>
           
-
-
       <Text style={styles.text}>Bmi</Text>
 
     <View style={styles.icons} >

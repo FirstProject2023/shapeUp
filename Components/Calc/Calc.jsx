@@ -27,9 +27,11 @@ export default function Calc() {
       />
   
     </View>
-    
+  
+ 
 
-      <View style={{height:heightOfResView,width:'90%',backgroundColor:'#9fc5e8',borderBottomLeftRadius: 10,borderBottomRightRadius: 10}}>
+     
+    <View style={{height:heightOfResView,width:'90%',backgroundColor:'#9fc5e8',borderBottomLeftRadius: 10,borderBottomRightRadius: 10}}>
     
        <Text  style={{fontSize:25,textAlign:'center',marginTop:18}}>Your BMI is:</Text>
        
@@ -69,6 +71,7 @@ export default function Calc() {
    </TouchableOpacity>
 
        </View>
+      
 
 {/* AAAAAAAAAA */}
   
@@ -115,4 +118,5 @@ const styles = StyleSheet.create({
   },
 
 })
+
 
