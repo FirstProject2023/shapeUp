@@ -65,7 +65,7 @@ export default function Articles({navigation}) {
 
   
   
-  const firstPageApiRecipes = `https://api.edamam.com/api/recipes/v2?type=any&beta=false&q=${freeRecipesSearch}
+  let firstPageApiRecipes = `https://api.edamam.com/api/recipes/v2?type=any&beta=false&q=${freeRecipesSearch}
   &app_id=3d4ce13e&app_key=309e7c6a041b819ea0605c46d27345b8&${dietLabelRecipes}
   &health=kosher&${cuisineTypeRecipes}
   &${mealTypeRecipes}
@@ -200,11 +200,11 @@ export default function Articles({navigation}) {
     <View style={styles.container}>
     <View style={styles.mainArticlesNav}>
 
-    <TouchableOpacity onPress={()=> setIsArticles(false)} style={[styles.ArticlesNavButtons, {borderTopLeftRadius: 10, borderBottomLeftRadius: 10}]}>
-      <Text style={styles.ArticlesNavText}>Recipes</Text>    
+    <TouchableOpacity onPress={()=> setIsArticles(false)} style={[styles.ArticlesNavButtons, {borderTopLeftRadius: 10, borderBottomLeftRadius: 10}, isArticles ? {backgroundColor: '#fff'} : {backgroundColor: '#d89b5c'}]}>
+      <Text style={[styles.ArticlesNavText, isArticles ? {color: '#d89b5c'} : {color: '#fff'}]}>Recipes</Text>    
     </TouchableOpacity>
-    <TouchableOpacity onPress={()=> setIsArticles(true)} style={[styles.ArticlesNavButtons, {borderTopRightRadius: 10, borderBottomRightRadius: 10}]}>
-      <Text style={styles.ArticlesNavText}>Articles</Text>
+    <TouchableOpacity onPress={()=> setIsArticles(true)} style={[styles.ArticlesNavButtons, {borderTopRightRadius: 10, borderBottomRightRadius: 10}, isArticles ? {backgroundColor: '#d89b5c'} : {backgroundColor: '#fff'}]}>
+      <Text style={[styles.ArticlesNavText, isArticles ? {color: '#fff'} : {color: '#d89b5c'}]}>Articles</Text>
     </TouchableOpacity>
     
     </View>
@@ -231,9 +231,7 @@ export default function Articles({navigation}) {
 </View>
 </View>: null}
 
-   
     
-   
 
     <FlatList data={isArticles ? filteredArticlesData : recipesDataApi.hits} renderItem={({item})=>
        isArticles ? ArticlesList(item) :  [PagesNav(item), RecipesList(item)]}
@@ -253,12 +251,12 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#42ffff',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
     
   },
   
   mainArticlesNav:{
-    backgroundColor: '#00bfff',
+    backgroundColor: '#fff',
     width: '100%',
     height: '10%',
     flexDirection: 'row',
@@ -272,7 +270,7 @@ const styles = StyleSheet.create({
      height: '70%',
      alignItems: 'center',
      justifyContent: 'center',
-     backgroundColor: '#0873c4',
+     backgroundColor: '#fff',
      borderWidth: 2.5,
      borderColor: '#d89b5c',
      
@@ -294,12 +292,12 @@ const styles = StyleSheet.create({
     height: '15%',
     alignItems: 'center',
     justifyContent: 'center',
-
+    
     
   },
-
+  
   subjectContainer:{
-    backgroundColor: '#0a2946',
+    backgroundColor: '#fff',
     justifyContent: 'center',
      alignItems: 'center',
      height: '100%',
@@ -331,7 +329,7 @@ const styles = StyleSheet.create({
     borderWidth: 3.5,
     borderColor: '#d89b5c',
     borderRadius: 22,
-    backgroundColor: '#0873c4',
+    backgroundColor: '#fff',
     
     
     
@@ -364,7 +362,7 @@ const styles = StyleSheet.create({
   
   articlesContainer:{
     
-    backgroundColor: '#00bfff',
+    backgroundColor: '#fff',
     width: '100%',
     height: '75%',
     justifyContent: 'center',
