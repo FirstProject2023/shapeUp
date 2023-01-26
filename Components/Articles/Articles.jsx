@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions, TouchableOpacity, Image, TextInput} from 'react-native'
+import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions, TouchableOpacity, Image, TextInput, ImageBackground} from 'react-native'
 import React, { useState , useEffect} from 'react'
 import articlesData from '../Jsons/articles.json'
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -197,7 +197,10 @@ export default function Articles({navigation}) {
   
   
   return (
+    <ImageBackground source={{uri: "https://media.istockphoto.com/id/1368401341/photo/process-of-preparing-food-salad-of-vegetables-oil-dish-spring-vitamins-summer-vegetables.jpg?s=612x612&w=0&k=20&c=XwvilDaZPy57eDJXrMpx-1udYPEZhO9jQGUD-MHf2Cc="}} resizeMode= 'cover'>
     <View style={styles.container}>
+      
+
     <View style={styles.mainArticlesNav}>
 
     <TouchableOpacity onPress={()=> setIsArticles(false)} style={[styles.ArticlesNavButtons, {borderTopLeftRadius: 10, borderBottomLeftRadius: 10}, isArticles ? {backgroundColor: '#fff'} : {backgroundColor: '#d89b5c'}]}>
@@ -242,6 +245,7 @@ export default function Articles({navigation}) {
 
     </View>
     </View>
+    </ImageBackground>
   )
 }
 
@@ -249,14 +253,13 @@ const styles = StyleSheet.create({
   container:{
     width: '100%',
     height: '100%',
-    backgroundColor: '#42ffff',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
-    
   },
   
   mainArticlesNav:{
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     width: '100%',
     height: '10%',
     flexDirection: 'row',
@@ -287,7 +290,7 @@ const styles = StyleSheet.create({
 
   
   subjectCarousel:{
-    backgroundColor: '#0a2946',
+    // backgroundColor: '#0a2946',
     width: '100%',
     height: '15%',
     alignItems: 'center',
@@ -297,7 +300,7 @@ const styles = StyleSheet.create({
   },
   
   subjectContainer:{
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     justifyContent: 'center',
      alignItems: 'center',
      height: '100%',
@@ -308,6 +311,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
      alignItems: 'center',
+     borderWidth: 2,
+     borderRadius: 12,
     //  width: '100%'
 
 
@@ -362,7 +367,7 @@ const styles = StyleSheet.create({
   
   articlesContainer:{
     
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     width: '100%',
     height: '75%',
     justifyContent: 'center',
@@ -400,7 +405,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
-    borderWidth: 3,
+    borderWidth: 0,
+    borderColor: '#d89b5c',
     borderRadius: 15,
    
     
@@ -410,9 +416,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width:'100%',
     height: 200,
-    borderWidth: 1,
+    borderWidth: 0,
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10,
+    marginTop: 5,
 
   },
 })

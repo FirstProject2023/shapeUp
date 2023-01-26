@@ -27,15 +27,15 @@ export default function Nav() {
             let rn = route.name;
 
             if(rn === 'Home'){      
-            return <Entypo name="home" size={24} color="#71c0fc" />
+            return <Entypo name="home" size={24} color="#d89b5c" />
             } else if(rn === "Calc"){
-            return <FontAwesome5 name="calculator" size={24} color="#71c0fc" />            
+            return <FontAwesome5 name="calculator" size={24} color="#d89b5c" />            
             } else if(rn === "Articles"){
-            return <MaterialIcons name="article" size={24} color="#71c0fc" />   
+            return <MaterialIcons name="article" size={24} color="#d89b5c" />   
             } else if(rn === "Diary"){
-            return <FontAwesome name="bomb" size={24} color="#71c0fc" /> 
+            return <FontAwesome name="bomb" size={24} color="#d89b5c" /> 
             } else if(rn === "Profile"){
-            return <MaterialCommunityIcons name="face-man-profile" size={24} color="#71c0fc" /> 
+            return <MaterialCommunityIcons name="face-man-profile" size={24} color="#d89b5c" /> 
             } 
 
         },
