@@ -37,8 +37,6 @@ export default function Calc() {
 
 
          <Text>bad!</Text>
-
-
 <View>
 {   bmiSearchResult < 250 & bmiSearchResult > 150 &heightOfResView !=0   ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
 <View style={{height:50,  alignItems:'center',backgroundColor:'red', width: heightOfResView !=0 ? 60 : 0 }}></View>
