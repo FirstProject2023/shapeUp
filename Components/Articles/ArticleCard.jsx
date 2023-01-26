@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     articleContainer:{
         height: '100%',
         width: '100%',
-        backgroundColor: '#AA7D81',
+        backgroundColor: '#d89b5c',
         alignItems: 'center',
         // justifyContent: 'center',
     },
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     title:{
         fontSize: 27,
         fontWeight: '700',
-        color: '#9fffff',
+        color: '#00ffff',
         borderBottomWidth: 7,
         borderColor: '#009999'
 
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     article:{
         fontSize: 20,
         padding: 15,
-        backgroundColor: '#B5848F',
-        color: '#39ffff',
+        backgroundColor: '#d0a06e',
+        color: '#fff',
         fontWeight: '500',
 
         
