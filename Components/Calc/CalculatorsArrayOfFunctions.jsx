@@ -7,18 +7,18 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import {Picker} from '@react-native-picker/picker';
 
 
-export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult}) {
+export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs}) {
   
   const {width} = useWindowDimensions();
   
-  let arrOfFunctions = [Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult),ProteinIntake(), RMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult), WaterCalculator(), WhatIsFatter()];
+  let arrOfFunctions = [Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs),ProteinIntake(), RMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs), WaterCalculator(), WhatIsFatter()];
   
   return (
     arrOfFunctions[num]
     )
   }
 
-function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult) {
+function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs) {
 
   const {width} = useWindowDimensions();
   const [heightValue, setHeightValue] = useState(0);
@@ -44,8 +44,9 @@ function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
   };
   function Res()
   {
-        setBmiSearchResult(weightValue/((heightValue*0.01)*(heightValue*0.01)));
 
+        setBmiSearchResult(weightValue/((heightValue*0.01)*(heightValue*0.01)));
+    setWhatCalcIs(0);
 
     setHeightOfResView(420);
   }
@@ -140,6 +141,9 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
   }, []);
 
 
+/*   console.log(data[0]._id); */
+
+
 
   const HandlePressOnMan = () => {
     if(womanIsFocused)
@@ -190,7 +194,7 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
   )
 }
 
-function RMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult) {
+function RMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs) {
   const [fatValue, setFatValue] = useState(0);
   const [carbohydratesValue,setCarbohydratesValue] = useState(0);
   const [proteinValue,setProteinValue] = useState(0);
@@ -199,7 +203,7 @@ function RMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
   const [heightValue, setHeightValue] = useState(0);
   const [weightValue,setWeightValue] = useState(0);
 
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedAgeValue, setSelectedAgeValue] = useState('');
 
   const HandlePressOnMan = () => {
     if(womanIsFocused)
@@ -216,7 +220,7 @@ function RMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
   };
   function Res()
   {
-    console.log('d');
+    setWhatCalcIs(2);
     setHeightOfResView(400);
   }
   
@@ -247,36 +251,24 @@ function RMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
     </View>
 
 
-<Text style={{color:'white',fontSize:20,marginTop:10}}>what your age?</Text>
+<Text style={{color:'white',fontSize:20,marginTop:10}}>your age</Text>
 
-<View style={{flexDirection:'row'}}>
 
     <Picker
   style={{
-    marginLeft:40,
     marginTop:17,
-  height: 10,
-  width: 160,
+  width: '70%',
   backgroundColor: '#ffa',
   marginBottom:20,
 }}
-selectedValue={selectedValue}
-onValueChange={(itemValue) => setSelectedValue(itemValue)}
+selectedValue={selectedAgeValue}
+onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
 >
 {Array.from({ length: 120 }, (_, i) => i).map(ageOption => (
           <Picker.Item key={ageOption} label={`${ageOption}`} value={ageOption} />
         ))}
-</Picker>
- 
-<Text style={{fontSize:20,
-marginLeft:20,
-       textAlign:'center',
-       width:50,
-      borderRadius: 5,
-      marginTop:27,
-      height: 30,}}>{selectedValue}</Text>
 
-</View>
+</Picker>
 
 <Text style={{marginTop:10,color:'white', fontSize:20,}} >Height</Text>
 <View style={styles.slider}>
