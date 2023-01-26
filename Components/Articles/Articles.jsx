@@ -178,7 +178,9 @@ export default function Articles({navigation}) {
 
   function RecipesList(item){
     return(
-      <TouchableOpacity onPress={()=> navigation.navigate('Recipe')}>
+      <TouchableOpacity onPress={()=> navigation.navigate('Recipe',{
+        recipe: item.recipe,
+      })}>
 
       <View style={[styles.articleCardContainer, {width: width}]}>
     

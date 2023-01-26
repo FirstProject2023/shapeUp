@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Image
-       source={{uri:'https://img.mako.co.il/2021/08/03/AP21215415918898_autoOrient_w.jpg'}}
+       source={{uri:'https://cdn.shopify.com/s/files/1/0509/1210/0549/products/WhatsAppImage2022-12-21at12.25.13_5000x.jpg?v=1671618694%27'}}
        style={{width: 200, height: 200,borderRadius:10}}
       />
      
