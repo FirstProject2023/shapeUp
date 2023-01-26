@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     articleContainer:{
         height: '100%',
         width: '100%',
-        backgroundColor: '#AA7D81',
+        backgroundColor: '#b4814d',
         alignItems: 'center',
         // justifyContent: 'center',
     },
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     article:{
         fontSize: 20,
         padding: 15,
-        backgroundColor: '#B5848F',
+        backgroundColor: '#d0a06e',
         color: '#39ffff',
         fontWeight: '500',
 

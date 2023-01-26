@@ -132,13 +132,13 @@ export default function Articles({navigation}) {
 
       <View style={styles.recipesFiltersContainer}>
       <TouchableOpacity onPress={()=> {setFreeRecipesSearch(currFreeRecipesSearch), setApiRecipes(firstPageApiRecipes)}}>
-        <FontAwesome5  name="search" size={30} color="#c7e2fb" />
+        <FontAwesome5  name="search" size={30} color="#d89b5c" />
       </TouchableOpacity>
 
      <TextInput onChangeText={setCurrFreeRecipesSearch} style={styles.recipesSearch} placeholder='Search recipes...'/>
 
       <TouchableOpacity onPress={()=> setIsRecipesFilters(!isRecipesFilters)}>
-        <Octicons name="filter" size={30} color="#c7e2fb" />
+        <Octicons name="filter" size={30} color="#d89b5c" />
       </TouchableOpacity>
     </View>
       <View style={[styles.recipesFilters, isRecipesFilters ? {height: 50} : {height: 0}]}>
@@ -199,10 +199,10 @@ export default function Articles({navigation}) {
     <View style={styles.mainArticlesNav}>
 
     <TouchableOpacity onPress={()=> setIsArticles(false)} style={[styles.ArticlesNavButtons, {borderTopLeftRadius: 10, borderBottomLeftRadius: 10}]}>
-      <Text style={{fontSize: 20, fontWeight: '900', textTransform: 'uppercase', letterSpacing: -0.3, color: '#afffff'}}>Recipes</Text>    
+      <Text style={styles.ArticlesNavText}>Recipes</Text>    
     </TouchableOpacity>
     <TouchableOpacity onPress={()=> setIsArticles(true)} style={[styles.ArticlesNavButtons, {borderTopRightRadius: 10, borderBottomRightRadius: 10}]}>
-      <Text style={{fontSize: 20, fontWeight: '900', textTransform: 'uppercase', letterSpacing: -0.3, color: '#afffff'}}>Articles</Text>
+      <Text style={styles.ArticlesNavText}>Articles</Text>
     </TouchableOpacity>
     
     </View>
@@ -271,10 +271,18 @@ const styles = StyleSheet.create({
      alignItems: 'center',
      justifyContent: 'center',
      backgroundColor: '#0873c4',
-     color: '#083a60',
      borderWidth: 2.5,
+     borderColor: '#d89b5c',
      
      
+    },
+
+        ArticlesNavText:{
+        fontSize: 20,
+        fontWeight: '900',
+        textTransform: 'uppercase',
+        letterSpacing: -0.3,
+        color: '#d89b5c'
     },
 
   
@@ -318,17 +326,21 @@ const styles = StyleSheet.create({
     height: 80,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 2,
+    borderWidth: 3.5,
+    borderColor: '#d89b5c',
     borderRadius: 22,
-    backgroundColor: '#12c5eb',
-
-
+    backgroundColor: '#0873c4',
+    
+    
+    
   },
-
+  
   subject:{
     paddingBottom: 15,
     fontSize: 18,
-    color: '#fff',
+    color: '#d89b5c',
+    fontSize: 18,
+    fontWeight: '600',
     
     
     
@@ -381,8 +393,9 @@ const styles = StyleSheet.create({
   },
   
   articleCard:{
-    backgroundColor: '#2986cc',
-   
+    backgroundColor: '#d89b5c',
+
+    // backgroundColor: '#eca44f',
     width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
