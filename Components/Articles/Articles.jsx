@@ -3,6 +3,7 @@ import React, { useState , useEffect} from 'react'
 import articlesData from '../Jsons/articles.json'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons'; 
 
 
 export default function Articles({navigation}) {
@@ -129,7 +130,6 @@ export default function Articles({navigation}) {
     return(
       <View>
 
-
       <View style={styles.recipesFiltersContainer}>
       <TouchableOpacity onPress={()=> {setFreeRecipesSearch(currFreeRecipesSearch), setApiRecipes(firstPageApiRecipes)}}>
         <FontAwesome5  name="search" size={30} color="#d89b5c" />
@@ -188,6 +188,12 @@ export default function Articles({navigation}) {
 
       <Text style={{fontSize: 20, color: '#fff'}}>{item.recipe.label}</Text>
       <Image source={{uri: item.recipe.image}} style={[styles.img,  ]}/>
+      <View style={styles.iconsRecipesCards}>
+      <Text style={{color: '#fff', fontSize: 0}}>20m</Text>
+      {/* <Text>250Cal</Text> */}
+      <AntDesign style= {{marginTop: 3}} name="clockcircle" size={24} color="#fff" />
+
+      </View>
       </View>
 
       </View>
@@ -253,7 +259,7 @@ const styles = StyleSheet.create({
   container:{
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.6)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -310,9 +316,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#0a2946',
     flexDirection: 'row',
     justifyContent: 'center',
-     alignItems: 'center',
+    //  alignItems: 'center',
      borderWidth: 2,
      borderRadius: 12,
+    //  height: 300,
     //  width: '100%'
 
 
@@ -358,7 +365,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingRight: 10,
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 6,
     marginLeft: 10,
     marginRight: 10,
 
@@ -411,6 +418,20 @@ const styles = StyleSheet.create({
    
     
   },
+
+  iconsRecipesCards:{
+    width: '100%',
+    height: 40,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+    // padding: 8,
+    paddingHorizontal: 10,
+
+  },
+
+
+  
   img:{
     flex: 0.7,
     justifyContent: 'center',
