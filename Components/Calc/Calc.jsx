@@ -177,7 +177,6 @@ function ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,fat
  
       <Text  style={{fontSize:40,textAlign:'center',marginTop:38,color:'#0a2946',width:'55%'}}>calories{"\n"} {caloriesValue}</Text>
     
-
      </View>
     
 
