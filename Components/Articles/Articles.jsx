@@ -152,11 +152,38 @@ export default function Articles({navigation}) {
  )
   }
 
-  function RecipesFiltersList(item){
+  function RecipesDietFiltersList(item){
     return(
 
       <View style={[styles.currFilter, {width: width * 0.3}]}>
-    <TouchableOpacity style={[styles.recipeFilterButton, isRecipesFilterActive ? {backgroundColor: '#d89b5c'}: {backgroundColor: '#fff'}]} onPress={()=> setIsRecipesFilterActive(!isRecipesFilterActive)}>
+    <TouchableOpacity style={[styles.recipeFilterButton, isRecipesFilterActive ? {backgroundColor: '#d89b5c'}: {backgroundColor: '#fff'}]}
+     onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setDietLabelRecipes(`diet=${item}`)]}>
+     
+      <Text style={[{ fontSize: 18, color: '#d89b5c', fontSize: 13, fontWeight: '600'}, isRecipesFilterActive ? {color: '#fff'}: {color: '#d89b5c'}]}>{item}</Text>
+    </TouchableOpacity>
+    </View>
+      )
+
+  }
+  function RecipesCuisineFiltersList(item){
+    return(
+
+      <View style={[styles.currFilter, {width: width * 0.3}]}>
+    <TouchableOpacity style={[styles.recipeFilterButton, isRecipesFilterActive ? {backgroundColor: '#d89b5c'}: {backgroundColor: '#fff'}]}
+     onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setCuisineTypeRecipes(`cuisineType=${item}`)]}>
+     
+      <Text style={[{ fontSize: 18, color: '#d89b5c', fontSize: 13, fontWeight: '600'}, isRecipesFilterActive ? {color: '#fff'}: {color: '#d89b5c'}]}>{item}</Text>
+    </TouchableOpacity>
+    </View>
+      )
+
+  }
+  function RecipesMealFiltersList(item){
+    return(
+
+      <View style={[styles.currFilter, {width: width * 0.3}]}>
+    <TouchableOpacity style={[styles.recipeFilterButton, isRecipesFilterActive ? {backgroundColor: '#d89b5c'}: {backgroundColor: '#fff'}]}
+     onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setMealTypeRecipes(`mealType=${item}`)]}>
      
       <Text style={[{ fontSize: 18, color: '#d89b5c', fontSize: 13, fontWeight: '600'}, isRecipesFilterActive ? {color: '#fff'}: {color: '#d89b5c'}]}>{item}</Text>
     </TouchableOpacity>
@@ -172,7 +199,7 @@ export default function Articles({navigation}) {
       <View style={{width: '100%'}}>
 
       <View style={styles.recipesFiltersContainer}>
-      <TouchableOpacity onPress={()=> {setFreeRecipesSearch(currFreeRecipesSearch), setApiRecipes(firstPageApiRecipes)}}>
+      <TouchableOpacity onPress={()=> {setFreeRecipesSearch(currFreeRecipesSearch), setTimeout(()=>{ setApiRecipes(firstPageApiRecipes)},0) }}>
         <FontAwesome5  name="search" size={30} color="#d89b5c" />
       </TouchableOpacity>
 
@@ -191,7 +218,7 @@ export default function Articles({navigation}) {
       <View style={styles.currFilterContainer}>
 
       <FlatList data={dietType} renderItem={({item})=>
-        RecipesFiltersList(item)}
+        RecipesDietFiltersList(item)}
         horizontal 
         bounces= {false}
       />
@@ -204,7 +231,7 @@ export default function Articles({navigation}) {
       <View style={styles.currFilterContainer}>
 
         <FlatList data={cuisineType} renderItem={({item})=>
-          RecipesFiltersList(item)}
+          RecipesCuisineFiltersList(item)}
           horizontal 
           bounces= {false}
         />
@@ -217,13 +244,14 @@ export default function Articles({navigation}) {
       <View style={styles.currFilterContainer}>
 
         <FlatList data={mealType} renderItem={({item})=>
-          RecipesFiltersList(item)}
+          RecipesMealFiltersList(item)}
           horizontal 
           bounces= {false}
         />
         </View>
 
      </View>
+
 
       <View style={styles.filter}>
       <Text style={{margin: 5, color: '#fff', fontSize: 16, fontWeight: '500'}}> Calories Range</Text>
