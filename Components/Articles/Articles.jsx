@@ -5,6 +5,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
 
+import { Picker } from '@react-native-picker/picker';
+
 
 export default function Articles({navigation}) {
   // articles or recipes
@@ -30,6 +32,17 @@ export default function Articles({navigation}) {
 
   //is recipesFilters
   const [isRecipesFilters, setIsRecipesFilters] = useState(false);
+
+  // isRecipesFilterActive
+  const [isRecipesFilterActive, setIsRecipesFilterActive] = useState(false);
+  //calorieRange
+  const [calorieRange, setCalorieRange] = useState([0, 1000]);
+
+  //minCalories
+  const [minCalories, setMinCalories] = useState("")
+  
+  //maxCalories
+  const [maxCalories, setMaxCalories] = useState("")
   
   
 
@@ -40,6 +53,19 @@ export default function Articles({navigation}) {
 
 
   const articlesSubArray = ["fitness","diet","health", "Mental health", "all"];
+
+  const dietType = ["balanced","high-Fiber","high-Protein", "low-Carb", "low-Fat", "low-Sodium"];
+  const cuisineType = ["American","Asian","British", "Caribbean", "Central Europe",
+                       "Chinese","Eastern Europe","French", "Indian", "Italian", 
+                       "Japanese","Mediterranean","Mexican", "Middle Eastern", "Nordic", "South American", "South East Asian" ];
+
+  const mealType = ["Breakfast","Dinner","Lunch", "Snack", "Teatime"]
+
+
+  const calories = [];
+  for (let i = 0; i <= 2000; i += 100) {
+    calories.push(i);
+  }
   
   const {width} = useWindowDimensions();
 
@@ -125,10 +151,25 @@ export default function Articles({navigation}) {
     </View>
  )
   }
+
+  function RecipesFiltersList(item){
+    return(
+
+      <View style={[styles.currFilter, {width: width * 0.3}]}>
+    <TouchableOpacity style={[styles.recipeFilterButton, isRecipesFilterActive ? {backgroundColor: '#d89b5c'}: {backgroundColor: '#fff'}]} onPress={()=> setIsRecipesFilterActive(!isRecipesFilterActive)}>
+     
+      <Text style={[{ fontSize: 18, color: '#d89b5c', fontSize: 13, fontWeight: '600'}, isRecipesFilterActive ? {color: '#fff'}: {color: '#d89b5c'}]}>{item}</Text>
+    </TouchableOpacity>
+    </View>
+      )
+
+  }
+
+  
   
   function RecipesFilters(){
     return(
-      <View>
+      <View style={{width: '100%'}}>
 
       <View style={styles.recipesFiltersContainer}>
       <TouchableOpacity onPress={()=> {setFreeRecipesSearch(currFreeRecipesSearch), setApiRecipes(firstPageApiRecipes)}}>
@@ -141,9 +182,92 @@ export default function Articles({navigation}) {
         <Octicons name="filter" size={30} color="#d89b5c" />
       </TouchableOpacity>
     </View>
-      <View style={[styles.recipesFilters, isRecipesFilters ? {height: 50} : {height: 0}]}>
+    {isRecipesFilters ?  <View style={[styles.recipesFilters, isRecipesFilters ? {height: 450} : {height: 0}]}>
 
+      <Text style={{margin: 10, color: '#fff', fontSize: 18, fontWeight: '700'}}>filters:</Text>
+
+      <View style={styles.filter}>
+      <Text style={{margin: 5, color: '#fff', fontSize: 16, fontWeight: '500'}}> Diet</Text>
+      <View style={styles.currFilterContainer}>
+
+      <FlatList data={dietType} renderItem={({item})=>
+        RecipesFiltersList(item)}
+        horizontal 
+        bounces= {false}
+      />
       </View>
+      
+     </View>
+
+      <View style={styles.filter}>
+      <Text style={{margin: 5, color: '#fff', fontSize: 16, fontWeight: '500'}}> Cuisine</Text>
+      <View style={styles.currFilterContainer}>
+
+        <FlatList data={cuisineType} renderItem={({item})=>
+          RecipesFiltersList(item)}
+          horizontal 
+          bounces= {false}
+        />
+        </View>
+
+     </View>
+
+      <View style={styles.filter}>
+      <Text style={{margin: 5, color: '#fff', fontSize: 16, fontWeight: '500'}}> Meal Type</Text>
+      <View style={styles.currFilterContainer}>
+
+        <FlatList data={mealType} renderItem={({item})=>
+          RecipesFiltersList(item)}
+          horizontal 
+          bounces= {false}
+        />
+        </View>
+
+     </View>
+
+      <View style={styles.filter}>
+      <Text style={{margin: 5, color: '#fff', fontSize: 16, fontWeight: '500'}}> Calories Range</Text>
+      <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: '100%', marginTop: 5}}>
+        <Text style={{color: '#fff', fontSize: 15, fontWeight: '600'}}>Max</Text>
+        <Text style={{color: '#fff', fontSize: 15, fontWeight: '600'}}>Min</Text>
+      </View>
+      <View style={[styles.currFilterContainer, {flexDirection: 'row', justifyContent: 'space-evenly'}]}>
+
+      
+      <Picker
+          style={{
+          marginTop:10,
+          width: '30%',
+          backgroundColor: '#d89b5c',
+      }}
+      selectedValue={maxCalories}
+      onValueChange={(itemValue) => setMaxCalories(itemValue)}
+      >
+{calories.map((calories,i) => (
+                <Picker.Item label={`${calories}`} value={calories} key={i} />
+            ))}
+
+      </Picker>
+      <Picker
+          style={{
+          marginTop:10,
+          width: '30%',
+          backgroundColor: '#d89b5c',
+      }}
+      selectedValue={minCalories}
+      onValueChange={(itemValue) => setMinCalories(itemValue)}
+      >
+      {calories.map((calories,i) => (
+                <Picker.Item label={`${calories}`} value={calories} key={i} />
+            ))}
+      
+      </Picker>
+      </View>
+
+
+     </View>
+
+      </View> : null}
       </View>
       )    
   }
@@ -219,13 +343,13 @@ export default function Articles({navigation}) {
     </TouchableOpacity>
     
     </View>
-    <View style={[styles.subjectCarousel, /*isRecipesFilters ? {height: '15%'} : {height: 70}*/]}>
-    {isArticles ? <FlatList data={articlesSubArray} renderItem={({item})=>
+   {isArticles ?  <View style={styles.subjectCarousel}>
+    <FlatList data={articlesSubArray} renderItem={({item})=>
        ArticlesSubList(item)}
        horizontal 
         bounces= {false}
-       /> : RecipesFilters()}
-    </View>
+       /> 
+    </View>: RecipesFilters()}
     <View style={styles.articlesContainer}>
     {!isArticles ? <View style={styles.pagesNavContainer}>
 
@@ -302,9 +426,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '15%',
     alignItems: 'center',
-    justifyContent: 'center',
-    
-    
+    justifyContent: 'center', 
   },
   
   subjectContainer:{
@@ -322,17 +444,47 @@ const styles = StyleSheet.create({
      borderWidth: 2,
      borderRadius: 12,
     //  height: 300,
+  
     //  width: '100%'
 
 
   },
 
   recipesFilters:{
-    // height: 40,
-    width: '100%',
-    // position:'absolute',
-    backgroundColor: 'red'
+    position: 'absolute', 
+    top: 43.5, backgroundColor: '#0a2946',
+     width: '100%',
+     zIndex: 999 ,
+  },
 
+  filter:{
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+  },
+
+  currFilterContainer:{
+    width: '100%',
+    // backgroundColor: '#fff',
+    height: 50,
+
+  },
+
+  currFilter:{
+    justifyContent: 'center'
+
+  },
+  recipeFilterButton:{
+    // width: 80,
+    marginHorizontal: 10,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#d89b5c',
+    borderRadius: 22,
+    backgroundColor: '#fff',
   },
 
   articleSubButton:{
