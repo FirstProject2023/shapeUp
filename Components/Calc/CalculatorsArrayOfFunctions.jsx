@@ -11,17 +11,21 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeightOfResView,
   bmiSearchResult,setBmiSearchResult,setWhatCalcIs,fatValue,setFatValue,carbohydratesValue,
-  setCarbohydratesValue,proteinValue,setProteinValue,finelText,setFinelText,caloriesValue,setCaloriesValue}) {
+  setCarbohydratesValue,proteinValue,setProteinValue,finelText,setFinelText,caloriesValue,setCaloriesValue,
+  calorValueA,calorValueB,setCalorValueA,setCalorValueB,setMoreCalory
+}) {
   
   const {width} = useWindowDimensions();
   
-  let arrOfFunctions = [Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs),
+  let arrOfFunctions = [
     ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult ,setWhatCalcIs
       ,fatValue,setFatValue,carbohydratesValue,setCarbohydratesValue,proteinValue,setProteinValue,
       finelText,setFinelText,caloriesValue,setCaloriesValue),
+    Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs),
      BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs),
      SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs),
-       WhatIsFatter()];
+       WhatIsFatter( finelText,setFinelText,calorValueA,calorValueB,setCalorValueA,setCalorValueB,
+        setHeightOfResView,setWhatCalcIs,setMoreCalory)];
   
   return (
     arrOfFunctions[num]
@@ -54,7 +58,18 @@ function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
   };
   function Res()
   {
-    if(!heightValue )
+    if(manisFocused&&womanIsFocused)
+    {
+      Alert.alert(
+        'Erro',
+        'Mast to choose Sex',
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        {cancelable: false},
+      );
+    }
+    else if(!heightValue )
     {
       Alert.alert(
         'Erro',
@@ -65,7 +80,7 @@ function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
         {cancelable: false},
       );
     }
-    if(!weightValue  )
+    else if(!weightValue  )
     {
       Alert.alert(
         'Erro',
@@ -76,12 +91,13 @@ function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
         {cancelable: false},
       );
     }
+else{
 
 
-
-        setBmiSearchResult(weightValue/((heightValue*0.01)*(heightValue*0.01)));
-    setWhatCalcIs(0);
-    setHeightOfResView(420);
+  setBmiSearchResult(weightValue/((heightValue*0.01)*(heightValue*0.01)));
+  setWhatCalcIs(1);
+  setHeightOfResView(420);
+}
   }
   
     return(
@@ -157,15 +173,13 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
     setProteinValue,finelText,setFinelText,caloriesValue,setCaloriesValue ) {
   const {width} = useWindowDimensions();
 
-  const [manisFocused, setManisFocused] = useState(true);
-  const [womanIsFocused, setWomanIsFocused] = useState(true);
   const [text, setText] = useState('');
- /*  const [finelText, setFinelText] = useState("מים"); */
   const [quantity,setQuantity]=useState('');
   const[flagToGetFinelRes,setFlagToGetFinelRes]=useState(0)
 
   const [data, setData] = useState([""]);
 
+ 
   
   useEffect(() => {
     fetch(`https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&q=${finelText}`)
@@ -208,23 +222,6 @@ function ChangeText()
   function Res()
   {
 
-    
-
-    if(!quantity)
-    {
-      
-      Alert.alert(
-        'Erro',
-        'Mast to choose quantity ',
-        [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
-        ],
-        {cancelable: false},
-      );
-    }
-    else{
-
-    }
     if(!text)
     {
       
@@ -237,22 +234,32 @@ function ChangeText()
         {cancelable: false},
       );
     }
+     else if(!quantity)
+     {
+       
+       Alert.alert(
+         'Erro',
+         'Mast to choose quantity ',
+         [
+           {text: 'OK', onPress: () => console.log('OK Pressed')},
+         ],
+         {cancelable: false},
+       );
+     }
+    
     else{
-     
-    }
-   
-
-   setProteinValue(data.records[0].protein * (quantity/100));
-    setFatValue(data.records[0].total_fat * (quantity/100));
-    setCarbohydratesValue(data.records[0].carbohydrates * (quantity/100) );
+  setProteinValue(data.records[0].protein * (quantity/100));
+  setFatValue(data.records[0].total_fat * (quantity/100));
+  setCarbohydratesValue(data.records[0].carbohydrates * (quantity/100) );
     setCaloriesValue(((data.records[0].total_fat * (quantity/100)) * 9)+((data.records[0].carbohydrates * (quantity/100)) * 4 )
     +((data.records[0].protein * (quantity/100)) * 4));
 
     if(flagToGetFinelRes==1)
     {
-      setWhatCalcIs(1);
+      setWhatCalcIs(0);
       setHeightOfResView(420);
     }
+  }
    
   }
 
@@ -293,7 +300,7 @@ selectedValue={finelText}
 onValueChange={(itemValue) => setFinelText(itemValue)}
 >
   {
-     data.records ? data.records.map((e)=>{return <Picker.Item label={e.shmmitzrach} value={e.shmmitzrach} />}) : null 
+     data.records ? data.records.map((e,i)=>{return <Picker.Item label={e.shmmitzrach} value={e.shmmitzrach} key={i} />}) : null 
   }
 
 </Picker>
@@ -308,8 +315,8 @@ onValueChange={(itemValue) => setFinelText(itemValue)}
 selectedValue={quantity}
 onValueChange={(itemValue) => setQuantity(itemValue)}
 >
-{quantities.map(quantity => (
-                <Picker.Item label={`${quantity} g`} value={quantity} key={quantity} />
+{quantities.map((quantity,i) => (
+                <Picker.Item label={`${quantity} g`} value={quantity} key={i} />
             ))}
 
 </Picker>
@@ -333,9 +340,8 @@ onValueChange={(itemValue) => setQuantity(itemValue)}
 }
 
 function BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs) {
-  const [fatValue, setFatValue] = useState(0);
-  const [carbohydratesValue,setCarbohydratesValue] = useState(0);
-  const [proteinValue,setProteinValue] = useState(0);
+
+
   const [manisFocused, setManisFocused] = useState(true);
   const [womanIsFocused, setWomanIsFocused] = useState(true);
   const [heightValue, setHeightValue] = useState(0);
@@ -361,7 +367,18 @@ function BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
   };
   function Res()
   {
-    if(!heightValue )
+    if(manisFocused&&womanIsFocused)
+    {
+      Alert.alert(
+        'Erro',
+        'Mast to choose Sex',
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        {cancelable: false},
+      );
+    }
+    else if(!heightValue )
     {
       Alert.alert(
         'Erro',
@@ -372,7 +389,7 @@ function BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
         {cancelable: false},
       );
     }
-    if(!weightValue  )
+    else if(!weightValue  )
     {
       Alert.alert(
         'Erro',
@@ -383,7 +400,7 @@ function BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
         {cancelable: false},
       );
     }
-    if(!selectedAgeValue  )
+     else if(!selectedAgeValue  )
     {
       Alert.alert(
         'Erro',
@@ -394,9 +411,10 @@ function BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
         {cancelable: false},
       );
     }
+else{
 
-        if(!manisFocused)
-        {
+  if(!manisFocused)
+  {
           setBmiSearchResult((88.36) + ( (13.39 * weightValue)+(4.7* heightValue)-(5.6 * selectedAgeValue)));    
         }
         if(!womanIsFocused)
@@ -405,6 +423,7 @@ function BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
         }
     setWhatCalcIs(2);
     setHeightOfResView(400);
+  }
   }
   
 
@@ -447,8 +466,8 @@ function BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
 selectedValue={selectedAgeValue}
 onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
 >
-{Array.from({ length: 120 }, (_, i) => i).map(ageOption => (
-          <Picker.Item key={ageOption} label={`${ageOption}`} value={ageOption} />
+{Array.from({ length: 120 }, (_, i) => i).map((ageOption,i) => (
+          <Picker.Item key={i} label={`${ageOption}`} value={ageOption} />
         ))}
 
 </Picker>
@@ -496,7 +515,8 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
 </View>
 )
 }
-function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs) {
+
+function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,  ) {
   const [manisFocused, setManisFocused] = useState(true);
   const [womanIsFocused, setWomanIsFocused] = useState(true);
   const [heightValue, setHeightValue] = useState(0);
@@ -521,7 +541,18 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
   };
   function Res()
   {
-    if(!activValue )
+    if(manisFocused&&womanIsFocused)
+    {
+      Alert.alert(
+        'Erro',
+        'Mast to choose Sex',
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        {cancelable: false},
+      );
+    }
+     else if(!activValue )
     {
       Alert.alert(
         'Erro',
@@ -532,7 +563,7 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
         {cancelable: false},
       );
     }
-    if(!heightValue )
+    else if(!heightValue )
     {
       Alert.alert(
         'Erro',
@@ -543,7 +574,7 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
         {cancelable: false},
       );
     }
-    if(!weightValue  )
+    else if(!weightValue  )
     {
       Alert.alert(
         'Erro',
@@ -554,7 +585,7 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
         {cancelable: false},
       );
     }
-    if(!selectedAgeValue  )
+   else if(!selectedAgeValue  )
     {
       Alert.alert(
         'Erro',
@@ -565,7 +596,8 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
         {cancelable: false},
       );
     }
-  
+  else{
+
     switch(activValue) {
       case "Basic":
         setValueToMult(1)
@@ -597,22 +629,12 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
         {
           setBmiSearchResult( ( (447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)) * valueToMult ));    
         }
-        if(manisFocused&&womanIsFocused)
-        {
-          Alert.alert(
-            'Erro',
-            'Mast to choose Sex',
-            [
-              {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ],
-            {cancelable: false},
-          );
-        }
-       
-    setWhatCalcIs(3);
-    setHeightOfResView(400);
-  }
-  
+        
+        setWhatCalcIs(3);
+        setHeightOfResView(400);
+      }
+      }
+      
 
     const {width} = useWindowDimensions();
     return(
@@ -653,8 +675,8 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
 selectedValue={selectedAgeValue}
 onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
 >
-{Array.from({ length: 120 }, (_, i) => i).map(ageOption => (
-          <Picker.Item key={ageOption} label={`${ageOption}`} value={ageOption} />
+{Array.from({ length: 120 }, (_, i) => i).map((ageOption,i) => (
+          <Picker.Item key={i} label={`${ageOption}`} value={ageOption} />
         ))}
 
 </Picker>
@@ -722,12 +744,278 @@ onValueChange={(itemValue) => setActivValue(itemValue)}
 </View>
 )
 }
-function WhatIsFatter() {
-    const {width} = useWindowDimensions();
+function WhatIsFatter(finelText,setFinelText,calorValueA,calorValueB,setCalorValueA,setCalorValueB,setHeightOfResView,setWhatCalcIs,setMoreCalory) {
+  const {width} = useWindowDimensions();
+  const [data, setData] = useState([""]);
+  
+  const [newDataA, setNewDataA] = useState([""]);
+  const [newDataB, setNewDataB] =useState([""]);
+
+  const [textA, setTextA] = useState('');
+  const [textB, setTextB] = useState('');
+
+  const [quantityA,setQuantityA]=useState('');
+  const [quantityB,setQuantityB]=useState('');
+  const[finelA,setFinelA]=useState('מים');
+  const[finelB,setFinelB]=useState('מים');
+
+  const[flagToGetFinelRes,setFlagToGetFinelRes]=useState(0);
+
+  const quantities = [];
+  for (let i = 0; i <= 1500; i += 100) {
+      quantities.push(i);
+  }
+  
+      useEffect(() => {
+        fetch(`https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&q=${finelText}`)
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            setData(data.result)
+           
+     
+          });
+        
+        }, [finelText]);
+      useEffect(() => {
+        fetch(`https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&q=${finelA}`)
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            setNewDataA(data.result)
+          
+          });
+        
+        }, [finelA]);
+
+      useEffect(() => {
+        fetch(`https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&q=${finelB}`)
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            setNewDataB(data.result)
+          
+          });
+        
+        }, [finelB]);
+
+        function ResDo()
+        {
+        
+        }
+
+        function Res()
+        {
+
+          if(!textA)
+          {
+            
+            Alert.alert(
+              'Erro',
+              'Mast to type food ',
+              [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              {cancelable: false},
+            );
+          }
+         else if(!textB)
+          {
+            
+            Alert.alert(
+              'Erro',
+              'Mast to type food ',
+              [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              {cancelable: false},
+            );
+          }
+           else if(!quantityA)
+           {
+             
+             Alert.alert(
+               'Erro',
+               'Mast to choose quantity ',
+               [
+                 {text: 'OK', onPress: () => console.log('OK Pressed')},
+               ],
+               {cancelable: false},
+             );
+           }
+           else if(!quantityB)
+           {
+             
+             Alert.alert(
+               'Erro',
+               'Mast to choose quantity ',
+               [
+                 {text: 'OK', onPress: () => console.log('OK Pressed')},
+               ],
+               {cancelable: false},
+             );
+           }
+
+           else{
+
+             
+             
+          setCalorValueA(((newDataA.records[0].total_fat * (quantityA/100)) * 9)+((newDataA.records[0].carbohydrates
+            * (quantityA/100)) * 4 )
+         +((newDataA.records[0].protein * (quantityA/100)) * 4));
+         setCalorValueB(((newDataB.records[0].total_fat * (quantityB/100)) * 9)+((newDataB.records[0].carbohydrates
+           * (quantityB/100)) * 4 )
+           +((newDataB.records[0].protein * (quantityB/100)) * 4));
+          
+   
+              setWhatCalcIs(4)
+              setHeightOfResView(400);
+            
+            }
+              
+        }
+
+
+  function ChangeTextA()
+{
+ setFinelA(textA)
+ 
+}
+function ChangeTextB()
+{
+  setFinelB(textB);
+}
+  
     return(
-    <View style={[styles.container,{ width: width }]}>
-    <Text style={styles.text}>WhatIsFatter</Text>
-  </View>)
+    
+      <View style={[styles.container,{ width: width}]}>
+
+        <View style={styles.viewContainer}>
+          
+      <Text style={styles.text}>What Is Fatter</Text>
+
+      <View style={{flexDirection:'row',marginTop:20}}>
+
+<View style={{width:'50%'}}>
+  <Text style={{fontSize:25,color:'#d89b5c'}} > food A</Text>
+</View>
+
+<View style={{width:'50%',marginRight:100}}>
+  <Text style={{fontSize:25,color:'#d89b5c'}}>food B</Text>
+</View>
+
+        </View>
+ 
+<View style={{flexDirection:'row'}}>
+
+<TextInput placeholder=' Enter here ...' 
+style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'20%',marginTop:10,marginLeft:5}}
+onChangeText={textA => setTextA(textA)}
+value={textA}
+></TextInput>
+
+<View style={{height:35,marginTop:10,marginLeft:4,marginRight:6}}>
+  <Button  title='Search' color='#0a2946' onPress={ChangeTextA} style={{height:'100%'}}/> 
+</View>
+
+      <TextInput placeholder=' Enter here ...' 
+style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'20%',marginTop:10}}
+onChangeText={textB => setTextB(textB)}
+value={textB}
+></TextInput>
+
+<View style={{height:35,marginTop:10,marginLeft:4}}>
+  <Button  title='Search' color='#0a2946' onPress={ChangeTextB} style={{height:'100%'}}/> 
+</View>
+
+</View>
+
+
+<View style={{flexDirection:'row',marginTop:20}}>
+
+<Picker
+  style={{
+    marginTop:15,
+    marginRight:14,
+      width: '35%',
+  backgroundColor: '#d89b5c',
+}}
+selectedValue={finelText}
+onValueChange={(itemValue) => setFinelText(itemValue)}
+>
+  {
+     newDataA.records  ? newDataA.records.map((e,i)=>{return <Picker.Item label={e.shmmitzrach} value={e.shmmitzrach} key={i} />}) : null 
+  }
+ 
+</Picker>
+
+<Picker
+  style={{
+    marginTop:15,
+  width: '35%',
+  backgroundColor: '#d89b5c',
+}}
+selectedValue={finelText}
+onValueChange={(itemValue) => setFinelText(itemValue)}
+>
+  {
+     newDataB.records  ? newDataB.records.map((e,i)=>{return <Picker.Item label={e.shmmitzrach} value={e.shmmitzrach} key={i} />}) : null 
+  }
+
+</Picker>
+
+
+
+</View>
+
+
+<View style={{flexDirection:'row',marginTop:30}}>
+
+
+<Picker
+  style={{
+    marginRight:14,
+    marginTop:10,
+  width: '35%',
+  backgroundColor: '#d89b5c',
+}}
+selectedValue={quantityA}
+onValueChange={(itemValue) => setQuantityA(itemValue)}
+>
+{quantities.map((quantity,index) => (
+                <Picker.Item label={`${quantity} g`} value={quantity} key={index} />
+            ))}
+
+</Picker>
+<Picker
+  style={{
+    marginTop:10,
+  width: '35%',
+  backgroundColor: '#d89b5c',
+}}
+selectedValue={quantityB}
+onValueChange={(itemValue) => setQuantityB(itemValue)}
+>
+{quantities.map((quantity,index) => (
+                <Picker.Item label={`${quantity} g`} value={quantity} key={index} />
+            ))}
+
+</Picker>
+</View>
+
+  <View style={styles.button}   >
+  <TouchableOpacity style={{height: 50,marginTop:50}}>
+  <Button  title='result' color='#0a2946' onPress={Res} style={{height: 150}}/> 
+  </TouchableOpacity>
+ 
+  </View>
+  </View>
+  </View>
+
+  )
 }
 const styles = StyleSheet.create({
     container: {
