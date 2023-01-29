@@ -189,9 +189,11 @@ export default function Articles({navigation}) {
       <Text style={{fontSize: 20, color: '#fff'}}>{item.recipe.label}</Text>
       <Image source={{uri: item.recipe.image}} style={[styles.img,  ]}/>
       <View style={styles.iconsRecipesCards}>
-      <Text style={{color: '#fff', fontSize: 0}}>20m</Text>
-      {/* <Text>250Cal</Text> */}
+      <Text style={{color: '#fff', fontSize: 20, fontWeight: '700'}}>{item.recipe.calories.toFixed()} cal</Text>
+      <View style={{flexDirection: 'row'}}>
       <AntDesign style= {{marginTop: 3}} name="clockcircle" size={24} color="#fff" />
+      <Text style={{color: '#fff', fontWeight: '700', fontSize: 20, paddingRight: 1}}>{item.recipe.totalTime}</Text>
+      </View>
 
       </View>
       </View>
