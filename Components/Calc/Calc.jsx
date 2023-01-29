@@ -14,14 +14,22 @@ export default function Calc() {
   const [fatValue, setFatValue] = useState(0);
   const [carbohydratesValue,setCarbohydratesValue] = useState(0);
   const [proteinValue,setProteinValue] = useState(0);
-  const [caloriesValue,setCaloriesValue]= useState(0);
+  const [caloriesValue,setCaloriesValue]= useState(-1);
+
+  const [calorValueA,setCalorValueA]= useState(0);
+  const [calorValueB,setCalorValueB]= useState(0);
+  const[moreCalory,setMoreCalory]= useState(0);
+  
 
 
-  let arrOfFunctions = [BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView),
+  let arrOfFunctions = [
     ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,
       fatValue,carbohydratesValue,proteinValue,finelText,caloriesValue),
+    BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView),
     BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView),
-    SavingStatusRes(heightOfResView,bmiSearchResult,setHeightOfResView)];
+    SavingStatusRes(heightOfResView,bmiSearchResult,setHeightOfResView),
+    WhatIsFatterRes(heightOfResView,bmiSearchResult,setHeightOfResView,calorValueA,calorValueB,moreCalory)
+  ];
 
   return (
 
@@ -40,7 +48,8 @@ heightOfResView={heightOfResView} setHeightOfResView={setHeightOfResView} bmiSea
 setBmiSearchResult={setBmiSearchResult} setWhatCalcIs={setWhatCalcIs} fatValue={fatValue} setFatValue={setFatValue}
  carbohydratesValue={carbohydratesValue} setCarbohydratesValue={setCarbohydratesValue}
   proteinValue={proteinValue} setProteinValue={setProteinValue} finelText={finelText} setFinelText={setFinelText}
-  caloriesValue={caloriesValue} setCaloriesValue={setCaloriesValue}
+  caloriesValue={caloriesValue} setCaloriesValue={setCaloriesValue} calorValueA={calorValueA}
+   setCalorValueA={setCalorValueA} calorValueB={calorValueB}  setCalorValueB={setCalorValueB} setMoreCalory={setMoreCalory}
    />}
       horizontal 
       showsHorizontalScrollIndicator
@@ -319,6 +328,58 @@ function SavingStatusRes(heightOfResView,bmiSearchResult,setHeightOfResView)
   </View>
    
   <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80 }}>
+    { heightOfResView !=0 ? <Button title='back' onPress={()=>setHeightOfResView(0)}  /> : null}
+  </TouchableOpacity>
+  
+    </View>
+
+    )
+    
+}
+function WhatIsFatterRes(heightOfResView,bmiSearchResult,setHeightOfResView,calorValueA,calorValueB,moreCalory)
+{
+
+ 
+
+     
+
+  return(
+    
+    <View style={{height:heightOfResView,width:'90%',backgroundColor:'#fff',borderBottomLeftRadius: 10,borderBottomRightRadius: 10, display: heightOfResView>0 ? null : 'none'}}>
+    
+    <Text  style={{fontSize:25,textAlign:'center',marginTop:18}}>the fatter is :</Text>
+
+<View style={{flexDirection:'row',justifyContent:'space-evenly',marginTop:40}}>
+<TouchableOpacity>
+    <View style={styles.circleContainer}>
+        <View style={styles.circle}>
+          <Text style={{color:'#0a2946',fontSize:20}}>calory b</Text>
+          <Text style={{color:'#d89b5c',fontSize:15}}>{calorValueA.toFixed(2)}</Text>
+        </View>
+      </View>
+</TouchableOpacity>
+<TouchableOpacity>
+    <View style={styles.circleContainer}>
+        <View style={styles.circle}>
+          <Text style={{color:'#0a2946',fontSize:20}}>calory a</Text>
+          <Text style={{color:'#d89b5c',fontSize:15}}>{calorValueB.toFixed(2)}</Text>
+        </View>
+      </View>
+</TouchableOpacity>
+</View>
+<TouchableOpacity>
+    <View style={styles.circleContainer}>
+        <View style={styles.circle}>
+          <Text style={{color:'#0a2946',fontSize:30}}>win</Text>
+          <Text style={{color:'#d89b5c',fontSize:15}}>{calorValueA>calorValueB ? calorValueA : calorValueB}</Text>
+        </View>
+      </View>
+</TouchableOpacity>
+
+
+
+
+  <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80,marginTop:20 }}>
     { heightOfResView !=0 ? <Button title='back' onPress={()=>setHeightOfResView(0)}  /> : null}
   </TouchableOpacity>
   
