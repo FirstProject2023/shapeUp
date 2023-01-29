@@ -51,11 +51,11 @@ export default function RecipeCard({route, navigation}) {
     <ImageBackground source={{ uri: recipe.image}}  resizeMode= 'cover'>
     <View style={styles.blackContainer}>
     <View style={{backgroundColor: 'rgba(250, 146, 40, 0.17)', width: '100%'}}>
-      <Text style={styles.title}>{recipe.label} <Text style={{fontSize: 14, marginTop: 3, color: '#fff'}}>
+      <Text style={styles.title}>{recipe.label} <Text style={{fontSize: 16, marginTop: 3, color: '#fff'}}>
        {"\n"} See full recipe on: </Text> <TouchableOpacity style={{marginTop: 15}} onPress={()=> openBrowserAsync(recipe.url)}>
-       <Text style={{fontSize: 14, color: '#d8911f',fontWeight: '700', textDecorationLine: 'underline'}} > {recipe.source}</Text></TouchableOpacity> 
-       <Text style={{fontSize: 14, marginTop: 3, color: '#fff'}}> {"\n"} diet labels: {recipe.dietLabels.map((data)=> <Text style={{fontSize: 14, color: '#d8911f',fontWeight: '700'}}> {data}, </Text> )}</Text>
-       {recipe.cautions != "" ? <Text style={{fontSize: 14, marginTop: 3, color: '#fff'}}> {"\n"} diet labels: { recipe.cautions.map((data)=> <Text style={{fontSize: 14, color: '#d8911f',fontWeight: '700'}}> {data}, </Text> )}</Text> : null}
+       <Text style={{fontSize: 16, color: '#d8911f',fontWeight: '700', textDecorationLine: 'underline'}} > {recipe.source}</Text></TouchableOpacity> 
+       <Text style={{fontSize: 16, marginTop: 3, color: '#fff'}}> {"\n"} diet labels: {recipe.dietLabels.map((data)=> <Text style={{fontSize: 14, color: '#d8911f',fontWeight: '700'}}> {data}, </Text> )}</Text>
+       {recipe.cautions != "" ? <Text style={{fontSize: 16, marginTop: 3, color: '#fff'}}> {"\n"} diet labels: { recipe.cautions.map((data)=> <Text style={{fontSize: 16, color: '#d8911f',fontWeight: '700'}}> {data}, </Text> )}</Text> : null}
        </Text>
     </View>
     <ScrollView>
@@ -63,6 +63,24 @@ export default function RecipeCard({route, navigation}) {
     <View style={styles.recipeDetails}>  
 
     <View style={styles.totalNutrients}>
+
+
+    <TouchableOpacity>
+    <View style={styles.Nutrient}>
+    <Text style={{fontSize: 15, fontWeight: '700', color: '#d89b5c'}}>{recipe.totalNutrients.CHOCDF.label} </Text>
+    <Text style={{fontSize: 15, fontWeight: '700', color: '#d89b5c'}}>
+    {recipe.totalNutrients.CHOCDF.quantity.toFixed(2)}g
+    </Text>
+    </View>
+    </TouchableOpacity>
+    <TouchableOpacity>
+    <View style={styles.Nutrient}>
+    <Text style={{fontSize: 15, fontWeight: '700', color: '#d89b5c'}}>{recipe.totalNutrients.FAT.label}</Text>
+    <Text style={{fontSize: 15, fontWeight: '700', color: '#d89b5c'}}>
+    {recipe.totalNutrients.FAT.quantity.toFixed(2)}g
+    </Text>
+    </View>
+    </TouchableOpacity>
 
     <TouchableOpacity>
     <View style={styles.Nutrient}>
@@ -75,27 +93,9 @@ export default function RecipeCard({route, navigation}) {
 
     <TouchableOpacity>
     <View style={styles.Nutrient}>
-    <Text style={{fontSize: 15, fontWeight: '700', color: '#d89b5c'}}>{recipe.totalNutrients.FAT.label}</Text>
-    <Text style={{fontSize: 15, fontWeight: '700', color: '#d89b5c'}}>
-    {recipe.totalNutrients.FAT.quantity.toFixed(2)}
-    </Text>
-    </View>
-    </TouchableOpacity>
-
-    <TouchableOpacity>
-    <View style={styles.Nutrient}>
-    <Text style={{fontSize: 15, fontWeight: '700', color: '#d89b5c'}}>{recipe.totalNutrients.CHOCDF.label} </Text>
-    <Text style={{fontSize: 15, fontWeight: '700', color: '#d89b5c'}}>
-    {recipe.totalNutrients.CHOCDF.quantity.toFixed(2)}
-    </Text>
-    </View>
-    </TouchableOpacity>
-
-    <TouchableOpacity>
-    <View style={styles.Nutrient}>
     <Text style={{fontSize: 15, fontWeight: '700', color: '#d89b5c'}}>{recipe.totalNutrients.SUGAR.label} </Text>
     <Text style={{fontSize: 15, fontWeight: '700', color: '#d89b5c'}}>
-    {recipe.totalNutrients.SUGAR.quantity.toFixed(2)}
+    {recipe.totalNutrients.SUGAR.quantity.toFixed(2)}g
     </Text>
     </View>
     </TouchableOpacity>
@@ -104,7 +104,7 @@ export default function RecipeCard({route, navigation}) {
     <View style={styles.Nutrient}>
     <Text style={{fontSize: 15, fontWeight: '700', color: '#d89b5c'}}>{recipe.totalNutrients.PROCNT.label} </Text>
     <Text style={{fontSize: 15, fontWeight: '700', color: '#d89b5c'}}>
-    {recipe.totalNutrients.PROCNT.quantity.toFixed(2)}
+    {recipe.totalNutrients.PROCNT.quantity.toFixed(2)}g
     </Text>
     </View>
     </TouchableOpacity>
