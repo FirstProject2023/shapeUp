@@ -106,6 +106,7 @@ export default function RecipeCard({route, navigation}) {
     <Text style={{fontSize: 15, fontWeight: '700', color: '#d89b5c'}}>
     {recipe.totalNutrients.PROCNT.quantity.toFixed(2)}g
     </Text>
+    
     </View>
     </TouchableOpacity>
 
@@ -201,7 +202,7 @@ recipeDetails:{
 },
 
 totalNutrients:{
-  width: '90%',
+  width: '100%',
   height: 270,
    flexDirection: 'row',
    flexWrap: 'wrap',
