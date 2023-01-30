@@ -5,6 +5,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
 
+
 import { Picker } from '@react-native-picker/picker';
 
 
@@ -15,6 +16,9 @@ export default function Articles({navigation}) {
   const [articlesCategory, setArticlesCategory] = useState("all");
 
   const [recipesDataApi, setRecipesDataApi] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(true)
+
 
   const [currFreeRecipesSearch, setCurrFreeRecipesSearch] = useState("");
   const [freeRecipesSearch, setFreeRecipesSearch] = useState("");
@@ -111,6 +115,24 @@ export default function Articles({navigation}) {
     // else{
      
     // }
+    
+    const GetContent = () =>{
+      if(isLoading){
+  
+        return <View style={styles.loading}><ActivityIndicator  size = 'large'/></View>
+        // return (
+        //   <View style={[StyleSheet.absoluteFillObject, styles.loadingContainer]}>
+          
+        //     <LottieView style={{    height:100, width: 100}} source={require('../assets/2523-loading.json')} autoPlay loop />
+        //   </View>
+  
+        // )
+      }
+      if(error){
+        return <Text>{error}</Text>
+      }
+      // return <Text>API called</Text>
+    }
 
     useEffect(()=>{
       fetch(`https://api.edamam.com/api/recipes/v2?type=any&beta=false&q=${freeRecipesSearch}
@@ -123,22 +145,25 @@ export default function Articles({navigation}) {
         return response.json();
       })
       .then((data)=>{
+        setIsLoading(false);
         setRecipesDataApi(data);
-      })
+      }
+      )
+      
 
-    },[])
+    },[freeRecipesSearch, dietLabelRecipes, cuisineTypeRecipes, mealTypeRecipes, caloriesRangeRecipes])
 
-    useEffect(()=>{
+  //   useEffect(()=>{
 
-    fetch(apiRecipes)
-    .then((response)=>{
-      return response.json();
-    })
-    .then((data)=>{
-      setRecipesDataApi(data);
-    })
+  //   fetch(apiRecipes)
+  //   .then((response)=>{
+  //     return response.json();
+  //   })
+  //   .then((data)=>{
+  //     setRecipesDataApi(data);
+  //   })
  
-  },[freeRecipesSearch, dietLabelRecipes, cuisineTypeRecipes, mealTypeRecipes, caloriesRangeRecipes, apiRecipes]);
+  // },[freeRecipesSearch, dietLabelRecipes, cuisineTypeRecipes, mealTypeRecipes, caloriesRangeRecipes, apiRecipes]);
   
   function ArticlesSubList(item){
     
@@ -157,7 +182,7 @@ export default function Articles({navigation}) {
 
       <View style={[styles.currFilter, {width: width * 0.3}]}>
     <TouchableOpacity style={[styles.recipeFilterButton, isRecipesFilterActive ? {backgroundColor: '#d89b5c'}: {backgroundColor: '#fff'}]}
-     onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setDietLabelRecipes(`diet=${item}`)]}>
+     onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setDietLabelRecipes(`diet=${item}`), setIsRecipesFilters(!isRecipesFilters)]}>
      
       <Text style={[{ fontSize: 18, color: '#d89b5c', fontSize: 13, fontWeight: '600'}, isRecipesFilterActive ? {color: '#fff'}: {color: '#d89b5c'}]}>{item}</Text>
     </TouchableOpacity>
@@ -170,7 +195,7 @@ export default function Articles({navigation}) {
 
       <View style={[styles.currFilter, {width: width * 0.3}]}>
     <TouchableOpacity style={[styles.recipeFilterButton, isRecipesFilterActive ? {backgroundColor: '#d89b5c'}: {backgroundColor: '#fff'}]}
-     onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setCuisineTypeRecipes(`cuisineType=${item}`)]}>
+     onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setCuisineTypeRecipes(`cuisineType=${item}`), setIsRecipesFilters(!isRecipesFilters)]}>
      
       <Text style={[{ fontSize: 18, color: '#d89b5c', fontSize: 13, fontWeight: '600'}, isRecipesFilterActive ? {color: '#fff'}: {color: '#d89b5c'}]}>{item}</Text>
     </TouchableOpacity>
@@ -183,7 +208,7 @@ export default function Articles({navigation}) {
 
       <View style={[styles.currFilter, {width: width * 0.3}]}>
     <TouchableOpacity style={[styles.recipeFilterButton, isRecipesFilterActive ? {backgroundColor: '#d89b5c'}: {backgroundColor: '#fff'}]}
-     onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setMealTypeRecipes(`mealType=${item}`)]}>
+     onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setMealTypeRecipes(`mealType=${item}`), setIsRecipesFilters(!isRecipesFilters)]}>
      
       <Text style={[{ fontSize: 18, color: '#d89b5c', fontSize: 13, fontWeight: '600'}, isRecipesFilterActive ? {color: '#fff'}: {color: '#d89b5c'}]}>{item}</Text>
     </TouchableOpacity>
@@ -199,7 +224,7 @@ export default function Articles({navigation}) {
       <View style={{width: '100%'}}>
 
       <View style={styles.recipesFiltersContainer}>
-      <TouchableOpacity onPress={()=> {setFreeRecipesSearch(currFreeRecipesSearch), setTimeout(()=>{ setApiRecipes(firstPageApiRecipes)},0) }}>
+      <TouchableOpacity onPress={()=> {setFreeRecipesSearch(currFreeRecipesSearch)/*, setTimeout(()=>{ setApiRecipes(firstPageApiRecipes)},0)*/ }}>
         <FontAwesome5  name="search" size={30} color="#d89b5c" />
       </TouchableOpacity>
 
@@ -257,6 +282,10 @@ export default function Articles({navigation}) {
       <Text style={{margin: 5, color: '#fff', fontSize: 16, fontWeight: '500'}}> Calories Range</Text>
       <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: '100%', marginTop: 5}}>
         <Text style={{color: '#fff', fontSize: 15, fontWeight: '600'}}>Max</Text>
+        <TouchableOpacity onPress={()=> [setCaloriesRangeRecipes(`calories=${minCalories}-${maxCalories}`), setIsRecipesFilters(!isRecipesFilters)]}>
+        <AntDesign name="checkcircle" size={26} color="#fff" />
+       { console.log("🚀 ~ file: Articles.jsx:263 ~ RecipesFilters ~ calories=${minCalories}-${maxCalories}", `calories=${minCalories}-${maxCalories}`)}
+        </TouchableOpacity>
         <Text style={{color: '#fff', fontSize: 15, fontWeight: '600'}}>Min</Text>
       </View>
       <View style={[styles.currFilterContainer, {flexDirection: 'row', justifyContent: 'space-evenly'}]}>
@@ -270,12 +299,14 @@ export default function Articles({navigation}) {
       }}
       selectedValue={maxCalories}
       onValueChange={(itemValue) => setMaxCalories(itemValue)}
+      
       >
 {calories.map((calories,i) => (
-                <Picker.Item label={`${calories}`} value={calories} key={i} />
+                <Picker.Item key={i} label={`${calories}`} value={calories} />
             ))}
 
       </Picker>
+      {console.log(maxCalories)}
       <Picker
           style={{
           marginTop:10,
@@ -286,10 +317,11 @@ export default function Articles({navigation}) {
       onValueChange={(itemValue) => setMinCalories(itemValue)}
       >
       {calories.map((calories,i) => (
-                <Picker.Item label={`${calories}`} value={calories} key={i} />
+                <Picker.Item key={i} label={`${calories}`} value={calories}  />
             ))}
       
       </Picker>
+      {console.log(minCalories)}
       </View>
 
 
@@ -381,7 +413,7 @@ export default function Articles({navigation}) {
     <View style={styles.articlesContainer}>
     {!isArticles ? <View style={styles.pagesNavContainer}>
 
-<View style={styles.pagesNav}>
+{/* <View style={styles.pagesNav}>
 
 <TouchableOpacity onPress={()=> [setPrevPage(recipesDataApi),PagesNav(recipesDataApi._links.next.href)]}>
 <FontAwesome5   name="arrow-circle-right" size={34} color="black" />   
@@ -391,7 +423,7 @@ export default function Articles({navigation}) {
 <FontAwesome5    name="arrow-circle-left" size={34} color="black" />
 </TouchableOpacity>
 
-</View>
+</View> */}
 </View>: null}
 
     

@@ -54,8 +54,8 @@ export default function RecipeCard({route, navigation}) {
       <Text style={styles.title}>{recipe.label} <Text style={{fontSize: 16, marginTop: 3, color: '#fff'}}>
        {"\n"} See full recipe on: </Text> <TouchableOpacity style={{marginTop: 15}} onPress={()=> openBrowserAsync(recipe.url)}>
        <Text style={{fontSize: 16, color: '#d8911f',fontWeight: '700', textDecorationLine: 'underline'}} > {recipe.source}</Text></TouchableOpacity> 
-       <Text style={{fontSize: 16, marginTop: 3, color: '#fff'}}> {"\n"} diet labels: {recipe.dietLabels.map((data)=> <Text style={{fontSize: 14, color: '#d8911f',fontWeight: '700'}}> {data}, </Text> )}</Text>
-       {recipe.cautions != "" ? <Text style={{fontSize: 16, marginTop: 3, color: '#fff'}}> {"\n"} diet labels: { recipe.cautions.map((data)=> <Text style={{fontSize: 16, color: '#d8911f',fontWeight: '700'}}> {data}, </Text> )}</Text> : null}
+       <Text style={{fontSize: 16, marginTop: 3, color: '#fff'}}> {"\n"} diet labels: {recipe.dietLabels.map((data, index)=> <Text key={index} style={{fontSize: 14, color: '#d8911f',fontWeight: '700'}}> {data}, </Text> )}</Text>
+       {recipe.cautions != "" ? <Text style={{fontSize: 16, marginTop: 3, color: '#fff'}}> {"\n"} diet labels: { recipe.cautions.map((data, index)=> <Text key={index} style={{fontSize: 16, color: '#d8911f',fontWeight: '700'}}> {data}, </Text> )}</Text> : null}
        </Text>
     </View>
     <ScrollView>
@@ -126,11 +126,11 @@ export default function RecipeCard({route, navigation}) {
       <Text style={{color: '#fff', fontSize: 28, textDecorationLine: 'underline'}}>ingredients</Text>
       <View style={styles.ingredientsDetails}>
       {
-        recipe.ingredients.map((item)=>{
+        recipe.ingredients.map((item, index)=>{
           return(
-            <TouchableOpacity onPress={()=> setIsIngredientsDetails(!isIngredientsDetails)}>
+            <TouchableOpacity  onPress={()=> setIsIngredientsDetails(!isIngredientsDetails)}>
 
-            <View style={styles.ingredientsDetails2}>
+            <View key={index} style={styles.ingredientsDetails2}>
 
           <ImageBackground  borderRadius={10} source={{uri: item.image}} resizeMode= 'cover'>
           <View style={styles.ingredientContainer}>
