@@ -30,11 +30,15 @@ const styles = StyleSheet.create({
     },
 
     title:{
-        fontSize: 27,
+        fontSize: 30,
         fontWeight: '700',
         color: '#d89b5c',
         borderBottomWidth: 7,
         borderColor: '#a37d08',
+        fontWeight: '900',
+        padding: 8,
+        backgroundColor: 'rgba(250, 146, 40, 0.17)',
+
         
         
 
