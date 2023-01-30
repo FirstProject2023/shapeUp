@@ -16,7 +16,6 @@ export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeig
   calorValueA,calorValueB,setCalorValueA,setCalorValueB,setMoreCalory
 }) {
   
-  const {width} = useWindowDimensions();
   
   let arrOfFunctions = [
     ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult ,setWhatCalcIs
@@ -178,10 +177,12 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
   const [quantity,setQuantity]=useState('');
   const[flagToGetFinelRes,setFlagToGetFinelRes]=useState(0)
 
+
   const [data, setData] = useState([""]);
 
- 
-  
+
+
+
   useEffect(() => {
     fetch(`https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&q=${finelText}`)
       .then((response) => {
@@ -194,20 +195,6 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
   }, [finelText]);
 
 
-  const HandlePressOnMan = () => {
-    if(womanIsFocused)
-    {
-      setManisFocused(!manisFocused);
-   
-    }
-};
-  const HandlePressOnWoman = () => {
-    if(manisFocused)
-    {
-    setWomanIsFocused(!womanIsFocused);
-    }
-  };
-
   const quantities = [];
 for (let i = 0; i <= 1500; i += 100) {
     quantities.push(i);
@@ -215,10 +202,13 @@ for (let i = 0; i <= 1500; i += 100) {
 
 function ChangeText()
 {
-  setFinelText(text);
-  setFlagToGetFinelRes(1);
+  console.log("ssssss");
 
+    setFinelText(text);
+    setFlagToGetFinelRes(1);
+  
 }
+
 
   function Res()
   {
@@ -252,6 +242,7 @@ function ChangeText()
   setProteinValue(data.records[0].protein * (quantity/100));
   setFatValue(data.records[0].total_fat * (quantity/100));
   setCarbohydratesValue(data.records[0].carbohydrates * (quantity/100) );
+
     setCaloriesValue(((data.records[0].total_fat * (quantity/100)) * 9)+((data.records[0].carbohydrates * (quantity/100)) * 4 )
     +((data.records[0].protein * (quantity/100)) * 4));
 
@@ -262,9 +253,7 @@ function ChangeText()
     }
   }
    
-  }
-
- 
+  } 
     return(
     
       <View style={[styles.container,{ width: width}]}>
@@ -279,6 +268,7 @@ function ChangeText()
       </View>
 
       <Text style={{marginTop:33}}>Please type the product name</Text>
+
       <View style={{flexDirection:'row'}}>
 <TextInput placeholder=' Enter here ...' 
 style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'70%',marginTop:10}}
@@ -316,9 +306,11 @@ onValueChange={(itemValue) => setFinelText(itemValue)}
 selectedValue={quantity}
 onValueChange={(itemValue) => setQuantity(itemValue)}
 >
-{quantities.map((quantity,i) => (
+{
+quantities.map((quantity,i) => (
                 <Picker.Item label={`${quantity} g`} value={quantity} key={i} />
-            ))}
+            ))
+            }
 
 </Picker>
 

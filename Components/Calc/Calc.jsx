@@ -2,10 +2,9 @@ import { StyleSheet, Text, View, FlatList, Button ,TouchableOpacity,ScrollView }
 import React, { useState } from 'react'
 import CalculatorsArrayOfFunctions from './CalculatorsArrayOfFunctions'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons'; 
-
 
 export default function Calc() {
+
   const [numbers,setNumbers] = useState([0, 1, 2, 3, 4]);
   const[heightOfResView,setHeightOfResView] = useState(0);
   const [bmiSearchResult,setBmiSearchResult] = useState(0);
@@ -40,8 +39,6 @@ export default function Calc() {
 <View style={styles.container}>
 
   <View style={styles.FlatListContainer}>
-
-  {/* ,fatValue,setFatValue,carbohydratesValue,setCarbohydratesValue,proteinValue,setProteinValue */}
 
 <FlatList data={numbers} renderItem={({item}) =>  <CalculatorsArrayOfFunctions num={item} 
 heightOfResView={heightOfResView} setHeightOfResView={setHeightOfResView} bmiSearchResult={bmiSearchResult} 
@@ -177,7 +174,7 @@ function ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,fat
   ,proteinValue,finelText,caloriesValue)
 {
   return(
-    <View style={{height:heightOfResView,width:'90%',backgroundColor:'#fff',borderBottomLeftRadius: 10,borderBottomRightRadius: 10, display: heightOfResView>0 ? null : 'none' }}>
+    <View style={{height: heightOfResView ,width:'90%',backgroundColor:'#fff',borderBottomLeftRadius: 10,borderBottomRightRadius: 10, display: heightOfResView>0 ? null : 'none' }}>
     
     <View style={{flexDirection:'row'}}>
 
