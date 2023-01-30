@@ -181,6 +181,8 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
   const [data, setData] = useState([""]);
 
 
+
+
   useEffect(() => {
     fetch(`https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&q=${finelText}`)
       .then((response) => {
@@ -200,10 +202,13 @@ for (let i = 0; i <= 1500; i += 100) {
 
 function ChangeText()
 {
-  setFinelText(text);
-  setFlagToGetFinelRes(1);
+  console.log("ssssss");
 
+    setFinelText(text);
+    setFlagToGetFinelRes(1);
+  
 }
+
 
   function Res()
   {
@@ -237,7 +242,7 @@ function ChangeText()
   setProteinValue(data.records[0].protein * (quantity/100));
   setFatValue(data.records[0].total_fat * (quantity/100));
   setCarbohydratesValue(data.records[0].carbohydrates * (quantity/100) );
-  
+
     setCaloriesValue(((data.records[0].total_fat * (quantity/100)) * 9)+((data.records[0].carbohydrates * (quantity/100)) * 4 )
     +((data.records[0].protein * (quantity/100)) * 4));
 
