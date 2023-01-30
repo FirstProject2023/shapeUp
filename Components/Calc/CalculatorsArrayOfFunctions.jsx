@@ -6,6 +6,7 @@ import Slider from '@react-native-community/slider'
 import { FontAwesome5 } from '@expo/vector-icons';
 import {Picker} from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons'; 
+import {oreng } from "../Globals/colors";
 
 
 
@@ -114,18 +115,18 @@ else{
         <MaterialCommunityIcons 
             name="face-man" 
             size={44} 
-             color={manisFocused ? 'black' : '#d89b5c'} 
+             color={manisFocused ? 'black' : oreng} 
         />
     </TouchableOpacity>
 
     <TouchableOpacity onPress={HandlePressOnWoman} >
-    <MaterialCommunityIcons name="face-woman-outline" size={44} color={womanIsFocused ? 'black' : '#d89b5c'}  />
+    <MaterialCommunityIcons name="face-woman-outline" size={44} color={womanIsFocused ? 'black' : oreng}  />
     </TouchableOpacity>
 
 
       </View>
 
-<Text style={{marginTop:50,color:'#d89b5c', fontSize:20,}} >Height</Text>
+<Text style={{marginTop:50,color:oreng, fontSize:20,fontFamily:''}} >Height</Text>
 <View style={styles.slider}>
     <Slider
     style={{width:250}}
@@ -134,13 +135,13 @@ else{
     minimumValue={100}
     maximumValue={300}
     minimumTrackTintColor="#0000CD"
-    maximumTrackTintColor="#d89b5c"
-    thumbTintColor="#d89b5c"    
+    maximumTrackTintColor={oreng}
+    thumbTintColor={oreng}   
     />
     <Text >{(heightValue * 0.01).toFixed(2)}</Text>
   </View>
 
-    <Text style={{marginTop:20,color:'#d89b5c', fontSize:20,}}>Weight</Text>
+    <Text style={{marginTop:20,color:oreng, fontSize:20,}}>Weight</Text>
   <View style={styles.slider}>
     <Slider
     style={{width:250}}
@@ -149,8 +150,8 @@ else{
     minimumValue={0}
     maximumValue={250}
     minimumTrackTintColor="#0000CD"
-    maximumTrackTintColor="#d89b5c"
-    thumbTintColor="#d89b5c"    
+    maximumTrackTintColor={oreng}
+    thumbTintColor={oreng}   
     />
     <View style={{height:'100%'}}>
     <Text >{weightValue.toFixed(0)}</Text>
@@ -159,7 +160,7 @@ else{
   
   <View style={styles.button}   >
   <TouchableOpacity style={{height: 50,marginTop:50}}>
-  <Button  title='result' color='#d89b5c' onPress={Res} style={{height: 150}}/> 
+  <Button  title='result' color={oreng} onPress={Res} style={{height: 150}}/> 
   </TouchableOpacity>
  
   </View>
@@ -294,7 +295,7 @@ value={text}
   style={{
     marginTop:15,
   width: '70%',
-  backgroundColor: '#d89b5c',
+  backgroundColor: oreng,
 }}
 selectedValue={finelText}
 onValueChange={(itemValue) => setFinelText(itemValue)}
@@ -310,7 +311,7 @@ onValueChange={(itemValue) => setFinelText(itemValue)}
   style={{
     marginTop:10,
   width: '70%',
-  backgroundColor: '#d89b5c',
+  backgroundColor: oreng,
 }}
 selectedValue={quantity}
 onValueChange={(itemValue) => setQuantity(itemValue)}
@@ -441,26 +442,26 @@ else{
       <MaterialCommunityIcons 
           name="face-man" 
           size={44} 
-           color={manisFocused ? 'black' : '#d89b5c'} 
+           color={manisFocused ? 'black' : oreng} 
       />
   </TouchableOpacity>
 
   <TouchableOpacity onPress={HandlePressOnWoman} >
-  <MaterialCommunityIcons name="face-woman-outline" size={44} color={womanIsFocused ? 'black' : '#d89b5c'}  />
+  <MaterialCommunityIcons name="face-woman-outline" size={44} color={womanIsFocused ? 'black' : oreng}  />
   </TouchableOpacity>
   
 
     </View>
 
 
-<Text style={{color: '#d89b5c',fontSize:20,marginTop:10}}>your age</Text>
+<Text style={{color: oreng,fontSize:20,marginTop:10}}>your age</Text>
 
 
     <Picker
   style={{
     marginTop:17,
   width: '70%',
-  backgroundColor: '#d89b5c',
+  backgroundColor: oreng,
   marginBottom:20,
 }}
 selectedValue={selectedAgeValue}
@@ -472,7 +473,7 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
 
 </Picker>
 
-<Text style={{marginTop:10,color:'white', fontSize:20,color: '#d89b5c'}} >Height</Text>
+<Text style={{marginTop:10,color:'white', fontSize:20,color:oreng}} >Height</Text>
 <View style={styles.slider}>
     <Slider
     style={{width:250}}
@@ -481,13 +482,13 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
     minimumValue={100}
     maximumValue={300}
     minimumTrackTintColor="#0000CD"
-    maximumTrackTintColor="#d89b5c"
-    thumbTintColor="#d89b5c"    
+    maximumTrackTintColor={oreng}
+    thumbTintColor={oreng}    
     />
     <Text >{(heightValue * 0.01).toFixed(2)}</Text>
   </View>
 
-    <Text style={{marginTop:10, fontSize:20,color: '#d89b5c'}}>Weight</Text>
+    <Text style={{marginTop:10, fontSize:20,color: oreng}}>Weight</Text>
   <View style={styles.slider}>
     <Slider
     style={{width:250}}
@@ -496,8 +497,8 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
     minimumValue={0}
     maximumValue={250}
     minimumTrackTintColor="#0000CD"
-    maximumTrackTintColor="#d89b5c"
-    thumbTintColor="#d89b5c"    
+    maximumTrackTintColor={oreng}
+    thumbTintColor={oreng}   
     />
     <View style={{height:'100%'}}>
     <Text>{weightValue.toFixed(0)}</Text>
@@ -506,7 +507,7 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
 
   <View style={styles.button}   >
   <TouchableOpacity style={{height: 50}}>
-  <Button  title='result' color='#d89b5c' onPress={Res} style={{height: 150}}/> 
+  <Button  title='result' color={oreng} onPress={Res} style={{height: 150}}/> 
   </TouchableOpacity>
  
   </View>
@@ -650,26 +651,26 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
       <MaterialCommunityIcons 
           name="face-man" 
           size={44} 
-           color={manisFocused ? 'black' : '#d89b5c'} 
+           color={manisFocused ? 'black' : oreng} 
       />
   </TouchableOpacity>
 
   <TouchableOpacity onPress={HandlePressOnWoman} >
-  <MaterialCommunityIcons name="face-woman-outline" size={44} color={womanIsFocused ? 'black' : '#d89b5c'}  />
+  <MaterialCommunityIcons name="face-woman-outline" size={44} color={womanIsFocused ? 'black' : oreng}  />
   </TouchableOpacity>
   
 
     </View>
 
 
-<Text style={{color: '#d89b5c',fontSize:13,marginTop:5}}>your age</Text>
+<Text style={{color: oreng,fontSize:13,marginTop:5}}>your age</Text>
 
 
     <Picker
   style={{
     marginTop:17,
   width: '70%',
-  backgroundColor: '#d89b5c',
+  backgroundColor: oreng,
   marginBottom:20,
 }}
 selectedValue={selectedAgeValue}
@@ -681,12 +682,12 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
 
 </Picker>
 
-<Text style={{color: '#d89b5c',fontSize:13}}>Your level of sporting activity</Text>
+<Text style={{color: oreng,fontSize:13}}>Your level of sporting activity</Text>
 <Picker
   style={{
     marginTop:17,
   width: '70%',
-  backgroundColor: '#d89b5c',
+  backgroundColor: oreng,
   marginBottom:20,
 }}
 selectedValue={activValue}
@@ -701,7 +702,7 @@ onValueChange={(itemValue) => setActivValue(itemValue)}
 
 </Picker>
 
-<Text style={{color:'white', fontSize:15,color: '#d89b5c'}} >Height</Text>
+<Text style={{color:'white', fontSize:15,color: oreng}} >Height</Text>
 <View style={styles.slider}>
     <Slider
     style={{width:250}}
@@ -710,13 +711,13 @@ onValueChange={(itemValue) => setActivValue(itemValue)}
     minimumValue={100}
     maximumValue={300}
     minimumTrackTintColor="#0000CD"
-    maximumTrackTintColor="#d89b5c"
-    thumbTintColor="#d89b5c"    
+    maximumTrackTintColor={oreng}
+    thumbTintColor={oreng}   
     />
     <Text >{(heightValue * 0.01).toFixed(2)}</Text>
   </View>
 
-    <Text style={{ fontSize:13,color: '#d89b5c'}}>Weight</Text>
+    <Text style={{ fontSize:13,color: oreng}}>Weight</Text>
   <View style={styles.slider}>
     <Slider
     style={{width:250}}
@@ -725,8 +726,8 @@ onValueChange={(itemValue) => setActivValue(itemValue)}
     minimumValue={0}
     maximumValue={250}
     minimumTrackTintColor="#0000CD"
-    maximumTrackTintColor="#d89b5c"
-    thumbTintColor="#d89b5c"    
+    maximumTrackTintColor={oreng}
+    thumbTintColor={oreng}    
     />
     <View style={{height:'100%'}}>
     <Text>{weightValue.toFixed(0)}</Text>
@@ -735,7 +736,7 @@ onValueChange={(itemValue) => setActivValue(itemValue)}
 
   <View style={styles.button}   >
   <TouchableOpacity style={{height: 50}}>
-  <Button  title='result' color='#d89b5c' onPress={Res} style={{height: 150}}/> 
+  <Button  title='result' color={oreng} onPress={Res} style={{height: 150}}/> 
   </TouchableOpacity>
  
   </View>
@@ -900,11 +901,11 @@ function ChangeTextB()
       <View style={{flexDirection:'row',marginTop:20}}>
 
 <View style={{width:'50%'}}>
-  <Text style={{fontSize:25,color:'#d89b5c'}} > food A</Text>
+  <Text style={{fontSize:25,color:oreng}} > food A</Text>
 </View>
 
 <View style={{width:'50%',marginRight:100}}>
-  <Text style={{fontSize:25,color:'#d89b5c'}}>food B</Text>
+  <Text style={{fontSize:25,color:oreng}}>food B</Text>
 </View>
 
         </View>
@@ -941,7 +942,7 @@ value={textB}
     marginTop:15,
     marginRight:14,
       width: '35%',
-  backgroundColor: '#d89b5c',
+  backgroundColor:oreng,
 }}
 selectedValue={finelText}
 onValueChange={(itemValue) => setFinelText(itemValue)}
@@ -956,7 +957,7 @@ onValueChange={(itemValue) => setFinelText(itemValue)}
   style={{
     marginTop:15,
   width: '35%',
-  backgroundColor: '#d89b5c',
+  backgroundColor: oreng,
 }}
 selectedValue={finelText}
 onValueChange={(itemValue) => setFinelText(itemValue)}
@@ -980,7 +981,7 @@ onValueChange={(itemValue) => setFinelText(itemValue)}
     marginRight:14,
     marginTop:10,
   width: '35%',
-  backgroundColor: '#d89b5c',
+  backgroundColor: oreng,
 }}
 selectedValue={quantityA}
 onValueChange={(itemValue) => setQuantityA(itemValue)}
@@ -994,7 +995,7 @@ onValueChange={(itemValue) => setQuantityA(itemValue)}
   style={{
     marginTop:10,
   width: '35%',
-  backgroundColor: '#d89b5c',
+  backgroundColor: oreng,
 }}
 selectedValue={quantityB}
 onValueChange={(itemValue) => setQuantityB(itemValue)}
@@ -1027,7 +1028,7 @@ const styles = StyleSheet.create({
     },
     viewContainer: {
       borderWidth:4,
-      borderColor:'#d89b5c',
+      borderColor:oreng,
     
       alignItems:'center',
     height:'100%',
