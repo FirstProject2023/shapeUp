@@ -201,7 +201,7 @@ recipeDetails:{
 },
 
 totalNutrients:{
-  width: '90%',
+  width: '100%',
   height: 270,
    flexDirection: 'row',
    flexWrap: 'wrap',
