@@ -1,11 +1,9 @@
-RecipeCard- list:
-1. calories.
-2. totalTime
-
-
-
-RecipeCard- in:
-1. calories.
-2. totalTime
-3. ingredients
-4. 
+<NavigationContainer>
+  <Stack.Navigator>
+    <Stack.Screen name='Login' component={Login}/>
+    <Stack.Screen name="Nav" component={Nav} options={{headerShown: false}}/>
+    <Stack.Screen name='Home' component={Home}/>
+    <Stack.Screen name='Article' component={ArticleCard}/>
+    <Stack.Screen name='Recipe' component={RecipeCard}/>
+  </Stack.Navigator>
+</NavigationContainer>
