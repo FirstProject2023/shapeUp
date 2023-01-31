@@ -13,6 +13,7 @@ import Calc from "../Calc/Calc"
 import Home from "../Home/Home";
 import Articles  from "../Articles/Articles";
 import Profile from "../Profile/Profile";
+import Login from '../Login/Login';
 
 
 export default function Nav() {
@@ -46,6 +47,7 @@ export default function Nav() {
       <BottomTab.Screen name='Home' component={Home} />
       <BottomTab.Screen name='Articles' component={Articles}/>
       <BottomTab.Screen name='Profile' component={Profile}/>
+
     </BottomTab.Navigator>
     
   )
