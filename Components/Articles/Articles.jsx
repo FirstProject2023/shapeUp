@@ -631,7 +631,7 @@ const styles = StyleSheet.create({
   },
   
   articleCard:{
-    // backgroundColor: '#d89b5c',
+    backgroundColor: '#d89b5c',
 
 
     width: '80%',

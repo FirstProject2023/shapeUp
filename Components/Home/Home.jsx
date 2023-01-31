@@ -26,12 +26,33 @@ if(auth.currentUser)
 {
   return (
     
-    <ImageBackground source={{uri: "https://media.istockphoto.com/id/144228394/photo/middle-aged-man-deciding-to-eat-an-ice-cream-cone-or-apple.jpg?s=612x612&w=0&k=20&c=yXrWeSVd1AzIiWs1HHN3L9n8EaIAbXaMFuVPvZlwF1E="}} resizeMode= 'cover'>
+    <ImageBackground source={{uri: "https://images.creativemarket.com/0.1.0/ps/8436210/1820/1214/m1/fpnw/wm1/m44uvmmozdjmkaqion0pl0hrji1w6bklbgvybnufi8zayuvvg6brwped97rcsa0n-.jpg?1590762533&s=a010240a0998e1429431994509765bc0"}} resizeMode= 'cover'>
     <View style={styles.container}>
 
+    <View style={styles.detailsHomeContainer}>
+    <View style={styles.detailsHome}>
+    <TouchableOpacity style={styles.sidesDetails}>
+    
+    <Text style={{fontSize: 20, fontWeight: '800'}}>243</Text>
 
-      <Text style={{fontSize:30,color:'white'}}>{auth.currentUser?.email}</Text>
-      <Text style={{fontSize:30,color:'white'}}>{auth.currentUser?.email}</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity style={styles.mainDetail}>
+    
+    <Text style={{fontSize: 35, fontWeight: '600', color: '#fff'}}>5436</Text>
+
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.sidesDetails}>
+    <Text style={{fontSize: 20, fontWeight: '800'}}>23.4</Text>
+
+    </TouchableOpacity>
+    
+
+    </View>
+    </View>
+
+
+     
       <Text style={{fontSize:30,color:'white'}}>{auth.currentUser?.email}</Text>
 
   
@@ -44,7 +65,7 @@ else{
  
   return (
     
-    <ImageBackground source={{uri: "https://media.istockphoto.com/id/144228394/photo/middle-aged-man-deciding-to-eat-an-ice-cream-cone-or-apple.jpg?s=612x612&w=0&k=20&c=yXrWeSVd1AzIiWs1HHN3L9n8EaIAbXaMFuVPvZlwF1E="}} resizeMode= 'cover'>
+    <ImageBackground source={{uri: "https://images.creativemarket.com/0.1.0/ps/8436210/1820/1214/m1/fpnw/wm1/m44uvmmozdjmkaqion0pl0hrji1w6bklbgvybnufi8zayuvvg6brwped97rcsa0n-.jpg?1590762533&s=a010240a0998e1429431994509765bc0"}} resizeMode= 'cover'>
     <View style={styles.container}>
 
 
@@ -70,8 +91,51 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     alignItems: 'center',
+    
+    // justifyContent: 'center',
+  },
+
+  detailsHomeContainer:{
+    width: '100%',
+    height: 250,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+
+  detailsHome:{
+    width: '100%',
+    height: '75%',
+
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+
+  mainDetail:{
+    width: 180,
+    height: 180,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderWidth: 3.5,
+    borderColor: '#fff',
+    borderRadius: 100,
+    alignItems: 'center',
     justifyContent: 'center',
   },
+  sidesDetails:{
+    width: 100,
+    height: 100,
+    backgroundColor: 'rgba(249, 199, 46,0.5)',
+    borderWidth: 3.5,
+    borderColor: '#fff',
+    borderRadius: 100,
+    marginTop: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+
+  },
+
   loginButton:{
     width: '60%',
     height: '10%',

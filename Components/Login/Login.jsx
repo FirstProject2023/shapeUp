@@ -1,5 +1,8 @@
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
+// import { TextInput } from 'react-native-paper';
+import { Entypo } from '@expo/vector-icons'; 
+
 
 import {createUserWithEmailAndPassword,signInWithEmailAndPassword} from 'firebase/auth'
 import { auth } from '../../firebase'
@@ -60,7 +63,9 @@ useEffect(()=>{
       <TextInput 
       style={styles.textInput}
       placeholder='Email'
-    //   placeholderTextColor={'#fff'}
+      leftIcon={<Entypo name="lock" size={24} color="#fff" />}
+      
+      placeholderTextColor={'#fff'}
     //   onPointerCancelCapture={}
         onChangeText={text => setEmail(text)}
       />
@@ -69,9 +74,11 @@ useEffect(()=>{
       <TextInput 
        style={styles.textInput}
       placeholder='Password'
-    //   placeholderTextColor={'#fff'}
+      placeholderTextColor={'#fff'}
+      
         onChangeText={text => setPassword(text)}
         secureTextEntry
+       
         />
     </View>
 
@@ -80,13 +87,13 @@ useEffect(()=>{
     style={styles.loginButton}
     onPress={handleLogin}
     >
-        <Text style={{color: '#fff', fontSize: 22,}}>Login</Text>
+        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Login</Text>
     </TouchableOpacity>
     <TouchableOpacity
     onPress={handleSignUp}
     style={styles.loginButton}
     >
-        <Text style={{color: '#fff', fontSize: 22,}}>Sign Up</Text>
+        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Sign Up</Text>
     </TouchableOpacity>
     <TouchableOpacity
     onPress={()=>{ navigation.navigate('Nav')}}
@@ -139,12 +146,8 @@ const styles = StyleSheet.create({
         color: '#fff',
         paddingRight: 15,
         borderRadius: 5,
-        // fontSize: 15,
+        fontSize: 16,
 
-
-        
-
-        
 
     },
 
@@ -157,13 +160,12 @@ const styles = StyleSheet.create({
 
     },
     loginButton:{
-        width: '70%',
+        width: '60%',
         height: '36%',
-        backgroundColor: 'rgba(255, 178, 71,0.9)',
-        
-        marginTop: 5,
-        borderWidth: 2.5,
-        borderColor: '#fff',
+        backgroundColor: 'rgba(255, 255, 255,0.2)',  
+        marginTop: 8,
+        borderWidth: 4,
+        borderColor: 'rgba(255, 178, 71,0.9)',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 16,

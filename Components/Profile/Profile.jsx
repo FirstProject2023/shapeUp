@@ -20,7 +20,7 @@ if(auth.currentUser)
 {
   return (
     
-    <ImageBackground source={{uri: "https://media.istockphoto.com/id/692922478/photo/male-athlete-making-juice-or-smoothie-in-kitchen.jpg?s=612x612&w=0&k=20&c=BRPChfj6t-OHSDCrq5V8dC58lSxwfGxNR1L-qp24ciM="}} resizeMode= 'cover'>
+    <ImageBackground source={{uri: "https://as1.ftcdn.net/v2/jpg/01/87/90/02/1000_F_187900292_o4XwYpEOSmQZPcijWhMv9qjlJPhYoCMT.jpg"}} resizeMode= 'cover'>
     <View style={styles.container}>
 
 
@@ -41,7 +41,7 @@ if(auth.currentUser)
 }
 else{
   return (
-    <ImageBackground source={{uri: "https://media.istockphoto.com/id/692922478/photo/male-athlete-making-juice-or-smoothie-in-kitchen.jpg?s=612x612&w=0&k=20&c=BRPChfj6t-OHSDCrq5V8dC58lSxwfGxNR1L-qp24ciM="}} resizeMode= 'cover'>
+    <ImageBackground source={{uri: "https://as1.ftcdn.net/v2/jpg/01/87/90/02/1000_F_187900292_o4XwYpEOSmQZPcijWhMv9qjlJPhYoCMT.jpg"}} resizeMode= 'cover'>
     <View style={styles.container}>
 
 
