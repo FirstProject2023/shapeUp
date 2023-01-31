@@ -60,7 +60,7 @@ useEffect(()=>{
       <TextInput 
       style={styles.textInput}
       placeholder='Email'
-      placeholderTextColor={'#fff'}
+    //   placeholderTextColor={'#fff'}
     //   onPointerCancelCapture={}
         onChangeText={text => setEmail(text)}
       />
@@ -69,7 +69,7 @@ useEffect(()=>{
       <TextInput 
        style={styles.textInput}
       placeholder='Password'
-      placeholderTextColor={'#fff'}
+    //   placeholderTextColor={'#fff'}
         onChangeText={text => setPassword(text)}
         secureTextEntry
         />
