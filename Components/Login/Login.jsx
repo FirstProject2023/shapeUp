@@ -1,3 +1,4 @@
+
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
@@ -7,8 +8,30 @@ import { auth } from '../../firebase'
 
 export default function Login({navigation}) {
 
+import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
+
+import {createUserWithEmailAndPassword,signInWithEmailAndPassword} from 'firebase/auth'
+import { auth } from '../../firebase'
+
+
+export default function Login({ navigation }) {
+
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    
+console.log("aaaa"); 
+
+useEffect(()=>{
+   const unSubscribe = auth.onAuthStateChanged(user=>{
+    if(user){
+      navigation.navigate('Nav')
+    }
+    return unSubscribe
+  })
+},[])
+
 
     useEffect(()=>{
         const unSubscribe = auth.onAuthStateChanged(user=>{
@@ -23,7 +46,11 @@ export default function Login({navigation}) {
     const  handleSignUp =  async () => {
         try{
             const user = await createUserWithEmailAndPassword(auth, email, password);
+
             console.log(`email: ${user._tokenResponse.email}\npassword: ${user._tokenResponse.password}`);
+
+           
+
         } catch (error){
             console.log("error");
            
@@ -38,6 +65,27 @@ export default function Login({navigation}) {
             console.log("error");
            
         }
+
+    
+    }
+    const  handleLogin =  async () => {
+        try{
+            const user = await signInWithEmailAndPassword(auth, email, password);
+            Alert.alert(
+              'Erro',
+              'Login ',
+              [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              {cancelable: false},
+            );
+          
+        } catch (error){
+            console.log("b");
+           
+        }
+    
+
     }
   return (
     <ImageBackground source={{uri: "https://img.freepik.com/free-photo/portrait-sports-man-measuring-his-waist-with-tape_171337-15818.jpg"}} resizeMode='cover'>
@@ -64,6 +112,7 @@ export default function Login({navigation}) {
     <TouchableOpacity
     onPress={handleLogin}
     style={styles.loginButton}
+    onPress={handleLogin}
     >
         <Text style={{color: '#fff', fontSize: 20,}}>Login</Text>
     </TouchableOpacity>
@@ -72,6 +121,12 @@ export default function Login({navigation}) {
     style={styles.loginButton}
     >
         <Text style={{color: '#fff', fontSize: 20,}}>Sign Up</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+    onPress={()=>{ navigation.navigate('Nav')}}
+    style={styles.loginButton}
+    >
+        <Text style={{color: '#fff', fontSize: 20,}}>Continue as  a guest</Text>
     </TouchableOpacity>
 
     <TouchableOpacity

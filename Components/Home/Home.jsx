@@ -9,7 +9,7 @@ export default function Home({ navigation }) {
  
 
 
-  const handleSingOut =()=>{
+  const hendleSingOut =()=>{
     auth
     .signOut()
     .then(()=>{
@@ -18,9 +18,10 @@ export default function Home({ navigation }) {
     .catch(error=> log("dddd"))
   }
 
+if(auth.currentUser)
+{
   return (
-
-
+    
     <ImageBackground source={{uri: "https://media.istockphoto.com/id/144228394/photo/middle-aged-man-deciding-to-eat-an-ice-cream-cone-or-apple.jpg?s=612x612&w=0&k=20&c=yXrWeSVd1AzIiWs1HHN3L9n8EaIAbXaMFuVPvZlwF1E="}} resizeMode= 'cover'>
     <View style={styles.container}>
 
@@ -31,22 +32,35 @@ export default function Home({ navigation }) {
 
     <TouchableOpacity
     style={styles.loginButton}
-    onPress={handleSingOut}
+    onPress={hendleSingOut}
     >
         <Text style={{color: '#fff', fontSize: 20,}}>Out</Text>
     </TouchableOpacity>  
 
-
-  
-      {/* <Image
-       source={{uri:'https://cdn.shopify.com/s/files/1/0509/1210/0549/products/WhatsAppImage2022-12-21at12.25.13_5000x.jpg?v=1671618694%27'}}
-       style={{width: 200, height: 200,borderRadius:10}}
-      /> */}
-
-     
     </View>
     </ImageBackground>
   )
+}
+else{
+ 
+  return (
+    
+    <ImageBackground source={{uri: "https://media.istockphoto.com/id/144228394/photo/middle-aged-man-deciding-to-eat-an-ice-cream-cone-or-apple.jpg?s=612x612&w=0&k=20&c=yXrWeSVd1AzIiWs1HHN3L9n8EaIAbXaMFuVPvZlwF1E="}} resizeMode= 'cover'>
+    <View style={styles.container}>
+
+
+    <Text style={{fontSize:30,color:'white'}}>Welcam my friend</Text>
+    <TouchableOpacity
+    style={styles.loginButton}
+    onPress={hendleSingOut}
+    >
+        <Text style={{color: '#fff', fontSize: 20}}>Creat auser</Text>
+    </TouchableOpacity>  
+
+    </View>
+    </ImageBackground>
+  )
+}
 }
 
 const styles = StyleSheet.create({
@@ -59,7 +73,7 @@ const styles = StyleSheet.create({
   },
   loginButton:{
     width: '60%',
-    height: '5%',
+    height: '10%',
     backgroundColor: '#0782f9',
     marginTop: 5,
     borderWidth: 2,
