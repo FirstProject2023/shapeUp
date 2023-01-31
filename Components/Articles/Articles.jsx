@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions, TouchableOpacity, Image, TextInput, ImageBackground} from 'react-native'
+import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions, TouchableOpacity, Image, TextInput, ImageBackground, ActivityIndicator, KeyboardAvoidingView} from 'react-native'
 import React, { useState , useEffect} from 'react'
 import articlesData from '../Jsons/articles.json'
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -53,12 +53,13 @@ export default function Articles({navigation}) {
 
 
 
-  dietLabelRecipes
+
 
 
   const articlesSubArray = ["fitness","diet","health", "Mental health", "all"];
 
   const dietType = ["balanced","high-Fiber","high-Protein", "low-Carb", "low-Fat", "low-Sodium"];
+
   const cuisineType = ["American","Asian","British", "Caribbean", "Central Europe",
                        "Chinese","Eastern Europe","French", "Indian", "Italian", 
                        "Japanese","Mediterranean","Mexican", "Middle Eastern", "Nordic", "South American", "South East Asian" ];
@@ -128,11 +129,12 @@ export default function Articles({navigation}) {
   
         // )
       }
-      if(error){
-        return <Text>{error}</Text>
-      }
+      // if(error){
+      //   return <Text>{error}</Text>
+      // }
       // return <Text>API called</Text>
     }
+   
 
     useEffect(()=>{
       fetch(`https://api.edamam.com/api/recipes/v2?type=any&beta=false&q=${freeRecipesSearch}
@@ -284,7 +286,6 @@ export default function Articles({navigation}) {
         <Text style={{color: '#fff', fontSize: 15, fontWeight: '600'}}>Max</Text>
         <TouchableOpacity onPress={()=> [setCaloriesRangeRecipes(`calories=${minCalories}-${maxCalories}`), setIsRecipesFilters(!isRecipesFilters)]}>
         <AntDesign name="checkcircle" size={26} color="#fff" />
-       { console.log("🚀 ~ file: Articles.jsx:263 ~ RecipesFilters ~ calories=${minCalories}-${maxCalories}", `calories=${minCalories}-${maxCalories}`)}
         </TouchableOpacity>
         <Text style={{color: '#fff', fontSize: 15, fontWeight: '600'}}>Min</Text>
       </View>
@@ -389,8 +390,12 @@ export default function Articles({navigation}) {
   
   
   return (
+    
+    
+
     <ImageBackground source={{uri: "https://media.istockphoto.com/id/1368401341/photo/process-of-preparing-food-salad-of-vegetables-oil-dish-spring-vitamins-summer-vegetables.jpg?s=612x612&w=0&k=20&c=XwvilDaZPy57eDJXrMpx-1udYPEZhO9jQGUD-MHf2Cc="}} resizeMode= 'cover'>
     <View style={styles.container}>
+    
       
 
     <View style={styles.mainArticlesNav}>
@@ -429,7 +434,7 @@ export default function Articles({navigation}) {
     
 
     <FlatList data={isArticles ? filteredArticlesData : recipesDataApi.hits} renderItem={({item})=>
-       isArticles ? ArticlesList(item) :  [PagesNav(item), RecipesList(item)]}
+       isArticles ? ArticlesList(item) :  [PagesNav(item),GetContent(), RecipesList(item)]}
       //  horizontal 
 
         bounces= {false}
@@ -438,6 +443,7 @@ export default function Articles({navigation}) {
     </View>
     </View>
     </ImageBackground>
+ 
   )
 }
 
