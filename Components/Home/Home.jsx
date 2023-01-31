@@ -15,7 +15,7 @@ export default function Home({ navigation }) {
     .then(()=>{
       navigation.navigate('Login')
     })
-    .catch(error=> log("dddd"))
+    .catch(error => log("error"))
   }
 
 if(auth.currentUser)
@@ -30,12 +30,7 @@ if(auth.currentUser)
       <Text style={{fontSize:30,color:'white'}}>{auth.currentUser?.email}</Text>
       <Text style={{fontSize:30,color:'white'}}>{auth.currentUser?.email}</Text>
 
-    <TouchableOpacity
-    style={styles.loginButton}
-    onPress={hendleSingOut}
-    >
-        <Text style={{color: '#fff', fontSize: 20,}}>Out</Text>
-    </TouchableOpacity>  
+  
 
     </View>
     </ImageBackground>
@@ -75,7 +70,7 @@ const styles = StyleSheet.create({
     width: '60%',
     height: '10%',
     backgroundColor: '#0782f9',
-    marginTop: 5,
+    marginTop: 15,
     borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',

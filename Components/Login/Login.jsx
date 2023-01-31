@@ -50,6 +50,7 @@ useEffect(()=>{
         }
     
     }
+   
   return (
     <ImageBackground source={{uri: "https://img.freepik.com/free-photo/portrait-sports-man-measuring-his-waist-with-tape_171337-15818.jpg"}} resizeMode='cover'>
 
