@@ -1,27 +1,43 @@
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {createUserWithEmailAndPassword} from 'firebase/auth'
+import {signInWithEmailAndPassword} from 'firebase/auth'
 import { auth } from '../../firebase'
 
-export default function Login() {
+export default function Login({navigation}) {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    useEffect(()=>{
+        const unSubscribe = auth.onAuthStateChanged(user=>{
+            if(user){
+                navigation.navigate('Nav')
+            }
+            return unSubscribe
+        })
+
+    },[])
+
     const  handleSignUp =  async () => {
         try{
             const user = await createUserWithEmailAndPassword(auth, email, password);
-            console.log("a");
+            console.log(`email: ${user._tokenResponse.email}\npassword: ${user._tokenResponse.password}`);
         } catch (error){
-            console.log("b");
+            console.log("error");
            
         }
-        // auth
-        // .createUserWithEmailAndPassword(email, password)
-        // .then(userCredentials => {
-        //     const user = userCredentials.user;
-        // })
+    }
+
+    const  handleLogin =  async () => {
+        try{
+            const user = await signInWithEmailAndPassword(auth, email, password);
+            console.log(`email: ${user._tokenResponse.email}\npassword: ${user._tokenResponse.password}`);
+        } catch (error){
+            console.log("error");
+           
+        }
     }
   return (
     <ImageBackground source={{uri: "https://img.freepik.com/free-photo/portrait-sports-man-measuring-his-waist-with-tape_171337-15818.jpg"}} resizeMode='cover'>
@@ -46,6 +62,7 @@ export default function Login() {
 
     <View style={styles.buttonContainer}>
     <TouchableOpacity
+    onPress={handleLogin}
     style={styles.loginButton}
     >
         <Text style={{color: '#fff', fontSize: 20,}}>Login</Text>
@@ -55,6 +72,13 @@ export default function Login() {
     style={styles.loginButton}
     >
         <Text style={{color: '#fff', fontSize: 20,}}>Sign Up</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+    onPress={()=> navigation.navigate('Nav')}
+    style={styles.loginButton}
+    >
+        <Text style={{color: '#fff', fontSize: 20,}}>Continue as a guest</Text>
     </TouchableOpacity>
 
     </View>
