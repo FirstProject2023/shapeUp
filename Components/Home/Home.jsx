@@ -1,6 +1,10 @@
 import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity } from 'react-native'
 import React from 'react';
 import { auth } from '../../firebase';
+import { Entypo } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons'; 
+
+
 
 
 
@@ -44,7 +48,9 @@ else{
     <View style={styles.container}>
 
 
-    <Text style={{fontSize:30,color:'white'}}>Welcam my friend</Text>
+    <Text style={{fontSize:30,color:'white'}}>Welcam to ShapeUp</Text>
+    <Text style={{fontSize:20,color:'white', padding: 10}}>to be able to use all the features you must open a free account</Text>
+    <AntDesign name="arrowdown" size={55} color="#fff" />
     <TouchableOpacity
     style={styles.loginButton}
     onPress={hendleSingOut}
@@ -69,7 +75,7 @@ const styles = StyleSheet.create({
   loginButton:{
     width: '60%',
     height: '10%',
-    backgroundColor: '#0782f9',
+    backgroundColor: 'rgba(255, 178, 71,0.8)',
     marginTop: 15,
     borderWidth: 2,
     justifyContent: 'center',

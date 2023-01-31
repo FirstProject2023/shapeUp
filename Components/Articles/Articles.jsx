@@ -167,11 +167,11 @@ export default function Articles({navigation}) {
  
   // },[freeRecipesSearch, dietLabelRecipes, cuisineTypeRecipes, mealTypeRecipes, caloriesRangeRecipes, apiRecipes]);
   
-  function ArticlesSubList(item){
+  function ArticlesSubList(item, index){
     
  return(
    
-   <View style={[ styles.subjectContainer, {width: width * 0.3}]}>
+   <View key={index} style={[ styles.subjectContainer, {width: width * 0.3}]}>
    <TouchableOpacity style={styles.articleSubButton} onPress={()=> setArticlesCategory(item)} >
     <Text style={styles.subject}>{item}</Text>
     </TouchableOpacity>
@@ -179,10 +179,10 @@ export default function Articles({navigation}) {
  )
   }
 
-  function RecipesDietFiltersList(item){
+  function RecipesDietFiltersList(item, index){
     return(
 
-      <View style={[styles.currFilter, {width: width * 0.3}]}>
+      <View key={index} style={[styles.currFilter, {width: width * 0.3}]}>
     <TouchableOpacity style={[styles.recipeFilterButton, isRecipesFilterActive ? {backgroundColor: '#d89b5c'}: {backgroundColor: '#fff'}]}
      onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setDietLabelRecipes(`diet=${item}`), setIsRecipesFilters(!isRecipesFilters)]}>
      
@@ -192,10 +192,10 @@ export default function Articles({navigation}) {
       )
 
   }
-  function RecipesCuisineFiltersList(item){
+  function RecipesCuisineFiltersList(item, index){
     return(
 
-      <View style={[styles.currFilter, {width: width * 0.3}]}>
+      <View  key={index} style={[styles.currFilter, {width: width * 0.3}]}>
     <TouchableOpacity style={[styles.recipeFilterButton, isRecipesFilterActive ? {backgroundColor: '#d89b5c'}: {backgroundColor: '#fff'}]}
      onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setCuisineTypeRecipes(`cuisineType=${item}`), setIsRecipesFilters(!isRecipesFilters)]}>
      
@@ -205,10 +205,10 @@ export default function Articles({navigation}) {
       )
 
   }
-  function RecipesMealFiltersList(item){
+  function RecipesMealFiltersList(item, index){
     return(
 
-      <View style={[styles.currFilter, {width: width * 0.3}]}>
+      <View key={index} style={[styles.currFilter, {width: width * 0.3}]}>
     <TouchableOpacity style={[styles.recipeFilterButton, isRecipesFilterActive ? {backgroundColor: '#d89b5c'}: {backgroundColor: '#fff'}]}
      onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setMealTypeRecipes(`mealType=${item}`), setIsRecipesFilters(!isRecipesFilters)]}>
      
@@ -244,8 +244,8 @@ export default function Articles({navigation}) {
       <Text style={{margin: 5, color: '#fff', fontSize: 16, fontWeight: '500'}}> Diet</Text>
       <View style={styles.currFilterContainer}>
 
-      <FlatList data={dietType} renderItem={({item})=>
-        RecipesDietFiltersList(item)}
+      <FlatList data={dietType} renderItem={({item, index})=>
+        RecipesDietFiltersList(item, index)}
         horizontal 
         bounces= {false}
       />
@@ -257,8 +257,8 @@ export default function Articles({navigation}) {
       <Text style={{margin: 5, color: '#fff', fontSize: 16, fontWeight: '500'}}> Cuisine</Text>
       <View style={styles.currFilterContainer}>
 
-        <FlatList data={cuisineType} renderItem={({item})=>
-          RecipesCuisineFiltersList(item)}
+        <FlatList data={cuisineType} renderItem={({item}, index)=>
+          RecipesCuisineFiltersList(item, index)}
           horizontal 
           bounces= {false}
         />
@@ -270,8 +270,8 @@ export default function Articles({navigation}) {
       <Text style={{margin: 5, color: '#fff', fontSize: 16, fontWeight: '500'}}> Meal Type</Text>
       <View style={styles.currFilterContainer}>
 
-        <FlatList data={mealType} renderItem={({item})=>
-          RecipesMealFiltersList(item)}
+        <FlatList data={mealType} renderItem={({item, index})=>
+          RecipesMealFiltersList(item, index)}
           horizontal 
           bounces= {false}
         />
@@ -339,8 +339,9 @@ export default function Articles({navigation}) {
 
   }
 
-  function ArticlesList(item){
+  function ArticlesList(item, index){
     return(
+      
       <TouchableOpacity onPress={()=> navigation.navigate('Article',{
           article: item.article,
           title:   item.title,
@@ -348,12 +349,17 @@ export default function Articles({navigation}) {
           img:     item.img,
       })}>
 
-      <View style={[styles.articleCardContainer, {width: width}]}>
+      <View key={index} style={[styles.articleCardContainer, {width: width}]}>
       <View style={styles.articleCard}>
+        <ImageBackground style={{width: '100%', height: '100%'}} borderRadius={10} source={{uri: item.img}}>
+        <View style={{width: '100%' , height: '100%',   backgroundColor: 'rgba(0,0,0,0.3)'}}>
 
-      <Text style={{fontSize: 15, color:'#fff'}}>{item.title}</Text>
-      <Text style={{fontSize: 20, color:'#fff', marginLeft: 210, textDecorationLine: 'underline'}}>{item.topic}</Text>
-      <Image source={{uri: item.img}} style={[styles.img,  ]}/>
+
+      <Text style={{fontSize: 20, color:'#fff', padding: 15}}>{item.title}</Text>
+      {/* <Text style={{fontSize: 20, color:'#fff', marginLeft: 210, textDecorationLine: 'underline'}}>{item.topic}</Text> */}
+      {/* <Image source={{uri: item.img}} style={[styles.img,  ]}/> */}
+        </View>
+      </ImageBackground> 
       </View>
 
       </View>
@@ -361,13 +367,13 @@ export default function Articles({navigation}) {
     )
   }
 
-  function RecipesList(item){
+  function RecipesList(item, index){
     return(
       <TouchableOpacity onPress={()=> navigation.navigate('Recipe',{
         recipe: item.recipe,
       })}>
 
-      <View style={[styles.articleCardContainer, {width: width}]}>
+      <View key={index} style={[styles.articleCardContainer, {width: width}]}>
     
       <View style={styles.articleCard}>
 
@@ -409,8 +415,8 @@ export default function Articles({navigation}) {
     
     </View>
    {isArticles ?  <View style={styles.subjectCarousel}>
-    <FlatList data={articlesSubArray} renderItem={({item})=>
-       ArticlesSubList(item)}
+    <FlatList data={articlesSubArray} renderItem={({item, index})=>
+       ArticlesSubList(item, index)}
        horizontal 
         bounces= {false}
        /> 
@@ -433,8 +439,8 @@ export default function Articles({navigation}) {
 
     
 
-    <FlatList data={isArticles ? filteredArticlesData : recipesDataApi.hits} renderItem={({item})=>
-       isArticles ? ArticlesList(item) :  [PagesNav(item),GetContent(), RecipesList(item)]}
+    <FlatList data={isArticles ? filteredArticlesData : recipesDataApi.hits} renderItem={({item, index})=>
+       isArticles ? ArticlesList(item, index) :  [PagesNav(item, index),GetContent(), RecipesList(item, index)]}
       //  horizontal 
 
         bounces= {false}
@@ -625,10 +631,11 @@ const styles = StyleSheet.create({
   },
   
   articleCard:{
-    backgroundColor: '#d89b5c',
+    // backgroundColor: '#d89b5c',
 
-    // backgroundColor: '#eca44f',
+
     width: '80%',
+    height: 260,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,

@@ -52,14 +52,16 @@ useEffect(()=>{
     }
    
   return (
-    <ImageBackground source={{uri: "https://img.freepik.com/free-photo/portrait-sports-man-measuring-his-waist-with-tape_171337-15818.jpg"}} resizeMode='cover'>
+    <ImageBackground source={{uri: "https://d3h2k7ug3o5pb3.cloudfront.net/image/2020-11-23/3b788920-2d79-11eb-9dcd-8b2ef5358591.jpg"}} resizeMode='cover'>
 
     <View style={styles.loginContainer}>
-    <Text style={styles.title}>shapeup</Text>
+    <Text style={styles.title}>ShapeUp</Text>
     <View style={styles.inputsContainer}>
       <TextInput 
       style={styles.textInput}
       placeholder='Email'
+      placeholderTextColor={'#fff'}
+    //   onPointerCancelCapture={}
         onChangeText={text => setEmail(text)}
       />
       
@@ -67,6 +69,7 @@ useEffect(()=>{
       <TextInput 
        style={styles.textInput}
       placeholder='Password'
+      placeholderTextColor={'#fff'}
         onChangeText={text => setPassword(text)}
         secureTextEntry
         />
@@ -77,19 +80,19 @@ useEffect(()=>{
     style={styles.loginButton}
     onPress={handleLogin}
     >
-        <Text style={{color: '#fff', fontSize: 20,}}>Login</Text>
+        <Text style={{color: '#fff', fontSize: 22,}}>Login</Text>
     </TouchableOpacity>
     <TouchableOpacity
     onPress={handleSignUp}
     style={styles.loginButton}
     >
-        <Text style={{color: '#fff', fontSize: 20,}}>Sign Up</Text>
+        <Text style={{color: '#fff', fontSize: 22,}}>Sign Up</Text>
     </TouchableOpacity>
     <TouchableOpacity
     onPress={()=>{ navigation.navigate('Nav')}}
-    style={[styles.loginButton,{backgroundColor: 'rgba(243,243,243,0.9)', marginTop: 20}]}
+    style={[styles.loginButton,{backgroundColor: 'rgba(243,243,243,0.9)', marginTop: 24, height: '30%', borderWidth: 2, borderColor: '#78ab04'}]}
     >
-        <Text style={{color: '#000', fontSize: 20,}}>Continue as  a guest</Text>
+        <Text style={{color: '#000', fontSize: 17,}}>Continue as  a guest</Text>
     </TouchableOpacity>
 
     </View>
@@ -106,12 +109,12 @@ const styles = StyleSheet.create({
         height: '100%',
         alignItems: 'center',
    
-        backgroundColor: 'rgba(0,0,0,0.5)'
+        backgroundColor: 'rgba(0,0,0,0.4)'
 
 
     },
     title:{
-        fontSize: 35,
+        fontSize: 38,
         color: '#fff',
         fontWeight: '900',
         marginTop: 70,
@@ -122,17 +125,26 @@ const styles = StyleSheet.create({
     },
     inputsContainer:{
         width: '100%',
-        height: '20%',
+        height: '18%',
         alignItems: 'center',
 
     },
     textInput:{
         width: '70%',
         height: '50%',
-        backgroundColor: '#fff',
-        marginTop: 5,
-        borderWidth: 2,
-        padding: 10,
+        // backgroundColor: 'rgba(0,0,0,0.01)',
+        marginTop: 10,
+        borderWidth: 3.5,
+        borderColor: '#fff',
+        color: '#fff',
+        paddingRight: 15,
+        borderRadius: 5,
+        // fontSize: 15,
+
+
+        
+
+        
 
     },
 
@@ -141,17 +153,22 @@ const styles = StyleSheet.create({
         height: '20%',
         alignItems: 'center',
         marginTop: 30,
+        
 
     },
     loginButton:{
         width: '70%',
-        height: '40%',
-        backgroundColor: '#0782f9',
+        height: '36%',
+        backgroundColor: 'rgba(255, 178, 71,0.9)',
+        
         marginTop: 5,
-        borderWidth: 2,
+        borderWidth: 2.5,
+        borderColor: '#fff',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 5,
+        borderRadius: 16,
+        
+        
 
     },
 })
