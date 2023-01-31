@@ -7,3 +7,16 @@
     <Stack.Screen name='Recipe' component={RecipeCard}/>
   </Stack.Navigator>
 </NavigationContainer>
+
+
+
+
+    const  handleSignUp =  async () => {
+        try{
+            const user = await createUserWithEmailAndPassword(auth, email, password);
+            console.log("a");
+        } catch (error){
+            console.log("b");
+           
+        }
+    }
