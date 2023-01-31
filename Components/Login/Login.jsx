@@ -86,9 +86,9 @@ useEffect(()=>{
     </TouchableOpacity>
     <TouchableOpacity
     onPress={()=>{ navigation.navigate('Nav')}}
-    style={styles.loginButton}
+    style={[styles.loginButton,{backgroundColor: 'rgba(243,243,243,0.9)', marginTop: 20}]}
     >
-        <Text style={{color: '#fff', fontSize: 20,}}>Continue as  a guest</Text>
+        <Text style={{color: '#000', fontSize: 20,}}>Continue as  a guest</Text>
     </TouchableOpacity>
 
     </View>
