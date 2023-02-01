@@ -69,7 +69,7 @@ else{
     <View style={styles.container}>
 
 
-    <Text style={{fontSize:30,color:'white'}}>Welcam to ShapeUp</Text>
+    <Text style={{fontSize:30,color:'white', marginTop: 60}}>Welcam to ShapeUp</Text>
     <Text style={{fontSize:20,color:'white', padding: 10}}>to be able to use all the features you must open a free account</Text>
     <AntDesign name="arrowdown" size={55} color="#fff" />
     <TouchableOpacity
