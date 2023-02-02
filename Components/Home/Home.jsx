@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
   },
 
   mainDetail:{
-    width: 180,
-    height: 180,
+    width: '46%',
+    height: '95%',
     backgroundColor: 'rgba(0,0,0,0.5)',
     borderWidth: 3.5,
     borderColor: '#fff',
@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sidesDetails:{
-    width: 100,
-    height: 100,
+    width: '25%',
+    height: '50%',
     backgroundColor: 'rgba(249, 199, 46,0.5)',
     borderWidth: 3.5,
     borderColor: '#fff',

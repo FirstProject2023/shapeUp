@@ -11,7 +11,7 @@ export default function Profile({ navigation }) {
 
 const [password,setPassword]=useState('12378asd3');
 
-  const hendleSingOut =()=>{
+const hendleSingOut =()=>{
     auth
     .signOut()
     .then(()=>{
@@ -19,17 +19,21 @@ const [password,setPassword]=useState('12378asd3');
     })
     .catch(error => log("error"))
   }
-
-
-if(auth.currentUser)
-{
-  return (
-    
-    <View style={styles.container}>
+  
+  
+  if(auth.currentUser)
+  {
+    return (
+      
+      
+      
+      <View style={styles.container}>
 
 
       <View style={styles.profileImg}>
+   
         <Image style={{height:'100%',width:'100%'}} source={{uri: "https://images.indianexpress.com/2021/12/GettyImages-fasting-diet-plan-1200.jpg"}} resizeMode= 'cover'/>
+      
 
       </View>
 
@@ -52,9 +56,13 @@ if(auth.currentUser)
 
 
 
- 
+       <View style={{alignItems: 'center', width: '100%', height: '100%', flexDirection: 'column'}}>
+      
+
+       
 
         <View style={styles.weightContainer}>
+
 
 
           <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
@@ -148,6 +156,7 @@ if(auth.currentUser)
 
 
     </View>
+    </View>
    
   )
 }
@@ -176,7 +185,7 @@ else{
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: 'rgba(0,0,0,0.1)',
     width: '100%',
     height: '100%',
     alignItems: 'center',

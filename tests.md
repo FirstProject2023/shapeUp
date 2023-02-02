@@ -20,3 +20,13 @@
            
         }
     }
+
+
+ sign up button=>{
+        <TouchableOpacity
+    onPress={handleSignUp}
+    style={styles.loginButton}
+    >
+        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Sign Up</Text>
+    </TouchableOpacity>
+ }
