@@ -30,3 +30,20 @@
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Sign Up</Text>
     </TouchableOpacity>
  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ import InlineDatePicker from 'react-native-inline-datepicker';
