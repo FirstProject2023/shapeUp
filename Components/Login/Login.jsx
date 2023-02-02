@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react'
 import { Entypo } from '@expo/vector-icons'; 
 import FadeInOut from 'react-native-fade-in-out';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+// import InlineDatePicker from 'react-native-inline-datepicker';
+
+
 
 
 
@@ -18,13 +21,20 @@ export default function Login({ navigation }) {
     const [password, setPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [height, setHeight] = useState('');
+    const [weight, setWeight] = useState('');
+    const [birthDate, setBirthDate] = useState('');
 
-    const [loginIsVisible, setLoginIsVisible] = useState(true);
+    const [firstScreenIsVisible, setFirstScreenIsVisible] = useState(true);
+    const [loginIsVisible, setLoginIsVisible] = useState(false);
+    const [signUpIsVisible, setSignUpIsVisible] = useState(false);
     const [nameIsVisible, setNameIsVisible] = useState(false);
     const [genderIsVisible, setGenderIsVisible] = useState(false);
     const [heightAndWeightIsVisible, setHeightAndWeightIsVisible] = useState(false);
-    const [birthDate, setBirthDate] = useState(false);
-    const [goal, setGoal] = useState(false);
+    const [birthDateIsVisible, setBirthDateIsVisible] = useState(false);
+    const [goalIsVisible, setGoalIsVisible] = useState(false);
+
+    // const [date, setDate] = useState(new Date());
 
     //One of them
     const [WeeklyGoal, setWeeklyGoal] = useState(false);
@@ -80,7 +90,55 @@ useEffect(()=>{
     <Text style={styles.title}>ShapeUp</Text>
 
     <FadeInOut style={{ 
-        //loginScreen
+        //firstScreen
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 160,
+        zIndex: firstScreenIsVisible ?  999 : 0,}}
+
+        visible={firstScreenIsVisible}
+        duration={!firstScreenIsVisible ? 400 : 800}
+        scale={true}
+        >
+        
+    
+
+    <View style={[styles.buttonContainer, {marginTop: 40}]}>
+    <TouchableOpacity
+    style={[styles.loginButton, {backgroundColor: 'rgba(255, 178, 71,0.9)', width: '80%'}]}
+    onPress={()=> [setFirstScreenIsVisible(false), setLoginIsVisible(true)]} 
+    >
+        <Text style={{color: '#fff', fontSize: 20, fontWeight: '800'}}>Login</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+    onPress={()=> [setFirstScreenIsVisible(false), setSignUpIsVisible(true)]} 
+    style={[styles.loginButton, {width: '80%', marginTop: 10}]}
+    >
+        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Sign Up</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+    onPress={()=>{ navigation.navigate('Nav')}}
+    style={[styles.loginButton,{backgroundColor: 'rgba(243,243,243,0.9)', marginTop: 24, height: 40, borderWidth: 2, borderColor: '#78ab04'}]}
+    >
+        <Text style={{color: '#000', fontSize: 17,}}>Continue as  a guest</Text>
+    </TouchableOpacity>
+
+    </View>
+    </FadeInOut>
+
+
+
+
+
+
+
+
+
+
+    <FadeInOut style={{ 
+        //LoginScreen
         width: '100%',
         height: '100%',
         alignItems: 'center',
@@ -89,12 +147,15 @@ useEffect(()=>{
         zIndex: loginIsVisible ?  999 : 0,}}
 
         visible={loginIsVisible}
-        duration={!loginIsVisible ? 500 : 1100}
+        duration={!loginIsVisible ? 400 : 800}
         scale={true}
         >
         
     
     <View style={styles.inputsContainer}>
+    <TouchableOpacity onPress={()=> [setLoginIsVisible(false), setFirstScreenIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
+    <Entypo  name="back" size={40} color="#fff" />
+    </TouchableOpacity>
       <TextInput 
       style={styles.textInput}
       placeholder='Email'
@@ -117,22 +178,67 @@ useEffect(()=>{
 
     <View style={styles.buttonContainer}>
     <TouchableOpacity
-    style={styles.loginButton}
+    style={[styles.loginButton, {marginTop: 20}]}
     onPress={handleLogin}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Login</Text>
     </TouchableOpacity>
+
+    </View>
+    </FadeInOut>
+
+
+
+
+
+
+
+    <FadeInOut style={{ 
+        //signUpScreen
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 160,
+        zIndex: signUpIsVisible ?  999 : 0,}}
+
+        visible={signUpIsVisible}
+        duration={!signUpIsVisible ? 400 : 800}
+        scale={true}
+        >
+        
+    
+    <View style={styles.inputsContainer}>
+    <TouchableOpacity onPress={()=> [setSignUpIsVisible(false), setFirstScreenIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
+    <Entypo  name="back" size={40} color="#fff" />
+    </TouchableOpacity>
+      <TextInput 
+      style={styles.textInput}
+      placeholder='Email'
+      leftIcon={<Entypo name="lock" size={24} color="#fff" />}
+      
+      placeholderTextColor={'#fff'}
+        onChangeText={text => setEmail(text)}
+      />
+      
+      <TextInput 
+       style={styles.textInput}
+      placeholder='Password'
+      placeholderTextColor={'#fff'}
+      
+        onChangeText={text => setPassword(text)}
+        secureTextEntry
+       
+        />
+    </View>
+
+    <View style={styles.buttonContainer}>
+
     <TouchableOpacity
-    onPress={()=> [setLoginIsVisible(false), setNameIsVisible(true)]}
+    onPress={()=> [setSignUpIsVisible(false), setNameIsVisible(true)]}
     style={styles.loginButton}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Continue</Text>
-    </TouchableOpacity>
-    <TouchableOpacity
-    onPress={()=>{ navigation.navigate('Nav')}}
-    style={[styles.loginButton,{backgroundColor: 'rgba(243,243,243,0.9)', marginTop: 24, height: 40, borderWidth: 2, borderColor: '#78ab04'}]}
-    >
-        <Text style={{color: '#000', fontSize: 17,}}>Continue as  a guest</Text>
     </TouchableOpacity>
 
     </View>
@@ -148,13 +254,13 @@ useEffect(()=>{
         zIndex: nameIsVisible ?  999 : 0,}} 
 
         visible={nameIsVisible}
-        duration={!nameIsVisible ? 500 : 1100}
+        duration={!nameIsVisible ?  400 : 800}
         scale={true}
         >
 
 
     <View style={styles.inputsContainer}>
-     <TouchableOpacity onPress={()=> [setNameIsVisible(false), setLoginIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
+     <TouchableOpacity onPress={()=> [setNameIsVisible(false), setSignUpIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
     <Entypo  name="back" size={40} color="#fff" />
     </TouchableOpacity>
       <TextInput 
@@ -197,7 +303,7 @@ useEffect(()=>{
         zIndex: genderIsVisible ?  999 : 0,}}
 
          visible={genderIsVisible}
-         duration={!genderIsVisible ? 500 : 1100}
+         duration={!genderIsVisible ?  400 : 800}
          scale={true}>
          
 
@@ -242,7 +348,7 @@ useEffect(()=>{
         zIndex: heightAndWeightIsVisible ?  999 : 0,}} 
 
         visible={heightAndWeightIsVisible}
-        duration={!heightAndWeightIsVisible ? 500 : 1100}
+        duration={!heightAndWeightIsVisible ?  400 : 800}
         scale={true}>
 
 
@@ -272,7 +378,7 @@ useEffect(()=>{
     <View style={styles.buttonContainer}>
     <TouchableOpacity
     style={[styles.loginButton, { marginTop: 40}]}
-    onPress={()=> [setHeightAndWeightIsVisible(false), setBirthDate(true)]}
+    onPress={()=> [setHeightAndWeightIsVisible(false), setBirthDateIsVisible(true)]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 19, fontWeight: '800'}}>Continue</Text>
     </TouchableOpacity>
@@ -289,30 +395,85 @@ useEffect(()=>{
         alignItems: 'center',
         position: 'absolute',
         top: 160,
-        zIndex: birthDate ?  999 : 0,}} 
+        zIndex: birthDateIsVisible ?  999 : 0,}} 
 
-        visible={birthDate}
-        duration={!birthDate ? 500 : 1100}
+        visible={birthDateIsVisible}
+        duration={!birthDateIsVisible ?  400 : 800}
         scale={true}>
 
 
     <View style={styles.inputsContainer}>
-     <TouchableOpacity onPress={()=> [setBirthDate(false), setHeightAndWeightIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
+     <TouchableOpacity onPress={()=> [setBirthDateIsVisible(false), setHeightAndWeightIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
     <Entypo  name="back" size={40} color="#fff" />
     </TouchableOpacity>
-        <View style={{height: 40, width: '100%', backgroundColor: 'rgba(243,243,243,0.9)', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{fontSize: 20,fontWeight: '800'}}>Date Picker</Text>
-        </View>
 
+    <TextInput 
+      style={styles.textInput}
+      placeholder='Birth Date'
+      leftIcon={<Entypo name="lock" size={24} color="#fff" />}
       
-
+      placeholderTextColor={'#fff'}
+        onChangeText={text => setFirstName(text)}
+      />
+      
+    
     </View>
     <View style={styles.buttonContainer}>
     <TouchableOpacity
     style={[styles.loginButton, { marginTop: 40}]}
-    onPress={()=> [setHeightAndWeightIsVisible(false), setGoal(true)]}
+    onPress={()=> [setBirthDateIsVisible(false), setGoalIsVisible(true)]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 19, fontWeight: '800'}}>Continue</Text>
+    </TouchableOpacity>
+
+
+    </View>
+    </FadeInOut>
+
+    <FadeInOut style={{ 
+        //birthView
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 160,
+        zIndex: goalIsVisible ?  999 : 0,}} 
+
+        visible={goalIsVisible}
+        duration={!goalIsVisible ?  400 : 800}
+        scale={true}>
+
+
+    <View style={styles.inputsContainer}>
+     <TouchableOpacity onPress={()=> [setGoalIsVisible(false), setBirthDateIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
+    <Entypo  name="back" size={40} color="#fff" />
+    </TouchableOpacity>
+
+    <TextInput 
+      style={styles.textInput}
+      placeholder='Goal'
+      leftIcon={<Entypo name="lock" size={24} color="#fff" />}
+      
+      placeholderTextColor={'#fff'}
+        onChangeText={text => setFirstName(text)}
+      />
+      
+    
+    </View>
+    <View style={styles.buttonContainer}>
+
+    <TouchableOpacity
+    onPress={()=> [handleSignUp, setGoalIsVisible(false), setFirstScreenIsVisible(true)]}
+    style={styles.loginButton}
+    >
+        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Start</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+    onPress={()=>{ [navigation.navigate('Nav'), setGoalIsVisible(false), setFirstScreenIsVisible(true) ]}}
+    style={[styles.loginButton,{backgroundColor: 'rgba(243,243,243,0.9)', marginTop: 24, height: 40, borderWidth: 2, borderColor: '#78ab04'}]}
+    >
+        <Text style={{color: '#000', fontSize: 17,}}>Continue as  a guest</Text>
     </TouchableOpacity>
 
 
