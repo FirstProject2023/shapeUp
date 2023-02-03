@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,Image, ScrollView,TextInput  } from 'react-native'
 import React, { useState } from 'react'
 import { auth } from '../../firebase';
-import { oreng } from '../Globals/colors';
+import { oreng,blue } from '../Globals/colors';
 import { Ionicons } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -15,10 +15,12 @@ import { FontAwesome5 } from '@expo/vector-icons';
 export default function Profile({ navigation }) {
 
 const [password,setPassword]=useState('12378asd3');
-const [nameInput,setNameInput] = useState(1);
-const [ageInput,setageInput] = useState(1);
-const [dateInput,setInput] = useState(1);
-const [passwordInput,setpasswordInput] = useState(1);
+const [nameInputPresented,setNameInputPresented] = useState(1);
+const [ageInputPresented,setAgeInputPresented] = useState(1);
+const [emailInputPresented,setEmailInputPresented] = useState(1);
+const [purposeInputPresented,setPurposeInputPresented] = useState(1);
+const [dateInputPresented,setDateInputPresented] = useState(1);
+const [passwordInputPresented,setPasswordInputPresented] = useState(1);
 
   const hendleSingOut =()=>{
     auth
@@ -31,19 +33,24 @@ const [passwordInput,setpasswordInput] = useState(1);
 
   function ChangeNameInpout()
   {
-    setNameInput(!nameInput)
-  }
-  function ChangeAgeInpout()
-  {
-    setAgeInput(!nameInput)
+    setNameInputPresented(!nameInputPresented)
   }
   function ChangeDateInput()
   {
-    setDateInput(!nameInput)
+    setDateInputPresented(!dateInputPresented)
+  }
+
+  function ChangeEmailInpout()
+  {
+    setEmailInputPresented(!emailInputPresented)
+  }
+  function ChangePurposeInpout()
+  {
+    setPurposeInputPresented(!purposeInputPresented)
   }
   function ChangePasswordInput()
   {
-    setPasswordInput(!nameInput)
+    setPasswordInputPresented(!passwordInputPresented)
   }
 
 if(auth.currentUser)
@@ -59,8 +66,8 @@ if(auth.currentUser)
         source={{uri: "https://images.indianexpress.com/2021/12/GettyImages-fasting-diet-plan-1200.jpg"} }
         resizeMode= 'cover'
         >
-          <View style={{height:'100%',width:'100%',backgroundColor:'rgba(0,0,0,0.6)'}}>
-
+          <View style={{height:'100%',width:'100%',backgroundColor:'rgba(0,0,0,0.6)',alignItems:'center',justifyContent:'center'}}>
+              <Text style={{fontSize:30,color:'white'}}>shneor shryber</Text>
           </View>
         </ImageBackground>
 
@@ -85,8 +92,8 @@ if(auth.currentUser)
       <ScrollView>
 
 <View style={{height:'12%',width:'100%',justifyContent:'center',alignItems:'center' }}>
-      <Text style={{fontSize:20,color:'white',marginRight:130,fontSize:25}}> shneor shrybr</Text>
-      <Text style={{fontSize:20,color:'white',marginRight:30,fontSize:20}}> 21 </Text>
+      <Text style={{fontSize:20,color:blue,marginRight:130,fontSize:25}}> shneor shrybr</Text>
+      <Text style={{fontSize:20,color:blue,marginRight:30,fontSize:20}}> 21 </Text>
 </View>
 
 
@@ -116,11 +123,11 @@ if(auth.currentUser)
       </View>
 
 
-<View style={{width:'79%',justifyContent:'center',alignItems:'center'}}>
+<View style={{width:'90%',justifyContent:'center',alignItems:'center'}}>
 
 
             {
-                  nameInput 
+                 nameInputPresented
                   ?
           <View style={styles.details}>
           
@@ -135,9 +142,12 @@ if(auth.currentUser)
           : 
 
           <View style={{width:'100%',alignItems:'center',flexDirection:'row'}}>
-             <FontAwesome5 name="pen" size={20} color="black" style={{marginLeft:15}}
+                
+            
+              <AntDesign name="checkcircleo" size={24} color="black" style={{marginLeft:13}} 
               onPress={ChangeNameInpout}
-              />
+               />
+  
               <TextInput placeholder=' Enter here ...' 
                 style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'80%',marginLeft:15,marginTop:10,height:40}}
                 ></TextInput>
@@ -157,34 +167,65 @@ if(auth.currentUser)
     }}
   />
   
-
-
-
-{/* <View style={styles.details}>
-<Text style={{fontSize:15,color:"black",marginStart:50}}>21 </Text>
-<MaterialIcons  style={{marginEnd:20}} name="date-range" size={24} color="black" />
-</View> */}
-
 {
   
-                  nameInput 
+  dateInputPresented 
                   ?
           <View style={styles.details}>
           
               <FontAwesome5 name="pen" size={20} color="black" style={{marginLeft:15}}
-              onPress={ChangeNameInpout}
+              onPress={ChangeDateInput}
               />
-          <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}>21</Text>
-          <Ionicons style={{marginEnd:20}} name="md-man" size={24} color="black" />
+          <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}>21/10/22</Text>
+          <MaterialIcons  style={{marginEnd:20}} name="date-range" size={24} color="black" />
 
           </View>
 
           : 
 
           <View style={{width:'100%',alignItems:'center',flexDirection:'row'}}>
-             <FontAwesome5 name="pen" size={20} color="black" style={{marginLeft:15}}
-              onPress={ChangeNameInpout}
+            <AntDesign name="checkcircleo" size={24} color="black" style={{marginLeft:13}} 
+              onPress={ChangeDateInput}
+               />
+              <TextInput placeholder=' Enter here ...' 
+                style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'80%',marginLeft:15,marginTop:10,height:40}}
+                ></TextInput>
+                
+        </View>
+
+
+
+            }
+
+<View
+    style={{
+      height: 1.5,
+      width:'78%',
+      backgroundColor: 'black',
+      borderRadius:6,
+      marginLeft:28
+    }}
+  />
+
+{
+  emailInputPresented
+                  ?
+          <View style={styles.details}>
+          
+              <FontAwesome5 name="pen" size={20} color="black" style={{marginLeft:15}}
+              onPress={ChangeEmailInpout}
               />
+          <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}>{auth.currentUser?.email}</Text>
+          <MaterialIcons style={{marginEnd:20}} name="email" size={24} color="black" />
+
+          </View>
+
+          : 
+
+          <View style={{width:'100%',alignItems:'center',flexDirection:'row'}}>
+            <AntDesign name="checkcircleo" size={24} color="black" style={{marginLeft:13}} 
+              onPress={ChangeEmailInpout}
+               />
               <TextInput placeholder=' Enter here ...' 
                 style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'80%',marginLeft:15,marginTop:10,height:40}}
                 ></TextInput>
@@ -206,37 +247,42 @@ if(auth.currentUser)
   />
 
 
-<View style={styles.details}>
-<Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}> {auth.currentUser?.email} </Text>
-<MaterialIcons style={{marginEnd:20}} name="email" size={24} color="black" />
-</View>
 
-<View
-    style={{
-      height: 1.5,
-      width:'78%',
-      backgroundColor: 'black',
-      borderRadius:6,
-      marginLeft:28
-    }}
-  />
-<View style={styles.details}>
+{/* <View style={styles.details}>
 <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}> Purpose </Text>
 <Foundation style={{marginEnd:20}} name="target-two" size={24} color="black" />
-</View>
-<View
-    style={{
-      height: 1.5,
-      width:'78%',
-      backgroundColor: 'black',
-      borderRadius:6,
-      marginLeft:28
-    }}
-  />
-<View style={styles.details}>
-<Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}>???????? </Text>
-<FontAwesome style={{marginEnd:20}}  name="question" size={24} color="black" />
-</View>
+</View> */}
+
+
+{
+  purposeInputPresented
+                  ?
+          <View style={styles.details}>
+          
+              <FontAwesome5 name="pen" size={20} color="black" style={{marginLeft:15}}
+              onPress={ChangePurposeInpout}
+              />
+          <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}>Purpose</Text>
+          <Foundation style={{marginEnd:20}} name="target-two" size={24} color="black" />
+
+          </View>
+
+          : 
+
+          <View style={{width:'100%',alignItems:'center',flexDirection:'row'}}>
+            <AntDesign name="checkcircleo" size={24} color="black" style={{marginLeft:13}} 
+              onPress={ChangePurposeInpout}
+               />
+              <TextInput placeholder=' Enter here ...' 
+                style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'80%',marginLeft:15,marginTop:10,height:40}}
+                ></TextInput>
+                
+        </View>
+
+
+
+            }
+
 <View
     style={{
       height: 1.5,
@@ -248,10 +294,40 @@ if(auth.currentUser)
   />
 
 
-<View style={styles.details}>
+{/* <View style={styles.details}>
 <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}> {password} </Text>
 <AntDesign style={{marginEnd:20}} name="lock" size={24} color="black" />
-</View>
+</View> */}
+
+{
+  passwordInputPresented
+                  ?
+          <View style={styles.details}>
+          
+              <FontAwesome5 name="pen" size={20} color="black" style={{marginLeft:15}}
+              onPress={ChangePasswordInput}
+              />
+          <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}>Password</Text>
+          <AntDesign style={{marginEnd:20}} name="lock" size={24} color="black" />
+
+          </View>
+
+          : 
+
+          <View style={{width:'100%',alignItems:'center',flexDirection:'row'}}>
+            <AntDesign name="checkcircleo" size={24} color="black" style={{marginLeft:13}} 
+              onPress={ChangePasswordInput}
+               />
+              <TextInput placeholder=' Enter here ...' 
+                style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'80%',marginLeft:15,marginTop:10,height:40}}
+                ></TextInput>
+                
+        </View>
+
+
+
+            }
+
 <View
     style={{
       height: 1.5,
@@ -308,7 +384,7 @@ else{
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: 'white',
     width: '100%',
     height: '100%',
     alignItems: 'center',
@@ -340,7 +416,7 @@ circle: {
 left:70,
 },
 weightContainer:{
-  marginTop:10,
+  marginTop:5,
   width: 200,
   height: 110,
   borderWidth:2,

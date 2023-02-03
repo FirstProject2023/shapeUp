@@ -75,7 +75,7 @@ useEffect(()=>{
             );
           
         } catch (error){
-            console.log("b");
+            console.log("error");
            
         }
     
