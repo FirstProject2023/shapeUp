@@ -11,7 +11,7 @@ import {oreng } from "../Globals/colors";
 
 
 export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeightOfResView,
-  bmiSearchResult,setBmiSearchResult,setWhatCalcIs,fatValue,setFatValue,carbohydratesValue,
+  bmiSearchResult,setBmiSearchResult,setWhatCalcIs,fatValue,setFatValue,carbohydratesValue,setIsMan,
   setCarbohydratesValue,proteinValue,setProteinValue,finelText,setFinelText,caloriesValue,setCaloriesValue,
   calorValueA,calorValueB,setCalorValueA,setCalorValueB,setMoreCalory
 }) {
@@ -22,7 +22,7 @@ export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeig
       ,fatValue,setFatValue,carbohydratesValue,setCarbohydratesValue,proteinValue,setProteinValue,
       finelText,setFinelText,caloriesValue,setCaloriesValue),
     Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs),
-     BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs),
+     BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,setIsMan),
      SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs),
        WhatIsFatter( finelText,setFinelText,calorValueA,calorValueB,setCalorValueA,setCalorValueB,
         setHeightOfResView,setWhatCalcIs,setMoreCalory)];
@@ -333,7 +333,7 @@ quantities.map((quantity,i) => (
   )
 }
 
-function BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs) {
+function BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,setIsMan) {
 
 
   const [manisFocused, setManisFocused] = useState(true);
@@ -409,10 +409,12 @@ else{
 
   if(!manisFocused)
   {
-          setBmiSearchResult((88.36) + ( (13.39 * weightValue)+(4.7* heightValue)-(5.6 * selectedAgeValue)));    
-        }
-        if(!womanIsFocused)
-        {
+    setIsMan(1)
+    setBmiSearchResult((88.36) + ( (13.39 * weightValue)+(4.7* heightValue)-(5.6 * selectedAgeValue)));    
+  }
+  if(!womanIsFocused)
+  {
+          setIsMan(0)
           setBmiSearchResult((447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)));    
         }
     setWhatCalcIs(2);

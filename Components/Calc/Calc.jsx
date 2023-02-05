@@ -19,6 +19,7 @@ export default function Calc() {
   const [calorValueA,setCalorValueA]= useState(0);
   const [calorValueB,setCalorValueB]= useState(0);
   const[moreCalory,setMoreCalory]= useState(0);
+  const[isMan,setIsMan]=useState(1);
   
 
 const[showSubjects,setShowSubjects] = useState();
@@ -32,7 +33,7 @@ const[showSubjects,setShowSubjects] = useState();
     ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,
       fatValue,carbohydratesValue,proteinValue,finelText,caloriesValue),
     BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView),
-    BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView),
+    BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView,isMan),
     SavingStatusRes(heightOfResView,bmiSearchResult,setHeightOfResView),
     WhatIsFatterRes(heightOfResView,bmiSearchResult,setHeightOfResView,calorValueA,calorValueB,moreCalory)
   ];
@@ -49,12 +50,12 @@ const[showSubjects,setShowSubjects] = useState();
   <View style={styles.FlatListContainer}>
 
 <FlatList data={numbers} renderItem={({item}) =>  <CalculatorsArrayOfFunctions num={item} 
-heightOfResView={heightOfResView} setHeightOfResView={setHeightOfResView} bmiSearchResult={bmiSearchResult} 
+heightOfResView={heightOfResView} setHeightOfResView={setHeightOfResView} bmiSearchResult={bmiSearchResult} setIsMan={setIsMan}
 setBmiSearchResult={setBmiSearchResult} setWhatCalcIs={setWhatCalcIs} fatValue={fatValue} setFatValue={setFatValue}
  carbohydratesValue={carbohydratesValue} setCarbohydratesValue={setCarbohydratesValue}
   proteinValue={proteinValue} setProteinValue={setProteinValue} finelText={finelText} setFinelText={setFinelText}
   caloriesValue={caloriesValue} setCaloriesValue={setCaloriesValue} calorValueA={calorValueA}
-   setCalorValueA={setCalorValueA} calorValueB={calorValueB}  setCalorValueB={setCalorValueB} setMoreCalory={setMoreCalory}
+   setCalorValueA={setCalorValueA} calorValueB={calorValueB}  setCalorValueB={setCalorValueB} setMoreCalory={setMoreCalory} 
    />}
       horizontal 
       showsHorizontalScrollIndicator
@@ -260,53 +261,48 @@ function ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,fat
   )
 
 }
-function BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView)
+function BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView,isMan)
 {
+
+ /*  const[massege,setMassege]=useState("nk"); */
+
+  let massege;
+   if(isMan)
+  {
+     if( bmiSearchResult>1800 && bmiSearchResult<2400 )
+    {
+      massege="Great job, maintaining an average BMR is a sign of a balanced and healthy diet.";
+    }
+    else if( bmiSearchResult <1800)
+    {
+      massege="You may want to consider talking to a healthcare professional and reviewing your diet and activity levels to ensure you are meeting your daily energy needs.";
+    }
+    else{
+      massege=`It's great that you have a high metabolism, however, consuming an average of ${bmiSearchResult.toFixed(0)} calories per day is quite high and may result in unwanted weight gain.`;
+    }
+  
+  } 
+
   return(
     
     <View style={{height:heightOfResView,width:'90%',backgroundColor:'#fff',borderBottomLeftRadius: 10,borderBottomRightRadius: 10}}>
     
     <Text  style={{fontSize:25,textAlign:'center',marginTop:18}}>Your BMR is:</Text>
     
-    <View style={{flexDirection:'row',marginTop:20,marginStart:15 ,marginBottom:10}}>
-  
-  
-      <Text>bad!</Text>
-  {/* aaa */}
+   
 
-  <View>
-  {      (bmiSearchResult < 250 & bmiSearchResult > 150 &heightOfResView !=0)  ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-  <View style={{height:50,  alignItems:'center',backgroundColor:'red', width: heightOfResView !=0 ? 60 : 0 }}></View>
-  </View>
-  <View>
-  { bmiSearchResult<150 & bmiSearchResult>100 &  heightOfResView !=0   ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-  <View style={{height:50,  alignItems:'center',backgroundColor:'#DC143C', width: heightOfResView !=0 ? 60 : 0 }}></View>
-  </View>
-  <View>
-  {  bmiSearchResult<100 & bmiSearchResult>50 & heightOfResView !=0  ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-  <View style={{height:50,  alignItems:'center',backgroundColor:'#32CD32', width: heightOfResView !=0 ? 60 : 0 }}></View>
-  </View>
-  <View>
-  {  bmiSearchResult<50 &  heightOfResView !=0  ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-  <View style={{ height:50, alignItems:'center',backgroundColor:'#7FFF00', width: heightOfResView !=0 ? 60 : 0 }}></View>
-  </View>
-
-{/* aaa */}
-
-
-  <Text>good!</Text>
-  
-  
-      </View> 
-  
   
   <View style={styles.resBmi}>
      <Text style={{fontSize:40}}> {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
   </View>
-   
-  <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80 }}>
-    { heightOfResView !=0 ? <Button title='back' onPress={()=>setHeightOfResView(0)}  /> : null}
+   <View style={{width:'80%',alignItems:'center',justifyContent:'center',marginLeft:30}}>
+  <Text style={{fontSize:15}}>{massege}</Text>
+   </View>
+
+  <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80,marginTop:30 }}>
+    { heightOfResView !=0 ? <Button title='back' color={oreng} onPress={()=>setHeightOfResView(0)}  /> : null}
   </TouchableOpacity>
+ 
   
     </View>
 
