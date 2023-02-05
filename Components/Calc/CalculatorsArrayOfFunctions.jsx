@@ -302,6 +302,7 @@ onValueChange={(itemValue) => setFinelText(itemValue)}
     marginTop:10,
   width: '70%',
   backgroundColor: oreng,
+
 }}
 selectedValue={quantity}
 onValueChange={(itemValue) => setQuantity(itemValue)}

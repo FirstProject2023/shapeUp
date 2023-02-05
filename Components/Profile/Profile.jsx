@@ -97,6 +97,14 @@ if(auth.currentUser)
 </View>
 
 
+<View style={{flexDirection:'row'}}>
+
+      <View style={{height:100,width:100,borderRadius:50,position:'absolute',top:10,right:270,zIndex:100,backgroundColor:'#F0FFFF'
+      ,borderWidth:2,justifyContent:'center',alignItems:'center'}}>
+             <Text style={{fontSize:15,color:oreng,textAlign:'center'}}> 70 K </Text>
+          <Text style={{fontSize:15,color:"black",textAlign:'center'}}> Purpose</Text>
+          </View>
+
         <View style={styles.weightContainer}>
 
 
@@ -119,6 +127,9 @@ if(auth.currentUser)
           </View>
 
           </View>
+
+      </View>
+         
 
       </View>
 
@@ -416,6 +427,7 @@ circle: {
 left:70,
 },
 weightContainer:{
+  
   marginTop:5,
   width: 200,
   height: 110,
@@ -424,7 +436,7 @@ weightContainer:{
 backgroundColor:'#F0FFFF',
 alignItems:'center',
 justifyContent:'center',
-marginLeft:80,
+marginLeft:120,
 },
 details:{
   flexDirection:'row',
