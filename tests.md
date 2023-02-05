@@ -31,6 +31,32 @@
     </TouchableOpacity>
  }
 
+  <View style={{width:'100%',alignItems:'center'}}>
+ <TouchableOpacity style={{height:60,width:140,backgroundColor:'red',justifyContent:'center',
+ alignItems:'center',borderRadius:7}}
+ onPress={()=>setShowSubjects(!showSubjects)} >
+<Text style={{color:"white"}} >Subjects</Text>
+ </TouchableOpacity>
+ <View style={{height: showSubjects ?47 : 0 ,position:'absolute',top:60,width:350,alignItems:'center',justifyContent:'center'}}>
+ <FlatList
+      data={arrOfClalcName}
+      renderItem={({ item }) => 
+      <TouchableOpacity onPress={()=>[ swap(numbers,0,3) ]}>
+
+<View style={{borderColor:blue,borderWidth:1,width:80,alignItems:'center',justifyContent:'center',}} >
+      <Text style={{backgroundColor:'white',fontSize:12}}>{item}</Text>
+      
+</View>
+      </TouchableOpacity>
+    }
+      horizontal 
+      bounces= {false}
+    />
+ </View>
+
+  </View>
+
+
 
 
 
