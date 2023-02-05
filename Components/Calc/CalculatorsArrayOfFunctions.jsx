@@ -473,7 +473,7 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
     value={heightValue}
     onValueChange={(newValue) => setHeightValue(newValue)}
     minimumValue={100}
-    maximumValue={300}
+    maximumValue={200}
     minimumTrackTintColor="#0000CD"
     maximumTrackTintColor={oreng}
     thumbTintColor={oreng}    

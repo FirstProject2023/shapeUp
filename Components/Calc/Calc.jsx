@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, FlatList, Button ,TouchableOpacity,ScrollView }
 import React, { useEffect, useState } from 'react'
 import CalculatorsArrayOfFunctions from './CalculatorsArrayOfFunctions'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { blue } from '../Globals/colors';
+import { blue, oreng } from '../Globals/colors';
 
 export default function Calc() {
 
@@ -23,8 +23,6 @@ export default function Calc() {
 
 const[showSubjects,setShowSubjects] = useState();
   const [numbers,setNumbers] = useState([0, 1, 2, 3, 4]);
-
-
 
 
 
@@ -135,36 +133,61 @@ function BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView)
     
     <Text  style={{fontSize:25,textAlign:'center',marginTop:18}}>Your BMI is:</Text>
     
-    <View style={{flexDirection:'row',marginTop:20,marginStart:15 ,marginBottom:10}}>
-  
-  
-      <Text>bad!</Text>
-  {/* aaa */}
-
-  <View>
-  {      (bmiSearchResult < 250 & bmiSearchResult > 150 &heightOfResView !=0)  ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-  <View style={{height:50,  alignItems:'center',backgroundColor:'red', width: heightOfResView !=0 ? 60 : 0 }}></View>
+    <View style={{flexDirection:'row', marginTop:20, marginStart:37, marginBottom:10, alignItems: 'center'}}>
+  <View style={{alignItems:'center'}}>
+    {  bmiSearchResult > 30 && heightOfResView != 0 ? 
+      <FontAwesome5 name="hand-point-down" size={24} color="#F44336" /> : 
+      null
+    }
+    <View style={{
+      height: 50,
+      width: heightOfResView != 0 ? 60 : 0,
+      backgroundColor: '#F44336',
+      borderRadius: 5,
+      marginTop: 10,
+    }} />
   </View>
-  <View>
-  { bmiSearchResult<150 & bmiSearchResult>100 &  heightOfResView !=0   ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-  <View style={{height:50,  alignItems:'center',backgroundColor:'#DC143C', width: heightOfResView !=0 ? 60 : 0 }}></View>
+  <View style={{alignItems:'center'}}>
+    { bmiSearchResult < 30 && bmiSearchResult > 25 && heightOfResView != 0 ? 
+      <FontAwesome5 name="hand-point-down" size={24} color="#FF5733" /> : 
+      null
+    }
+    <View style={{
+      height: 50,
+      width: heightOfResView != 0 ? 60 : 0,
+      backgroundColor: '#FF5733',
+      borderRadius: 5,
+      marginTop: 10,
+    }} />
   </View>
-  <View>
-  {  bmiSearchResult<100 & bmiSearchResult>50 & heightOfResView !=0  ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-  <View style={{height:50,  alignItems:'center',backgroundColor:'#32CD32', width: heightOfResView !=0 ? 60 : 0 }}></View>
+  <View style={{alignItems:'center'}}>
+    { bmiSearchResult < 24.9 && bmiSearchResult > 18.5 && heightOfResView != 0 ? 
+      <FontAwesome5 name="hand-point-down" size={24} color="#4CAF50" /> : 
+      null
+    }
+    <View style={{
+      height: 50,
+      width: heightOfResView != 0 ? 60 : 0,
+      backgroundColor: '#4CAF50',
+      borderRadius: 5,
+      marginTop: 10,
+    }} />
   </View>
-  <View>
-  {  bmiSearchResult<50 &  heightOfResView !=0  ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-  <View style={{ height:50, alignItems:'center',backgroundColor:'#7FFF00', width: heightOfResView !=0 ? 60 : 0 }}></View>
+  <View style={{alignItems:'center'}}>
+    { bmiSearchResult < 18 && heightOfResView != 0 ? 
+      <FontAwesome5 name="hand-point-down" size={24} color="#8BC34A" /> : 
+      null
+    }
+    <View style={{
+      height: 50,
+      width: heightOfResView != 0 ? 60 : 0,
+      backgroundColor: '#8BC34A',
+      borderRadius: 5,
+      marginTop: 10,
+    }} />
   </View>
+</View>
 
-{/* aaa */}
-
-
-  <Text>good!</Text>
-  
-  
-      </View> 
   
   
   <View style={styles.resBmi}>
@@ -172,7 +195,7 @@ function BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView)
   </View>
    
   <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80 }}>
-    { heightOfResView !=0 ? <Button title='back' onPress={()=>setHeightOfResView(0)}  /> : null}
+    { heightOfResView !=0 ? <Button title='back' color={oreng} onPress={()=>setHeightOfResView(0)}  /> : null}
   </TouchableOpacity>
   
     </View>
