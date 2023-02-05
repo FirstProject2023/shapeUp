@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View, FlatList, Button ,TouchableOpacity,ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CalculatorsArrayOfFunctions from './CalculatorsArrayOfFunctions'
 import { FontAwesome5 } from '@expo/vector-icons';
+import { blue } from '../Globals/colors';
 
 export default function Calc() {
 
-  const [numbers,setNumbers] = useState([0, 1, 2, 3, 4]);
+  
   const[heightOfResView,setHeightOfResView] = useState(0);
   const [bmiSearchResult,setBmiSearchResult] = useState(0);
   const[whatCalcIs,setWhatCalcIs]=useState(0);
@@ -20,6 +21,14 @@ export default function Calc() {
   const[moreCalory,setMoreCalory]= useState(0);
   
 
+const[showSubjects,setShowSubjects] = useState();
+  const [numbers,setNumbers] = useState([0, 1, 2, 3, 4]);
+
+
+
+
+
+  let arrOfClalcName=["Bmi","ProteinIntake","BMR","SavingStatus","WhatIsFatter"];
 
   let arrOfFunctions = [
     ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,
@@ -38,6 +47,7 @@ export default function Calc() {
 
 <View style={styles.container}>
 
+ 
   <View style={styles.FlatListContainer}>
 
 <FlatList data={numbers} renderItem={({item}) =>  <CalculatorsArrayOfFunctions num={item} 
@@ -181,7 +191,7 @@ function ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,fat
     <Text  style={{fontSize:15,textAlign:'center',marginTop:18,color:'#0a2946',width:'40%',height:40,
      borderColor:'#d89b5c',borderWidth:2,marginLeft:30,borderRadius:15}}>{finelText}</Text>
  
-      <Text  style={{fontSize:40,textAlign:'center',marginTop:38,color:'#0a2946',width:'55%'}}>calories{"\n"} {caloriesValue}</Text>
+      <Text  style={{fontSize:40,textAlign:'center',marginTop:38,color:'#0a2946',width:'55%'}}>calories{"\n"} {caloriesValue.toFixed(0)}</Text>
     
      </View>
     
@@ -191,7 +201,7 @@ function ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,fat
     <View style={styles.circleContainer}>
         <View style={styles.circle}>
           <Text style={{color:'#0a2946',fontSize:30}}>fat</Text>
-          <Text style={{color:'#d89b5c',fontSize:15}}>{fatValue.toFixed(2)}</Text>
+          <Text style={{color:'#d89b5c',fontSize:15}}>{fatValue.toFixed(1)}</Text>
         </View>
       </View>
 </TouchableOpacity>
