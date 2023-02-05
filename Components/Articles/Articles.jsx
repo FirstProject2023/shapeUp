@@ -4,8 +4,6 @@ import articlesData from '../Jsons/articles.json'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
-
-
 import { Picker } from '@react-native-picker/picker';
 
 
@@ -307,6 +305,7 @@ export default function Articles({navigation}) {
             ))}
 
       </Picker>
+
       {console.log(maxCalories)}
       <Picker
           style={{
