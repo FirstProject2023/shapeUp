@@ -73,3 +73,59 @@
 
 
  import InlineDatePicker from 'react-native-inline-datepicker';
+
+
+
+
+ 1. picker exemple: 
+
+ 
+
+       <Picker
+          style={{
+          marginTop:10,
+          width: '70%',
+          backgroundColor: '#d89b5c',
+      }}
+      selectedValue={height}
+      onValueChange={(itemValue) => setHeight(itemValue)}
+      
+      >
+{HeightMap.map((height,i) => (
+                <Picker.Item key={i} label={`${height}`} value={height} />
+            ))}
+
+      </Picker>
+
+       <Picker
+          style={{
+          marginTop:10,
+          width: '70%',
+          backgroundColor: '#d89b5c',
+      }}
+      selectedValue={weight}
+      onValueChange={(itemValue) => setWeight(itemValue)}
+      
+      >
+{WeightMap.map((weight,i) => (
+                <Picker.Item key={i} label={`${weight}`} value={weight} />
+            ))}
+
+      </Picker>
+
+
+
+
+        const HeightMap = [];
+  for (let i = 100; i <= 300; i += 1) {
+    HeightMap.push(i);
+  }
+
+
+        const WeightMap = [];
+  for (let i = 30; i <= 200; i += 1) {
+    WeightMap.push(i);
+  }
+
+
+  

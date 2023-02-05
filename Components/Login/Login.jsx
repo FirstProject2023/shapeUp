@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Entypo } from '@expo/vector-icons'; 
 import FadeInOut from 'react-native-fade-in-out';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { Picker } from '@react-native-picker/picker';
 // import InlineDatePicker from 'react-native-inline-datepicker';
 
 
@@ -39,8 +40,19 @@ export default function Login({ navigation }) {
     //One of them
     const [WeeklyGoal, setWeeklyGoal] = useState(false);
     const [endDate, setEndDate] = useState(false);
+
+
+    const HeightMap = [];
+    for (let i = 100; i <= 300; i += 1) {
+      HeightMap.push(i);
+    }
+  
+          const WeightMap = [];
+    for (let i = 30; i <= 200; i += 1) {
+      WeightMap.push(i);
+    }
     
-// console.log("aaaa"); 
+
 
 useEffect(()=>{
    const unSubscribe = auth.onAuthStateChanged(user=>{
@@ -114,7 +126,7 @@ useEffect(()=>{
     </TouchableOpacity>
     <TouchableOpacity
     onPress={()=> [setFirstScreenIsVisible(false), setSignUpIsVisible(true)]} 
-    style={[styles.loginButton, {width: '80%', marginTop: 10}]}
+    style={[styles.loginButton, {width: '80%', marginTop: 10, backgroundColor: '#fff'}]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Sign Up</Text>
     </TouchableOpacity>
@@ -236,7 +248,7 @@ useEffect(()=>{
 
     <TouchableOpacity
     onPress={()=> [setSignUpIsVisible(false), setNameIsVisible(true)]}
-    style={styles.loginButton}
+    style={[styles.loginButton, {marginTop: 35}]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Continue</Text>
     </TouchableOpacity>
@@ -352,11 +364,61 @@ useEffect(()=>{
         scale={true}>
 
 
-    <View style={styles.inputsContainer}>
+    <View style={{width: '100%', height: '35%', alignItems: 'center' , marginTop: 20}}>
      <TouchableOpacity onPress={()=> [setHeightAndWeightIsVisible(false), setGenderIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
     <Entypo  name="back" size={40} color="#fff" />
     </TouchableOpacity>
-      <TextInput 
+    <View style={{width: '100%', height: '85%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly'}}>
+        <View style={{width: '35%', height: '75%', alignItems: 'center'}}> 
+        <Text style={{color: '#fff', fontSize: 20, fontWeight: '800'}}>Height</Text>
+        <Picker
+          style={{
+          marginTop:10,
+          width: '70%',
+          backgroundColor: '#d89b5c',
+      }}
+      selectedValue={height}
+      onValueChange={(itemValue) => setHeight(itemValue)}
+      
+      >
+{HeightMap.map((height,i) => (
+                <Picker.Item key={i} label={`${height}cm`} value={height} />
+            ))}
+
+      </Picker>
+      {height != "" ? <View style={{width: '80%', height: '30%', borderWidth: 2, borderRadius: 15, marginTop: 10, borderColor: '#fff', flexDirection: 'row', justifyContent: 'space-evenly', paddingTop: 6}}>
+      <MaterialCommunityIcons name="human-male-height" size={30} color="#fff" />
+      <Text style={{color: '#fff', fontSize: 20}}>{height}<Text style={{fontSize: 12}} >cm</Text></Text>
+      
+      </View>: null}
+        
+            
+        </View>
+        <View style={{width: '35%', height: '75%', alignItems: 'center'}}>
+        <Text style={{color: '#fff', fontSize: 20, fontWeight: '800'}}>Weight</Text>
+        <Picker
+          style={{
+          marginTop:10,
+          width: '70%',
+          backgroundColor: '#d89b5c',
+      }}
+      selectedValue={weight}
+      onValueChange={(itemValue) => setWeight(itemValue)}
+      
+      >
+{WeightMap.map((weight,i) => (
+                <Picker.Item key={i} label={`${weight}kg`} value={weight} />
+            ))}
+
+      </Picker>
+      {weight != "" ? <View style={{width: '80%', height: '30%', borderWidth: 2, borderRadius: 15, marginTop: 10, borderColor: '#fff', flexDirection: 'row', justifyContent: 'space-evenly', paddingTop: 6}}>
+      <MaterialCommunityIcons name="weight" size={30} color="#fff" />
+      <Text style={{color: '#fff', fontSize: 20}}>{weight}<Text style={{fontSize: 12}} >kg</Text></Text>
+      
+      </View>: null}
+        </View>
+    </View>
+      {/* <TextInput 
       style={styles.textInput}
       placeholder='Height'
       leftIcon={<Entypo name="lock" size={24} color="#fff" />}
@@ -373,7 +435,7 @@ useEffect(()=>{
         onChangeText={text => setLastName(text)}
         secureTextEntry
        
-        />
+        /> */}
     </View>
     <View style={styles.buttonContainer}>
     <TouchableOpacity
