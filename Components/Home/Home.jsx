@@ -31,7 +31,7 @@ if(auth.currentUser)
 
     <View style={styles.detailsHomeContainer}>
     <View style={styles.detailsHome}>
-    <TouchableOpacity style={[styles.sidesDetails, {position: 'absolute', left: 32, top: 85}]}>
+    <TouchableOpacity style={[styles.sidesDetails, {position: 'absolute', left: 32, top: 80}]}>
     
     <Text style={{fontSize: 20, fontWeight: '800'}}>right</Text>
 
@@ -42,7 +42,7 @@ if(auth.currentUser)
     <Text style={{fontSize: 35, fontWeight: '600', color: '#fff'}}>5436</Text>
 
     </TouchableOpacity>
-    <TouchableOpacity style={[styles.sidesDetails, , {position: 'absolute', right: 32, top: 85}]}>
+    <TouchableOpacity style={[styles.sidesDetails, , {position: 'absolute', right: 32, top: 80}]}>
     <Text style={{fontSize: 20, fontWeight: '800'}}>left</Text>
 
     </TouchableOpacity>
@@ -124,8 +124,8 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   sidesDetails:{
-    width: '25%',
-    height: '50%',
+    width: '27%',
+    height: '56%',
     backgroundColor: 'rgba(249, 199, 46,0.5)',
     borderWidth: 3.5,
     borderColor: '#fff',
