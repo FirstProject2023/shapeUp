@@ -1,15 +1,12 @@
-import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert } from 'react-native'
+import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 // import { TextInput } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons'; 
 import FadeInOut from 'react-native-fade-in-out';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { Picker } from '@react-native-picker/picker';
-// import InlineDatePicker from 'react-native-inline-datepicker';
-
-
-
-
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 
 import {createUserWithEmailAndPassword,signInWithEmailAndPassword} from 'firebase/auth'
@@ -33,9 +30,29 @@ export default function Login({ navigation }) {
     const [genderIsVisible, setGenderIsVisible] = useState(false);
     const [heightAndWeightIsVisible, setHeightAndWeightIsVisible] = useState(false);
     const [birthDateIsVisible, setBirthDateIsVisible] = useState(false);
-    const [goalIsVisible, setGoalIsVisible] = useState(false);
 
-    // const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(new Date(0));
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    DateTimePickerAndroid.open({
+      value: date,
+      onChange,
+      mode: currentMode,
+      is24Hour: true,
+    });
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+
+    const [goalIsVisible, setGoalIsVisible] = useState(false);
 
     //One of them
     const [WeeklyGoal, setWeeklyGoal] = useState(false);
@@ -374,13 +391,14 @@ useEffect(()=>{
         <Picker
           style={{
           marginTop:10,
-          width: '70%',
+          width: '35%',
           backgroundColor: '#d89b5c',
       }}
       selectedValue={height}
       onValueChange={(itemValue) => setHeight(itemValue)}
       
       >
+      
 {HeightMap.map((height,i) => (
                 <Picker.Item key={i} label={`${height}cm`} value={height} />
             ))}
@@ -399,13 +417,14 @@ useEffect(()=>{
         <Picker
           style={{
           marginTop:10,
-          width: '70%',
+          width: '35%',
           backgroundColor: '#d89b5c',
       }}
       selectedValue={weight}
       onValueChange={(itemValue) => setWeight(itemValue)}
       
       >
+      
 {WeightMap.map((weight,i) => (
                 <Picker.Item key={i} label={`${weight}kg`} value={weight} />
             ))}
@@ -418,24 +437,7 @@ useEffect(()=>{
       </View>: null}
         </View>
     </View>
-      {/* <TextInput 
-      style={styles.textInput}
-      placeholder='Height'
-      leftIcon={<Entypo name="lock" size={24} color="#fff" />}
       
-      placeholderTextColor={'#fff'}
-        onChangeText={text => setFirstName(text)}
-      />
-      
-      <TextInput 
-       style={styles.textInput}
-      placeholder='Weight'
-      placeholderTextColor={'#fff'}
-      
-        onChangeText={text => setLastName(text)}
-        secureTextEntry
-       
-        /> */}
     </View>
     <View style={styles.buttonContainer}>
     <TouchableOpacity
@@ -458,35 +460,36 @@ useEffect(()=>{
         position: 'absolute',
         top: 160,
         zIndex: birthDateIsVisible ?  999 : 0,}} 
-
         visible={birthDateIsVisible}
         duration={!birthDateIsVisible ?  400 : 800}
         scale={true}>
-
 
     <View style={styles.inputsContainer}>
      <TouchableOpacity onPress={()=> [setBirthDateIsVisible(false), setHeightAndWeightIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
     <Entypo  name="back" size={40} color="#fff" />
     </TouchableOpacity>
 
-    <TextInput 
-      style={styles.textInput}
-      placeholder='Birth Date'
-      leftIcon={<Entypo name="lock" size={24} color="#fff" />}
+      <TouchableOpacity onPress={showDatepicker} style={{width: '75%', height: '30%', backgroundColor: 'rgba(255, 178, 71,0.9)', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginTop: 20}}>
+      <Text style={{color: '#fff', fontSize: 18, fontWeight: '700'}}>Press to select your birth date</Text>
+      </TouchableOpacity>
+
+{date > 0 ?  <View style={{width: '45%',height: '25%', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderRadius: 15, borderColor: '#fff', marginTop: 20}}>
+      <Text style={{color: '#fff', fontSize: 18, fontWeight: '700'}}>{date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}</Text>
       
-      placeholderTextColor={'#fff'}
-        onChangeText={text => setFirstName(text)}
-      />
-      
-    
+      </View>: null}
+  
     </View>
+
+
+
     <View style={styles.buttonContainer}>
     <TouchableOpacity
     style={[styles.loginButton, { marginTop: 40}]}
-    onPress={()=> [setBirthDateIsVisible(false), setGoalIsVisible(true)]}
+    onPress={()=> [setBirthDateIsVisible(false), setGoalIsVisible(true), setBirthDate(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 19, fontWeight: '800'}}>Continue</Text>
     </TouchableOpacity>
+
 
 
     </View>
