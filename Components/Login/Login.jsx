@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { Entypo } from '@expo/vector-icons'; 
 import FadeInOut from 'react-native-fade-in-out';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons'; 
+
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
@@ -14,14 +16,19 @@ import { auth } from '../../firebase'
 
 
 export default function Login({ navigation }) {
-
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [height, setHeight] = useState('');
-    const [weight, setWeight] = useState('');
-    const [birthDate, setBirthDate] = useState('');
+  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [height, setHeight] = useState(0);
+  const [weight, setWeight] = useState(0);
+  const [birthDate, setBirthDate] = useState('');
+  const [weightGoal, setWeightGoal] = useState(0);
+  
+  //One of them
+  const [WeeklyGoal, setWeeklyGoal] = useState('');
+  const [endDate, setEndDate] = useState('');
 
     const [firstScreenIsVisible, setFirstScreenIsVisible] = useState(true);
     const [loginIsVisible, setLoginIsVisible] = useState(false);
@@ -30,6 +37,10 @@ export default function Login({ navigation }) {
     const [genderIsVisible, setGenderIsVisible] = useState(false);
     const [heightAndWeightIsVisible, setHeightAndWeightIsVisible] = useState(false);
     const [birthDateIsVisible, setBirthDateIsVisible] = useState(false);
+
+      //One of them
+  const [WeeklyGoalIsVisible, setWeeklyGoalIsVisible] = useState(false);
+  const [endDateIsVisible, setEndDateIsVisible] = useState(false);
 
     const [date, setDate] = useState(new Date(0));
 
@@ -54,9 +65,6 @@ export default function Login({ navigation }) {
 
     const [goalIsVisible, setGoalIsVisible] = useState(false);
 
-    //One of them
-    const [WeeklyGoal, setWeeklyGoal] = useState(false);
-    const [endDate, setEndDate] = useState(false);
 
 
     const HeightMap = [];
@@ -453,7 +461,7 @@ useEffect(()=>{
 
 
     <FadeInOut style={{ 
-        //birthView
+        //birthScreen
         width: '100%',
         height: '100%',
         alignItems: 'center',
@@ -496,39 +504,120 @@ useEffect(()=>{
     </FadeInOut>
 
     <FadeInOut style={{ 
-        //birthView
+        //goalScreen
         width: '100%',
         height: '100%',
         alignItems: 'center',
         position: 'absolute',
         top: 160,
         zIndex: goalIsVisible ?  999 : 0,}} 
-
         visible={goalIsVisible}
         duration={!goalIsVisible ?  400 : 800}
         scale={true}>
 
-
-    <View style={styles.inputsContainer}>
+    <View style={[styles.inputsContainer, {height: '45%'}]}>
      <TouchableOpacity onPress={()=> [setGoalIsVisible(false), setBirthDateIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
     <Entypo  name="back" size={40} color="#fff" />
     </TouchableOpacity>
 
-    <TextInput 
-      style={styles.textInput}
-      placeholder='Goal'
-      leftIcon={<Entypo name="lock" size={24} color="#fff" />}
+    <Text  style={{fontSize: 25, color: '#fff', fontWeight: 'bold'}}>what is your goal weight?</Text>
+    <Picker
+          style={{
+          marginTop:10,
+          width: '35%',
+          backgroundColor: 'rgba(255, 178, 71,0.9)',
+      }}
+      selectedValue={weight}
+      onValueChange={(itemValue) => setWeightGoal(itemValue)}
       
-      placeholderTextColor={'#fff'}
-        onChangeText={text => setFirstName(text)}
-      />
+      >
+      
+{WeightMap.map((weight,i) => (
+                <Picker.Item key={i} label={`${weight}kg`} value={weight} />
+            ))}
+
+      </Picker>
+
+      <View style={{width: '100%', height: '50%', marginTop: 10, alignItems:'center'}}>
+      <Text style={{marginTop: 8, color: '#fff', fontSize: 20, fontWeight: '600'}}>Choose one way</Text>
+      <View style={{width: '100%', height: '80%', flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10}}>
+      <View style={{ width: '32%', alignItems: 'center'}}>
+      <TouchableOpacity onPress={()=> [setEndDateIsVisible(true), setWeeklyGoalIsVisible(false) ]} style={{width: '100%',height: '25%', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderRadius: 15, borderColor: '#fff'}}>
+        <Text style={{fontSize: 16, color: '#fff'}}>
+         End date
+        </Text>
+      </TouchableOpacity>
+      
+
+       {endDateIsVisible ?
+       <View style={{ alignItems: 'center', height: '75%', width: '100%'}}>
+
+        <TouchableOpacity onPress={showDatepicker} style={{width: '40%', height: '58%', backgroundColor: 'rgba(255, 178, 71,0.9)', alignItems: 'center', justifyContent: 'center',marginTop:10}}>
+      
+        <AntDesign name="calendar" size={24} color="#fff" />
+
+        </TouchableOpacity>
+        <View style={{width: '85%',height: '25%', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: '#fff', borderBottomEndRadius: 8, borderBottomLeftRadius: 8}}>
+        <Text style={{color: '#fff', fontSize: 14, fontWeight: '700'}}>{date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}</Text>
+
+        </View>
+       </View>
+        : null}
+      
+
+      </View>
+
+      <View style={{ width: '32%', alignItems: 'center'}}>
+      <TouchableOpacity onPress={()=> [setWeeklyGoalIsVisible(true), setEndDateIsVisible(false)]} style={{width: '100%',height: '25%', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderRadius: 15, borderColor: '#fff'}}>
+        <Text style={{fontSize: 16, color: '#fff'}}>
+          Weekly goal
+        </Text>
+      </TouchableOpacity>
+      {
+        WeeklyGoalIsVisible ?
+        <View style={{ alignItems: 'center', height: '75%', width: '100%'}}>
+
+         <Picker
+          style={{
+          marginTop:10,
+          width: '40%',
+          backgroundColor: 'rgba(255, 178, 71,0.9)',
+      }}
+      selectedValue={weight}
+      onValueChange={(itemValue) => setWeeklyGoal(itemValue)}
+      
+      >
+      
+      <Picker.Item  label='none' value='none' />
+      <Picker.Item  label='Lose 0.25 kg per week' value='Lose 0.25 kg per week' />
+      <Picker.Item  label='Lose 0.5 kg per week' value='Lose 0.5 kg per week' />
+      <Picker.Item  label='Lose 0.75 kg per week' value='Lose 0.75 kg per week' />
+      <Picker.Item  label='Lose 1 kg per week' value='Lose 1 kg per week' />
+
+      </Picker>
+      <View style={{width: '88%',height: '25%', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: '#fff', borderBottomEndRadius: 8, borderBottomLeftRadius: 8, paddingBottom: 1}}>
+        <Text style={{color: '#fff', fontSize: 13, fontWeight: '700'}}>{WeeklyGoal}</Text>
+
+        </View>
+
+        </View>
+
+      : null}
+
+
+      </View>
+
+      </View>
+      
+      </View>
       
     
+    
     </View>
-    <View style={styles.buttonContainer}>
+    <View style={[styles.buttonContainer, {marginTop: 10}]}>
 
     <TouchableOpacity
-    onPress={()=> [handleSignUp, setGoalIsVisible(false), setFirstScreenIsVisible(true)]}
+    onPress={()=> [handleSignUp, setGoalIsVisible(false), setFirstScreenIsVisible(true), setBirthDate(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)]}
     style={styles.loginButton}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Start</Text>
