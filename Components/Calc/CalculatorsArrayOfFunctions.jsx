@@ -1,19 +1,19 @@
-import { StyleSheet, Text, View,useWindowDimensions, TextInput, Button,Modal,TouchableHighlight,Alert  } from 'react-native'
-import React, {  useState, useContext,useEffect } from 'react'
+import { StyleSheet, Text, View,useWindowDimensions, TextInput, Button,Modal,TouchableHighlight,Alert,ScrollView } from 'react-native'
+import React, {  useState, useContext,useEffect,useRef } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import Slider from '@react-native-community/slider'
 import { FontAwesome5 } from '@expo/vector-icons';
 import {Picker} from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons'; 
-import {oreng } from "../Globals/colors";
+import {oreng,blue } from "../Globals/colors";
 
 
 
 export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeightOfResView,
   bmiSearchResult,setBmiSearchResult,setWhatCalcIs,fatValue,setFatValue,carbohydratesValue,setIsMan,
   setCarbohydratesValue,proteinValue,setProteinValue,finelText,setFinelText,caloriesValue,setCaloriesValue,
-  calorValueA,calorValueB,setCalorValueA,setCalorValueB,setMoreCalory
+  calorValueA,calorValueB,setCalorValueA,setCalorValueB,setMoreCalory,handleButtonClick
 }) {
   
   
@@ -21,7 +21,7 @@ export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeig
     ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult ,setWhatCalcIs
       ,fatValue,setFatValue,carbohydratesValue,setCarbohydratesValue,proteinValue,setProteinValue,
       finelText,setFinelText,caloriesValue,setCaloriesValue),
-    Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs),
+    Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick),
      BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,setIsMan),
      SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs),
        WhatIsFatter( finelText,setFinelText,calorValueA,calorValueB,setCalorValueA,setCalorValueB,
@@ -32,7 +32,7 @@ export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeig
     )
   }
 
-function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs) {
+function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick) {
 
   const {width} = useWindowDimensions();
   const [heightValue, setHeightValue] = useState(0);
@@ -40,7 +40,7 @@ function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
 
   const [manisFocused, setManisFocused] = useState(true);
   const [womanIsFocused, setWomanIsFocused] = useState(true);
- 
+
  
   const HandlePressOnMan = () => {
     if(womanIsFocused)
@@ -93,28 +93,39 @@ function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
     }
 else{
 
-
+  handleButtonClick();
   setBmiSearchResult(weightValue/((heightValue*0.01)*(heightValue*0.01)));
   setWhatCalcIs(1);
   setHeightOfResView(420);
 }
   }
   
-    return(
-    
-      <View style={[styles.container,{ width: width}]}>
 
+
+ 
+
+    return(
+      
+      <View style={[styles.container,{ width: width}]}>
+  
         <View style={styles.viewContainer}>
           
       <Text style={styles.text}>Bmi</Text>
+        {/*   <View style={{flexDirection:'row',justifyContent:'space-evenly',width:'100%'}}>
+    <Ionicons name="arrow-forward-outline"  size={44} color="black" />
+      <Ionicons name="arrow-back" size={44} color="black" />
+          </View> */}
 
     <View style={styles.icons} >
+      
+
    
     <TouchableOpacity onPress={HandlePressOnMan} >
         <MaterialCommunityIcons 
             name="face-man" 
             size={44} 
              color={manisFocused ? 'black' : oreng} 
+
         />
     </TouchableOpacity>
 
@@ -122,6 +133,7 @@ else{
     <MaterialCommunityIcons name="face-woman-outline" size={44} color={womanIsFocused ? 'black' : oreng}  />
     </TouchableOpacity>
 
+ 
 
       </View>
 
@@ -159,13 +171,13 @@ else{
   
   <View style={styles.button}   >
   <TouchableOpacity style={{height: 50,marginTop:50}}>
-  <Button  title='result' color={oreng} onPress={Res} style={{height: 150}}/> 
+  <Button  title='result' color={blue}  onPress={Res} style={{height: 150}}/> 
   </TouchableOpacity>
  
   </View>
   </View>
-  </View>
 
+  </View>
   )
 }
 function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult ,setWhatCalcIs
@@ -411,9 +423,11 @@ else{
   {
     setIsMan(1)
     setBmiSearchResult((88.36) + ( (13.39 * weightValue)+(4.7* heightValue)-(5.6 * selectedAgeValue)));    
+    console.log(bmiSearchResult);
   }
   if(!womanIsFocused)
   {
+    console.log(bmiSearchResult);
           setIsMan(0)
           setBmiSearchResult((447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)));    
         }
@@ -502,7 +516,7 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
 
   <View style={styles.button}   >
   <TouchableOpacity style={{height: 50}}>
-  <Button  title='result' color={oreng} onPress={Res} style={{height: 150}}/> 
+  <Button  title='result' color={blue} onPress={Res} style={{height: 150}}/> 
   </TouchableOpacity>
  
   </View>
@@ -618,16 +632,21 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
         }
         if(!manisFocused)
         {
-          setBmiSearchResult((  (88.36) + ( (13.39 * weightValue)+(4.7* heightValue)-(5.6 * selectedAgeValue)) ) * valueToMult );
+         console.log("man");
+          setBmiSearchResult((  (88.36) + ( (13.39 * weightValue)+(4.7* heightValue)-(5.6 * selectedAgeValue))  * valueToMult ));
           
         }
         if(!womanIsFocused)
         {
-          setBmiSearchResult( ( (447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)) * valueToMult ));    
+         
+          setBmiSearchResult(( (447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)) * valueToMult ));    
         }
         
-        setWhatCalcIs(3);
-        setHeightOfResView(400);
+        if(bmiSearchResult){
+        }
+          setWhatCalcIs(3)
+          setHeightOfResView(400)
+       
       }
       }
       
@@ -731,7 +750,7 @@ onValueChange={(itemValue) => setActivValue(itemValue)}
 
   <View style={styles.button}   >
   <TouchableOpacity style={{height: 50}}>
-  <Button  title='result' color={oreng} onPress={Res} style={{height: 150}}/> 
+  <Button  title='result' color={blue} onPress={Res} style={{height: 150}}/> 
   </TouchableOpacity>
  
   </View>
@@ -1015,21 +1034,30 @@ onValueChange={(itemValue) => setQuantityB(itemValue)}
 }
 const styles = StyleSheet.create({
     container: {
-
+    
         alignItems:'center',
       height:'100%',
       width:'100%',
     
     },
     viewContainer: {
-      borderWidth:4,
-      borderColor:oreng,
+      zIndex:999,
+      borderTopLeftRadius: 10,
+     borderTopRightRadius: 10,
+     backgroundColor:'white',
+    shadowColor: 'black',
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
     
+    elevation: 25,
+   
+      borderColor:oreng,
       alignItems:'center',
     height:'100%',
     width:'90%',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    backgroundColor:'#FFffff'
     
   
   },

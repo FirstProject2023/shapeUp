@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View, FlatList, Button ,TouchableOpacity,ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useRef } from 'react'
 import CalculatorsArrayOfFunctions from './CalculatorsArrayOfFunctions'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { blue, oreng } from '../Globals/colors';
+
 
 export default function Calc() {
 
@@ -20,6 +21,8 @@ export default function Calc() {
   const [calorValueB,setCalorValueB]= useState(0);
   const[moreCalory,setMoreCalory]= useState(0);
   const[isMan,setIsMan]=useState(1);
+
+
   
 
 const[showSubjects,setShowSubjects] = useState();
@@ -29,24 +32,37 @@ const[showSubjects,setShowSubjects] = useState();
 
   let arrOfClalcName=["Bmi","ProteinIntake","BMR","SavingStatus","WhatIsFatter"];
 
+  const scrollViewRef = useRef();
+
+  const handleButtonClick = () => {
+    
+    scrollViewRef.current.scrollToEnd({ animated: true });
+   
+  };
+  const handleScrollToTop = () => {
+  
+    scrollViewRef.current.scrollTo({ y: 0, animated: true });
+  };
+
   let arrOfFunctions = [
     ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,
       fatValue,carbohydratesValue,proteinValue,finelText,caloriesValue),
-    BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView),
+    BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView,handleScrollToTop),
     BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView,isMan),
     SavingStatusRes(heightOfResView,bmiSearchResult,setHeightOfResView),
     WhatIsFatterRes(heightOfResView,bmiSearchResult,setHeightOfResView,calorValueA,calorValueB,moreCalory)
   ];
 
+
   return (
 
-<ScrollView>
+<ScrollView ref={scrollViewRef}>
 
 <View style={{height:1000}}>
 
 <View style={styles.container}>
 
- 
+
   <View style={styles.FlatListContainer}>
 
 <FlatList data={numbers} renderItem={({item}) =>  <CalculatorsArrayOfFunctions num={item} 
@@ -56,21 +72,26 @@ setBmiSearchResult={setBmiSearchResult} setWhatCalcIs={setWhatCalcIs} fatValue={
   proteinValue={proteinValue} setProteinValue={setProteinValue} finelText={finelText} setFinelText={setFinelText}
   caloriesValue={caloriesValue} setCaloriesValue={setCaloriesValue} calorValueA={calorValueA}
    setCalorValueA={setCalorValueA} calorValueB={calorValueB}  setCalorValueB={setCalorValueB} setMoreCalory={setMoreCalory} 
+   handleButtonClick={handleButtonClick}
    />}
       horizontal 
       showsHorizontalScrollIndicator
       pagingEnabled
       bounces= {false}
+      
+     
+      
       />
   
     </View>
+   
   
    {
    arrOfFunctions[whatCalcIs]
    }
      
       </View>
-    
+     
       </View>
         
 </ScrollView>
@@ -85,10 +106,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   FlatListContainer:{
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    backgroundColor:'white',
+   shadowColor: 'black',
+   shadowOpacity: 0.8,
+   shadowRadius: 2,
+   
+   elevation: 25,
+
     marginTop:50,
     height:'50%',
     width:'100%',
-    backgroundColor: 'white',
+   
     borderRadius:14,
   },
   button: {
@@ -126,8 +156,35 @@ const styles = StyleSheet.create({
 })
 
 
-function BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView)
+function BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView,handleScrollToTop)
 {
+let message="";
+
+if(bmiSearchResult > 30)
+{
+  message="This individual's Body Mass Index is significantly above the normal range, suggesting they are at a high risk for obesity-related health problems."; 
+}else if(bmiSearchResult < 30 && bmiSearchResult > 25)
+{
+ 
+  message="The person's Body Mass Index is above the normal range, indicating they may be at an increased risk for health problems related to being overweight.";
+}
+ else if(bmiSearchResult < 24.9 && bmiSearchResult > 18.5)
+{
+  console.log("lll");
+  message="This person's Body Mass Index falls within the normal weight range, indicating a generally healthy weight.";
+}
+else{
+  console.log("asd");
+  message="This individual's Body Mass Index is below the normal range, suggesting they may be underweight."
+}
+
+function toBack()
+{
+
+  handleScrollToTop();
+ setHeightOfResView(0);
+}
+
   return(
     
     <View style={{height:heightOfResView,width:'90%',backgroundColor:'white',borderBottomLeftRadius: 10,borderBottomRightRadius: 10 }}>
@@ -189,16 +246,18 @@ function BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView)
   </View>
 </View>
 
-  
+  <View>
+    <Text style={{fontSize:15,}}>{message ? message : null}</Text>
+  </View>
   
   <View style={styles.resBmi}>
      <Text style={{fontSize:40}}> {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
   </View>
    
   <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80 }}>
-    { heightOfResView !=0 ? <Button title='back' color={oreng} onPress={()=>setHeightOfResView(0)}  /> : null}
+    { heightOfResView !=0 ? <Button title='back' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
-  
+
     </View>
 
     )
@@ -300,7 +359,7 @@ function BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView,isMan)
    </View>
 
   <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80,marginTop:30 }}>
-    { heightOfResView !=0 ? <Button title='back' color={oreng} onPress={()=>setHeightOfResView(0)}  /> : null}
+    { heightOfResView !=0 ? <Button title='back' color={blue} onPress={()=>setHeightOfResView(0)}  /> : null}
   </TouchableOpacity>
  
   
@@ -312,52 +371,22 @@ function BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView,isMan)
 function SavingStatusRes(heightOfResView,bmiSearchResult,setHeightOfResView)
 {
   return(
-    
+    bmiSearchResult ? 
     <View style={{height:heightOfResView,width:'90%',backgroundColor:'#fff',borderBottomLeftRadius: 10,borderBottomRightRadius: 10}}>
     
     <Text  style={{fontSize:25,textAlign:'center',marginTop:18}}>the calory to stay :</Text>
     
-    <View style={{flexDirection:'row',marginTop:20,marginStart:15 ,marginBottom:10}}>
-  
-  
-      <Text>bad!</Text>
-  {/* aaa */}
-
-  <View>
-  {      (bmiSearchResult < 250 & bmiSearchResult > 150 &heightOfResView !=0)  ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-  <View style={{height:50,  alignItems:'center',backgroundColor:'red', width: heightOfResView !=0 ? 60 : 0 }}></View>
-  </View>
-  <View>
-  { bmiSearchResult<150 & bmiSearchResult>100 &  heightOfResView !=0   ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-  <View style={{height:50,  alignItems:'center',backgroundColor:'#DC143C', width: heightOfResView !=0 ? 60 : 0 }}></View>
-  </View>
-  <View>
-  {  bmiSearchResult<100 & bmiSearchResult>50 & heightOfResView !=0  ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-  <View style={{height:50,  alignItems:'center',backgroundColor:'#32CD32', width: heightOfResView !=0 ? 60 : 0 }}></View>
-  </View>
-  <View>
-  {  bmiSearchResult<50 &  heightOfResView !=0  ?  <FontAwesome5 name="hand-point-down" size={24} color="black" style={{height:24}} /> : <View style={{height:24}} />}
-  <View style={{ height:50, alignItems:'center',backgroundColor:'#7FFF00', width: heightOfResView !=0 ? 60 : 0 }}></View>
-  </View>
-
-{/* aaa */}
-
-
-  <Text>good!</Text>
-  
-  
-      </View> 
-  
   
   <View style={styles.resBmi}>
      <Text style={{fontSize:40}}> {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
   </View>
    
   <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80 }}>
-    { heightOfResView !=0 ? <Button title='back' onPress={()=>setHeightOfResView(0)}  /> : null}
+    { heightOfResView !=0 ? <Button title='back' color={blue} onPress={()=>setHeightOfResView(0)}  /> : null}
   </TouchableOpacity>
   
     </View>
+    : null
 
     )
     
@@ -406,8 +435,19 @@ function WhatIsFatterRes(heightOfResView,bmiSearchResult,setHeightOfResView,calo
 
 
   <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80,marginTop:20 }}>
-    { heightOfResView !=0 ? <Button title='back' onPress={()=>setHeightOfResView(0)}  /> : null}
+    { heightOfResView !=0 ? <Button title='back' color={oreng} onPress={()=>setHeightOfResView(0)}  /> : null}
   </TouchableOpacity>
+
+  {/* <View style={{
+      shadowColor: 'black',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.8,
+      shadowRadius: 2,
+      elevation: 5,
+      backgroundColor: 'white',
+      padding: 20,
+      borderRadius: 10
+    }}/> */}
   
     </View>
 

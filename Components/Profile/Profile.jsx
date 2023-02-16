@@ -381,7 +381,7 @@ else{
     style={styles.loginButton}
     onPress={hendleSingOut}
     >
-        <Text style={{color: '#fff', fontSize: 20}}>Creat auser</Text>
+        <Text style={{color: '#fff', fontSize: 20}}>Create a user </Text>
     </TouchableOpacity>  
 
 
