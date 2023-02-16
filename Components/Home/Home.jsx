@@ -1,14 +1,43 @@
 import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity } from 'react-native'
-import React from 'react';
-import { auth } from '../../firebase';
+import React,{useState,useEffect} from 'react';
 import { Entypo } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
+
+import { auth, db } from '../../firebase'
+import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
 
 
 
 
 
 export default function Home({ navigation }) {
+
+  const userCollectionRef = collection(db,"users");
+  const [users,setUsers]=useState([]);
+  const [currentUserData, setCurrentUserData] = useState(null);
+
+  useEffect(()=>{
+
+    const getUsers = async () => {
+      const data = await getDocs(userCollectionRef);
+      setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
+    }
+    getUsers();
+  },[]);
+
+  useEffect(() => {
+
+    const currentUser = users.find((user) => user.email.toLowerCase() == auth.currentUser.email.toLowerCase());
+
+    if (currentUser !== null) {
+      console.log(currentUser);
+      setCurrentUserData(currentUser);
+    }
+    
+  }, [users]);
+  
+ 
+
 
 
   const hendleSingOut =()=>{
@@ -51,7 +80,7 @@ if(auth.currentUser)
 
 
      
-      <Text style={{fontSize:30,color:'white'}}>{auth.currentUser?.email}</Text>
+      <Text style={{fontSize:30,color:'white'}}>hello {currentUserData ? currentUserData.firstName : null} </Text>
 
   
 

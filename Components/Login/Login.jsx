@@ -5,19 +5,19 @@ import { Entypo } from '@expo/vector-icons';
 import FadeInOut from 'react-native-fade-in-out';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
-
 import { Picker } from '@react-native-picker/picker';
-
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
-
-
 import {createUserWithEmailAndPassword,signInWithEmailAndPassword} from 'firebase/auth'
-import { auth } from '../../firebase'
+import { auth, db } from '../../firebase'
+import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
+
 
 
 export default function Login({ navigation }) {
   
+  const userCollectionRef = collection(db,"users");
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -33,12 +33,14 @@ export default function Login({ navigation }) {
   const [weightGoal, setWeightGoal] = useState(0);
   
   //One of them
-  const [WeeklyGoal, setWeeklyGoal] = useState('');
+  const [WeeklyGoal, setWeeklyGoal] = useState(0);
   const [endDate, setEndDate] = useState({
     day: null,
     month: null,
     year: null,
   });
+
+  const [users,setUsers]=useState([]);
 
     const [firstScreenIsVisible, setFirstScreenIsVisible] = useState(true);
     const [loginIsVisible, setLoginIsVisible] = useState(false);
@@ -98,10 +100,43 @@ useEffect(()=>{
   })
 },[])
 
+useEffect(()=>{
+
+  const getUsers = async () => {
+    const data = await getDocs(userCollectionRef);
+    setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
+  }
+  getUsers();
+},[]);
 
 const  handleSignUp =  async () => {
+
+  setGoalIsVisible(false);
+   setFirstScreenIsVisible(true);
+   setEndDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})
+   /*  */if(WeeklyGoal == 0){
+    }
+    else{
+      setEndDate({day: null})
+    }
+    
+
     try{
         const user = await createUserWithEmailAndPassword(auth, email, password);
+        await addDoc(userCollectionRef, {
+            email: email,
+            password: password,
+            firstName: firstName,
+            lastName: lastName,
+            gender: gender,
+            weight: weight,
+            height: height,
+            birthDate: birthDate,
+            weightGoal: weightGoal,
+            WeeklyGoal: WeeklyGoal,
+            endDate: endDate,
+          });
+
         console.log("a");
        
     } catch (error){
@@ -586,10 +621,10 @@ const  handleSignUp =  async () => {
       >
       
       <Picker.Item  label='none' value='none' />
-      <Picker.Item  label='Lose 0.25 kg per week' value='Lose 0.25 kg per week' />
-      <Picker.Item  label='Lose 0.5 kg per week' value='Lose 0.5 kg per week' />
-      <Picker.Item  label='Lose 0.75 kg per week' value='Lose 0.75 kg per week' />
-      <Picker.Item  label='Lose 1 kg per week' value='Lose 1 kg per week' />
+      <Picker.Item  label='Lose 0.25 kg per week' value={1} />
+      <Picker.Item  label='Lose 0.5 kg per week' value={2} />
+      <Picker.Item  label='Lose 0.75 kg per week' value={3} />
+      <Picker.Item  label='Lose 1 kg per week' value={4} />
 
       </Picker>
       <View style={{width: '88%',height: '25%', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: '#fff', borderBottomEndRadius: 8, borderBottomLeftRadius: 8, paddingBottom: 1}}>
@@ -614,7 +649,7 @@ const  handleSignUp =  async () => {
     <View style={[styles.buttonContainer, {marginTop: 10}]}>
 
     <TouchableOpacity
-    onPress={()=> [handleSignUp, setGoalIsVisible(false), setFirstScreenIsVisible(true), setEndDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})]}
+    onPress={handleSignUp }
     style={styles.loginButton}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Start</Text>
@@ -628,6 +663,10 @@ const  handleSignUp =  async () => {
     </TouchableOpacity>
 
 
+
+
+
+  
 
     </View>
     </FadeInOut>

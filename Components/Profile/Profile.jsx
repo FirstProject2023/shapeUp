@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,Image, ScrollView,TextInput  } from 'react-native'
-import React, { useState } from 'react'
-import { auth } from '../../firebase';
+import React, { useState,useEffect } from 'react'
 import { oreng,blue } from '../Globals/colors';
 import { Ionicons } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons';
@@ -11,8 +10,16 @@ import { EvilIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 
+import { auth, db } from '../../firebase'
+import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
+
 
 export default function Profile({ navigation }) {
+
+  const userCollectionRef = collection(db,"users");
+  const [users,setUsers]=useState([]);
+  const [currentUserData, setCurrentUserData] = useState(null);
+
 
 const [password,setPassword]=useState('12378asd3');
 const [nameInputPresented,setNameInputPresented] = useState(1);
@@ -21,6 +28,27 @@ const [emailInputPresented,setEmailInputPresented] = useState(1);
 const [purposeInputPresented,setPurposeInputPresented] = useState(1);
 const [dateInputPresented,setDateInputPresented] = useState(1);
 const [passwordInputPresented,setPasswordInputPresented] = useState(1);
+
+useEffect(()=>{
+
+  const getUsers = async () => {
+    const data = await getDocs(userCollectionRef);
+    setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
+  }
+  getUsers();
+},[]);
+
+useEffect(() => {
+
+  const currentUser = users.find((user) => user.email.toLowerCase() == auth.currentUser.email.toLowerCase());
+
+  if (currentUser !== null) {
+    console.log(currentUser);
+    setCurrentUserData(currentUser);
+  }
+  
+}, [users]);
+
 
   const hendleSingOut =()=>{
     auth
@@ -67,7 +95,7 @@ if(auth.currentUser)
         resizeMode= 'cover'
         >
           <View style={{height:'100%',width:'100%',backgroundColor:'rgba(0,0,0,0.6)',alignItems:'center',justifyContent:'center'}}>
-              <Text style={{fontSize:30,color:'white'}}>shneor shryber</Text>
+              <Text style={{fontSize:30,color:'white'}}>{currentUserData ? currentUserData.firstName : null}</Text>
           </View>
         </ImageBackground>
 
