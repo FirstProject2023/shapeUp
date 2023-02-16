@@ -12,10 +12,6 @@ import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 
 
-// import InlineDatePicker from 'react-native-inline-datepicker';
-
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-
 import {createUserWithEmailAndPassword,signInWithEmailAndPassword} from 'firebase/auth'
 import { auth } from '../../firebase'
 
@@ -26,14 +22,23 @@ export default function Login({ navigation }) {
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [gender, setGender] = useState(1);
   const [height, setHeight] = useState(0);
   const [weight, setWeight] = useState(0);
-  const [birthDate, setBirthDate] = useState('');
+  const [birthDate, setBirthDate] = useState({
+    day: null,
+    month: null,
+    year: null,
+  });
   const [weightGoal, setWeightGoal] = useState(0);
   
   //One of them
   const [WeeklyGoal, setWeeklyGoal] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [endDate, setEndDate] = useState({
+    day: null,
+    month: null,
+    year: null,
+  });
 
     const [firstScreenIsVisible, setFirstScreenIsVisible] = useState(true);
     const [loginIsVisible, setLoginIsVisible] = useState(false);
@@ -341,13 +346,13 @@ const  handleSignUp =  async () => {
 
     <View style={{width: '80%', height: '20%', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-evenly' }}>
     
-    <TouchableOpacity onPress={()=> [setGenderIsVisible(false), setHeightAndWeightIsVisible(true)]}>
+    <TouchableOpacity onPress={()=> [setGenderIsVisible(false), setHeightAndWeightIsVisible(true), setGender(0)]}>
     <View style={{height: 100, width: 100, borderWidth: 3, borderColor: '#fff', borderRadius: 100, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(253, 92, 175, 0.4)'}}>
     <MaterialCommunityIcons name="face-woman" size={65} color="#fff" />
     </View>       
     </TouchableOpacity>
 
-    <TouchableOpacity onPress={()=> [setGenderIsVisible(false), setHeightAndWeightIsVisible(true)]}>
+    <TouchableOpacity onPress={()=> [setGenderIsVisible(false), setHeightAndWeightIsVisible(true), setGender(1)]}>
     <View style={{height: 100, width: 100, borderWidth: 3, borderColor: '#fff', borderRadius: 100, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(27, 112, 249, 0.4)'}}>
 
     <MaterialCommunityIcons  name="face-man" size={65} color="#fff" />
@@ -484,11 +489,12 @@ const  handleSignUp =  async () => {
     <View style={styles.buttonContainer}>
     <TouchableOpacity
     style={[styles.loginButton, { marginTop: 40}]}
-    onPress={()=> [setBirthDateIsVisible(false), setGoalIsVisible(true), setBirthDate(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)]}
+    onPress={()=> [setBirthDateIsVisible(false), setGoalIsVisible(true), setBirthDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 19, fontWeight: '800'}}>Continue</Text>
     </TouchableOpacity>
 
+   
 
 
     </View>
@@ -608,7 +614,7 @@ const  handleSignUp =  async () => {
     <View style={[styles.buttonContainer, {marginTop: 10}]}>
 
     <TouchableOpacity
-    onPress={()=> [handleSignUp, setGoalIsVisible(false), setFirstScreenIsVisible(true), setBirthDate(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)]}
+    onPress={()=> [handleSignUp, setGoalIsVisible(false), setFirstScreenIsVisible(true), setEndDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})]}
     style={styles.loginButton}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Start</Text>
@@ -620,6 +626,8 @@ const  handleSignUp =  async () => {
     >
         <Text style={{color: '#000', fontSize: 17,}}>Continue as  a guest</Text>
     </TouchableOpacity>
+
+    {console.log(endDate)}
 
 
     </View>
