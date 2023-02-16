@@ -54,9 +54,9 @@ export default function Articles({navigation}) {
 
 
 
-  const articlesSubArray = ["fitness","diet","health", "Mental health", "all"];
+  const articlesSubArray = ["fitness","diet","health", "mental health", "all"];
 
-  const dietType = ["balanced","high-Fiber","high-Protein", "low-Carb", "low-Fat", "low-Sodium"];
+  const dietType = ["balanced","high-fiber","high-protein", "low-carb", "low-fat", "low-sodium"];
 
   const cuisineType = ["American","Asian","British", "Caribbean", "Central Europe",
                        "Chinese","Eastern Europe","French", "Indian", "Italian", 
@@ -139,8 +139,7 @@ export default function Articles({navigation}) {
       &app_id=3d4ce13e&app_key=309e7c6a041b819ea0605c46d27345b8&${dietLabelRecipes}
       &health=kosher&${cuisineTypeRecipes}
       &${mealTypeRecipes}
-      &${caloriesRangeRecipes}
-      &imageSize=SMALL`)
+      &${caloriesRangeRecipes}&imageSize=SMALL`)
       .then((response)=>{
         return response.json();
       })
@@ -177,13 +176,14 @@ export default function Articles({navigation}) {
  )
   }
 
+
+
   function RecipesDietFiltersList(item, index){
     return(
 
       <View key={index} style={[styles.currFilter, {width: width * 0.3}]}>
     <TouchableOpacity style={[styles.recipeFilterButton, isRecipesFilterActive ? {backgroundColor: '#d89b5c'}: {backgroundColor: '#fff'}]}
-     onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setDietLabelRecipes(`diet=${item}`), setIsRecipesFilters(!isRecipesFilters)]}>
-     
+     onPress={()=> [setIsRecipesFilterActive(!isRecipesFilterActive), setDietLabelRecipes(`diet=${item}&`), setIsRecipesFilters(!isRecipesFilters)]}>
       <Text style={[{ fontSize: 18, color: '#d89b5c', fontSize: 13, fontWeight: '600'}, isRecipesFilterActive ? {color: '#fff'}: {color: '#d89b5c'}]}>{item}</Text>
     </TouchableOpacity>
     </View>
@@ -216,8 +216,6 @@ export default function Articles({navigation}) {
       )
 
   }
-
-  
   
   function RecipesFilters(){
     return(
@@ -283,6 +281,7 @@ export default function Articles({navigation}) {
       <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: '100%', marginTop: 5}}>
         <Text style={{color: '#fff', fontSize: 15, fontWeight: '600'}}>Max</Text>
         <TouchableOpacity onPress={()=> [setCaloriesRangeRecipes(`calories=${minCalories}-${maxCalories}`), setIsRecipesFilters(!isRecipesFilters)]}>
+     {console.log(`calories=${minCalories}-${maxCalories}`)}
         <AntDesign name="checkcircle" size={26} color="#fff" />
         </TouchableOpacity>
         <Text style={{color: '#fff', fontSize: 15, fontWeight: '600'}}>Min</Text>
@@ -332,6 +331,8 @@ export default function Articles({navigation}) {
       )    
   }
 
+
+
   function PagesNav(item){
     setApiRecipes(item);
 
@@ -341,7 +342,7 @@ export default function Articles({navigation}) {
   function ArticlesList(item, index){
     return(
       
-      <TouchableOpacity onPress={()=> navigation.navigate('Article',{
+      <TouchableOpacity style={styles.recipeCardShadow} onPress={()=> navigation.navigate('Article',{
           article: item.article,
           title:   item.title,
           topic:   item.topic,
@@ -349,17 +350,16 @@ export default function Articles({navigation}) {
       })}>
 
       <View key={index} style={[styles.articleCardContainer, {width: width}]}>
-      <View style={styles.articleCard}>
-        <ImageBackground style={{width: '100%', height: '100%'}} borderRadius={10} source={{uri: item.img}}>
-        <View style={{width: '100%' , height: '100%',   backgroundColor: 'rgba(0,0,0,0.3)'}}>
+      <View style={[styles.articleCard, styles.CardShadow]}>
+        <ImageBackground style={{width: '100%', height: '100%', marginBottom: 0}} borderRadius={10} source={{uri: item.img}}>
 
-
-      <Text style={{fontSize: 20, color:'#fff', padding: 15}}>{item.title}</Text>
       {/* <Text style={{fontSize: 20, color:'#fff', marginLeft: 210, textDecorationLine: 'underline'}}>{item.topic}</Text> */}
       {/* <Image source={{uri: item.img}} style={[styles.img,  ]}/> */}
-        </View>
+       
       </ImageBackground> 
+      {/* <Text style={{fontSize: 20, color:'#000', padding: 15, marginTop: 0}}>aaaaaaa</Text> */}
       </View>
+      <Text style={{fontSize: 18, color:'#000', paddingHorizontal: 35, marginTop: 10, fontWeight: '800'}}>{item.title}</Text>
 
       </View>
       </TouchableOpacity>
@@ -374,10 +374,10 @@ export default function Articles({navigation}) {
 
       <View key={index} style={[styles.articleCardContainer, {width: width}]}>
     
-      <View style={styles.articleCard}>
+      <View style={[styles.articleCard, styles.CardShadow]}>
+ <ImageBackground style={{width: '100%', height: '100%', marginBottom: 0}} borderRadius={10} source={{uri: item.recipe.image}}>
+      <View style={{width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 15,}}>
 
-      <Text style={{fontSize: 20, color: '#fff'}}>{item.recipe.label}</Text>
-      <Image source={{uri: item.recipe.image}} style={[styles.img,  ]}/>
       <View style={styles.iconsRecipesCards}>
       <Text style={{color: '#fff', fontSize: 20, fontWeight: '700'}}>{item.recipe.calories.toFixed()} cal</Text>
       <View style={{flexDirection: 'row'}}>
@@ -387,6 +387,10 @@ export default function Articles({navigation}) {
 
       </View>
       </View>
+ </ImageBackground>
+      {/* <Image source={{uri: item.recipe.image}} style={[styles.img,  ]}/> */}
+      </View>
+      <Text style={{fontSize: 18, color:'#000', paddingHorizontal: 35, marginTop: 10, fontWeight: '800'}}>{item.recipe.label}</Text>
 
       </View>
       </TouchableOpacity>
@@ -394,16 +398,15 @@ export default function Articles({navigation}) {
   }
   
   
-  return (
-    
-    
+  return (   
 
     <ImageBackground source={{uri: "https://media.istockphoto.com/id/1368401341/photo/process-of-preparing-food-salad-of-vegetables-oil-dish-spring-vitamins-summer-vegetables.jpg?s=612x612&w=0&k=20&c=XwvilDaZPy57eDJXrMpx-1udYPEZhO9jQGUD-MHf2Cc="}} resizeMode= 'cover'>
     <View style={styles.container}>
-    
-      
+     
 
     <View style={styles.mainArticlesNav}>
+    {/* <View style={{width: '70%', height: '80%', backgroundColor: '#0a2946', flexDirection: 'row', alignItems: 'center'}}> */}
+
 
     <TouchableOpacity onPress={()=> setIsArticles(false)} style={[styles.ArticlesNavButtons, {borderTopLeftRadius: 10, borderBottomLeftRadius: 10}, isArticles ? {backgroundColor: '#fff'} : {backgroundColor: '#d89b5c'}]}>
       <Text style={[styles.ArticlesNavText, isArticles ? {color: '#d89b5c'} : {color: '#fff'}]}>Recipes</Text>    
@@ -412,6 +415,7 @@ export default function Articles({navigation}) {
       <Text style={[styles.ArticlesNavText, isArticles ? {color: '#fff'} : {color: '#d89b5c'}]}>Articles</Text>
     </TouchableOpacity>
     
+    {/* </View> */}
     </View>
    {isArticles ?  <View style={styles.subjectCarousel}>
     <FlatList data={articlesSubArray} renderItem={({item, index})=>
@@ -456,18 +460,21 @@ const styles = StyleSheet.create({
   container:{
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    justifyContent: 'center',
+    // backgroundColor: 'rgba(0,0,0,0.6)',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    backgroundColor: '#fff'
   },
   
   mainArticlesNav:{
-    // backgroundColor: '#fff',
+    // backgroundColor: '#000',
     width: '100%',
-    height: '10%',
+    height: 70,
     flexDirection: 'row',
     alignItems: 'center',
+    // justifyContent: 'center',
     justifyContent: 'center',
+    // alignSelf: 'flex-start',
     
   },
 
@@ -478,9 +485,7 @@ const styles = StyleSheet.create({
      justifyContent: 'center',
      backgroundColor: '#fff',
      borderWidth: 2.5,
-     borderColor: '#d89b5c',
-     
-     
+     borderColor: '#d89b5c',       
     },
 
         ArticlesNavText:{
@@ -511,25 +516,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#0a2946',
     flexDirection: 'row',
     justifyContent: 'center',
-    //  alignItems: 'center',
+    padding: 6,
      borderWidth: 2,
-     borderRadius: 12,
-    //  height: 300,
-  
-    //  width: '100%'
-
-
-  },
-
-  recipesFilters:{
-    position: 'absolute', 
-    top: 43.5, backgroundColor: '#0a2946',
-     width: '100%',
-     zIndex: 999 ,
-  },
-
+     alignSelf: 'center',
+     width: '97%',
+     borderRadius: 6,
+     
+    },
+    
+    recipesFilters:{
+      position: 'absolute', 
+      top: 47.5, backgroundColor: '#0a2946',
+      width: '97%',
+      zIndex: 999 ,
+      alignSelf: 'center',
+      borderRadius: 6,
+    },
+    
   filter:{
-    width: '100%',
+    width: '97%',
     alignItems: 'center',
     justifyContent: 'center',
 
@@ -621,25 +626,32 @@ const styles = StyleSheet.create({
     //  alignItems: 'center',
   },
 
+  CardShadow:{
 
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity:  0.21,
+    shadowRadius: 6.65,
+    elevation: 9
+
+  },
 
   articleCardContainer:{
     justifyContent: 'center',
     alignItems: 'center',
 
   },
+
   
   articleCard:{
-    backgroundColor: '#d89b5c',
-
 
     width: '80%',
-    height: 260,
-    justifyContent: 'center',
+    height: 200,
     alignItems: 'center',
-    marginTop: 20,
-    borderWidth: 0,
-    borderColor: '#d89b5c',
+    marginTop: 35,
     borderRadius: 15,
    
     
