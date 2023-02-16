@@ -627,7 +627,6 @@ const  handleSignUp =  async () => {
         <Text style={{color: '#000', fontSize: 17,}}>Continue as  a guest</Text>
     </TouchableOpacity>
 
-    {console.log(endDate)}
 
 
     </View>
