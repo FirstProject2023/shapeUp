@@ -129,3 +129,16 @@
 
 
   
+   /*  if (users.length > 0 && auth.currentUser) {
+      
+      users.map((user,i) =>
+      {
+        if(user.email.toLowerCase() == auth.currentUser.email.toLowerCase())
+        {
+           setCurrentUserData(user); 
+        }
+
+      })
+    }     */
+  
+
