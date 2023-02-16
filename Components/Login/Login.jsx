@@ -7,8 +7,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'; 
 
 import { Picker } from '@react-native-picker/picker';
+
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
+
+
+// import InlineDatePicker from 'react-native-inline-datepicker';
+
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 import {createUserWithEmailAndPassword,signInWithEmailAndPassword} from 'firebase/auth'
 import { auth } from '../../firebase'
@@ -88,27 +94,21 @@ useEffect(()=>{
 },[])
 
 
-    const  handleSignUp =  async () => {
-        try{
-            const user = await createUserWithEmailAndPassword(auth, email, password);
-           
-        } catch (error){
-            console.log("b");
-           
-        }
-    
+const  handleSignUp =  async () => {
+    try{
+        const user = await createUserWithEmailAndPassword(auth, email, password);
+        console.log("a");
+       
+    } catch (error){
+        console.log("b");
+       
     }
+
+}
     const  handleLogin =  async () => {
         try{
             const user = await signInWithEmailAndPassword(auth, email, password);
-            Alert.alert(
-              'Erro',
-              'Login ',
-              [
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-              ],
-              {cancelable: false},
-            );
+           
           
         } catch (error){
             console.log("error");
@@ -163,14 +163,6 @@ useEffect(()=>{
 
     </View>
     </FadeInOut>
-
-
-
-
-
-
-
-
 
 
     <FadeInOut style={{ 

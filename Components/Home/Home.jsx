@@ -10,8 +10,6 @@ import { AntDesign } from '@expo/vector-icons';
 
 export default function Home({ navigation }) {
 
- 
-
 
   const hendleSingOut =()=>{
     auth
@@ -25,8 +23,8 @@ export default function Home({ navigation }) {
 if(auth.currentUser)
 {
   return (
-    
     <ImageBackground source={{uri: "https://images.creativemarket.com/0.1.0/ps/8436210/1820/1214/m1/fpnw/wm1/m44uvmmozdjmkaqion0pl0hrji1w6bklbgvybnufi8zayuvvg6brwped97rcsa0n-.jpg?1590762533&s=a010240a0998e1429431994509765bc0"}} resizeMode= 'cover'>
+
     <View style={styles.container}>
 
     <View style={styles.detailsHomeContainer}>
@@ -69,14 +67,14 @@ else{
     <View style={styles.container}>
 
 
-    <Text style={{fontSize:30,color:'white', marginTop: 60}}>Welcam to ShapeUp</Text>
+    <Text style={{fontSize:30,color:'white', marginTop: 60}}>Welcome to ShapeUp</Text>
     <Text style={{fontSize:20,color:'white', padding: 10}}>to be able to use all the features you must open a free account</Text>
     <AntDesign name="arrowdown" size={55} color="#fff" />
     <TouchableOpacity
     style={styles.loginButton}
     onPress={hendleSingOut}
     >
-        <Text style={{color: '#fff', fontSize: 20}}>Creat auser</Text>
+        <Text style={{color: '#fff', fontSize: 20}}>Create a user</Text>
     </TouchableOpacity>  
 
     </View>
