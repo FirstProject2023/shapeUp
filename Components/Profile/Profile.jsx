@@ -101,7 +101,7 @@ if(auth.currentUser)
 
       <View style={{height:100,width:100,borderRadius:50,position:'absolute',top:10,right:270,zIndex:100,backgroundColor:'#F0FFFF'
       ,borderWidth:2,justifyContent:'center',alignItems:'center'}}>
-             <Text style={{fontSize:15,color:oreng,textAlign:'center'}}> 70 K </Text>
+             <Text style={{fontSize:15,color:oreng,textAlign:'center'}}> 70Kg </Text>
           <Text style={{fontSize:15,color:"black",textAlign:'center'}}> Purpose</Text>
           </View>
 
