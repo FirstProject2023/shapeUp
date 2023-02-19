@@ -102,6 +102,7 @@ useEffect(()=>{
 
 useEffect(()=>{
 
+ 
   const getUsers = async () => {
     const data = await getDocs(userCollectionRef);
     setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
@@ -109,18 +110,21 @@ useEffect(()=>{
   getUsers();
 },[]);
 
+const hendelUpdateGool = async () => {
+if(WeeklyGoal==0){
+  setEndDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})
+}
+else{
+
+}
+}
+
 const  handleSignUp =  async () => {
 
   setGoalIsVisible(false);
    setFirstScreenIsVisible(true);
-   setEndDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})
-   /*  */if(WeeklyGoal == 0){
-    }
-    else{
-      setEndDate({day: null})
-    }
-    
-
+   
+console.log(weightGoal + " " + "test1");
     try{
         const user = await createUserWithEmailAndPassword(auth, email, password);
         await addDoc(userCollectionRef, {
@@ -136,7 +140,8 @@ const  handleSignUp =  async () => {
             WeeklyGoal: WeeklyGoal,
             endDate: endDate,
           });
-
+          setWeeklyGoal(0);
+          setEndDate({day: null})
         console.log("a");
        
     } catch (error){
@@ -563,12 +568,15 @@ const  handleSignUp =  async () => {
       onValueChange={(itemValue) => setWeightGoal(itemValue)}
       
       >
+         
       
 {WeightMap.map((weight,i) => (
                 <Picker.Item key={i} label={`${weight}kg`} value={weight} />
             ))}
 
       </Picker>
+      
+      <Text style={{color: '#fff', fontSize: 14, fontWeight: '700'}}>{weightGoal}</Text>
 
       <View style={{width: '100%', height: '50%', marginTop: 10, alignItems:'center'}}>
       <Text style={{marginTop: 8, color: '#fff', fontSize: 20, fontWeight: '600'}}>Choose one way</Text>
@@ -649,7 +657,14 @@ const  handleSignUp =  async () => {
     <View style={[styles.buttonContainer, {marginTop: 10}]}>
 
     <TouchableOpacity
-    onPress={handleSignUp }
+    onPress={hendelUpdateGool}
+    style={styles.loginButton}
+    >
+        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>maoz</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+    onPress={handleSignUp}
     style={styles.loginButton}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Start</Text>

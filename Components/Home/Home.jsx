@@ -7,9 +7,6 @@ import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
 
 
-
-
-
 export default function Home({ navigation }) {
 
   const userCollectionRef = collection(db,"users");
@@ -25,21 +22,21 @@ export default function Home({ navigation }) {
     getUsers();
   },[]);
 
-  useEffect(() => {
 
-    const currentUser = users.find((user) => user.email.toLowerCase() == auth.currentUser.email.toLowerCase());
+  if(auth.currentUser)
+  {  
 
+    useEffect(() => {
+      
+      const currentUser = users.find((user) => user.email.toLowerCase() == auth.currentUser.email.toLowerCase());
+      
     if (currentUser !== null) {
-      console.log(currentUser);
       setCurrentUserData(currentUser);
     }
     
   }, [users]);
+}
   
- 
-
-
-
   const hendleSingOut =()=>{
     auth
     .signOut()
