@@ -24,17 +24,19 @@ export default function Home({ navigation }) {
     }
     getUsers();
   },[]);
+if(auth.currentUser){
 
   useEffect(() => {
-
+    
     const currentUser = users.find((user) => user.email.toLowerCase() == auth.currentUser.email.toLowerCase());
-
+    
     if (currentUser !== null) {
       console.log(currentUser);
       setCurrentUserData(currentUser);
     }
     
   }, [users]);
+}
   
  
 
