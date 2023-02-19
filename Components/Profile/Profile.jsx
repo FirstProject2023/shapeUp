@@ -17,6 +17,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 
+
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc} from 'firebase/firestore';
 
@@ -93,18 +94,27 @@ useEffect(()=>{
   getUsers();
 },[]);
 
+
 if(auth.currentUser)
 { 
+
+if(auth.currentUser){
+
   useEffect(() => {
     
     const currentUser = users.find((user) => user.email.toLowerCase() == auth.currentUser.email.toLowerCase());
     
     if (currentUser !== null) {
+
       
+
+      console.log(currentUser);
+
       setCurrentUserData(currentUser);
     }
     
   }, [users]);
+
   
 }
 const [isEndDate,setIsEndDate]=useState(0);
@@ -153,6 +163,9 @@ const diffInDays = differenceInDays(date2, date1);
 const years = Math.floor(diffInDays / 365);
 const months = Math.floor((diffInDays % 365) / 30);
 const days = diffInDays - (years * 365) - (months * 30);
+=======
+}
+>>>>>>> 09d9a94f3694cbf8e897b6fd9f9f6058b1f453d4
 
 
   const hendleSingOut =()=>{
@@ -671,20 +684,19 @@ if(auth.currentUser)
 }
 else{
   return (
-    <ImageBackground source={{uri: "https://as1.ftcdn.net/v2/jpg/01/87/90/02/1000_F_187900292_o4XwYpEOSmQZPcijWhMv9qjlJPhYoCMT.jpg"}} resizeMode= 'cover'>
-    <View style={styles.container}>
+    <ImageBackground source={{uri: "https://img.freepik.com/free-photo/healthy-lifestyle-people-food-concept-reluctant-handsome-young-man-pointing-finger-disgusting-salad-unwilling-eat-this-smirking-dissatisfied-tilting-head-sad-yellow-background_1258-59808.jpg?size=626&ext=jpg&ga=GA1.2.1278374744.1675142697&semt=ais"}} resizeMode= 'cover'>
+    <View style={styles.guestContainer}>
 
 
-    <Text style={{fontSize:30,color:'white'}}>Your Profile </Text>
+    <Text style={{fontSize:35,color:'white', marginTop: 60}}>Profile</Text>
+    <Text style={{fontSize:20,color:'white', padding: 10}}>Profile information is only visible to registered users</Text>
+    <AntDesign name="arrowdown" size={55} color="#fff" />
     <TouchableOpacity
     style={styles.loginButton}
     onPress={hendleSingOut}
     >
-        <Text style={{color: '#fff', fontSize: 20}}>Create a user </Text>
+        <Text style={{color: '#fff', fontSize: 20}}>Create a user</Text>
     </TouchableOpacity>  
-
-
-
 
     </View>
     </ImageBackground>
@@ -700,9 +712,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     
   },
+  guestContainer: {
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    
+  },
   loginButton:{
-   height:50,
-   width:160,
+    width: '60%',
+    height: '10%',
     backgroundColor: 'rgba(255, 178, 71,0.8)',
     marginTop: 15,
     borderWidth: 2,
