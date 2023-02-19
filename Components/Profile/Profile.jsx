@@ -163,9 +163,9 @@ const diffInDays = differenceInDays(date2, date1);
 const years = Math.floor(diffInDays / 365);
 const months = Math.floor((diffInDays % 365) / 30);
 const days = diffInDays - (years * 365) - (months * 30);
-=======
+
 }
->>>>>>> 09d9a94f3694cbf8e897b6fd9f9f6058b1f453d4
+
 
 
   const hendleSingOut =()=>{
