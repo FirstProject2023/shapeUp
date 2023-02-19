@@ -24,6 +24,7 @@ import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc} from 'fire
 
 export default function Profile({ navigation }) {
 
+const[hy,setHy]=useState(0);
 
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -95,8 +96,7 @@ useEffect(()=>{
 },[]);
 
 
-if(auth.currentUser)
-{ 
+
 
 if(auth.currentUser){
 
@@ -163,10 +163,6 @@ const diffInDays = differenceInDays(date2, date1);
 const years = Math.floor(diffInDays / 365);
 const months = Math.floor((diffInDays % 365) / 30);
 const days = diffInDays - (years * 365) - (months * 30);
-
-}
-
-
 
   const hendleSingOut =()=>{
     auth
@@ -661,9 +657,9 @@ if(auth.currentUser)
     }}
   />
 
-    <View style={{width:'100%', height:85,alignItems:'center' }}>
+    <View style={{width:'100%', height:185,alignItems:'center' }}>
       <TouchableOpacity
-    style={styles.loginButton}
+    style={styles.singOutButton}
     onPress={hendleSingOut}
     >
         <Text style={{color: '#fff', fontSize: 20}}>Sign Out</Text>
@@ -728,6 +724,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
+
+},
+singOutButton:{
+  width: '60%',
+  height: '25%',
+  backgroundColor: 'rgba(255, 178, 71,0.8)',
+  marginTop: 15,
+  borderWidth: 2,
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 5,
 
 },
 profileImg:
