@@ -6,6 +6,8 @@ import { Octicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
 
+import LottieView from 'lottie-react-native';
+
 import { Picker } from '@react-native-picker/picker';
 
 
@@ -85,6 +87,8 @@ export default function Articles({navigation}) {
       return setMealTypeRecipes("");
       case 4:
       return  setCaloriesRangeRecipes("");
+      case 5:
+      return  setFreeRecipesSearch("");
     }
 
     
@@ -148,7 +152,10 @@ export default function Articles({navigation}) {
     const GetContent = () =>{
       if(isLoading){
   
-        return <View style={styles.loading}><ActivityIndicator  size = 'large'/></View>
+        // return <View style={styles.loading}><ActivityIndicator  size = 'large'/></View>
+        return(
+          <LottieView autoPlay source={require('../lottieAnimation/loading_resipec.json')}/>
+        )
         // return (
         //   <View style={[StyleSheet.absoluteFillObject, styles.loadingContainer]}>
           
@@ -281,7 +288,7 @@ export default function Articles({navigation}) {
       <View style={{width: '100%'}}>
 
       <View style={styles.recipesFiltersContainer}>
-      <TouchableOpacity onPress={()=> {setFreeRecipesSearch(currFreeRecipesSearch)/*, setTimeout(()=>{ setApiRecipes(firstPageApiRecipes)},0)*/ }}>
+      <TouchableOpacity onPress={()=> {[setFreeRecipesSearch(currFreeRecipesSearch), , AddToFilters(currFreeRecipesSearch, 5)]}}>
         <FontAwesome5  name="search" size={30} color="#d89b5c" />
       </TouchableOpacity>
 
@@ -510,13 +517,25 @@ export default function Articles({navigation}) {
 </View>: null}
 
     
+  {!isArticles ? recipesDataApi.count == 0 ? <Text style={{fontSize: 50}}>No results</Text>: null : null}
+
+  {!isArticles ? recipesDataApi.count == 0 ? <LottieView autoPlay source={require('../lottieAnimation/no_resipec_resalts.json')}/>: null : null}
+
+  {!isArticles ? GetContent() : null}
 
     <FlatList data={isArticles ? filteredArticlesData : recipesDataApi.hits} renderItem={({item, index})=>
-       isArticles ? ArticlesList(item, index) :  [PagesNav(item, index),GetContent(), RecipesList(item, index)]}
+       isArticles ? ArticlesList(item, index) :   [PagesNav(item, index) , RecipesList(item, index)]}
       //  horizontal 
 
         bounces= {false}
        />
+
+
+
+
+       {
+
+       }
 
     </View>
     </View>

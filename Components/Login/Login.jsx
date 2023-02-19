@@ -8,6 +8,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
+import LottieView from 'lottie-react-native';
+
 import {createUserWithEmailAndPassword,signInWithEmailAndPassword} from 'firebase/auth'
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
@@ -42,7 +44,8 @@ export default function Login({ navigation }) {
 
   const [users,setUsers]=useState([]);
 
-    const [firstScreenIsVisible, setFirstScreenIsVisible] = useState(true);
+    const [animationStartIsVisible, setAnimationStartIsVisible] = useState(true);
+    const [firstScreenIsVisible, setFirstScreenIsVisible] = useState(false);
     const [loginIsVisible, setLoginIsVisible] = useState(false);
     const [signUpIsVisible, setSignUpIsVisible] = useState(false);
     const [nameIsVisible, setNameIsVisible] = useState(false);
@@ -156,12 +159,42 @@ const  handleSignUp =  async () => {
         }
     
     }
+
+    
+    const removeStartAnimation = () => {
+      setTimeout(() => {[setAnimationStartIsVisible(false), setFirstScreenIsVisible(true)]}, 2000);
+  }
    
   return (
     
     <ImageBackground source={{uri: "https://d3h2k7ug3o5pb3.cloudfront.net/image/2020-11-23/3b788920-2d79-11eb-9dcd-8b2ef5358591.jpg"}} resizeMode='cover'>
 
+    
+
     <View style={styles.loginContainer}>
+    
+    {/* <FadeInOut style={{ 
+        //firstScreen
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgb(255, 178, 71)',
+        alignItems: 'center',
+        // justifyContent: 'center',
+        zIndex: animationStartIsVisible ?  999 : 0,}}
+        visible={animationStartIsVisible}
+        duration={!animationStartIsVisible ? 400 : 800}
+        scale={true}
+        >
+        <LottieView
+        style={{width: 150, height: 150, marginTop: 115}}
+        source={require('../lottieAnimation/animation_start.json')}
+          autoPlay         
+        />
+       { removeStartAnimation()}
+
+        
+
+        </FadeInOut> */}
     
     <Text style={styles.title}>ShapeUp</Text>
 
