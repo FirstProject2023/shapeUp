@@ -233,7 +233,8 @@ console.log(weightGoal + " " + "test1");
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Sign Up</Text>
     </TouchableOpacity>
     <TouchableOpacity
-    onPress={()=>{ navigation.navigate('Nav')}}
+    onPress={()=>{ navigation.navigate('Transition')}}
+    // onPress={()=>{ navigation.navigate('Nav')}}
     style={[styles.loginButton,{backgroundColor: 'rgba(243,243,243,0.9)', marginTop: 24, height: 40, borderWidth: 2, borderColor: '#78ab04'}]}
     >
         <Text style={{color: '#000', fontSize: 17,}}>Continue as  a guest</Text>

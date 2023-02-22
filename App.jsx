@@ -10,6 +10,9 @@ import ArticleCard from './Components/Articles/ArticleCard';
 import RecipeCard from './Components/Articles/RecipeCard';
 import { Header } from '@react-navigation/stack';
 import Login from './Components/Login/Login';
+import Transition from './Components/Transition/transitionScreen';
+
+
 
 
 export default function App() {
@@ -21,7 +24,15 @@ export default function App() {
    
 <NavigationContainer>
   <Stack.Navigator>
-    <Stack.Screen name='Login' component={Login}/>
+    <Stack.Screen name='Login' component={Login} options={{
+      title: "Login Screen",
+    }}/>
+    <Stack.Screen name='Transition' component={Transition} options={{
+      // headerBackVisible: false,
+      // // headerBackground:  'rgb(255, 178, 71)',
+      // title: "",
+      headerShown: false,
+    }}/>
     <Stack.Screen name="Nav" component={Nav} options={{headerShown: false}}/>
     <Stack.Screen name='Home' component={Home}/>
     <Stack.Screen name='Article' component={ArticleCard}/>
