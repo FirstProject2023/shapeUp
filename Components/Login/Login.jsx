@@ -45,7 +45,7 @@ export default function Login({ navigation }) {
   const [users,setUsers]=useState([]);
 
     const [animationStartIsVisible, setAnimationStartIsVisible] = useState(true);
-    const [firstScreenIsVisible, setFirstScreenIsVisible] = useState(false);
+    const [firstScreenIsVisible, setFirstScreenIsVisible] = useState(true);
     const [loginIsVisible, setLoginIsVisible] = useState(false);
     const [signUpIsVisible, setSignUpIsVisible] = useState(false);
     const [nameIsVisible, setNameIsVisible] = useState(false);
