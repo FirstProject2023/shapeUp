@@ -1,7 +1,12 @@
-import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native'
 import React,{useState,useEffect} from 'react';
 import { Entypo } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
+import { Feather } from '@expo/vector-icons'; 
+
+
+import tipsData from '../Jsons/tips.json'
+import FadeInOut from 'react-native-fade-in-out';
 
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
@@ -12,6 +17,7 @@ export default function Home({ navigation }) {
   const userCollectionRef = collection(db,"users");
   const [users,setUsers]=useState([]);
   const [currentUserData, setCurrentUserData] = useState(null);
+  const [isTipsView, setIsTipsView] = useState(false);
 
   useEffect(()=>{
 
@@ -50,6 +56,8 @@ export default function Home({ navigation }) {
 if(auth.currentUser)
 {
   return (
+    <TouchableOpacity activeOpacity={1} onPress={()=> setIsTipsView(false) }>
+
     <ImageBackground source={{uri: "https://images.creativemarket.com/0.1.0/ps/8436210/1820/1214/m1/fpnw/wm1/m44uvmmozdjmkaqion0pl0hrji1w6bklbgvybnufi8zayuvvg6brwped97rcsa0n-.jpg?1590762533&s=a010240a0998e1429431994509765bc0"}} resizeMode= 'cover'>
 
     <View style={styles.container}>
@@ -80,10 +88,37 @@ if(auth.currentUser)
      
       <Text style={{fontSize:30,color:'white'}}>hello {currentUserData ? currentUserData.firstName : null} </Text>
 
-  
+      <View style={{marginTop: 30, width: '100%', height: '10%', alignItems: 'center', justifyContent: 'center'}}>
+      <TouchableOpacity onPress={()=> setIsTipsView(true)} style={{borderWidth: 3, width: '50%', height: '70%', borderRadius: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(255, 178, 71)'}}>
+        <Text style={{fontSize: 18, fontWeight: '600'}}>The daily tip</Text>
+      </TouchableOpacity>
+
+      </View>
+
+    <FadeInOut
+    visible={isTipsView}
+    scale={true}
+     style={{backgroundColor: '#fff' ,marginTop: 30, width: '90%', height: '15%', alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 355, padding: 10, borderRadius: 8}}>
+
+    {
+      tipsData.map((data, index) =>{
+        return(
+          
+
+         data.counter == 1 ? <Text style={{fontSize: 16, fontWeight: '600'}} key={index}>{data.tip}</Text>: null
+          
+        )
+      })
+    }
+
+    <TouchableOpacity style={{position: 'absolute', right: 1, top: 1, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsTipsView(false)}>
+    <Feather name="x-circle" size={24} color="#fff"/>
+    </TouchableOpacity>
+    </FadeInOut>
 
     </View>
     </ImageBackground>
+    </TouchableOpacity>
   )
 }
 else{
