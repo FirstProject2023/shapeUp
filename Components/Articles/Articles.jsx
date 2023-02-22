@@ -152,17 +152,10 @@ export default function Articles({navigation}) {
     const GetContent = () =>{
       if(isLoading){
   
-        // return <View style={styles.loading}><ActivityIndicator  size = 'large'/></View>
+        
         return(
-          <LottieView autoPlay source={require('../lottieAnimation/loading_resipec.json')}/>
+          <LottieView  autoPlay source={require('../lottieAnimation/loading_resipec.json')}/>
         )
-        // return (
-        //   <View style={[StyleSheet.absoluteFillObject, styles.loadingContainer]}>
-          
-        //     <LottieView style={{    height:100, width: 100}} source={require('../assets/2523-loading.json')} autoPlay loop />
-        //   </View>
-  
-        // )
       }
       // if(error){
       //   return <Text>{error}</Text>
@@ -274,7 +267,7 @@ export default function Articles({navigation}) {
     <View style={[styles.recipeFilterButton,{backgroundColor: '#d89b5c', flexDirection: 'row',alignItems: 'center'}]}>
       <Text style={[{ fontSize: 18, color: '#d89b5c', fontSize: 13, fontWeight: '600', color: '#fff'}]}>{item.strFilter}</Text>
     <TouchableOpacity style={{position: 'absolute', right: -10, top: -10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> removeFilter(item.strFilter, item.indexKind)}>
-    <Feather name="x-circle" size={22} color="#fff"/>
+    <Feather name="x-circle" size={24} color="#fff"/>
     </TouchableOpacity>
     </View>
     
