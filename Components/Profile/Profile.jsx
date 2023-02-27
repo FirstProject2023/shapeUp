@@ -98,24 +98,18 @@ useEffect(()=>{
 
 
 
-if(auth.currentUser){
+if(auth.currentUser)
+  {  
 
-  useEffect(() => {
-    
-    const currentUser = users.find((user) => user.email.toLowerCase() == auth.currentUser.email.toLowerCase());
-    
-    if (currentUser !== null) {
-
+    useEffect(() => {
       
-
-      console.log(currentUser);
-
+      const currentUser = users.find((user) => user && user.email ? user.email.toLowerCase() == auth.currentUser.email.toLowerCase() : null );
+      
+    if (currentUser !== null) {
       setCurrentUserData(currentUser);
     }
     
   }, [users]);
-
-  
 }
 const [isEndDate,setIsEndDate]=useState(0);
 const [massegeAboutWeeklyGoal,setMassegeAboutWeeklyGoal]=useState(0);
