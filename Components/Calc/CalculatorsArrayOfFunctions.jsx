@@ -20,20 +20,20 @@ export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeig
   let arrOfFunctions = [
     ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult ,setWhatCalcIs
       ,fatValue,setFatValue,carbohydratesValue,setCarbohydratesValue,proteinValue,setProteinValue,
-      finelText,setFinelText,caloriesValue,setCaloriesValue),
+      finelText,setFinelText,caloriesValue,setCaloriesValue,handleButtonClick),
     Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick),
-     BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,setIsMan),
-     SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs),
+     BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,setIsMan,handleButtonClick),
+     SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick),
        WhatIsFatter( finelText,setFinelText,setFinelTextB,calorValueA,calorValueB,setCalorValueA,setCalorValueB,
-        setHeightOfResView,setWhatCalcIs,setMoreCalory),
+        setHeightOfResView,setWhatCalcIs,setMoreCalory,handleButtonClick),
         ProteinIntakeEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult ,setWhatCalcIs
           ,fatValue,setFatValue,carbohydratesValue,setCarbohydratesValue,proteinValue,setProteinValue,
-          finelText,setFinelText,caloriesValue,setCaloriesValue),
-        BmiEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick),
-         BMREb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,setIsMan),
-         SavingStatusEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs),
+          finelText,setFinelText,caloriesValue,setCaloriesValue,handleButtonClick),
+        BmiEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick,handleButtonClick),
+         BMREb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,setIsMan,handleButtonClick),
+         SavingStatusEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick),
            WhatIsFatterEb( finelText,setFinelText,setFinelTextB,calorValueA,calorValueB,setCalorValueA,setCalorValueB,
-            setHeightOfResView,setWhatCalcIs,setMoreCalory)
+            setHeightOfResView,setWhatCalcIs,setMoreCalory,handleButtonClick)
       
       
       
@@ -199,7 +199,7 @@ else{
 }
 function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult ,setWhatCalcIs
     , fatValue,setFatValue,carbohydratesValue,setCarbohydratesValue,proteinValue,
-    setProteinValue,finelText,setFinelText,caloriesValue,setCaloriesValue ) {
+    setProteinValue,finelText,setFinelText,caloriesValue,setCaloriesValue,handleButtonClick ) {
 
      
   const {width} = useWindowDimensions();
@@ -290,7 +290,7 @@ function ChangeText()
  
     setCaloriesValue(data2.nutrients.ENERC_KCAL * (quantity/100));
    
-
+    handleButtonClick();
       setWhatCalcIs(0);
       setHeightOfResView(420);
     
@@ -383,7 +383,7 @@ quantities.map((quantity,i) => (
   )
 }
 
-function BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,setIsMan) {
+function BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,setIsMan,handleButtonClick) {
 
 
   const [manisFocused, setManisFocused] = useState(true);
@@ -469,6 +469,7 @@ else{
           setIsMan(0)
           setBmiSearchResult((447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)));    
         }
+        handleButtonClick();
     setWhatCalcIs(2);
     setHeightOfResView(400);
   }
@@ -564,7 +565,7 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
 )
 }
 
-function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,  ) {
+function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick  ) {
   const [manisFocused, setManisFocused] = useState(true);
   const [womanIsFocused, setWomanIsFocused] = useState(true);
   const [heightValue, setHeightValue] = useState(0);
@@ -682,6 +683,7 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
         
         if(bmiSearchResult){
         }
+        handleButtonClick();
           setWhatCalcIs(3)
           setHeightOfResView(400)
        
@@ -797,7 +799,8 @@ onValueChange={(itemValue) => setActivValue(itemValue)}
 </View>
 )
 }
-function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValueB,setCalorValueA,setCalorValueB,setHeightOfResView,setWhatCalcIs,setMoreCalory) {
+function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValueB,setCalorValueA,setCalorValueB,
+  setHeightOfResView,setWhatCalcIs,setMoreCalory,handleButtonClick) {
   const {width} = useWindowDimensions();
   const [data, setData] = useState([""]);
   
@@ -988,6 +991,7 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
           
          setFinelText(data1.label)
          setFinelTextB(data2.label)
+         handleButtonClick();
               setWhatCalcIs(4)
               setHeightOfResView(400);
             
@@ -1393,6 +1397,7 @@ function ChangeText()
 
     if(flagToGetFinelRes==1)
     {
+      handleButtonClick();
       setWhatCalcIs(5);
       setHeightOfResView(420);
     }
@@ -1478,7 +1483,7 @@ quantities.map((quantity,i) => (
   )
 }
 
-function BMREb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,setIsMan) {
+function BMREb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,setIsMan,handleButtonClick) {
 
 
   const [manisFocused, setManisFocused] = useState(true);
@@ -1564,6 +1569,7 @@ else{
           setIsMan(0)
           setBmiSearchResult((447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)));    
         }
+        handleButtonClick();
     setWhatCalcIs(7);
     setHeightOfResView(400);
   }
@@ -1659,7 +1665,7 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
 )
 }
 
-function SavingStatusEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,  ) {
+function SavingStatusEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick  ) {
   const [manisFocused, setManisFocused] = useState(true);
   const [womanIsFocused, setWomanIsFocused] = useState(true);
   const [heightValue, setHeightValue] = useState(0);
@@ -1777,6 +1783,7 @@ function SavingStatusEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBm
         
         if(bmiSearchResult){
         }
+        handleButtonClick();
           setWhatCalcIs(8)
           setHeightOfResView(400)
        
@@ -2018,6 +2025,7 @@ function WhatIsFatterEb(finelText,setFinelText,setFinelTextB,calorValueA,calorVa
            * (quantityB/100)) * 4 )
            +((newDataB.records[0].protein * (quantityB/100)) * 4));
           
+           handleButtonClick();
               setWhatCalcIs(9)
               setHeightOfResView(400);
             

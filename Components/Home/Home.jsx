@@ -28,7 +28,7 @@ export default function Home({ navigation }) {
 
     useEffect(() => {
       
-      const currentUser = users.find((user) => user.email.toLowerCase() == auth.currentUser.email.toLowerCase());
+      const currentUser = users.find((user) => user && user.email ? user.email.toLowerCase() == auth.currentUser.email.toLowerCase() : null );
       
     if (currentUser !== null) {
       setCurrentUserData(currentUser);
