@@ -99,17 +99,6 @@ useEffect(()=>{
 
 
 if(auth.currentUser)
-{  
-
-  useEffect(() => {
-    
-    const currentUser = users.find((user) => user && user.email ? user.email.toLowerCase() == auth.currentUser.email.toLowerCase() : null );
-    
-  if (currentUser !== null) {
-    setCurrentUserData(currentUser);
-  }
-  
-}, [users]);
   {  
 
     useEffect(() => {
@@ -121,7 +110,6 @@ if(auth.currentUser)
     }
     
   }, [users]);
-
 }
 const [isEndDate,setIsEndDate]=useState(0);
 const [massegeAboutWeeklyGoal,setMassegeAboutWeeklyGoal]=useState(0);
@@ -240,8 +228,6 @@ const days = diffInDays - (years * 365) - (months * 30);
     
     if (!result.cancelled) {
       setSelectedImage(result.uri);
-      await addDoc(userCollectionRef,{img: result.uri});
-     
     }
   };
 if(auth.currentUser)
