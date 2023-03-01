@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View,useWindowDimensions, TextInput, Button,Modal,TouchableHighlight,Alert,ScrollView,FlatList } from 'react-native'
+import { StyleSheet, Text, View,useWindowDimensions, TextInput, Button,Modal,TouchableHighlight,Alert,ScrollView,FlatList,TouchableOpacity } from 'react-native'
 import React, {  useState, useContext,useEffect,useRef } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native';
 import Slider from '@react-native-community/slider'
 import { FontAwesome5 } from '@expo/vector-icons';
 import {Picker} from '@react-native-picker/picker';
@@ -57,6 +56,12 @@ function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
 
   const [manisFocused, setManisFocused] = useState(true);
   const [womanIsFocused, setWomanIsFocused] = useState(true);
+
+  const [heightDisplay,setHeightDisplay]  = useState(false);
+  const [weightDisplay,setWeightDisplay]  = useState(false);
+
+  const numberOptions = Array.from({ length: 201 }, (_, index) => index + 100);
+  const numberOptions2 = Array.from({ length: 201 }, (_, index) => index + 20);
 
  
   const HandlePressOnMan = () => {
@@ -166,7 +171,27 @@ else{
     maximumTrackTintColor={oreng}
     thumbTintColor={oreng}   
     />
-    <Text >{(heightValue * 0.01).toFixed(2)}</Text>
+    
+    {
+      !heightDisplay ? <TouchableOpacity onPress={()=>setHeightDisplay(!heightDisplay)}
+      style={{borderColor:oreng,borderWidth:1,borderRadius:4,padding:2,width:40}}>
+      <Text style={{fontSize:10}} >{(heightValue * 0.01).toFixed(2)}{"\n"} cm</Text>
+      </TouchableOpacity>
+      :
+      <View style={{height:30, width:50,backgroundColor:oreng,borderRadius:5,marginTop:0}}>
+
+      <Picker
+      style={{ marginTop:-10}}
+      selectedValue={heightValue}
+      onValueChange={value => [setHeightValue(value),setHeightDisplay(!heightDisplay)]}
+      >
+      {numberOptions.map(number => (
+        <Picker.Item key={number} label={ (number * 0.01).toFixed(2).toString() + " cm"} value={number} />
+        ))}
+    </Picker>
+        </View>
+     
+    }
   </View>
 
     <Text style={{marginTop:20,color:oreng, fontSize:20,}}>Weight</Text>
@@ -182,7 +207,26 @@ else{
     thumbTintColor={oreng}   
     />
     <View style={{height:'100%'}}>
-    <Text >{weightValue.toFixed(0)}</Text>
+    {
+      !weightDisplay  ? <TouchableOpacity onPress={()=>setWeightDisplay(!weightDisplay)}
+       style={{borderColor:oreng,borderWidth:1,borderRadius:4,padding:2,width:40}}>
+      <Text style={{fontSize:10}} >{weightValue.toFixed(0).toString()} {"\n"} kg   </Text>
+      </TouchableOpacity>
+      :
+      <View style={{height:30, width:50,backgroundColor:oreng,borderRadius:5,marginTop:0}}>
+
+      <Picker
+      style={{ marginTop:-10}}
+      selectedValue={weightValue}
+      onValueChange={value => [setWeightValue(value),setWeightDisplay(!weightDisplay)]}
+      >
+      {numberOptions2.map(number => (
+        <Picker.Item key={number} label={number.toString() + " k"} value={number} />
+        ))}
+    </Picker>
+        </View>
+     
+    }
     </View>
   </View>
   
@@ -269,7 +313,18 @@ function ChangeText()
 
   function Res()
   {
- if(!quantity)
+    if(!data2.nutrients)
+     {
+       Alert.alert(
+         'Erro',
+         'Mast to ctype food ',
+         [
+           {text: 'OK', onPress: () => console.log('OK Pressed')},
+         ],
+         {cancelable: false},
+       );
+     }
+ else if(!quantity)
      {
        Alert.alert(
          'Erro',
@@ -392,6 +447,12 @@ function BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
   const [weightValue,setWeightValue] = useState(0);
 
   const [selectedAgeValue, setSelectedAgeValue] = useState('');
+
+  const [heightDisplay,setHeightDisplay]  = useState(false);
+  const [weightDisplay,setWeightDisplay]  = useState(false);
+
+  const numberOptions = Array.from({ length: 201 }, (_, index) => index + 100);
+  const numberOptions2 = Array.from({ length: 201 }, (_, index) => index + 20);
  
 
  
@@ -507,7 +568,8 @@ else{
 
     <Picker
   style={{
-    marginTop:17,
+  
+    marginTop:32,
   width: '70%',
   backgroundColor: oreng,
   marginBottom:20,
@@ -533,7 +595,26 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
     maximumTrackTintColor={oreng}
     thumbTintColor={oreng}    
     />
-    <Text >{(heightValue * 0.01).toFixed(2)}</Text>
+    {
+      !heightDisplay ? <TouchableOpacity onPress={()=>setHeightDisplay(!heightDisplay)}
+      style={{borderColor:oreng,borderWidth:1,borderRadius:4,padding:2,width:40}}>
+      <Text style={{fontSize:10}} >{(heightValue * 0.01).toFixed(2)}{"\n"} cm</Text>
+      </TouchableOpacity>
+      :
+      <View style={{height:30, width:50,backgroundColor:oreng,borderRadius:5,marginTop:0}}>
+
+      <Picker
+      style={{ marginTop:-10}}
+      selectedValue={heightValue}
+      onValueChange={value => [setHeightValue(value),setHeightDisplay(!heightDisplay)]}
+      >
+      {numberOptions.map(number => (
+        <Picker.Item key={number} label={ (number * 0.01).toFixed(2).toString() + " cm"} value={number} />
+        ))}
+    </Picker>
+        </View>
+     
+    }
   </View>
 
     <Text style={{marginTop:10, fontSize:20,color: oreng}}>Weight</Text>
@@ -549,7 +630,26 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
     thumbTintColor={oreng}   
     />
     <View style={{height:'100%'}}>
-    <Text>{weightValue.toFixed(0)}</Text>
+    {
+      !weightDisplay  ? <TouchableOpacity onPress={()=>setWeightDisplay(!weightDisplay)}
+       style={{borderColor:oreng,borderWidth:1,borderRadius:4,padding:2,width:40}}>
+      <Text style={{fontSize:10}} >{weightValue.toFixed(0).toString()} {"\n"} kg   </Text>
+      </TouchableOpacity>
+      :
+      <View style={{height:30, width:50,backgroundColor:oreng,borderRadius:5,marginTop:0}}>
+
+      <Picker
+      style={{ marginTop:-10}}
+      selectedValue={weightValue}
+      onValueChange={value => [setWeightValue(value),setWeightDisplay(!weightDisplay)]}
+      >
+      {numberOptions2.map(number => (
+        <Picker.Item key={number} label={number.toString() + " k"} value={number} />
+        ))}
+    </Picker>
+        </View>
+     
+    }
     </View>
   </View>
 
@@ -573,6 +673,12 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
   const [selectedAgeValue, setSelectedAgeValue] = useState(0);
   const [activValue,setActivValue] = useState(0);
   const [valueToMult,setValueToMult]=useState(0);
+
+  const [heightDisplay,setHeightDisplay]  = useState(false);
+  const [weightDisplay,setWeightDisplay]  = useState(false);
+
+  const numberOptions = Array.from({ length: 201 }, (_, index) => index + 100);
+  const numberOptions2 = Array.from({ length: 201 }, (_, index) => index + 20);
   
  
   const HandlePressOnMan = () => {
@@ -722,7 +828,7 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
 
     <Picker
   style={{
-    marginTop:17,
+    marginTop:7,
   width: '70%',
   backgroundColor: oreng,
   marginBottom:20,
@@ -768,7 +874,26 @@ onValueChange={(itemValue) => setActivValue(itemValue)}
     maximumTrackTintColor={oreng}
     thumbTintColor={oreng}   
     />
-    <Text >{(heightValue * 0.01).toFixed(2)}</Text>
+   {
+      !heightDisplay ? <TouchableOpacity onPress={()=>setHeightDisplay(!heightDisplay)}
+      style={{borderColor:oreng,borderWidth:1,borderRadius:4,padding:2,width:40}}>
+      <Text style={{fontSize:10}} >{(heightValue * 0.01).toFixed(2)}{"\n"} cm</Text>
+      </TouchableOpacity>
+      :
+      <View style={{height:30, width:50,backgroundColor:oreng,borderRadius:5,marginTop:0}}>
+
+      <Picker
+      style={{ marginTop:-10}}
+      selectedValue={heightValue}
+      onValueChange={value => [setHeightValue(value),setHeightDisplay(!heightDisplay)]}
+      >
+      {numberOptions.map(number => (
+        <Picker.Item key={number} label={ (number * 0.01).toFixed(2).toString() + " cm"} value={number} />
+        ))}
+    </Picker>
+        </View>
+     
+    }
   </View>
 
     <Text style={{ fontSize:13,color: oreng}}>Weight</Text>
@@ -783,9 +908,26 @@ onValueChange={(itemValue) => setActivValue(itemValue)}
     maximumTrackTintColor={oreng}
     thumbTintColor={oreng}    
     />
-    <View style={{height:'100%'}}>
-    <Text>{weightValue.toFixed(0)}</Text>
-    </View>
+   {
+      !weightDisplay  ? <TouchableOpacity onPress={()=>setWeightDisplay(!weightDisplay)}
+       style={{borderColor:oreng,borderWidth:1,borderRadius:4,padding:2,width:40}}>
+      <Text style={{fontSize:10}} >{weightValue.toFixed(0).toString()} {"\n"} kg   </Text>
+      </TouchableOpacity>
+      :
+      <View style={{height:30, width:50,backgroundColor:oreng,borderRadius:5,marginTop:0}}>
+
+      <Picker
+      style={{ marginTop:-10}}
+      selectedValue={weightValue}
+      onValueChange={value => [setWeightValue(value),setWeightDisplay(!weightDisplay)]}
+      >
+      {numberOptions2.map(number => (
+        <Picker.Item key={number} label={number.toString() + " k"} value={number} />
+        ))}
+    </Picker>
+        </View>
+     
+    }
   </View>
 
   <View style={styles.button}   >
@@ -956,8 +1098,18 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
       
         function Res()
         {
-
-          if(!quantityA)
+          if(!data2.nutrients || !data1.nutrients)
+          {
+            Alert.alert(
+              'Erro',
+              'Mast to ctype food ',
+              [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              {cancelable: false},
+            );
+          }
+          else if(!quantityA)
            {
              
              Alert.alert(
@@ -1178,6 +1330,11 @@ function BmiEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchRe
 
   const [manisFocused, setManisFocused] = useState(true);
   const [womanIsFocused, setWomanIsFocused] = useState(true);
+  const [heightDisplay,setHeightDisplay]  = useState(false);
+  const [weightDisplay,setWeightDisplay]  = useState(false);
+
+  const numberOptions = Array.from({ length: 201 }, (_, index) => index + 100);
+  const numberOptions2 = Array.from({ length: 201 }, (_, index) => index + 20);
 
  
   const HandlePressOnMan = () => {
@@ -1287,7 +1444,27 @@ else{
     maximumTrackTintColor={oreng}
     thumbTintColor={oreng}   
     />
-    <Text >{(heightValue * 0.01).toFixed(2)}</Text>
+    {
+      !heightDisplay ? <TouchableOpacity onPress={()=>setHeightDisplay(!heightDisplay)}
+      style={{borderColor:oreng,borderWidth:1,borderRadius:4,padding:2}}>
+      <Text style={{fontSize:10}} >{(heightValue * 0.01).toFixed(2)}{"\n"} סנטימטר</Text>
+      </TouchableOpacity>
+      :
+      <View style={{height:30, width:50,backgroundColor:oreng,borderRadius:5,marginTop:0}}>
+
+      <Picker
+      style={{ marginTop:-10}}
+      selectedValue={heightValue}
+      onValueChange={value => [setHeightValue(value),setHeightDisplay(!heightDisplay)]}
+      >
+      {numberOptions.map(number => (
+        <Picker.Item key={number} label={ (number * 0.01).toFixed(2).toString() + " cm"} value={number} />
+        ))}
+    </Picker>
+        </View>
+     
+    }
+
   </View>
 
     <Text style={{marginTop:20,color:oreng, fontSize:20,}}>משקל</Text>
@@ -1302,9 +1479,26 @@ else{
     maximumTrackTintColor={oreng}
     thumbTintColor={oreng}   
     />
-    <View style={{height:'100%'}}>
-    <Text >{weightValue.toFixed(0)}</Text>
-    </View>
+   {
+      !weightDisplay  ? <TouchableOpacity onPress={()=>setWeightDisplay(!weightDisplay)}
+       style={{borderColor:oreng,borderWidth:1,borderRadius:4,padding:2}}>
+      <Text style={{fontSize:10}} >{weightValue.toFixed(0).toString()} {"\n"} קילוגרם</Text>
+      </TouchableOpacity>
+      :
+      <View style={{height:30, width:50,backgroundColor:oreng,borderRadius:5,marginTop:0}}>
+
+      <Picker
+      style={{ marginTop:-10}}
+      selectedValue={weightValue}
+      onValueChange={value => [setWeightValue(value),setWeightDisplay(!weightDisplay)]}
+      >
+      {numberOptions2.map(number => (
+        <Picker.Item key={number} label={number.toString() + " k"} value={number} />
+        ))}
+    </Picker>
+        </View>
+     
+    }
   </View>
   
   <View style={styles.button}   >
@@ -1492,6 +1686,12 @@ function BMREb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchRe
   const [weightValue,setWeightValue] = useState(0);
 
   const [selectedAgeValue, setSelectedAgeValue] = useState('');
+
+  const [heightDisplay,setHeightDisplay]  = useState(false);
+  const [weightDisplay,setWeightDisplay]  = useState(false);
+
+  const numberOptions = Array.from({ length: 201 }, (_, index) => index + 100);
+  const numberOptions2 = Array.from({ length: 201 }, (_, index) => index + 20);
  
 
  
@@ -1602,12 +1802,12 @@ else{
     </View>
 
 
-<Text style={{color: oreng,fontSize:20,marginTop:10}}>הגיל שלך</Text>
+<Text style={{color: oreng,fontSize:20,marginTop:20}}>הגיל שלך</Text>
 
 
     <Picker
   style={{
-    marginTop:17,
+    marginTop:5,
   width: '70%',
   backgroundColor: oreng,
   marginBottom:20,
@@ -1633,7 +1833,26 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
     maximumTrackTintColor={oreng}
     thumbTintColor={oreng}    
     />
-    <Text >{(heightValue * 0.01).toFixed(2)}</Text>
+   {
+      !heightDisplay ? <TouchableOpacity onPress={()=>setHeightDisplay(!heightDisplay)}
+      style={{borderColor:oreng,borderWidth:1,borderRadius:4,padding:2}}>
+      <Text style={{fontSize:10}} >{(heightValue * 0.01).toFixed(2)}{"\n"} סנטימטר</Text>
+      </TouchableOpacity>
+      :
+      <View style={{height:30, width:50,backgroundColor:oreng,borderRadius:5,marginTop:0}}>
+
+      <Picker
+      style={{ marginTop:-10}}
+      selectedValue={heightValue}
+      onValueChange={value => [setHeightValue(value),setHeightDisplay(!heightDisplay)]}
+      >
+      {numberOptions.map(number => (
+        <Picker.Item key={number} label={ (number * 0.01).toFixed(2).toString() + " cm"} value={number} />
+        ))}
+    </Picker>
+        </View>
+     
+    }
   </View>
 
     <Text style={{marginTop:10, fontSize:20,color: oreng}}>משקל</Text>
@@ -1648,9 +1867,26 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
     maximumTrackTintColor={oreng}
     thumbTintColor={oreng}   
     />
-    <View style={{height:'100%'}}>
-    <Text>{weightValue.toFixed(0)}</Text>
-    </View>
+    {
+      !weightDisplay  ? <TouchableOpacity onPress={()=>setWeightDisplay(!weightDisplay)}
+       style={{borderColor:oreng,borderWidth:1,borderRadius:4,padding:2}}>
+      <Text style={{fontSize:10}} >{weightValue.toFixed(0).toString()} {"\n"} קילוגרם</Text>
+      </TouchableOpacity>
+      :
+      <View style={{height:30, width:50,backgroundColor:oreng,borderRadius:5,marginTop:0}}>
+
+      <Picker
+      style={{ marginTop:-10}}
+      selectedValue={weightValue}
+      onValueChange={value => [setWeightValue(value),setWeightDisplay(!weightDisplay)]}
+      >
+      {numberOptions2.map(number => (
+        <Picker.Item key={number} label={number.toString() + " k"} value={number} />
+        ))}
+    </Picker>
+        </View>
+     
+    }
   </View>
 
   <View style={styles.button}   >
@@ -1674,6 +1910,11 @@ function SavingStatusEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBm
   const [activValue,setActivValue] = useState(0);
   const [valueToMult,setValueToMult]=useState(0);
   
+  const [heightDisplay,setHeightDisplay]  = useState(false);
+  const [weightDisplay,setWeightDisplay]  = useState(false);
+
+  const numberOptions = Array.from({ length: 201 }, (_, index) => index + 100);
+  const numberOptions2 = Array.from({ length: 201 }, (_, index) => index + 20);
  
   const HandlePressOnMan = () => {
     if(womanIsFocused)
@@ -1868,7 +2109,26 @@ onValueChange={(itemValue) => setActivValue(itemValue)}
     maximumTrackTintColor={oreng}
     thumbTintColor={oreng}   
     />
-    <Text >{(heightValue * 0.01).toFixed(2)}</Text>
+     {
+      !heightDisplay ? <TouchableOpacity onPress={()=>setHeightDisplay(!heightDisplay)}
+      style={{borderColor:oreng,borderWidth:1,borderRadius:4,padding:2}}>
+      <Text style={{fontSize:10}} >{(heightValue * 0.01).toFixed(2)}{"\n"} סנטימטר</Text>
+      </TouchableOpacity>
+      :
+      <View style={{height:30, width:50,backgroundColor:oreng,borderRadius:5,marginTop:0}}>
+
+      <Picker
+      style={{ marginTop:-10}}
+      selectedValue={heightValue}
+      onValueChange={value => [setHeightValue(value),setHeightDisplay(!heightDisplay)]}
+      >
+      {numberOptions.map(number => (
+        <Picker.Item key={number} label={ (number * 0.01).toFixed(2).toString() + " cm"} value={number} />
+        ))}
+    </Picker>
+        </View>
+     
+    }
   </View>
 
     <Text style={{ fontSize:13,color: oreng}}>משקל</Text>
@@ -1883,9 +2143,26 @@ onValueChange={(itemValue) => setActivValue(itemValue)}
     maximumTrackTintColor={oreng}
     thumbTintColor={oreng}    
     />
-    <View style={{height:'100%'}}>
-    <Text>{weightValue.toFixed(0)}</Text>
-    </View>
+    {
+      !weightDisplay  ? <TouchableOpacity onPress={()=>setWeightDisplay(!weightDisplay)}
+       style={{borderColor:oreng,borderWidth:1,borderRadius:4,padding:2}}>
+      <Text style={{fontSize:10}} >{weightValue.toFixed(0).toString()} {"\n"} קילוגרם</Text>
+      </TouchableOpacity>
+      :
+      <View style={{height:30, width:50,backgroundColor:oreng,borderRadius:5,marginTop:0}}>
+
+      <Picker
+      style={{ marginTop:-10}}
+      selectedValue={weightValue}
+      onValueChange={value => [setWeightValue(value),setWeightDisplay(!weightDisplay)]}
+      >
+      {numberOptions2.map(number => (
+        <Picker.Item key={number} label={number.toString() + " k"} value={number} />
+        ))}
+    </Picker>
+        </View>
+     
+    }
   </View>
 
   <View style={styles.button}   >
@@ -2188,7 +2465,6 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.8,
     shadowRadius: 2,
-    
     elevation: 25,
    
       borderColor:oreng,
@@ -2222,7 +2498,7 @@ marginTop:15,
       width:"100%",
     },
     button:{
-      marginTop:8,
+      marginTop:38,
         width:'60%',
       
     },

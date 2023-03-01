@@ -140,5 +140,22 @@
 
       })
     }     */
+
+
+
+    <TouchableOpacity onPress={()=> setIsInstructions(true)} style={{position: 'absolute', left: 5, top: 5}}>
+    <AntDesign name="questioncircleo" size={25} color="black" />
+    </TouchableOpacity>
+
+    <FadeInOut
+    visible={isInstructions}
+    scale={true}
+     style={{backgroundColor: '#d4f1f9' ,marginTop: 30, width:'80%',  height: isInstructions ? '75%': 0, alignItems: 'center', position: 'absolute', top: 25, padding: 10, borderRadius: 8, zIndex: isInstructions ? 999: 0, borderWidth: 1}}>
+      
+    <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsInstructions(false)}>
+    <Feather name="x-circle" size={30} color="#fff"/>
+    </TouchableOpacity>
+    <Text style={{marginTop: 20, fontSize: 20, fontWeight: '600'}}>instructions</Text>
+    </FadeInOut>
   
 
