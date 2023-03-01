@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'; 
 import { Picker } from '@react-native-picker/picker';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
 // import {  } from '@react-native-community/datetimepicker';
 
 import LottieView from 'lottie-react-native';
@@ -28,6 +29,7 @@ export default function Login({ navigation }) {
   const [gender, setGender] = useState(1);
   const [height, setHeight] = useState(0);
   const [weight, setWeight] = useState(0);
+  const [daysDetails,setDaysDetails] = useState([]);
   const [birthDate, setBirthDate] = useState({
     day: null,
     month: null,
@@ -38,6 +40,11 @@ export default function Login({ navigation }) {
   //One of them
   const [WeeklyGoal, setWeeklyGoal] = useState(0);
   const [endDate, setEndDate] = useState({
+    day: null,
+    month: null,
+    year: null,
+  });
+  const [finelDate,setFinelDate] = useState({
     day: null,
     month: null,
     year: null,
@@ -115,20 +122,79 @@ useEffect(()=>{
 },[]);
 
 const hendelUpdateGool = async () => {
-if(WeeklyGoal==0){
-  setEndDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})
-}
-else{
 
+  let today = new Date(0) ;
+  let futureDate=0;
+  let diffInDays = 0;
+console.log("line 123");
+
+  if(WeeklyGoal==0)
+  {
+    setFinelDate(endDate);
+    setEndDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})
+    diffInDays = differenceInDays(today, endDate);
+  }
+  else{
+
+    let numberOfDaysToAdd = 0 ;
+  
+    if(WeeklyGoal == 1){
+
+       numberOfDaysToAdd = ( ((weight-weightGoal) / 0.25) * 7 )    
+    }
+    else if(WeeklyGoal == 2){
+       numberOfDaysToAdd = ( ((weight-weightGoal) / 0.5) * 7 )
+    }
+    else if(WeeklyGoal == 3){
+       numberOfDaysToAdd = ( ((weight-weightGoal) / 0.75) * 7 )
+    }
+    else if(WeeklyGoal == 4){
+       numberOfDaysToAdd = ( ((weight-weightGoal) / 1) * 7 )
+       
+    }
+   
+     today = new Date();
+     futureDate = new Date(today.getTime() + numberOfDaysToAdd * 24 * 60 * 60 * 1000);
+    
+    
+    setFinelDate({
+      day: futureDate.getDate(),
+      month: futureDate.getMonth()+1,
+      year: futureDate.getFullYear(),
+    })
+
+    diffInDays = differenceInDays(futureDate , today);
+  
+  }
+
+let daysArr=[];
+
+ for(let i = 0; i < diffInDays ; i++)
+{
+  daysArr[i] = {
+    
+    singleDate: new Date(today.getTime() + i * 24 * 60 * 60 * 1000),
+    activityLevel: 0,
+    dailyCalories: 0,
+    dailyFood:[],
+    isTarget: false,
+    sleep: 0,
+    steps: 0,
+    water: 0,
+  } 
+  
 }
+
+setDaysDetails(daysArr); 
+
 }
 
 const  handleSignUp =  async () => {
+  
 
   setGoalIsVisible(false);
    setFirstScreenIsVisible(true);
    
-console.log(weightGoal + " " + "test1");
     try{
         const user = await createUserWithEmailAndPassword(auth, email, password);
         await addDoc(userCollectionRef, {
@@ -141,11 +207,14 @@ console.log(weightGoal + " " + "test1");
             height: height,
             birthDate: birthDate,
             weightGoal: weightGoal,
-            WeeklyGoal: WeeklyGoal,
-            endDate: endDate,
+            WeeklyGoal: WeeklyGoal, 
+            endDate: endDate, 
+            finelDate: finelDate,
+            daysDetails: daysDetails,
           });
           setWeeklyGoal(0);
           setEndDate({day: null})
+          setFinelDate({day: null})
         console.log("a");
        
     } catch (error){
@@ -176,7 +245,6 @@ console.log(weightGoal + " " + "test1");
     <ImageBackground source={{uri: "https://d3h2k7ug3o5pb3.cloudfront.net/image/2020-11-23/3b788920-2d79-11eb-9dcd-8b2ef5358591.jpg"}} resizeMode='cover'>
 
     
-
     <View style={styles.loginContainer}>
     
     {/* <FadeInOut style={{ 

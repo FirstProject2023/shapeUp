@@ -16,6 +16,7 @@ import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'fir
 
 export default function Home({ navigation }) {
 
+
   const userCollectionRef = collection(db,"users");
   const [users,setUsers]=useState([]);
   const [currentUserData, setCurrentUserData] = useState(null);

@@ -151,12 +151,14 @@ for (let i = 30; i <= 200; i += 1) {
 //calc is age
 
 const date1 = new Date(`${currentUserData ? currentUserData.birthDate.month : null}/${currentUserData ? currentUserData.birthDate.day : null}/${currentUserData ? currentUserData.birthDate.year : null}`);
-const date2 = new Date('02/17/2023');
+const date2 = new Date();
 
 const diffInDays = differenceInDays(date2, date1);
 const years = Math.floor(diffInDays / 365);
 const months = Math.floor((diffInDays % 365) / 30);
 const days = diffInDays - (years * 365) - (months * 30);
+
+
 
   const hendleSingOut =()=>{
     auth
