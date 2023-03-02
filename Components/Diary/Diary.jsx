@@ -13,6 +13,12 @@ import { Feather } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
 
+
+
+
+
+
+
 export default function Diary({ navigation }) {
 
   const userCollectionRef = collection(db,"users");

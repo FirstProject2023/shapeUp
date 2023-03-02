@@ -126,7 +126,6 @@ const hendelUpdateGool = async () => {
   let today = new Date(0) ;
   let futureDate=0;
   let diffInDays = 0;
-console.log("line 123");
 
   if(WeeklyGoal==0)
   {
