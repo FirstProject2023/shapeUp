@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View,TouchableOpacity,ImageBackground, ScrollView } from 'react-native'
-import React, {useState, useEffect} from 'react'
+import { StyleSheet, Text, View,TouchableOpacity,ImageBackground, ScrollView, FlatList, useWindowDimensions, VirtualizedList } from 'react-native'
+import React, {useState, useEffect,PureComponent, memo } from 'react'
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc} from 'firebase/firestore';
 import {Picker} from '@react-native-picker/picker';
@@ -10,6 +10,8 @@ import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
+import { FontAwesome5 } from '@expo/vector-icons';
+import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
 
 
 
@@ -27,8 +29,12 @@ export default function Diary({ navigation }) {
   const [sleep, setSleep] = useState(0);
   const [activeValue, setActiveValue] = useState(0);
 
+  const[indexDay,setIndexDay] = useState(10);
+  const[copyIndexDay,setCopyIndexDay] = useState(indexDay);
 
-  
+
+  const {width} = useWindowDimensions();
+
   useEffect(()=>{
 
     const getUsers = async () => {
@@ -47,12 +53,37 @@ export default function Diary({ navigation }) {
         const currentUser = users.find((user) => user && user.email ? user.email.toLowerCase() == auth.currentUser.email.toLowerCase() : null );
         
       if (currentUser !== null) {
-        setCurrentUserData(currentUser);
+          setCurrentUserData(currentUser);
+
       }
       
     }, [users]);
+    
   }
 
+
+ /*  let indexDay = 0;
+  let counter = 0;
+  
+  if(currentUserData)
+  {
+    counter = currentUserData.daysDetails.length;  
+
+  let intervalId = setInterval(function() {
+  
+     indexDay = currentUserData.daysDetails.length - counter;          
+    console.log("real " + indexDay);
+
+    counter--;
+    // If the counter has reached 0, clear the interval
+    if (counter === 0) {
+      clearInterval(intervalId);
+      console.log("finel app");
+    }
+  
+  }, 4000);
+
+} */
 
   const updateWater = async (id, water, singleDay) => {
 
@@ -80,13 +111,32 @@ export default function Diary({ navigation }) {
     await updateDoc(userDoc , newFields)
   
   }
+  
+  const[index,setIndex]=useState();
+
+  
+
+  const now = Date.now();
+const currentDate = new Date(now);
 
 
+const futureDate = new Date(currentDate.setDate(currentDate.getDate() + 2));
+console.log(futureDate);
 
+useEffect(()=>
+{
+  if(currentUserData)
+  {
+    setIndex(differenceInDays(new Date(now), currentUserData.daysDetails[0].singleDate.toDate() ) )
+    /* setCopyIndexDay(index) */
+    console.log(index);
+    console.log(new Date(now));
+    console.log(currentUserData.daysDetails[0].singleDate.toDate());
+  }
 
+},[new Date(now)])
 
-
-
+ /*  const future = new Date(today.setDate(today.getDate() +4)); */
 
 if(auth.currentUser)
 {
@@ -96,9 +146,27 @@ if(auth.currentUser)
      {/* <ScrollView> */}
     <View style={styles.container}>
 
+    <View style={{backgroundColor: '#fff', width: '90%', height: '10%',marginTop: 10, borderRadius: 8 ,flexDirection:'row',justifyContent:'space-evenly',alignItems:'center'}}>
 
-    <View style={{backgroundColor: '#fff', width: '90%', height: '80%', marginTop: 20, alignItems: 'center', flexDirection: 'column', borderRadius: 8}}>
- 
+    {
+      copyIndexDay!=indexDay ?
+    <TouchableOpacity onPress={()=>setCopyIndexDay(copyIndexDay+1)} >
+    <FontAwesome5 name="arrow-circle-right" size={30} color="black" />
+    </TouchableOpacity>
+    : <View style={{width:30,height:30}}></View>
+
+    }
+
+      <Text>{copyIndexDay}</Text>
+
+    <TouchableOpacity onPress={()=>setCopyIndexDay(copyIndexDay-1)}>
+    <FontAwesome5 name="arrow-circle-left" size={30} color="black" />
+    </TouchableOpacity>
+
+    </View>
+
+
+    <View style={{backgroundColor: '#fff', width: '90%', height: '80%', marginTop: 5, alignItems: 'center', flexDirection: 'column', borderRadius: 8}}>
     <TouchableOpacity onPress={()=> setIsInstructions(true)} style={{position: 'absolute', left: 5, top: 5}}>
     <AntDesign name="questioncircleo" size={25} color="black" />
     </TouchableOpacity>
@@ -121,20 +189,23 @@ if(auth.currentUser)
     <Entypo name="cup" size={30} color="black" />
     </View>
 
-      <Text style={{fontSize: 16, fontWeight: '500'}}>how much water did you drink today?</Text>
 
+ {/*    <Text style={{fontSize: 16, fontWeight: '500',color:'red'}}>{indexDay ? indexDay : null }</Text> */}
+
+      <Text style={{fontSize: 16, fontWeight: '500'}}>how much water did you drink today?</Text>
+     
     <View style={{backgroundColor: '#d4f1f9', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, flexDirection: 'row'}}>
-    <TouchableOpacity  onPress={()=> [setWater(3), updateWater(currentUserData.id,3,0)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopStartRadius: 8, borderBottomLeftRadius: 8,
+    <TouchableOpacity  onPress={()=> [setWater(3), updateWater(currentUserData.id,3,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopStartRadius: 8, borderBottomLeftRadius: 8,
      alignItems: 'center', justifyContent: 'center',borderColor: '#11a1f9'}}>
       <Text style={{fontSize: 20, fontWeight: '500'}}>12-17</Text>
       <Entypo style={{position: 'absolute', bottom: 2, left: 2}} name="cup" size={19} color="black" />
     </TouchableOpacity>
-    <TouchableOpacity onPress={()=> [setWater(2), updateWater(currentUserData.id,2,0)]} style={{height: '100%', width: '33.3333333333%', borderTopWidth: 2, borderBottomWidth: 2, alignItems: 'center',
+    <TouchableOpacity onPress={()=> [setWater(2), updateWater(currentUserData.id,2,copyIndexDay)]} style={{height: '100%', width: '33.3333333333%', borderTopWidth: 2, borderBottomWidth: 2, alignItems: 'center',
      justifyContent: 'center', borderColor: '#11a1f9'}}>
     <Text style={{fontSize: 20, fontWeight: '500'}}>8-11</Text>
     <Entypo style={{position: 'absolute', bottom: 2, left: 2}} name="cup" size={19} color="black" />
     </TouchableOpacity>
-    <TouchableOpacity onPress={()=> [setWater(1), updateWater(currentUserData.id,1,0)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopEndRadius: 8, borderBottomRightRadius: 8,
+    <TouchableOpacity onPress={()=> [setWater(1), updateWater(currentUserData.id,1,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopEndRadius: 8, borderBottomRightRadius: 8,
      alignItems: 'center', justifyContent: 'center', borderColor: '#11a1f9'}}>
     <Text style={{fontSize: 20, fontWeight: '500'}}>5-7</Text>
     <Entypo style={{position: 'absolute', bottom: 2, left: 2}} name="cup" size={19} color="black" />
@@ -201,17 +272,16 @@ onValueChange={(itemValue) => setActiveValue(itemValue)}
     <Text style={{marginTop: 20, fontSize: 25, fontWeight: '600'}}>Food selection area</Text>
     </FadeInOut>
 
-
-    </View>
-
     {/* <View style={{backgroundColor: '#fff', width: '90%', height: '60%', marginTop: 15, alignItems: 'center', flexDirection: 'column', borderRadius: 8}}>
 
     </View> */}
 
+    </View>
 
-      
-      {/* <Text style={{fontSize:20,color:'white'}}>your email: {auth.currentUser?.email}</Text> */}
-     
+
+
+
+
 
     </View>
     {/* </ScrollView> */}
@@ -238,19 +308,6 @@ onPress={hendleSingOut}
     </ImageBackground>
   )
 }
-
-    // <View style={styles.container}>
-
-
-    // <Text style={{fontSize:30,color:'white'}}>Diary  </Text>
-    // <TouchableOpacity
-    // style={styles.loginButton}
-    // onPress={hendleSingOut}
-    // >
-    //     <Text style={{color: '#fff', fontSize: 20}}>Creat auser</Text>
-    // </TouchableOpacity>  
-
-    // </View>
 }
 
 const styles = StyleSheet.create({
