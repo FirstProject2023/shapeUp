@@ -178,7 +178,7 @@ sum += e.foodCalory ;
 const deleateFood = async(id,foodAmount,foodName,idNum)=>{
   
   
-console.log(idNum+"lklkl");
+
 const newArray =  currentUserData.daysDetails[0].dailyFood.map(item => {
   
 
