@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,TouchableOpacity,ImageBackground, ScrollView, FlatList, useWindowDimensions, VirtualizedList } from 'react-native'
+import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,useWindowDimensions,TextInput,Button,Alert,Modal,FlatList,Image } from 'react-native'
 import React, {useState, useEffect,PureComponent, memo } from 'react'
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc} from 'firebase/firestore';
@@ -11,10 +11,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
 import { FontAwesome5 } from '@expo/vector-icons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
-
-
-
 
 export default function Diary({ navigation }) {
 
@@ -31,6 +29,63 @@ export default function Diary({ navigation }) {
 
   const[indexDay,setIndexDay] = useState(10);
   const[copyIndexDay,setCopyIndexDay] = useState(indexDay);
+
+  const [foodName, setFoodName] = useState('');
+  const [foodAmount, setFoodAmount] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible2, setModalVisible2] = useState(false);
+  const [modalVisible3, setModalVisible3] = useState(false);
+
+  const [text, setText] = useState('');
+  const [quantity,setQuantity]=useState('');
+ 
+
+
+  const [data2, setData2] = useState([""]);  
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [finelText2,setFinelText2] = useState('');
+  const [showFlat,setShowFlat] = useState(1);
+
+  const handleSearch = (text) => {
+    setQuery(text);
+  };
+  const handleSearch2 = (text) => {
+    setFinelText2(query);
+    setQuery("");
+    setResults([]);
+
+  };
+
+  const handleChange = (item) => {
+    setFinelText2(item);
+    setQuery("");
+    setResults([]);
+  }
+
+  useEffect(() => {
+    
+    fetch(`https://api.edamam.com/auto-complete?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&q=${query}`)
+    .then((response) => response.json())
+    .then((data) => setResults(data))
+    .catch((error) => console.error(error));
+    
+  }, [query]);
+  
+   useEffect(() => {
+    fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&ingr=${finelText2}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setData2(data.parsed[0].food)
+        
+        
+      })
+      .catch(error => {
+        // handle the error
+      });
+    }, [finelText2]);
 
 
   const {width} = useWindowDimensions();
@@ -85,6 +140,79 @@ export default function Diary({ navigation }) {
 
 } */
 
+const updateDayleFood = async (id,foodAmount,foodName) => {
+
+  let size=currentUserData.daysDetails[0].dailyFood.length;
+
+
+  const userDoc = doc(db,"users",id)
+
+  let currDaysDetails = [...currentUserData.daysDetails]
+  let currFoodCalory= data2.nutrients.ENERC_KCAL ;
+
+console.log(currFoodCalory);
+  currDaysDetails[0].dailyFood[size] = {
+
+    foodAmount: Number(foodAmount),
+    foodName: foodName ,
+    foodCalory: Number(currFoodCalory * (foodAmount/100)),
+    id: Number(size+1)
+  };
+
+  let sum=0;
+
+  currDaysDetails[0].dailyFood.map((e)=>{
+   
+sum += e.foodCalory ;
+
+  })
+ 
+  currDaysDetails[0].dailyCalories= sum;
+ 
+  const newFields ={daysDetails: currDaysDetails } 
+
+  await updateDoc(userDoc , newFields)
+
+}
+
+const deleateFood = async(id,foodAmount,foodName,idNum)=>{
+  
+  
+console.log(idNum+"lklkl");
+const newArray =  currentUserData.daysDetails[0].dailyFood.map(item => {
+  
+
+   
+    if (item.id == idNum ) {
+      return null; // this will remove the item from the array
+    }
+    return item;
+
+  }).filter(Boolean); 
+  
+
+  const userDoc = doc(db,"users",id)
+
+  let currDaysDetails = [...currentUserData.daysDetails]
+
+  currDaysDetails[0].dailyFood=newArray;
+
+  let sum=0;
+ 
+  currDaysDetails[0].dailyFood.map((e,i)=>{
+
+sum += e.foodCalory ;
+
+  })
+
+  currDaysDetails[0].dailyCalories= sum;
+
+ 
+  const newFields ={daysDetails: currDaysDetails } 
+
+  await updateDoc(userDoc , newFields) 
+}
+
   const updateWater = async (id, water, singleDay) => {
 
     const userDoc = doc(db,"users",id)
@@ -121,7 +249,7 @@ const currentDate = new Date(now);
 
 
 const futureDate = new Date(currentDate.setDate(currentDate.getDate() + 2));
-console.log(futureDate);
+/* console.log(futureDate); */
 
 useEffect(()=>
 {
@@ -129,15 +257,31 @@ useEffect(()=>
   {
     setIndex(differenceInDays(new Date(now), currentUserData.daysDetails[0].singleDate.toDate() ) )
     /* setCopyIndexDay(index) */
-    console.log(index);
-    console.log(new Date(now));
-    console.log(currentUserData.daysDetails[0].singleDate.toDate());
+
+   /*  console.log(new Date(now));
+    console.log(currentUserData.daysDetails[0].singleDate.toDate()); */
+   /*  console.log(new Date(now))
+    console.log(index); */
+
   }
 
 },[new Date(now)])
 
+
+
  /*  const future = new Date(today.setDate(today.getDate() +4)); */
 
+
+ const handleSubmit = () => {
+
+  
+  updateDayleFood(currentUserData.id,foodAmount,(foodName || finelText2))
+
+   if (  foodAmount && (foodName || finelText2)) {
+    setModalVisible(true);
+   
+  }
+};
 if(auth.currentUser)
 {
   return (
@@ -264,12 +408,216 @@ onValueChange={(itemValue) => setActiveValue(itemValue)}
     <FadeInOut
     visible={isFoodArea}
     scale={true}
-     style={{backgroundColor: '#d4f1f9' ,marginTop: 30, width:'105%',  height: isFoodArea ? '95%': 0, alignItems: 'center', position: 'absolute', top: 35, padding: 10, borderRadius: 8, zIndex: isFoodArea ? 999 : 0, borderWidth: 1}}>
+     style={{backgroundColor: '#d4f1f9' ,marginTop: 0, width:'105%',  height: isFoodArea ? '119%': 0, alignItems: 'center', position: 'absolute', top:-53, padding: 10, borderRadius: 8, zIndex: isFoodArea ? 999 : 0, borderWidth: 1}}>
       
     <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsFoodArea(false)}>
     <Feather name="x-circle" size={30} color="#fff"/>
     </TouchableOpacity>
-    <Text style={{marginTop: 20, fontSize: 25, fontWeight: '600'}}>Food selection area</Text>
+    <Text style={{marginTop: 10, fontSize: 25, fontWeight: '600'}}>Food selection area</Text>
+ 
+      <View style={styles.inputContainer}>
+        <View style={styles.inputRow}>
+            <View style={{flexDirection:'row'}}>
+          <View style={styles.inputIcon}>
+          <MaterialCommunityIcons name="food-fork-drink" size={30} color="black" />
+          </View>
+          
+          <TextInput
+            style={styles.input}
+            value={query}
+        onChangeText={handleSearch}
+            placeholder="Enter food name"
+            placeholderTextColor="#BFBFBF"
+            />
+            </View>
+          
+        </View>
+       
+        {finelText2 ? <Text style={{fontSize:25,fontWeight: '600',marginBottom:2}}>{finelText2}</Text> :null}
+
+ <TouchableOpacity onPress={handleSearch2} style={{marginBottom:10, backgroundColor: '#3F3F3F',borderRadius:20,paddingVertical:10,alignItems:'center'}}>
+      <Text style={{fontSize:17,color:'white',fontWeight: 'bold'}}>Enter</Text>
+    </TouchableOpacity>          
+          <FlatList
+          data={results}
+          renderItem={({ item }) =>
+  <TouchableOpacity onPress={()=>handleChange(item)}>
+
+    <View style={{borderWidth:2,borderColor:'black',height:30,width:"100%",flexDirection:'row'}} >
+
+<Text>{item}</Text>
+ 
+  </View>
+
+  </TouchableOpacity>
+  }
+ 
+  bounces= {false}
+  
+/>
+
+
+
+        <View style={styles.inputRow}>
+          <View style={styles.inputIcon}>
+          <FontAwesome name="balance-scale" size={30} color="black" />
+          </View>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => setFoodAmount(text)}
+            value={foodAmount}
+            placeholder="Enter amount in grams"
+            keyboardType="numeric"
+            placeholderTextColor="#BFBFBF"
+          />
+        </View>
+          {foodAmount ? <Text style={{fontSize:25,fontWeight: '600',marginBottom:10}}>{foodAmount} gm</Text> :null}
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+      </View>
+      
+      <Modal 
+  visible={modalVisible} 
+  animationType="slide" 
+  transparent={true}
+>
+  <View style={styles.modalContainer}>
+    <View style={styles.modalContent}>
+      <Text style={styles.modalTitle}>Food Info</Text>
+      <View style={styles.modalTextContainer}>
+        <Text style={styles.modalText}>
+          You entered {foodAmount} grams of {foodName || finelText2}
+        </Text>
+      </View>
+      <TouchableOpacity 
+        style={styles.modalButton} 
+        onPress={() => {
+          setModalVisible(false);
+          setFoodName("");
+          setFoodAmount("");
+          setFinelText2("");
+        }}
+      >
+        <Text style={styles.modalButtonText}>Close</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</Modal>
+
+{
+currentUserData ?
+/* currentUserData.daysDetails[0].dailyFood.map((e)=>{
+
+  return (
+    <View style={styles.foodContainer}>
+    <Text style={styles.foodName}>{e.foodName}</Text>
+    <Text style={styles.foodAmount}>{e.foodAmount}g</Text>
+  </View>
+  )
+}) */
+
+<FlatList
+style={{marginTop:10,width:'80%'}}
+  data={currentUserData.daysDetails[0].dailyFood}
+  renderItem={({ item }) => (
+    <View style={styles.foodContainer}>
+        <View style={{alignItems:'center',justifyContent:'center',marginLeft:10}}>
+        <FontAwesome name="wpexplorer" size={35} color="black" onPress={()=>[setQuantity(item.foodAmount), setFinelText2(item.foodName),setModalVisible3(true)]} />
+        </View>
+      <View style={styles.foodInfo}>
+        <Text style={styles.foodName}>{item.foodName}</Text>
+        <Text style={styles.foodAmount}>{item.foodAmount}g</Text>
+      </View>
+      <View style={{alignItems:'center',justifyContent:'center'}}>
+        <AntDesign name="delete" size={24} color="black" onPress={()=>[deleateFood(currentUserData.id ,item.foodAmount,item.foodName,item.id), setModalVisible2(true)]} />
+      </View>
+    </View>
+  )}
+ 
+/>
+: 
+null
+}
+   
+<Modal 
+  visible={modalVisible2} 
+  animationType="slide" 
+  transparent={true}
+>
+  <View style={styles.modalContainer}>
+    <View style={styles.modalContent}>
+      <Text style={styles.modalTitle}>Item deleted !</Text>
+      <View style={styles.modalTextContainer}>
+        <Text style={styles.modalText}>
+        One item has been removed from the list
+        </Text>
+      </View>
+      <TouchableOpacity 
+        style={styles.modalButton} 
+        onPress={() => {
+          setModalVisible2(false);
+         
+        }}
+      >
+        <Text style={styles.modalButtonText}>Close</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</Modal>
+
+{data2 ? 
+  <Modal
+      visible={modalVisible3}
+      animationType='slide'
+      transparent={true}
+    >
+
+      <View style={styles.modalBackground}>
+        <View style={styles.modalContainer2}>
+          <TouchableOpacity style={{position: 'absolute', right: 4.5, top: 4.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=>setModalVisible3(false)}>
+          <Feather name="x-circle" size={30} color="#fff"/>
+          </TouchableOpacity>
+        <View style={{alignItems:'center',justifyContent:'center'}}>
+                  <Text style={{fontSize:30}}>{finelText2 ? finelText2 : null}</Text>
+              
+        </View>
+
+          {
+            data2.nutrients ?
+
+          <View style={styles.foodDetailsContainer}>
+            <View style={styles.detailCircleCarbsProtein}>
+              <Text style={styles.detailTitle}>Carbs</Text>
+              <Text style={styles.detailText}>{data2.nutrients.CHOCDF ? data2.nutrients.CHOCDF * (quantity/100).toFixed(1) : 0}</Text>
+            </View>
+           
+            <View style={styles.detailCircle}>
+              <Text style={styles.detailTitle}>Fats</Text>
+              <Text style={styles.detailText}>{data2.nutrients.FAT ? data2.nutrients.FAT * (quantity/100).toFixed(1) : null}</Text>
+            </View>
+
+            <View style={styles.detailCircleCarbsProtein}>
+              <Text style={styles.detailTitle}>Protein</Text>
+              <Text style={styles.detailText}>{data2.nutrients.PROCNT ? data2.nutrients.PROCNT * (quantity/100).toFixed(1) : null}</Text>
+            </View>
+
+            <View style={styles.detailCircleCalories}>
+              <Text style={styles.detailTitle}>Calories</Text>
+              <Text style={styles.detailText}>{data2.nutrients.ENERC_KCAL ? data2.nutrients.ENERC_KCAL * (quantity/100).toFixed(0) : null}</Text>
+            </View>
+          </View>
+            :
+            null
+            }
+        </View>
+      </View>
+    </Modal>
+:
+null}
+
+
+
     </FadeInOut>
 
     {/* <View style={{backgroundColor: '#fff', width: '90%', height: '60%', marginTop: 15, alignItems: 'center', flexDirection: 'column', borderRadius: 8}}>
@@ -311,6 +659,118 @@ onPress={hendleSingOut}
 }
 
 const styles = StyleSheet.create({
+  containerB: {
+    
+    backgroundColor: '#F2F2F2',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    marginTop: 15,
+    color: '#3F3F3F',
+  },
+  inputContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    padding: 20,
+    width: '90%',
+    maxWidth: 400,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+  },
+  inputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  inputIcon: {
+    backgroundColor: '#EDEDED',
+    borderRadius: 10,
+    padding: 10,
+    marginRight:15 },
+    input: {
+     
+      fontSize: 18,
+      color: '#3F3F3F',
+      marginLeft: 10,
+    },
+    inputIconText: {
+      fontSize: 20,
+    },
+    button: {
+      backgroundColor: '#3F3F3F',
+      borderRadius: 20,
+      paddingVertical: 12,
+    },
+    buttonText: {
+      color: '#FFFFFF',
+      fontWeight: 'bold',
+      fontSize: 18,
+      textAlign: 'center',
+    },
+    modalContainer: {
+      flex: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    modalContent: {
+      backgroundColor: '#FFFFFF',
+      borderRadius: 20,
+      padding: 20,
+      width: '80%',
+      alignItems: 'center',
+      elevation: 3,
+      shadowColor: '#000',
+      shadowOpacity: 0.2,
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+    },
+    modalTitle: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 20,
+      color: '#3F3F3F',
+    },
+    modalTextContainer: {
+      alignItems: 'center',
+      marginVertical: 10,
+    },
+    modalText: {
+      fontSize: 24,
+      color: '#3F3F3F',
+    },
+    modalTextHighlight: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: '#3F3F3F',
+      marginHorizontal: 5,
+    },
+    modalButton: {
+      backgroundColor: '#3F3F3F',
+      borderRadius: 20,
+      paddingVertical: 12,
+      paddingHorizontal: 25,
+      marginTop: 20,
+    },
+    modalButtonText: {
+      color: '#FFFFFF',
+      fontSize: 18,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    
+
   container: {
     backgroundColor: 'rgba(0,0,0,0.6)',
     width: '100%',
@@ -328,6 +788,112 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
 
+},
+listContainer: {
+  paddingHorizontal: 20,
+  paddingBottom: 20,
+},
+foodContainer: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginVertical: 10,
+  padding: 10,
+  borderRadius: 10,
+  backgroundColor: '#fff',
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.23,
+  shadowRadius: 2.62,
+  elevation: 4,
+},
+foodInfo: {
+ 
+  flex: 1,
+  marginRight: 40,
+},
+foodName: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  marginBottom: 5,
+},
+foodAmount: {
+  fontSize: 16,
+  color: '#888',
+},
+modalBackground: {
+  flex: 1,
+  backgroundColor: 'rgba(0,0,0,0.5)',
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+modalContainer2: {
+  backgroundColor: '#fff',
+  borderRadius: 10,
+  padding: 20,
+  minWidth: '80%',
+},
+closeButton: {
+  alignSelf: 'flex-end',
+  marginBottom: 10,
+  padding: 5,
+  borderRadius: 20,
+  backgroundColor: '#ddd',
+  width: 30,
+  height: 30,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+closeButtonText: {
+  fontWeight: 'bold',
+  fontSize: 16,
+  color: '#333',
+},
+foodDetailsContainer: {
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  justifyContent: 'space-evenly',
+  marginTop: 20,
+},
+detailCircle: {
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#eee',
+  borderRadius: 50,
+  width: 100,
+  height: 100,
+  marginBottom: 40,
+},
+detailCircleCalories: {
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#eeb',
+  borderRadius: 50,
+  width: 100,
+  height: 100,
+},
+detailCircleCarbsProtein: {
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#eee',
+  borderRadius: 50,
+  width: 100,
+  height: 100,
+  marginBottom: 0,
+  marginTop:10
+},
+detailTitle: {
+  fontWeight: 'bold',
+  fontSize: 14,
+  color: '#333',
+  marginBottom: 5,
+},
+detailText: {
+  fontSize: 16,
+  color: '#666',
 },
 
 })

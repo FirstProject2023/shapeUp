@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View,useWindowDimensions, TextInput, Button,Modal,TouchableHighlight,Alert,ScrollView,FlatList,TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View,useWindowDimensions, TextInput, Button,Modal,TouchableHighlight,Alert,
+  ScrollView,FlatList,TouchableOpacity } from 'react-native'
 import React, {  useState, useContext,useEffect,useRef } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider'
@@ -364,7 +365,13 @@ function ChangeText()
       <Ionicons name="ios-pizza-outline" size={34} color="black" />
       <FontAwesome5 name="hamburger" size={34} color="black" />
       </View>
-      <Text style={{marginTop:19}}>Here you will type the name of the product</Text>
+      <Text style={{marginTop:19}}>Here you will type the name of the product </Text>
+      
+
+{/*  <TouchableOpacity style={{height: 40,marginRight:200}}>
+  <Button  title='result' color='#0a2946' onPress={Res} style={{height: 150}}/> 
+  </TouchableOpacity> */}
+      
       <TextInput
       placeholder=' Enter here ...' 
       style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'70%',marginTop:10}}
@@ -398,6 +405,9 @@ function ChangeText()
     null
 
  }
+
+
+
     
  
 
@@ -1514,7 +1524,7 @@ else{
 }
 function ProteinIntakeEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult ,setWhatCalcIs
     , fatValue,setFatValue,carbohydratesValue,setCarbohydratesValue,proteinValue,
-    setProteinValue,finelText,setFinelText,caloriesValue,setCaloriesValue ) {
+    setProteinValue,finelText,setFinelText,caloriesValue,setCaloriesValue,handleButtonClick ) {
   const {width} = useWindowDimensions();
 
   const [text, setText] = useState('');
