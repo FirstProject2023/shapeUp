@@ -14,6 +14,7 @@ import Home from "../Home/Home";
 import Articles  from "../Articles/Articles";
 import Profile from "../Profile/Profile";
 import Login from '../Login/Login';
+import { TouchableOpacity } from 'react-native';
 
 
 export default function Nav() {

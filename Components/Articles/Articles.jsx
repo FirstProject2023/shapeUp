@@ -114,7 +114,8 @@ export default function Articles({navigation}) {
     let funcArticlesData = [...articlesData];
 
     if(articlesCategory != "all"){
-      funcArticlesData = funcArticlesData.filter((article)=>{
+      funcArticlesData = funcArticlesData.filter((article, i)=>{
+        
         return article.topic.toLowerCase() == articlesCategory.toLowerCase();
       });
 

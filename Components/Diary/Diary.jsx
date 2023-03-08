@@ -32,7 +32,7 @@ export default function Diary({ navigation }) {
   const [sleep, setSleep] = useState(0);
   const [activeValue, setActiveValue] = useState(0);
 
-  const[indexDay,setIndexDay] = useState(10);
+  const[indexDay,setIndexDay] = useState(9);
   const[copyIndexDay,setCopyIndexDay] = useState(indexDay);
 
 
@@ -114,6 +114,20 @@ export default function Diary({ navigation }) {
     await updateDoc(userDoc , newFields)
   
   }
+
+  const updateActivityLevel = async (id, level, singleDay) => {
+
+    const userDoc = doc(db,"users",id)
+
+    let currDaysDetails = [...currentUserData.daysDetails]
+  
+    currDaysDetails[singleDay].activityLevel = level;
+
+    const newFields ={daysDetails: currDaysDetails } 
+
+    await updateDoc(userDoc , newFields)
+  
+  }
   
   const[index,setIndex]=useState();
 
@@ -154,17 +168,21 @@ if(auth.currentUser)
     {
       copyIndexDay!=indexDay ?
     <TouchableOpacity onPress={()=>setCopyIndexDay(copyIndexDay+1)} >
-    <FontAwesome5 name="arrow-circle-right" size={30} color="black" />
+    <FontAwesome5 name="arrow-circle-right" size={34} color="black" />
     </TouchableOpacity>
-    : <View style={{width:30,height:30}}></View>
+    : <View style={{width:34,height:34}}></View>
 
     }
 
-      <Text>{copyIndexDay}</Text>
+      <Text>{(copyIndexDay + 1)}</Text>
 
+    {  
+      copyIndexDay > 0 ?
     <TouchableOpacity onPress={()=>setCopyIndexDay(copyIndexDay-1)}>
-    <FontAwesome5 name="arrow-circle-left" size={30} color="black" />
+    <FontAwesome5 name="arrow-circle-left" size={34} color="black" />
     </TouchableOpacity>
+    : <View style={{width:34,height:34}}></View>
+    }
 
     </View>
 
@@ -199,39 +217,39 @@ if(auth.currentUser)
      
     <View style={{backgroundColor: '#d4f1f9', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, flexDirection: 'row'}}>
     <TouchableOpacity  onPress={()=> [setWater(3), updateWater(currentUserData.id,3,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopStartRadius: 8, borderBottomLeftRadius: 8,
-     alignItems: 'center', justifyContent: 'center',borderColor: '#11a1f9'}}>
-      <Text style={{fontSize: 20, fontWeight: '500'}}>12-17</Text>
-      <Entypo style={{position: 'absolute', bottom: 2, left: 2}} name="cup" size={19} color="black" />
+     alignItems: 'center', justifyContent: 'center',borderColor: '#11a1f9', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 3 ? '#11a1f9' : '#d4f1f9' : null}}>
+      <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 3 ? '#fff' : '#000' : null}}>12-17</Text>
+      <Entypo style={{position: 'absolute', bottom: 2, left: 2}} name="cup" size={19} color= {currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 3 ? '#fff' : '#000' : null} />
     </TouchableOpacity>
     <TouchableOpacity onPress={()=> [setWater(2), updateWater(currentUserData.id,2,copyIndexDay)]} style={{height: '100%', width: '33.3333333333%', borderTopWidth: 2, borderBottomWidth: 2, alignItems: 'center',
-     justifyContent: 'center', borderColor: '#11a1f9'}}>
-    <Text style={{fontSize: 20, fontWeight: '500'}}>8-11</Text>
-    <Entypo style={{position: 'absolute', bottom: 2, left: 2}} name="cup" size={19} color="black" />
+     justifyContent: 'center', borderColor: '#11a1f9', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 2 ? '#11a1f9' : '#d4f1f9' : null}}>
+    <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 2 ? '#fff' : '#000' : null}}>8-11</Text>
+    <Entypo style={{position: 'absolute', bottom: 2, left: 2}} name="cup" size={19} color= {currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 2 ? '#fff' : '#000' : null} />
     </TouchableOpacity>
     <TouchableOpacity onPress={()=> [setWater(1), updateWater(currentUserData.id,1,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopEndRadius: 8, borderBottomRightRadius: 8,
-     alignItems: 'center', justifyContent: 'center', borderColor: '#11a1f9'}}>
-    <Text style={{fontSize: 20, fontWeight: '500'}}>5-7</Text>
-    <Entypo style={{position: 'absolute', bottom: 2, left: 2}} name="cup" size={19} color="black" />
+     alignItems: 'center', justifyContent: 'center', borderColor: '#11a1f9', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 1 ? '#11a1f9' : '#d4f1f9' : null}}>
+    <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 1 ? '#fff' : '#000' : null}}>5-7</Text>
+    <Entypo style={{position: 'absolute', bottom: 2, left: 2}} name="cup" size={19} color= {currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 1 ? '#fff' : '#000' : null} />
     </TouchableOpacity>
     </View>
 
     <Text style={{fontSize: 16, fontWeight: '500', marginTop: 10}}>How many hours did you sleep last night?</Text>
 
     <View style={{backgroundColor: '#d4f1f9', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, flexDirection: 'row'}}>
-    <TouchableOpacity  onPress={()=> [setSleep(3),updateSleep(currentUserData.id,3,0)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopStartRadius: 8, borderBottomLeftRadius: 8,
-     alignItems: 'center', justifyContent: 'center', borderColor: '#11a1f9'}}>
-      <Text style={{fontSize: 20, fontWeight: '500'}}>8-11</Text>
-      <FontAwesome style={{position: 'absolute', bottom: 2, left: 2}} name="bed" size={19} color="black" />
+    <TouchableOpacity  onPress={()=> [setSleep(3),updateSleep(currentUserData.id,3,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopStartRadius: 8, borderBottomLeftRadius: 8,
+     alignItems: 'center', justifyContent: 'center', borderColor: '#11a1f9', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 3 ? '#11a1f9' : '#d4f1f9' : null}}>
+      <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 3 ? '#fff' : '#000' : null}}>8-11</Text>
+      <FontAwesome style={{position: 'absolute', bottom: 2, left: 2}} name="bed" size={19} color= {currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 3 ? '#fff' : '#000' : null} />
     </TouchableOpacity>
-    <TouchableOpacity  onPress={()=> [setSleep(2),updateSleep(currentUserData.id,2,0)]} style={{height: '100%', width: '33.3333333333%', borderTopWidth: 2, borderBottomWidth: 2, alignItems: 'center',
-     justifyContent: 'center', borderColor: '#11a1f9'}}>
-    <Text style={{fontSize: 20, fontWeight: '500'}}>7-9</Text>
-    <FontAwesome style={{position: 'absolute', bottom: 2, left: 2}} name="bed" size={19} color="black" />
+    <TouchableOpacity  onPress={()=> [setSleep(2),updateSleep(currentUserData.id,2,copyIndexDay)]} style={{height: '100%', width: '33.3333333333%', borderTopWidth: 2, borderBottomWidth: 2, alignItems: 'center',
+     justifyContent: 'center', borderColor: '#11a1f9', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 2 ? '#11a1f9' : '#d4f1f9' : null}}>
+    <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 2 ? '#fff' : '#000' : null}}>7-9</Text>
+    <FontAwesome style={{position: 'absolute', bottom: 2, left: 2}} name="bed" size={19} color= {currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 2 ? '#fff' : '#000' : null} />
     </TouchableOpacity>
-    <TouchableOpacity onPress={()=> [setSleep(1),updateSleep(currentUserData.id,1,0)]} style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopEndRadius: 8, borderBottomRightRadius: 8,
-     alignItems: 'center', justifyContent: 'center', borderColor: '#11a1f9'}}>
-    <Text style={{fontSize: 20, fontWeight: '500'}}>3-6</Text>
-    <FontAwesome style={{position: 'absolute', bottom: 2, left: 2}} name="bed" size={19} color="black" />
+    <TouchableOpacity onPress={()=> [setSleep(1),updateSleep(currentUserData.id,1,copyIndexDay)]} style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopEndRadius: 8, borderBottomRightRadius: 8,
+     alignItems: 'center', justifyContent: 'center', borderColor: '#11a1f9', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 1 ? '#11a1f9' : '#d4f1f9' : null}}>
+    <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 1 ? '#fff' : '#000' : null}}>3-6</Text>
+    <FontAwesome style={{position: 'absolute', bottom: 2, left: 2}} name="bed" size={19} color= {currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 1 ? '#fff' : '#000' : null} />
     </TouchableOpacity>
     </View>
     
@@ -239,21 +257,23 @@ if(auth.currentUser)
 
     <View style={{backgroundColor: '#d4f1f9', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, alignItems: 'center', justifyContent: 'center'}}>
     <Picker
+    
   style={{
     marginTop:17,
   width: '96%',
   backgroundColor: '#d4f1f9',
   marginBottom:20,
 }}
-selectedValue={activeValue}
-onValueChange={(itemValue) => setActiveValue(itemValue)}
+selectedValue={currentUserData ? currentUserData.daysDetails[copyIndexDay].activityLevel : null}
+onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(currentUserData.id, itemValue, copyIndexDay)]}
 >
+<Picker.Item label='Select an activity level' value={0}/>
 <Picker.Item  label='Basic' value={1} />
-<Picker.Item  label='Little or no activity - office work at a desk' value={1} />
-<Picker.Item  label='Little activity - 1-3 times a week' value={2} />
-<Picker.Item  label='Average activity - 3-5 times a week' value={3} />
-<Picker.Item  label='Intensive activity - every day' value={4} />
-<Picker.Item  label='Intense activity combined with physical work - every day' value={5} />
+<Picker.Item  label='Little or no activity - office work at a desk' value={2} />
+<Picker.Item  label='Little activity - 1-3 times a week' value={3} />
+<Picker.Item  label='Average activity - 3-5 times a week' value={4} />
+<Picker.Item  label='Intensive activity - every day' value={5} />
+<Picker.Item  label='Intense activity combined with physical work - every day' value={6}/>
 
 </Picker>
 
@@ -330,7 +350,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
-
 },
 
 })

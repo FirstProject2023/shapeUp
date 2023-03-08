@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native'
+import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity, TouchableHighlight, TouchableHighlightComponent } from 'react-native'
 import React,{useState,useEffect} from 'react';
 import { Entypo } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
