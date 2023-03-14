@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity, TouchableHighlight, TouchableHighlightComponent } from 'react-native'
+import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity, TouchableHighlight, TouchableHighlightComponent, StatusBar } from 'react-native'
 import React,{useState,useEffect} from 'react';
 import { Entypo } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
@@ -73,7 +73,7 @@ if(auth.currentUser)
 {
   return (
     <TouchableOpacity activeOpacity={1} onPress={()=> setIsTipsView(false) }>
-
+    <StatusBar backgroundColor="rgb(255, 178, 71)" />
     <ImageBackground source={{uri: "https://images.creativemarket.com/0.1.0/ps/8436210/1820/1214/m1/fpnw/wm1/m44uvmmozdjmkaqion0pl0hrji1w6bklbgvybnufi8zayuvvg6brwped97rcsa0n-.jpg?1590762533&s=a010240a0998e1429431994509765bc0"}} resizeMode= 'cover'>
 
     <View style={styles.container}>
@@ -135,6 +135,7 @@ else{
   return (
     
     <ImageBackground source={{uri: "https://images.creativemarket.com/0.1.0/ps/8436210/1820/1214/m1/fpnw/wm1/m44uvmmozdjmkaqion0pl0hrji1w6bklbgvybnufi8zayuvvg6brwped97rcsa0n-.jpg?1590762533&s=a010240a0998e1429431994509765bc0"}} resizeMode= 'cover'>
+    <StatusBar backgroundColor="rgb(255, 178, 71)" />
     <View style={styles.container}>
 
 

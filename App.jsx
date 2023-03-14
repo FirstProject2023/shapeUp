@@ -25,7 +25,7 @@ export default function App() {
 <NavigationContainer>
   <Stack.Navigator>
     <Stack.Screen name='Login' component={Login} options={{
-      title: "Login Screen",
+      headerShown: false,
     }}/>
     <Stack.Screen name='Transition' component={Transition} options={{
       // headerBackVisible: false,

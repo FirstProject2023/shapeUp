@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert, Button } from 'react-native'
+import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert, Button, StatusBar } from 'react-native'
 import React, { useEffect, useState } from 'react'
 // import { TextInput } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons'; 
@@ -52,16 +52,22 @@ export default function Login({ navigation }) {
     month: null,
     year: null,
   });
+  const [calToLoseDay, setCalToLoseDay] = useState(0);
+  const [averageActivity, setAverageActivity] = useState(1);
 
+  const [basicBalancePoint, setBasicBalancePoint] = useState(1);
+  const [basicDayTarget, setBasicDayTarget] = useState(1);
+  
   const [users,setUsers]=useState([]);
-
-    const [animationStartIsVisible, setAnimationStartIsVisible] = useState(true);
+  
+  const [animationStartIsVisible, setAnimationStartIsVisible] = useState(true);
     const [firstScreenIsVisible, setFirstScreenIsVisible] = useState(true);
     const [loginIsVisible, setLoginIsVisible] = useState(false);
     const [signUpIsVisible, setSignUpIsVisible] = useState(false);
     const [nameIsVisible, setNameIsVisible] = useState(false);
     const [genderIsVisible, setGenderIsVisible] = useState(false);
     const [heightAndWeightIsVisible, setHeightAndWeightIsVisible] = useState(false);
+    const [averageActivityIsVisible, setAverageActivityIsVisible] = useState(false);
     const [birthDateIsVisible, setBirthDateIsVisible] = useState(false);
 
       //One of them
@@ -194,6 +200,8 @@ let daysArr=[];
     singleDate: new Date(today.getTime() + i * 24 * 60 * 60 * 1000),
     activityLevel: 0,
     dailyCalories: 0,
+    dailyBalancePoint: 0,
+    dayTarget: 0,
     dailyFood:[],
     dailyCreationFood:[],
     isTarget: false,
@@ -206,6 +214,10 @@ let daysArr=[];
 
 setDaysDetails(daysArr); 
 
+setCalToLoseDay(Math.floor(((weight - weightGoal) * 7700) / diffInDays));
+setBasicBalancePoint(Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     averageActivity)));
+    setBasicDayTarget(basicBalancePoint - calToLoseDay);
+
 }
 
 const  handleSignUp =  async () => {
@@ -213,6 +225,7 @@ const  handleSignUp =  async () => {
 
   setGoalIsVisible(false);
    setFirstScreenIsVisible(true);
+   
    
     try{
         const user = await createUserWithEmailAndPassword(auth, email, password);
@@ -230,6 +243,9 @@ const  handleSignUp =  async () => {
             endDate: endDate, 
             finelDate: finelDate,
             daysDetails: daysDetails,
+            calToLoseDay: calToLoseDay,
+            averageActivity: averageActivity,
+
           });
           setWeeklyGoal(0);
           setEndDate({day: null})
@@ -255,14 +271,19 @@ const  handleSignUp =  async () => {
     }
 
     
-    const removeStartAnimation = () => {
+    const removeStartAnimation = (activity) => {
       setTimeout(() => {[setAnimationStartIsVisible(false), setFirstScreenIsVisible(true)]}, 2000);
+  }
+
+  const BalanceEndTargetCreate = () => {
+    setBasicBalancePoint(Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     activity)));
+    setBasicDayTarget(basicBalancePoint);
   }
    
   return (
     
     <ImageBackground source={{uri: "https://d3h2k7ug3o5pb3.cloudfront.net/image/2020-11-23/3b788920-2d79-11eb-9dcd-8b2ef5358591.jpg"}} resizeMode='cover'>
-
+    <StatusBar backgroundColor="rgb(255, 178, 71)" />
     
     <View style={styles.loginContainer}>
     
@@ -608,7 +629,7 @@ const  handleSignUp =  async () => {
     <View style={styles.buttonContainer}>
     <TouchableOpacity
     style={[styles.loginButton, { marginTop: 40}]}
-    onPress={()=> [setHeightAndWeightIsVisible(false), setBirthDateIsVisible(true)]}
+    onPress={()=> [setHeightAndWeightIsVisible(false), setAverageActivityIsVisible(true)]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 19, fontWeight: '800'}}>Continue</Text>
     </TouchableOpacity>
@@ -616,6 +637,66 @@ const  handleSignUp =  async () => {
 
     </View>
     </FadeInOut>
+
+
+
+    <FadeInOut style={{ 
+      //averageActivity
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 160,
+        zIndex: averageActivityIsVisible ?  999 : 0,}} 
+
+        visible={averageActivityIsVisible}
+        duration={!averageActivityIsVisible ?  400 : 800}
+        scale={true}>
+
+    <TouchableOpacity onPress={()=> [setAverageActivityIsVisible(false), setHeightAndWeightIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
+      <Entypo  name="back" size={40} color="#fff" />
+    </TouchableOpacity>
+
+
+    <Text style={{fontSize: 20, color: '#fff', marginTop: 20}}>How active are you usually?</Text>
+    <Picker
+    style={{
+    marginTop: 30,
+    width: '70%',
+    backgroundColor: 'rgb(255, 178, 71)',
+    marginBottom:20,
+  }}
+  selectedValue={averageActivity}
+  onValueChange={(itemValue) => [setAverageActivity(itemValue)]}
+  >
+    <Picker.Item  label='Basic' value={0} />
+    <Picker.Item  label='Little or no activity - office work at a desk' value={1.2} />
+    <Picker.Item  label='Little activity - 1-3 times a week' value={1.375} />
+    <Picker.Item  label='Average activity - 3-5 times a week' value={1.55} />
+    <Picker.Item  label='Intensive activity - every day' value={1.725} />
+    <Picker.Item  label='Intense activity combined with physical work - every day' value={1.9} />
+
+    </Picker>
+
+    <View style={styles.buttonContainer}>
+      <TouchableOpacity
+       style={[styles.loginButton, { marginTop: 40}]}
+       onPress={()=> [setAverageActivityIsVisible(false), setBirthDateIsVisible(true)]}
+       >
+        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 19, fontWeight: '800'}}>Continue</Text>
+      </TouchableOpacity>
+
+
+    </View>
+    </FadeInOut>
+
+
+
+
+
+
+
+
 
 
     <FadeInOut style={{ 
@@ -631,11 +712,11 @@ const  handleSignUp =  async () => {
         scale={true}>
 
     <View style={styles.inputsContainer}>
-     <TouchableOpacity onPress={()=> [setBirthDateIsVisible(false), setHeightAndWeightIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
+     <TouchableOpacity onPress={()=> [setBirthDateIsVisible(false), setAverageActivityIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
     <Entypo  name="back" size={40} color="#fff" />
     </TouchableOpacity>
 
-      <TouchableOpacity onPress={showDatepicker} style={{width: '75%', height: '30%', backgroundColor: 'rgba(255, 178, 71,0.9)', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginTop: 20}}>
+      <TouchableOpacity onPress={showDatepicker} style={{width: '75%', height: '30%', backgroundColor: 'rgba(255, 178, 71,0.9)', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginTop: 40}}>
       <Text style={{color: '#fff', fontSize: 18, fontWeight: '700'}}>Press to select your birth date</Text>
       </TouchableOpacity>
 

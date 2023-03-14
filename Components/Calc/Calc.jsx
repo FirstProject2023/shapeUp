@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Button ,TouchableOpacity,ScrollView,Modal,modelVisible,onScroll  } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Button ,TouchableOpacity,ScrollView,Modal,modelVisible  } from 'react-native'
 import FadeInOut from 'react-native-fade-in-out';
 import React, { useEffect, useState,useRef } from 'react'
 import CalculatorsArrayOfFunctions from './CalculatorsArrayOfFunctions'
@@ -115,6 +115,7 @@ const[showSubjects,setShowSubjects] = useState();
 
 <ScrollView ref={scrollViewRef}>
 
+<StatusBar backgroundColor="rgb(255, 178, 71)" />
 <View style={{height:1000}}>
 
 

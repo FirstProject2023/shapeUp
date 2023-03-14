@@ -43,11 +43,21 @@ export default function Nav() {
         },
       })}
     >
-      <BottomTab.Screen  name='Diary' component={Diary}   />
-      <BottomTab.Screen name='Calc' component={Calc} />
-      <BottomTab.Screen name='Home' component={Home} />
-      <BottomTab.Screen name='Articles' component={Articles}/>
-      <BottomTab.Screen name='Profile' component={Profile}/>
+      <BottomTab.Screen  name='Diary' component={Diary} options={{
+        headerShown: false,
+      }}   />
+      <BottomTab.Screen name='Calc' component={Calc} options={{
+        headerShown: false,
+      }} />
+      <BottomTab.Screen name='Home' component={Home} options={{
+        headerShown: false,
+      }}/>
+      <BottomTab.Screen name='Articles' component={Articles} options={{
+        headerShown: false,
+      }}/>
+      <BottomTab.Screen name='Profile' component={Profile} options={{
+        headerShown: false,
+      }}/>
 
     </BottomTab.Navigator>
     
