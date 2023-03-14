@@ -5,7 +5,7 @@ import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc} from 'fire
 import { oreng,blue } from '../Globals/colors';
 import {Picker} from '@react-native-picker/picker';
 import FadeInOut from 'react-native-fade-in-out';
-
+// שניאור
 import { v4 as uuidv4 } from 'uuid';
 import { AntDesign } from '@expo/vector-icons'; 
 import { Entypo } from '@expo/vector-icons'; 
@@ -30,8 +30,11 @@ export default function Diary({ navigation }) {
   const [sleep, setSleep] = useState(0);
   const [activeValue, setActiveValue] = useState(0);
 
+  const[index , setIndex]=useState(0);
+  const[testIndex , setTestIndex]=useState(0);
+
   const[indexDay,setIndexDay] = useState(9);
-  const[copyIndexDay,setCopyIndexDay] = useState(indexDay);
+  const[copyIndexDay,setCopyIndexDay] = useState(testIndex);  // change to indexDay.
 
   const [foodNameAdd, setFoodNameAdd] = useState('');
   const [foodAmountAdd, setFoodAmountAdd] = useState('');
@@ -73,6 +76,9 @@ export default function Diary({ navigation }) {
   const [showFlat,setShowFlat] = useState(1);
   const [data2Empty,setData2Empty] = useState(false);
 
+  const [weight,setWeight] = useState(0);
+  const [height,setHeight] = useState(0);
+  const [activityLevel,setActivityLevel] = useState(0);
   
 
   const handleSearch = (text) => {
@@ -150,28 +156,7 @@ export default function Diary({ navigation }) {
   }
 
 
- /*  let indexDay = 0;
-  let counter = 0;
-  
-  if(currentUserData)
-  {
-    counter = currentUserData.daysDetails.length;  
 
-  let intervalId = setInterval(function() {
-  
-     indexDay = currentUserData.daysDetails.length - counter;          
-    console.log("real " + indexDay);
-
-    counter--;
-    // If the counter has reached 0, clear the interval
-    if (counter === 0) {
-      clearInterval(intervalId);
-      console.log("finel app");
-    }
-  
-  }, 4000);
-
-} */
 
 
 const handleAddFood = () => {
@@ -403,8 +388,36 @@ const deleateFavoritFood = async(id,idNum)=>{
     await updateDoc(userDoc , newFields)
   
   }
+
+  const updateDailyBalancePoint = async (id, Calories, singleDay) => {
+
+    const userDoc = doc(db,"users",id)
+
+    let currDaysDetails = [...currentUserData.daysDetails]
   
-  const[index,setIndex]=useState();
+    currDaysDetails[singleDay].dailyBalancePoint = Calories;
+
+    const newFields ={daysDetails: currDaysDetails } 
+
+    await updateDoc(userDoc , newFields)
+  
+  }
+
+  const updateDailyDayTarget = async (id, Calories, singleDay) => {
+
+    const userDoc = doc(db,"users",id)
+
+    let currDaysDetails = [...currentUserData.daysDetails]
+  
+    currDaysDetails[singleDay].dayTarget = Calories;
+
+    const newFields ={daysDetails: currDaysDetails } 
+
+    await updateDoc(userDoc , newFields)
+  
+  }
+  
+ 
 
   
 
@@ -415,25 +428,93 @@ const currentDate = new Date(now);
 const futureDate = new Date(currentDate.setDate(currentDate.getDate() + 2));
 /* console.log(futureDate); */
 
-useEffect(()=>
-{
-  if(currentUserData)
-  {
-    setIndex(differenceInDays(new Date(now), currentUserData.daysDetails[0].singleDate.toDate() ) )
-    /* setCopyIndexDay(index) */
 
-   /*  console.log(new Date(now));
-    console.log(currentUserData.daysDetails[0].singleDate.toDate()); */
-   /*  console.log(new Date(now))
-    console.log(index); */
+const date1 = new Date(`${currentUserData ? currentUserData.birthDate.month : null}/${currentUserData ? currentUserData.birthDate.day : null}/${currentUserData ? currentUserData.birthDate.year : null}`);
+const date2 = new Date();
 
-  }
+const diffInDays = differenceInDays(date2, date1);
+const years = Math.floor(diffInDays / 365);
 
-},[new Date(now)])
+ 
+useEffect(() => {
+  const intervalId = setInterval(() => {
+    if (currentUserData) {
+ 
+      if(testIndex < 25){
+      // if(testIndex < (currentUserData ? currentUserData.daysDetails.length : null)){
+
+        //real code
+        setIndex(differenceInDays(new Date(), currentUserData.daysDetails[0].singleDate.toDate()));
+        console.log(new Date(now));
+        console.log(currentUserData.daysDetails[0].singleDate.toDate());
+        
+        //test code
+        setTestIndex(testIndex + 1)
+        setCopyIndexDay(testIndex + 1)
+
+  //      setWeight(currentUserData ? currentUserData.weight : null);
+  //   setHeight(currentUserData ? currentUserData.height : null);
+  //   setActivityLevel(currentUserData ? currentUserData.daysDetails[copyIndexDay].activityLevel : null);
+  // if(currentUserData ? currentUserData.gender == 1 : null){
+
+  //   if(activityLevel != 0){
+  //     updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     activityLevel )) , copyIndexDay);
+  //   }
+  //   else{
+  //     updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     (currentUserData ? currentUserData.averageActivity : null)  )) , copyIndexDay);
+  //   }
+
+  //   // updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *   (currentUserData ? currentUserData.daysDetails[copyIndexDay].activityLevel : null) )) , copyIndexDay);
+  //   updateDailyDayTarget(currentUserData ? currentUserData.id: null, (Math.floor(currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint : null)) - (currentUserData ? currentUserData.calToLoseDay : null), copyIndexDay);
+  
+  //       console.log("copyIndexDay:" + "  " + copyIndexDay);
+  //       console.log("weight:" + "  " + weight);
+  //       console.log("height:" + "  " + height);
+  //       console.log("years:" + "  " + years);
+  //       console.log("activityLevel:" + "  " + activityLevel);
+  //       console.log("balancePoint:" + "  " + (currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint: null));
+  //       console.log("dayTarget:" + "  " + (currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget: null));
+
+
+
+
+  //       // dayTarget
+
+        
+
+  //     }
+      
+  //     else{
+        
+        
+  //       // setRmrPerDay(( (447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)) * valueToMult ));    
+  //     } 
+
+
+
+
+      }
+    }
+  }, 2000); 
+
+
+
+  // console.log("index in useEffect" +  " " + index);
+  console.log("_____________________");
+  console.log("test index in useEffect" +  " " + testIndex);
+
+  return () => clearInterval(intervalId);
+
+}, [currentUserData, testIndex, weight, height]);
+
+// console.log("index after useEffect" +  " " + index);
+console.log("test index after useEffect" +  " " + testIndex);
+
 
 
 
  /*  const future = new Date(today.setDate(today.getDate() +4)); */
+ 
 
 
  const handleSubmit = () => {
@@ -482,6 +563,49 @@ else
 };
 
 }
+
+function RmrCalculate(activity) {
+  setWeight(currentUserData ? currentUserData.weight : null);
+    setHeight(currentUserData ? currentUserData.height : null);
+    // setActivityLevel(currentUserData ? currentUserData.daysDetails[copyIndexDay].activityLevel : null);
+  if(currentUserData ? currentUserData.gender == 1 : null){
+
+    if(activity != 0){
+      updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     activity )) , copyIndexDay);
+    }
+    else{
+      updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     (currentUserData ? currentUserData.averageActivity : null)  )) , copyIndexDay);
+    }
+
+    // updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *   (currentUserData ? currentUserData.daysDetails[copyIndexDay].activityLevel : null) )) , copyIndexDay);
+    updateDailyDayTarget(currentUserData ? currentUserData.id: null, (Math.floor(currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint : null)) - (currentUserData ? currentUserData.calToLoseDay : null), copyIndexDay);
+  
+        console.log("copyIndexDay:" + "  " + copyIndexDay);
+        console.log("weight:" + "  " + weight);
+        console.log("height:" + "  " + height);
+        console.log("years:" + "  " + years);
+        console.log("activityLevel:" + "  " + activityLevel);
+        console.log("balancePoint:" + "  " + (currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint: null));
+        console.log("dayTarget:" + "  " + (currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget: null));
+
+
+
+
+        // dayTarget
+
+        
+
+      }
+      
+      else{
+        
+        
+        // setRmrPerDay(( (447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)) * valueToMult ));    
+      } 
+}
+
+
+
 if(auth.currentUser)
 {
   return (
@@ -490,10 +614,10 @@ if(auth.currentUser)
      {/* <ScrollView> */}
     <View style={styles.container}>
 
-    <View style={{backgroundColor: '#fff', width: '90%', height: '10%',marginTop: 10, borderRadius: 8 ,flexDirection:'row',justifyContent:'space-evenly',alignItems:'center'}}>
+    <View style={{backgroundColor: '#fff', width: '90%', height: '8%',marginTop: 10, borderRadius: 8 ,flexDirection:'row',justifyContent:'space-evenly',alignItems:'center'}}>
 
     {
-      copyIndexDay!=indexDay ?
+      copyIndexDay!=testIndex ?
     <TouchableOpacity onPress={()=>setCopyIndexDay(copyIndexDay+1)} >
     <FontAwesome5 name="arrow-circle-right" size={34} color="black" />
     </TouchableOpacity>
@@ -501,7 +625,9 @@ if(auth.currentUser)
 
     }
 
-      <Text>{(copyIndexDay + 1)}</Text>
+    <Text>{(copyIndexDay + 1)}</Text>
+      <Text>{(index + 1)}</Text>
+      <Text>{testIndex + 1}</Text>
 
     {  
       copyIndexDay > 0 ?
@@ -514,7 +640,7 @@ if(auth.currentUser)
     </View>
 
 
-    <View style={{backgroundColor: '#fff', width: '90%', height: '80%', marginTop: 5, alignItems: 'center', flexDirection: 'column', borderRadius: 8}}>
+    <View style={{backgroundColor: '#fff', width: '90%', height: '70%', marginTop: 5, alignItems: 'center', flexDirection: 'column', borderRadius: 8}}>
     <TouchableOpacity onPress={()=> setIsInstructions(true)} style={{position: 'absolute', left: 5, top: 5}}>
     <AntDesign name="questioncircleo" size={25} color="black" />
     </TouchableOpacity>
@@ -590,18 +716,20 @@ if(auth.currentUser)
   width: '96%',
   backgroundColor: '#d4f1f9',
   marginBottom:20,
+  
+  
+
+
 }}
 selectedValue={currentUserData ? currentUserData.daysDetails[copyIndexDay].activityLevel : null}
-onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(currentUserData.id, itemValue, copyIndexDay)]}
+onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(currentUserData.id, itemValue, copyIndexDay), RmrCalculate(itemValue)]}
 >
-<Picker.Item label='Select an activity level' value={0}/>
-<Picker.Item  label='Basic' value={1} />
-<Picker.Item  label='Little or no activity - office work at a desk' value={2} />
-<Picker.Item  label='Little activity - 1-3 times a week' value={3} />
-<Picker.Item  label='Average activity - 3-5 times a week' value={4} />
-<Picker.Item  label='Intensive activity - every day' value={5} />
-<Picker.Item  label='Intense activity combined with physical work - every day' value={6}/>
-
+<Picker.Item style={{fontSize: 13}} label="Choose an activity level from 1 to 5" value={0}/>
+<Picker.Item  label='1' value={1.2} />
+<Picker.Item  label='2' value={1.375} />
+<Picker.Item  label='3' value={1.55} />
+<Picker.Item  label='4' value={1.725} />
+<Picker.Item  label='5' value={1.9} />
 </Picker>
 
     </View>
@@ -1007,13 +1135,84 @@ null}
     </View> */}
 
     </View>
+{
+    !isFoodArea ? 
+    <View style={{backgroundColor: '#fff', width: '90%', height: '15%',marginTop: 10, borderRadius: 8 ,flexDirection:'column',alignItems:'center', zIndex: isFoodArea ? -5: 9999}}>
+      {/* {RmrCalculate()} */}
+      <Text style={{marginTop: 4, fontSize: 16, fontWeight: '600'}}>Daily calories</Text>
+
+
+    {  (currentUserData ? currentUserData.daysDetails[copyIndexDay].activityLevel : null) == 0 ?
+   
+     
+       // by basic activity
+        <View style={{width: '85%', height: '15%', borderRadius: 8, borderWidth: 1.5, marginTop: 25, flexDirection: 'row', justifyContent: 'flex-end'}}>
+      {console.log("basicBalancePoint:" + " " + currentUserData ? currentUserData.basicBalancePoint : null)}
+      {console.log("basicDayTarget:" + " " + currentUserData ? currentUserData.basicDayTarget : null)}
+
+      {/* red */}
+
+      <View style={{width: '17.5%', height: '100%', justifyContent: 'flex-end', flexDirection: 'row'}}>
+      <View style={{width:  (currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyCalories : null) <= Math.floor(currentUserData ? currentUserData.basicBalancePoint : null) ? `${(((currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyCalories : null) - (currentUserData ? currentUserData.basicDayTarget : null)) / (Math.floor(currentUserData ? currentUserData.basicBalancePoint : null) - (currentUserData ? currentUserData.basicDayTarget : null))) * 100}%`: '100%', height: '100%',borderTopStartRadius: 8, borderBottomStartRadius: 8, backgroundColor: 'red'}}></View>
+      </View>
+
+
+      {/* green */}
+
+      <View style={{width: '82.5%', height: '100%',borderTopEndRadius: 8, borderBottomEndRadius: 8, justifyContent: 'flex-end', flexDirection: 'row'}}>
+      <View style={{width: (currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyCalories : null) <= (currentUserData ? currentUserData.basicDayTarget : null) ? `${((currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyCalories : null) / (currentUserData ? currentUserData.basicDayTarget : null)) * 100}%`: '100%', height: '100%',borderTopEndRadius: 8, borderBottomEndRadius: 8, backgroundColor: 'green'}}></View>
+      </View>
+
+
+      <Text style={{fontSize: 9, position: 'absolute', bottom: -13,left: 0, fontWeight: '800'}}>|</Text>
+      <Text style={{fontSize: 11, position: 'absolute', bottom: -27,left: -13}}>{currentUserData ? currentUserData.basicBalancePoint : null}</Text>
+
+      <Text style={{fontSize: 9, position: 'absolute', bottom: 16,left: 50, fontWeight: '800'}}>|</Text>
+      <Text style={{fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>basic({(currentUserData ? currentUserData.basicDayTarget : null)})</Text>
+
+      </View>
 
 
 
+        // by daley activity
+      :  <View style={{width: '85%', height: '15%', borderRadius: 8, borderWidth: 1.5, marginTop: 25, flexDirection: 'row', justifyContent: 'flex-end'}}>
+
+      {/* red */}
+
+      <View style={{width: '17.5%', height: '100%', justifyContent: 'flex-end', flexDirection: 'row'}}>
+      <View style={{width:  (currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyCalories : null) <= Math.floor(currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint : null) ? `${(((currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyCalories : null) - (currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget : null)) / (Math.floor(currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint : null) - (currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget : null))) * 100}%`: '100%', height: '100%',borderTopStartRadius: 8, borderBottomStartRadius: 8, backgroundColor: 'red'}}></View>
+      </View>
+
+      
+      {/* green */}
+
+      <View style={{width: '82.5%', height: '100%',borderTopEndRadius: 8, borderBottomEndRadius: 8, justifyContent: 'flex-end', flexDirection: 'row'}}>
+      <View style={{width: (currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyCalories : null) <= (currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget : null) ? `${((currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyCalories : null) / (currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget : null)) * 100}%`: '100%', height: '100%',borderTopEndRadius: 8, borderBottomEndRadius: 8, backgroundColor: 'green'}}></View>
+      </View>
+
+
+      <Text style={{fontSize: 9, position: 'absolute', bottom: -13,left: 0, fontWeight: '800'}}>|</Text>
+      <Text style={{fontSize: 11, position: 'absolute', bottom: -27,left: -13}}>{currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint: null}</Text>
+
+      <Text style={{fontSize: 9, position: 'absolute', bottom: 16,left: 50, fontWeight: '800'}}>|</Text>
+      <Text style={{fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>target({(currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget : null)})</Text>
+
+      </View>
+      
+      }
+      
+
+      <Text style={{marginTop: 8, fontWeight: '700', fontSize: 16}}>{currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyCalories : null} calories</Text>
+    </View>
+      :
+      
+       null
+}
 
 
 
     </View>
+
     {/* </ScrollView> */}
     </ImageBackground>
   )
