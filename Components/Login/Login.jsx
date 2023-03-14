@@ -245,6 +245,8 @@ const  handleSignUp =  async () => {
             daysDetails: daysDetails,
             calToLoseDay: calToLoseDay,
             averageActivity: averageActivity,
+            basicBalancePoint: basicBalancePoint,
+            basicDayTarget: basicDayTarget,
 
           });
           setWeeklyGoal(0);
