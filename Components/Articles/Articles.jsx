@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions, TouchableOpacity, Image, TextInput, ImageBackground, ActivityIndicator, KeyboardAvoidingView} from 'react-native'
+import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions, TouchableOpacity, Image, TextInput, ImageBackground, ActivityIndicator, KeyboardAvoidingView, StatusBar } from 'react-native'
 import React, { useState , useEffect} from 'react'
 import articlesData from '../Jsons/articles.json'
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -471,6 +471,7 @@ export default function Articles({navigation}) {
   return (   
 
     <ImageBackground source={{uri: "https://media.istockphoto.com/id/1368401341/photo/process-of-preparing-food-salad-of-vegetables-oil-dish-spring-vitamins-summer-vegetables.jpg?s=612x612&w=0&k=20&c=XwvilDaZPy57eDJXrMpx-1udYPEZhO9jQGUD-MHf2Cc="}} resizeMode= 'cover'>
+    <StatusBar backgroundColor="rgb(255, 178, 71)" />
     <View style={styles.container}>
      
 

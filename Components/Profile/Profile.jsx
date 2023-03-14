@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,Image, ScrollView,TextInput,Button  } from 'react-native'
+import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,Image, ScrollView,TextInput,Button, StatusBar  } from 'react-native'
 import React, { useState,useEffect } from 'react'
 import { oreng,blue } from '../Globals/colors';
 import { Ionicons } from '@expo/vector-icons'; 
@@ -237,6 +237,7 @@ if(auth.currentUser)
   return (
     
     <View style={styles.container}>
+    <StatusBar backgroundColor="rgb(255, 178, 71)" />
 
       <View style={styles.profileImg}>
         
@@ -676,6 +677,7 @@ if(auth.currentUser)
 else{
   return (
     <ImageBackground source={{uri: "https://img.freepik.com/free-photo/healthy-lifestyle-people-food-concept-reluctant-handsome-young-man-pointing-finger-disgusting-salad-unwilling-eat-this-smirking-dissatisfied-tilting-head-sad-yellow-background_1258-59808.jpg?size=626&ext=jpg&ga=GA1.2.1278374744.1675142697&semt=ais"}} resizeMode= 'cover'>
+    <StatusBar backgroundColor="rgb(255, 178, 71)" />
     <View style={styles.guestContainer}>
 
 
