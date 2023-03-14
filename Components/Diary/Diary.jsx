@@ -2,16 +2,19 @@ import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,useWindowDimens
 import React, {useState, useEffect,PureComponent, memo } from 'react'
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc} from 'firebase/firestore';
+import { oreng,blue } from '../Globals/colors';
 import {Picker} from '@react-native-picker/picker';
 import FadeInOut from 'react-native-fade-in-out';
 
+import { v4 as uuidv4 } from 'uuid';
 import { AntDesign } from '@expo/vector-icons'; 
 import { Entypo } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
 import { FontAwesome5 } from '@expo/vector-icons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
 
 export default function Diary({ navigation }) {
@@ -30,11 +33,33 @@ export default function Diary({ navigation }) {
   const[indexDay,setIndexDay] = useState(9);
   const[copyIndexDay,setCopyIndexDay] = useState(indexDay);
 
+  const [foodNameAdd, setFoodNameAdd] = useState('');
+  const [foodAmountAdd, setFoodAmountAdd] = useState('');
+  const [foodCalories, setFoodCalories] = useState('');
+  const [foodProteins, setFoodProteins] = useState('');
+  const [foodFat, setFoodFat] = useState('');
+  const [foodCarbs, setFoodCarbs] = useState('');
+  const [onAddFood ,setOnAddFood] = useState(false);
+  const [ShowOnAddFood ,setShowOnAddFood] = useState(false);
+
+
   const [foodName, setFoodName] = useState('');
   const [foodAmount, setFoodAmount] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
   const [modalVisible3, setModalVisible3] = useState(false);
+  const [modalVisible4, setModalVisible4] = useState(false);
+  const [modalVisible5, setModalVisible5] = useState(false);
+
+  const [FavoriteFoodName,setFavoriteFoodName] = useState('');
+  const [FavoriteFoodAmount,setFavoriteFoodAmount] = useState('');
+  const [FavoriteFoodCal,setFavoriteFoodCal] = useState('');
+  const [FavoriteFoodPro,setFavoriteFoodPro] = useState('');
+  const [FavoriteFoodFat,setFavoriteFoodFat] = useState('');
+  const [FavoriteFoodCarbs,setFavoriteFoodCarbs] = useState('');
+
+
+
 
   const [text, setText] = useState('');
   const [quantity,setQuantity]=useState('');
@@ -46,13 +71,18 @@ export default function Diary({ navigation }) {
   const [results, setResults] = useState([]);
   const [finelText2,setFinelText2] = useState('');
   const [showFlat,setShowFlat] = useState(1);
+  const [data2Empty,setData2Empty] = useState(false);
+
+  
 
   const handleSearch = (text) => {
     setQuery(text);
   };
   const handleSearch2 = (text) => {
+    
     setFinelText2(query);
     setQuery("");
+    
     setResults([]);
 
   };
@@ -71,7 +101,7 @@ export default function Diary({ navigation }) {
     .catch((error) => console.error(error));
     
   }, [query]);
-  
+ 
    useEffect(() => {
     fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&ingr=${finelText2}`)
       .then((response) => {
@@ -79,15 +109,18 @@ export default function Diary({ navigation }) {
       })
       .then((data) => {
         setData2(data.parsed[0].food)
+        setData2Empty(false)
         
         
       })
       .catch(error => {
+        setData2Empty(true)
+
+       
         // handle the error
       });
     }, [finelText2]);
-
-
+    
   const {width} = useWindowDimensions();
 
   useEffect(()=>{
@@ -140,18 +173,105 @@ export default function Diary({ navigation }) {
 
 } */
 
-const updateDayleFood = async (id,foodAmount,foodName) => {
 
-  let size=currentUserData.daysDetails[0].dailyFood.length;
+const handleAddFood = () => {
+  // Check that all fields are filled before adding the food
+  if (!foodName || !foodAmount || !foodCalories || !foodProteins || !foodFat) {
+    alert('Please fill all fields.');
+    return;
+  }
 
+  // Add the food to the list of foods
+  let size = currentUserData.daysDetails[copyIndexDay].dailyCreationFood.length;
+  
+
+  currentUserData.daysDetails[copyIndexDay].dailyCreationFood[size]=
+  {
+    id: size+1,
+  name: foodName,
+  amount: Number(foodAmount),
+  calories: Number(foodCalories),
+  proteins: Number(foodProteins),
+  fat: Number(foodFat),
+  carbs: Number(foodCarbs),
+};
+
+  updateFavouritesFood(currentUserData.id ,currentUserData.daysDetails[copyIndexDay].dailyCreationFood)  
+
+  // Clear the form fields
+  setFoodName('');
+  setFoodAmount('');
+  setFoodCalories('');
+  setFoodProteins('');
+  setFoodFat('');
+
+
+  Alert.alert(
+    `${foodName} `,
+    "Added successfully",
+    [
+      {
+        text: 'Ok',
+        onPress: () => {
+         
+        },
+        style: 'default',
+        marginVertical: 10, // Adjust the vertical spacing here
+      },
+    
+    ],
+    { cancelable: false }
+  );
+  setModalVisible4(false)
+  // Close the modal
+
+
+
+
+};
+
+const updateFavouritesFood = async (id,dailyCreationFood) => {
 
   const userDoc = doc(db,"users",id)
 
   let currDaysDetails = [...currentUserData.daysDetails]
-  let currFoodCalory= data2.nutrients.ENERC_KCAL ;
+  
 
-console.log(currFoodCalory);
-  currDaysDetails[0].dailyFood[size] = {
+  currDaysDetails[copyIndexDay].dailyCreationFood = dailyCreationFood;
+
+  let sum=0;
+
+  currDaysDetails[copyIndexDay].dailyFood.map((e)=>{
+   
+sum += e.foodCalory ;
+
+  })
+  currDaysDetails[copyIndexDay].dailyCreationFood.map((e)=>{
+   
+sum += e.calories ;
+
+  })
+ 
+  currDaysDetails[copyIndexDay].dailyCalories = sum;
+ 
+  const newFields ={daysDetails: currDaysDetails } 
+
+  await updateDoc(userDoc , newFields)
+
+}
+
+
+const updateDayleFood = async (id,foodAmount,foodName) => {
+
+  let size = currentUserData.daysDetails[copyIndexDay].dailyFood.length;
+
+  const userDoc = doc(db,"users",id)
+
+  let currDaysDetails = [...currentUserData.daysDetails]
+  let currFoodCalory = data2.nutrients.ENERC_KCAL ;
+
+
+  currDaysDetails[copyIndexDay].dailyFood[size] = {
 
     foodAmount: Number(foodAmount),
     foodName: foodName ,
@@ -161,13 +281,13 @@ console.log(currFoodCalory);
 
   let sum=0;
 
-  currDaysDetails[0].dailyFood.map((e)=>{
+  currDaysDetails[copyIndexDay].dailyFood.map((e)=>{
    
 sum += e.foodCalory ;
 
   })
  
-  currDaysDetails[0].dailyCalories= sum;
+  currDaysDetails[copyIndexDay].dailyCalories = sum;
  
   const newFields ={daysDetails: currDaysDetails } 
 
@@ -177,12 +297,8 @@ sum += e.foodCalory ;
 
 const deleateFood = async(id,foodAmount,foodName,idNum)=>{
   
+const newArray =  currentUserData.daysDetails[copyIndexDay].dailyFood.map(item => {
   
-
-const newArray =  currentUserData.daysDetails[0].dailyFood.map(item => {
-  
-
-   
     if (item.id == idNum ) {
       return null; // this will remove the item from the array
     }
@@ -195,23 +311,57 @@ const newArray =  currentUserData.daysDetails[0].dailyFood.map(item => {
 
   let currDaysDetails = [...currentUserData.daysDetails]
 
-  currDaysDetails[0].dailyFood=newArray;
+  currDaysDetails[copyIndexDay].dailyFood=newArray;
 
-  let sum=0;
+  let sum = 0;
  
-  currDaysDetails[0].dailyFood.map((e,i)=>{
+  currDaysDetails[copyIndexDay].dailyFood.map((e,i)=>{
 
 sum += e.foodCalory ;
 
   })
 
-  currDaysDetails[0].dailyCalories= sum;
+  currDaysDetails[copyIndexDay].dailyCalories = sum;
 
  
   const newFields ={daysDetails: currDaysDetails } 
 
   await updateDoc(userDoc , newFields) 
 }
+
+const deleateFavoritFood = async(id,idNum)=>{
+  
+  const newArray =  currentUserData.daysDetails[copyIndexDay].dailyCreationFood.map(item => {
+    
+      if (item.id == idNum ) {
+        return null; // this will remove the item from the array
+      }
+      return item;
+  
+    }).filter(Boolean); 
+    
+  
+    const userDoc = doc(db,"users",id)
+  
+    let currDaysDetails = [...currentUserData.daysDetails]
+  
+    currDaysDetails[copyIndexDay].dailyCreationFood=newArray;
+  
+    let sum = 0;
+   
+    currDaysDetails[copyIndexDay].dailyCreationFood.map((e,i)=>{
+  
+  sum += e.calories ;
+  
+    })
+  
+    currDaysDetails[copyIndexDay].dailyCalories = sum;
+  
+   
+    const newFields ={daysDetails: currDaysDetails } 
+  
+    await updateDoc(userDoc , newFields) 
+  }
 
   const updateWater = async (id, water, singleDay) => {
 
@@ -288,14 +438,50 @@ useEffect(()=>
 
  const handleSubmit = () => {
 
-  
-  updateDayleFood(currentUserData.id,foodAmount,(foodName || finelText2))
+  console.log(data2Empty);
 
-   if (  foodAmount && (foodName || finelText2)) {
+if(data2Empty)
+{
+  Alert.alert(
+    'Error',
+    'Product does not exist, Would you like to add to the list a new product that you will create?',
+    [
+      {
+        text: 'Yes',
+        onPress: () => {
+          console.log('Yes Pressed');
+          setModalVisible4(true);
+        },
+        style: 'default',
+        marginVertical: 10, // Adjust the vertical spacing here
+      },
+      {
+        text: 'No',
+        onPress: () => {
+          console.log('No Pressed');
+          // Add code here to handle the "No" response
+        },
+        style: 'cancel',
+       
+      },
+    ],
+    { cancelable: false }
+  );
+
+ 
+}
+else
+{ 
+  updateDayleFood(currentUserData.id,foodAmount , (foodName || finelText2))
+  
+
+  if (  foodAmount && (foodName || finelText2)) {
     setModalVisible(true);
-   
+    
   }
 };
+
+}
 if(auth.currentUser)
 {
   return (
@@ -428,14 +614,23 @@ onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(cu
     <FadeInOut
     visible={isFoodArea}
     scale={true}
-     style={{backgroundColor: '#d4f1f9' ,marginTop: 0, width:'105%',  height: isFoodArea ? '119%': 0, alignItems: 'center', position: 'absolute', top:-53, padding: 10, borderRadius: 8, zIndex: isFoodArea ? 999 : 0, borderWidth: 1}}>
+     style={{backgroundColor: oreng ,marginTop: 0, width: isFoodArea ? '105%' : 0 ,  height: isFoodArea ? '119%': 0, alignItems: 'center', position: 'absolute', top:-53, padding: 10, borderRadius: 8, zIndex: isFoodArea ? 999 : 0, borderWidth: 1}}>
       
     <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsFoodArea(false)}>
     <Feather name="x-circle" size={30} color="#fff"/>
     </TouchableOpacity>
-    <Text style={{marginTop: 10, fontSize: 25, fontWeight: '600'}}>Food selection area</Text>
- 
-      <View style={styles.inputContainer}>
+    <Text style={{marginTop: 10, fontSize: 25, fontWeight: '600',marginBottom:5}}>Food selection area</Text>
+    <TouchableOpacity style={{ position: 'absolute', left: 10, top: 20 }} onPress={()=>setOnAddFood(!onAddFood)}>
+       {onAddFood ? <MaterialCommunityIcons name="pen-plus" size={32} color="white" />  : <MaterialCommunityIcons name="pen-plus" size={34} color="black" />} 
+        </TouchableOpacity>
+
+
+{
+  onAddFood && !ShowOnAddFood ? 
+  
+
+  <View style={styles.inputContainer}>
+    <Text style={{  fontSize: 24, fontWeight: 'bold', color: oreng ,marginRight:80,padding:4,marginBottom:2}}>Add food</Text>
         <View style={styles.inputRow}>
             <View style={{flexDirection:'row'}}>
           <View style={styles.inputIcon}>
@@ -453,21 +648,25 @@ onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(cu
           
         </View>
        
-        {finelText2 ? <Text style={{fontSize:25,fontWeight: '600',marginBottom:2}}>{finelText2}</Text> :null}
+        {finelText2 ? <Text style={{fontSize:25,fontWeight: '900',marginBottom:2}}>{finelText2}</Text> :null}
 
+        {query ?
  <TouchableOpacity onPress={handleSearch2} style={{marginBottom:10, backgroundColor: '#3F3F3F',borderRadius:20,paddingVertical:10,alignItems:'center'}}>
       <Text style={{fontSize:17,color:'white',fontWeight: 'bold'}}>Enter</Text>
     </TouchableOpacity>          
+   :
+   null}
           <FlatList
           data={results}
           renderItem={({ item }) =>
-  <TouchableOpacity onPress={()=>handleChange(item)}>
+  
+          <TouchableOpacity onPress={()=>handleChange(item)}  >
 
     <View style={{borderWidth:2,borderColor:'black',height:30,width:"100%",flexDirection:'row'}} >
 
-<Text>{item}</Text>
+    <Text> {item}</Text>
  
-  </View>
+    </View>
 
   </TouchableOpacity>
   }
@@ -475,7 +674,6 @@ onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(cu
   bounces= {false}
   
 />
-
 
 
         <View style={styles.inputRow}>
@@ -486,18 +684,115 @@ onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(cu
             style={styles.input}
             onChangeText={text => setFoodAmount(text)}
             value={foodAmount}
-            placeholder="Enter amount in grams"
+            placeholder="Enter amount "
             keyboardType="numeric"
             placeholderTextColor="#BFBFBF"
           />
         </View>
-          {foodAmount ? <Text style={{fontSize:25,fontWeight: '600',marginBottom:10}}>{foodAmount} gm</Text> :null}
+        
+          {foodAmount ? <Text style={{fontSize:25,fontWeight: '900',marginBottom:10}}>{foodAmount} gm</Text> :null}
+
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={()=>setModalVisible4(true)}>
+          <Text style={styles.buttonText}>Create your own dish</Text>
+        </TouchableOpacity>
       </View>
+
+:
+null
+}
+
+
+
+       <TouchableOpacity style={{ position: 'absolute', left: 5, top: 63 }} onPress={()=>[setShowOnAddFood(!ShowOnAddFood)]}>
+       {ShowOnAddFood ?  <AntDesign name="heart" size={32}   color= "red" /> : <AntDesign name="heart" size={32}   color= "green" />} 
+        </TouchableOpacity>
+
       
-      <Modal 
+
+{
+  currentUserData && !ShowOnAddFood && !onAddFood ?
+  <View style={{width:'100%',height:'93%',alignItems:'center'/* ,backgroundColor:'yellow' */}}>
+
+<Text style={{ fontSize: 20, fontWeight: 'bold', color: 'blue',marginBottom:10 }}>what did i eat today</Text>
+<View style={{width:'100%',height: currentUserData.daysDetails[copyIndexDay].dailyCreationFood.length > 0 ? '50%' : '93%' ,alignItems:'center'/* ,backgroundColor:'red' */}}>
+<FlatList
+  style={{width:'85%'}}
+  
+  data={currentUserData.daysDetails[copyIndexDay].dailyFood.map(item => ({...item, key: uuidv4()}))}
+  renderItem={({ item }) => (
+    <View style={styles.foodContainer} key={item.key}>  
+      <TouchableOpacity style={{alignItems:'center',justifyContent:'center',marginLeft:3}}>
+      <MaterialCommunityIcons name="heart-plus-outline" size={30} color="black" />
+      </TouchableOpacity>
+      <TouchableOpacity style={{alignItems:'center',justifyContent:'center',marginLeft:5}}>
+        <FontAwesome name="wpexplorer" size={35} color="black" onPress={()=>[setQuantity(item.foodAmount), setFinelText2(item.foodName),setModalVisible3(true)]} />
+      </TouchableOpacity>
+      
+        
+      <View style={styles.foodInfo}>
+        <Text style={styles.foodName}>{item.foodName}   <Text style={{fontSize: 12 ,fontWeight: '400', marginBottom: 5,}}>{item.foodAmount}g</Text></Text>
+        <Text style={styles.foodAmount}>{item.foodCalory.toFixed(0)} calory</Text>
+      </View>
+      <TouchableOpacity style={{alignItems:'center',justifyContent:'center'}}>
+        <AntDesign name="delete" size={24} color="black" onPress={()=>[deleateFood(currentUserData.id ,item.foodAmount,item.foodName,item.id), setModalVisible2(true)]} />
+      </TouchableOpacity>
+    </View>
+  )}
+/>
+</View>
+<View style={{width:'100%',height: currentUserData.daysDetails[copyIndexDay].dailyCreationFood.length > 0  ? '29%' : '0%' ,alignItems:'center'/* ,backgroundColor:'green' */}}>
+<Text style={{ fontSize: 15, fontWeight: 'bold', color: 'green',marginBottom:6,marginTop:10 }}>good chooize (Personal products)</Text>
+<FlatList
+  style={{width:'85%'}}
+  data={currentUserData.daysDetails[copyIndexDay].dailyCreationFood}
+  renderItem={({ item }) => (
+    <View style={styles.foodContainer} key={item.key}>
+
+      <TouchableOpacity style={{alignItems:'center',justifyContent:'center',marginLeft:3}}>
+      <MaterialCommunityIcons name="heart-plus-outline" size={30} color="black" />
+      </TouchableOpacity>
+
+      <TouchableOpacity style={{alignItems:'center',justifyContent:'center',marginLeft:3}}>
+        <FontAwesome name="wpexplorer" size={35} color="black" onPress={()=>[setFavoriteFoodAmount(item.amount),
+           setFavoriteFoodName(item.name),setFavoriteFoodCal(item.calories),setFavoriteFoodPro(item.proteins),setFavoriteFoodCarbs(item.carbs),
+           setFavoriteFoodFat(item.fat) , setModalVisible5(true)]} />
+      </TouchableOpacity>
+      <View style={styles.foodInfoB}>
+        <Text style={styles.foodName}>{item.name}   <Text style={{fontSize: 12 ,fontWeight: '400', marginBottom: 5}}>{item.amount}g</Text></Text>
+        <Text style={styles.foodAmountB}>{item.calories} calory</Text>
+       
+      </View>
+     {/*  <View style={styles.foodInfo}>
+        <Text style={styles.foodName}>{item.foodName}   <Text style={{fontSize: 12 ,fontWeight: '400', marginBottom: 5,}}>{item.foodAmount}g</Text></Text>
+        <Text style={styles.foodAmount}>{item.foodCalory.toFixed(0)} calory</Text>
+      </View> */}
+      <TouchableOpacity style={{alignItems:'center',justifyContent:'center'}}>
+        <AntDesign name="delete" size={24} color="black" onPress={()=>[deleateFavoritFood(currentUserData.id,item.id), setModalVisible2(true)]} />
+      </TouchableOpacity>
+    </View>
+  )}
+/>
+
+
+           </View>
+
+<Text style={styles.caloriesText}>
+  {currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyCalories : null} cal
+</Text>
+           
+  </View>
+
+
+: 
+
+null
+}
+
+
+<Modal 
   visible={modalVisible} 
   animationType="slide" 
   transparent={true}
@@ -524,41 +819,58 @@ onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(cu
     </View>
   </View>
 </Modal>
-
-{
-currentUserData ?
-/* currentUserData.daysDetails[0].dailyFood.map((e)=>{
-
-  return (
-    <View style={styles.foodContainer}>
-    <Text style={styles.foodName}>{e.foodName}</Text>
-    <Text style={styles.foodAmount}>{e.foodAmount}g</Text>
-  </View>
-  )
-}) */
-
-<FlatList
-style={{marginTop:10,width:'80%'}}
-  data={currentUserData.daysDetails[0].dailyFood}
-  renderItem={({ item }) => (
-    <View style={styles.foodContainer}>
-        <View style={{alignItems:'center',justifyContent:'center',marginLeft:10}}>
-        <FontAwesome name="wpexplorer" size={35} color="black" onPress={()=>[setQuantity(item.foodAmount), setFinelText2(item.foodName),setModalVisible3(true)]} />
-        </View>
-      <View style={styles.foodInfo}>
-        <Text style={styles.foodName}>{item.foodName}</Text>
-        <Text style={styles.foodAmount}>{item.foodAmount}g</Text>
+<Modal visible={modalVisible4} animationType="slide">
+      <View style={styles.containerC}>
+        <Text style={styles.titleB}>Add Food Details</Text>
+        <TextInput
+          style={styles.inputB}
+          placeholder="Food Name"
+          value={foodName}
+          onChangeText={setFoodName}
+        />
+        <TextInput
+          style={styles.inputB}
+          placeholder="Amount (in grams)"
+          keyboardType="numeric"
+          value={foodAmount}
+          onChangeText={setFoodAmount}
+        />
+        <TextInput
+          style={styles.inputB}
+          placeholder="Calories"
+          keyboardType="numeric"
+          value={foodCalories}
+          onChangeText={setFoodCalories}
+        />
+        <TextInput
+          style={styles.inputB}
+          placeholder="Proteins"
+          keyboardType="numeric"
+          value={foodProteins}
+          onChangeText={setFoodProteins}
+        />
+        <TextInput
+          style={styles.inputB}
+          placeholder="Fat"
+          keyboardType="numeric"
+          value={foodFat}
+          onChangeText={setFoodFat}
+        />
+        <TextInput
+          style={styles.inputB}
+          placeholder="carbs"
+          keyboardType="numeric"
+          value={foodCarbs}
+          onChangeText={setFoodCarbs}
+        />
+        <TouchableOpacity style={styles.addButton} onPress={handleAddFood}>
+          <Text style={styles.buttonText}>Add Food</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.closeButtonB} onPress={()=>setModalVisible4(false)}>
+          <Text style={styles.buttonTextB}>Close</Text>
+        </TouchableOpacity>
       </View>
-      <View style={{alignItems:'center',justifyContent:'center'}}>
-        <AntDesign name="delete" size={24} color="black" onPress={()=>[deleateFood(currentUserData.id ,item.foodAmount,item.foodName,item.id), setModalVisible2(true)]} />
-      </View>
-    </View>
-  )}
- 
-/>
-: 
-null
-}
+    </Modal>
    
 <Modal 
   visible={modalVisible2} 
@@ -609,22 +921,72 @@ null
           <View style={styles.foodDetailsContainer}>
             <View style={styles.detailCircleCarbsProtein}>
               <Text style={styles.detailTitle}>Carbs</Text>
-              <Text style={styles.detailText}>{data2.nutrients.CHOCDF ? data2.nutrients.CHOCDF * (quantity/100).toFixed(1) : 0}</Text>
+              <Text style={styles.detailText}>{data2.nutrients.CHOCDF ? (data2.nutrients.CHOCDF * (quantity/100)).toFixed(1) : 0   }</Text>
             </View>
            
             <View style={styles.detailCircle}>
               <Text style={styles.detailTitle}>Fats</Text>
-              <Text style={styles.detailText}>{data2.nutrients.FAT ? data2.nutrients.FAT * (quantity/100).toFixed(1) : null}</Text>
+              <Text style={styles.detailText}>{data2.nutrients.FAT ? (data2.nutrients.FAT * (quantity/100)).toFixed(1) : null}</Text>
             </View>
 
             <View style={styles.detailCircleCarbsProtein}>
               <Text style={styles.detailTitle}>Protein</Text>
-              <Text style={styles.detailText}>{data2.nutrients.PROCNT ? data2.nutrients.PROCNT * (quantity/100).toFixed(1) : null}</Text>
+              <Text style={styles.detailText}>{data2.nutrients.PROCNT ? (data2.nutrients.PROCNT * (quantity/100)).toFixed(1) : null}</Text>
             </View>
 
             <View style={styles.detailCircleCalories}>
               <Text style={styles.detailTitle}>Calories</Text>
-              <Text style={styles.detailText}>{data2.nutrients.ENERC_KCAL ? data2.nutrients.ENERC_KCAL * (quantity/100).toFixed(0) : null}</Text>
+              <Text style={styles.detailText}>{data2.nutrients.ENERC_KCAL ? (data2.nutrients.ENERC_KCAL * (quantity/100)).toFixed(0) : null}</Text>
+            </View>
+          </View>
+            :
+            null
+            }
+        </View>
+      </View>
+    </Modal>
+:
+null}
+
+{currentUserData ? 
+  <Modal
+      visible={modalVisible5}
+      animationType='slide'
+      transparent={true}
+    >
+
+      <View style={styles.modalBackground}>
+        <View style={styles.modalContainer2}>
+          <TouchableOpacity style={{position: 'absolute', right: 4.5, top: 4.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=>setModalVisible5(false)}>
+          <Feather name="x-circle" size={30} color="#fff"/>
+          </TouchableOpacity>
+        <View style={{alignItems:'center',justifyContent:'center'}}>
+                  <Text style={{fontSize:30}}>{FavoriteFoodName}</Text>
+              
+        </View>
+
+          {
+            currentUserData.daysDetails[copyIndexDay].dailyCreationFood ?
+
+          <View style={styles.foodDetailsContainer}>
+            <View style={styles.detailCircleCarbsProtein}>
+              <Text style={styles.detailTitle}>Carbs</Text>
+              <Text style={styles.detailText}>{FavoriteFoodCarbs}</Text>
+            </View>
+           
+            <View style={styles.detailCircle}>
+              <Text style={styles.detailTitle}>Fats</Text>
+              <Text style={styles.detailText}>{FavoriteFoodFat}</Text>
+            </View>
+
+            <View style={styles.detailCircleCarbsProtein}>
+              <Text style={styles.detailTitle}>Protein</Text>
+              <Text style={styles.detailText}>{FavoriteFoodPro}</Text>
+            </View>
+
+            <View style={styles.detailCircleCalories}>
+              <Text style={styles.detailTitle}>Calories</Text>
+              <Text style={styles.detailText}>{FavoriteFoodCal}</Text>
             </View>
           </View>
             :
@@ -697,8 +1059,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     width: '90%',
+    opacity: 1,
     maxWidth: 400,
     elevation: 3,
+    marginTop:60,
     shadowColor: '#000',
     shadowOpacity: 0.2,
     shadowOffset: {
@@ -726,6 +1090,7 @@ const styles = StyleSheet.create({
       fontSize: 20,
     },
     button: {
+      marginTop:10,
       backgroundColor: '#3F3F3F',
       borderRadius: 20,
       paddingVertical: 12,
@@ -820,7 +1185,7 @@ foodContainer: {
   padding: 10,
   borderRadius: 10,
   backgroundColor: '#fff',
-  shadowColor: '#000',
+  shadowColor: '#000a',
   shadowOffset: {
     width: 0,
     height: 2,
@@ -832,7 +1197,12 @@ foodContainer: {
 foodInfo: {
  
   flex: 1,
-  marginRight: 40,
+  marginRight: 33,
+},
+foodInfoB: {
+ 
+  flex: 1,
+  marginRight: 23,
 },
 foodName: {
   fontSize: 18,
@@ -842,6 +1212,11 @@ foodName: {
 foodAmount: {
   fontSize: 16,
   color: '#888',
+},
+foodAmountB: {
+  fontSize: 16,
+  color: '#888',
+  marginRight:10,
 },
 modalBackground: {
   flex: 1,
@@ -901,7 +1276,6 @@ detailCircleCarbsProtein: {
   borderRadius: 50,
   width: 100,
   height: 100,
-  marginBottom: 0,
   marginTop:10
 },
 detailTitle: {
@@ -914,5 +1288,57 @@ detailText: {
   fontSize: 16,
   color: '#666',
 },
+containerC: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: '#fff',
+  paddingHorizontal: 20,
+},
+titleB: {
+  fontSize: 24,
+  fontWeight: 'bold',
+  marginBottom: 20,
+},
+inputB: {
+  width: '100%',
+  height: 50,
+  borderWidth: 1,
+  borderColor: '#ccc',
+  borderRadius: 10,
+  paddingHorizontal: 10,
+  marginBottom: 10,
+},
+addButton: {
+  backgroundColor: 'green',
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+  borderRadius: 10,
+  marginTop: 20,
+},
+closeButtonB: {
+  backgroundColor: 'red',
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+  borderRadius: 10,
+  marginTop:10,
+},
+buttonTextB: {
+  color: '#fff',
+  fontWeight: 'bold',
+  fontSize: 16,
+  },
+  caloriesText: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginTop: 13,
+    color: oreng, // example color
+    backgroundColor: 'white', // example background color
+    padding: 10, // example padding
+    borderRadius: 5, // example border radius
+    borderWidth: 1, // example border width
+    borderColor: 'green', // example border color
+  },
+
 
 })

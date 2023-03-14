@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Button ,TouchableOpacity,ScrollView,Modal,modelVisible  } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Button ,TouchableOpacity,ScrollView,Modal,modelVisible,onScroll  } from 'react-native'
 import FadeInOut from 'react-native-fade-in-out';
 import React, { useEffect, useState,useRef } from 'react'
 import CalculatorsArrayOfFunctions from './CalculatorsArrayOfFunctions'
@@ -31,16 +31,31 @@ const [isEnglish,setIsEnglish]= useState(1);
   const [calorValueB,setCalorValueB]= useState(0);
   const[moreCalory,setMoreCalory]= useState(0);
   const[isMan,setIsMan]=useState(1);
+  const[whatPoint,setWhatPoint]=useState(1);
 
   const flatListRef = useRef(null);
+
+  const darts = [
+    { id: '4', score: 10 },
+    { id: '3', score: 5 },
+    { id: '2', score: 20 },
+    { id: '1', score: 3 },
+    { id: '0', score: 15 },
+  ];
+
 
   const handleScroll = (event) => {
 
 setHeightOfResView(0);
 handleScrollToTop();
 
+const position = event.nativeEvent.contentOffset.x / 360;
+console.log(position);
+
+setWhatPoint(position)
   };
 
+  
 
 
   const handleModalOpen = () => {
@@ -93,6 +108,9 @@ const[showSubjects,setShowSubjects] = useState();
   ];
   const [isOpened, setIsOpened] = useState(false);
   const [isTipsView, setIsTipsView] = useState(false);
+
+  
+
   return (
 
 <ScrollView ref={scrollViewRef}>
@@ -110,9 +128,20 @@ const[showSubjects,setShowSubjects] = useState();
         :
         <Text style={styles.buttonText}>בחר שפה</Text>
         }   
-       
+
 
       </TouchableOpacity>
+
+      <View style={styles.containerB}>
+      <View style={styles.row}>
+      {darts.map((dart) => (
+        /* console.log(whatPoint+"   whatPoint"), */
+        <View key={dart.id} style={[styles.dart,{backgroundColor: dart.id == whatPoint ? oreng : 'white'} ]}>
+          {/* <Text style={styles.dartText}>{dart.score}</Text> */}
+        </View>
+      ))}
+    </View>
+    </View>
       <Modal visible={isModalVisible} >
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Please select a language:</Text>
@@ -124,6 +153,8 @@ const[showSubjects,setShowSubjects] = useState();
           </TouchableOpacity>
         </View>
       </Modal>
+
+     
 
         <FadeInOut
 
@@ -155,7 +186,7 @@ scale={true}
   isEnglish ?
   <View style={styles.FlatListContainer}>
 
-<FlatList  ref={flatListRef} onScroll={handleScroll} data={numbers} renderItem={({item}) =>  <CalculatorsArrayOfFunctions num={item} 
+<FlatList  ref={flatListRef} onScroll={onScroll || handleScroll} data={numbers} renderItem={({item}) =>  <CalculatorsArrayOfFunctions num={item} 
 heightOfResView={heightOfResView} setHeightOfResView={setHeightOfResView} bmiSearchResult={bmiSearchResult} setIsMan={setIsMan}
 setBmiSearchResult={setBmiSearchResult} setWhatCalcIs={setWhatCalcIs} fatValue={fatValue} setFatValue={setFatValue}
  carbohydratesValue={carbohydratesValue} setCarbohydratesValue={setCarbohydratesValue}
@@ -163,6 +194,7 @@ setBmiSearchResult={setBmiSearchResult} setWhatCalcIs={setWhatCalcIs} fatValue={
   caloriesValue={caloriesValue} setCaloriesValue={setCaloriesValue} calorValueA={calorValueA}
    setCalorValueA={setCalorValueA} calorValueB={calorValueB}  setCalorValueB={setCalorValueB} setMoreCalory={setMoreCalory} 
    handleButtonClick={handleButtonClick} isEnglish={isEnglish}
+  
    />}
       horizontal 
       showsHorizontalScrollIndicator
@@ -177,7 +209,8 @@ setBmiSearchResult={setBmiSearchResult} setWhatCalcIs={setWhatCalcIs} fatValue={
  
   <View style={styles.FlatListContainer}>
 
-<FlatList onScroll={()=>[setHeightOfResView(0),console.log("bullll")]}  onEndReachedThreshold={0.1} data={numbers} renderItem={({item}) =>  <CalculatorsArrayOfFunctions num={item} 
+<FlatList onScroll={onScroll || handleScroll}  onEndReachedThreshold={0.1} data={numbers} renderItem={({item}) =>
+ <CalculatorsArrayOfFunctions num={item} onSelectItem={(selectedItemValue) => setWhatPoint(item)}
 heightOfResView={heightOfResView} setHeightOfResView={setHeightOfResView} bmiSearchResult={bmiSearchResult} setIsMan={setIsMan}
 setBmiSearchResult={setBmiSearchResult} setWhatCalcIs={setWhatCalcIs} fatValue={fatValue} setFatValue={setFatValue}
  carbohydratesValue={carbohydratesValue} setCarbohydratesValue={setCarbohydratesValue}
@@ -190,7 +223,6 @@ setBmiSearchResult={setBmiSearchResult} setWhatCalcIs={setWhatCalcIs} fatValue={
    showsHorizontalScrollIndicator
    pagingEnabled
    bounces= {false}
-   
    />
   
     </View>
@@ -258,7 +290,7 @@ const styles = StyleSheet.create({
    shadowRadius: 2,
    elevation: 25,
 
-    marginTop:30,
+    marginTop:15,
     height:'50%',
     width:'100%',
    
@@ -308,6 +340,32 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  containerB: {
+    marginTop:16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dart: {
+    width: 18,
+    height: 18,
+    borderRadius: 25,
+    borderWidth:2,
+    marginHorizontal: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    justifyContent:'space-evenly'
+  },
+  dartText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 
 })
@@ -471,7 +529,18 @@ function toBack()
   </View>
   
   <View style={styles.resBmi}>
-     <Text style={{fontSize:40}}> {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
+     <Text style={{fontSize:40,
+      fontWeight: 'bold',
+      color:oreng,
+      textShadowOffset: { width: 2, height: 2 },
+      textShadowColor: 'rgba(0, 0, 0, 0.5)',
+      textShadowRadius: 4,
+      textAlign: 'center',
+      textShadowOpacity: 0.8,
+      backgroundColor: 'transparent',
+      paddingVertical: 8,}}>
+
+       {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
   </View>
    
   <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80 }}>
@@ -507,7 +576,7 @@ function ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,fat
      </View>
     
 
-<View style={{flexDirection:'row',justifyContent:'space-evenly',marginTop:40}}>
+<View style={{flexDirection:'row',justifyContent:'space-evenly',marginTop:20}}>
 <TouchableOpacity>
     <View style={styles.circleContainer}>
         <View style={styles.circle}>
@@ -538,7 +607,7 @@ function ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,fat
 
 
 
-  <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80,marginTop:20 }}>
+  <TouchableOpacity style={{width:'50%' ,marginStart:80,marginTop:18 }}>
     { heightOfResView !=0 ? <Button title='back' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
 
@@ -584,14 +653,25 @@ function BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView,isMan,handleS
    
 
   
-  <View style={styles.resBmi}>
-     <Text style={{fontSize:40}}> {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
+    <View style={styles.resBmi}>
+     <Text style={{fontSize:40,
+      fontWeight: 'bold',
+      color:oreng,
+      textShadowOffset: { width: 2, height: 2 },
+      textShadowColor: 'rgba(0, 0, 0, 0.5)',
+      textShadowRadius: 4,
+      textAlign: 'center',
+      textShadowOpacity: 0.8,
+      backgroundColor: 'transparent',
+      paddingVertical: 8,}}>
+
+       {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
   </View>
    <View style={{width:'80%',alignItems:'center',justifyContent:'center',marginLeft:30}}>
   <Text style={{fontSize:15}}>{massege}</Text>
    </View>
 
-  <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80,marginTop:30 }}>
+  <TouchableOpacity style={{ width:'50%' ,marginStart:80,marginTop:30 }}>
     { heightOfResView !=0 ? <Button title='back' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
  
@@ -612,14 +692,25 @@ function SavingStatusRes(heightOfResView,bmiSearchResult,setHeightOfResView,hand
     bmiSearchResult ? 
     <View style={{height:heightOfResView,width:'90%',backgroundColor:'#fff',borderBottomLeftRadius: 10,borderBottomRightRadius: 10}}>
     
-    <Text  style={{fontSize:25,textAlign:'center',marginTop:18}}>the calory to stay :</Text>
+    <Text  style={{fontSize:25,textAlign:'center',marginTop:48}}>the calory to stay :</Text>
     
   
-  <View style={styles.resBmi}>
-     <Text style={{fontSize:40}}> {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
+    <View style={styles.resBmi}>
+     <Text style={{fontSize:50,
+      fontWeight: 'bold',
+      color:oreng,
+      textShadowOffset: { width: 2, height: 2 },
+      textShadowColor: 'rgba(0, 0, 0, 0.5)',
+      textShadowRadius: 4,
+      textAlign: 'center',
+      textShadowOpacity: 0.8,
+      backgroundColor: 'transparent',
+      paddingVertical: 8,}}>
+
+       {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
   </View>
    
-  <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80 }}>
+  <TouchableOpacity style={{ width:'50%' ,marginStart:80,marginTop:30 }}>
     { heightOfResView !=0 ? <Button title='back' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
   
@@ -680,8 +771,8 @@ function WhatIsFatterRes(heightOfResView,bmiSearchResult,setHeightOfResView,calo
 
 
 
-  <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80,marginTop:20 }}>
-    { heightOfResView !=0 ? <Button title='back' color={oreng} onPress={toBack}  /> : null}
+  <TouchableOpacity style={{ width:'50%' ,marginStart:80,marginTop:20 }}>
+    { heightOfResView !=0 ? <Button title='back' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
 
   {/* <View style={{
@@ -862,12 +953,21 @@ function toBack()
     <Text style={{fontSize:15,}}>{message ? message : null}</Text>
   </View>
   
-  <View style={styles.resBmi} >
-     <Text style={{fontSize:40, fontWeight: 'bold',
-    textShadowColor:oreng,
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,}}> {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
+  <View style={styles.resBmi}>
+     <Text style={{fontSize:40,
+      fontWeight: 'bold',
+      color:oreng,
+      textShadowOffset: { width: 2, height: 2 },
+      textShadowColor: 'rgba(0, 0, 0, 0.5)',
+      textShadowRadius: 4,
+      textAlign: 'center',
+      textShadowOpacity: 0.8,
+      backgroundColor: 'transparent',
+      paddingVertical: 8,}}>
+
+       {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
   </View>
+
    
   <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80 }}>
     { heightOfResView !=0 ? <Button title='חזרה' color={blue} onPress={toBack}  /> : null}
@@ -933,8 +1033,8 @@ function ProteinIntakeResEb(heightOfResView,bmiSearchResult,setHeightOfResView,f
 
 
 
-  <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80,marginTop:20 }}>
-    { heightOfResView !=0 ? <Button title='חזרה' color={'#d89b5c'} onPress={toBack}  /> : null}
+  <TouchableOpacity style={{ width:'50%' ,marginStart:80,marginTop:20 }}>
+    { heightOfResView !=0 ? <Button title='חזרה' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
 
   
@@ -996,7 +1096,7 @@ function BmrResEb(heightOfResView,bmiSearchResult,setHeightOfResView,isMan,handl
        {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
   </View>
   
-  <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80,marginTop:30 }}>
+  <TouchableOpacity style={{ width:'50%' ,marginStart:80,marginTop:30 }}>
     { heightOfResView !=0 ? <Button title='חזרה' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
  
@@ -1017,13 +1117,23 @@ function SavingStatusResEb(heightOfResView,bmiSearchResult,setHeightOfResView,ha
     bmiSearchResult ? 
     <View style={{height:heightOfResView,width:'90%',backgroundColor:'#fff',borderBottomLeftRadius: 10,borderBottomRightRadius: 10}}>
     
-    <View style={{width:'100%',alignItems:'center'}}>
+    <View style={{width:'100%',alignItems:'center',marginTop:30}}>
     <Text  style={{fontSize:25,textAlign:'center',marginTop:18,width:'70%'}}>מספר הקלוריות היומי לשמירת המשקל:</Text>
     </View>
     
-  
-  <View style={styles.resBmi}>
-     <Text style={{fontSize:40}}> {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
+    <View style={styles.resBmi}>
+     <Text style={{fontSize:40,
+      fontWeight: 'bold',
+      color:oreng,
+      textShadowOffset: { width: 2, height: 2 },
+      textShadowColor: 'rgba(0, 0, 0, 0.5)',
+      textShadowRadius: 4,
+      textAlign: 'center',
+      textShadowOpacity: 0.8,
+      backgroundColor: 'transparent',
+      paddingVertical: 8,}}>
+
+       {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
   </View>
    
   <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80 }}>
@@ -1087,8 +1197,8 @@ function WhatIsFatterResEb(heightOfResView,bmiSearchResult,setHeightOfResView,ca
 
 
 
-  <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80,marginTop:20 }}>
-    { heightOfResView !=0 ? <Button title='חזרה' color={oreng} onPress={toBack}  /> : null}
+  <TouchableOpacity style={{width:'50%' ,marginStart:80,marginTop:20 }}>
+    { heightOfResView !=0 ? <Button title='חזרה' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
 
   {/* <View style={{

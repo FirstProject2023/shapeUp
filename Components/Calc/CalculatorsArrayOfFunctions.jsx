@@ -50,6 +50,7 @@ export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeig
   }
 
 function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick) {
+  
 
   const {width} = useWindowDimensions();
   const [heightValue, setHeightValue] = useState(0);
@@ -241,6 +242,7 @@ else{
 
   </View>
   )
+
 }
 function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult ,setWhatCalcIs
     , fatValue,setFatValue,carbohydratesValue,setCarbohydratesValue,proteinValue,
@@ -690,9 +692,38 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
   const numberOptions = Array.from({ length: 201 }, (_, index) => index + 100);
   const numberOptions2 = Array.from({ length: 201 }, (_, index) => index + 20);
   
- 
-  const HandlePressOnMan = () => {
-    if(womanIsFocused)
+
+  const HaendelWhatActive = (itemValue) => {
+   
+    console.log(33);
+    switch(itemValue) {
+      case "Basic":
+        setValueToMult(1)
+        break;
+        case "Little or no activity - office work at a desk":
+        setValueToMult(1.2)
+        break;
+        case "Little activity - 1-3 times a week":
+          setValueToMult(1.375)
+          break;
+          case "Average activity - 3-5 times a week":
+            setValueToMult(1.55)
+            break;
+            case "Intensive activity - every day":
+              setValueToMult(1.725)
+              break;
+              case "Intense activity combined with physical work":
+                setValueToMult(1.9)
+                break;
+                default:
+                  setValueToMult(0);
+        }
+        console.log(valueToMult + "  "+ "cd");
+      };
+      
+      
+      const HandlePressOnMan = () => {
+        if(womanIsFocused)
     {
       setManisFocused(!manisFocused);
    
@@ -763,32 +794,11 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
     }
   else{
 
-    switch(activValue) {
-      case "Basic":
-        setValueToMult(1)
-        break;
-        case "Little or no activity - office work at a desk":
-        setValueToMult(1.2)
-        break;
-        case "Little activity - 1-3 times a week":
-          setValueToMult(1.375)
-          break;
-          case "Average activity - 3-5 times a week":
-            setValueToMult(1.55)
-            break;
-            case "Intensive activity - every day":
-              setValueToMult(1.725)
-              break;
-              case "Intense activity combined with physical work":
-                setValueToMult(1.9)
-                  break;
-          default:
-            setValueToMult(0);
-        }
+    
         if(!manisFocused)
         {
-         console.log("man");
-          setBmiSearchResult((  (88.36) + ( (13.39 * weightValue)+(4.7* heightValue)-(5.6 * selectedAgeValue))  * valueToMult ));
+         console.log(valueToMult +"  " +"sitt");
+          setBmiSearchResult((  (88.36) + ( (13.39 * weightValue)+(4.7* heightValue)-(5.6 * selectedAgeValue))  * valueToMult ))
           
         }
         if(!womanIsFocused)
@@ -861,7 +871,7 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
   marginBottom:20,
 }}
 selectedValue={activValue}
-onValueChange={(itemValue) => setActivValue(itemValue)}
+onValueChange={(itemValue) => [setActivValue(itemValue),HaendelWhatActive(itemValue)]}
 >
 <Picker.Item  label='Basic' value='Basic' />
 <Picker.Item  label='Little or no activity - office work at a desk' value='Little or no activity - office work at a desk' />
@@ -1512,7 +1522,7 @@ else{
   </View>
   
   <View style={styles.button}   >
-  <TouchableOpacity style={{height: 50,marginTop:50}}>
+  <TouchableOpacity style={{marginTop:30}}>
   <Button  title='תוצאה' color={blue}  onPress={Res} style={{height: 150}}/> 
   </TouchableOpacity>
  
@@ -1674,7 +1684,7 @@ quantities.map((quantity,i) => (
 
 
 <View style={styles.button}   >
-  <TouchableOpacity style={{height: 50,marginTop:40}}>
+  <TouchableOpacity style={{marginTop:20}}>
   <Button  title='תוצאה' color='#0a2946' onPress={Res} style={{height: 150}}/> 
   </TouchableOpacity>
   
@@ -1900,8 +1910,8 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
   </View>
 
   <View style={styles.button}   >
-  <TouchableOpacity style={{height: 50}}>
-  <Button  title='תוצאה' color={blue} onPress={Res} style={{height: 150}}/> 
+  <TouchableOpacity  >
+  <Button  title='תוצאה' color={blue} onPress={Res}  /> 
   </TouchableOpacity>
  
   </View>
@@ -2176,8 +2186,8 @@ onValueChange={(itemValue) => setActivValue(itemValue)}
   </View>
 
   <View style={styles.button}   >
-  <TouchableOpacity style={{height: 50}}>
-  <Button  title='תוצאה' color={blue} onPress={Res} style={{height: 150}}/> 
+  <TouchableOpacity >
+  <Button  title='תוצאה' color={blue} onPress={Res} /> 
   </TouchableOpacity>
  
   </View>
@@ -2186,7 +2196,7 @@ onValueChange={(itemValue) => setActivValue(itemValue)}
 </View>
 )
 }
-function WhatIsFatterEb(finelText,setFinelText,setFinelTextB,calorValueA,calorValueB,setCalorValueA,setCalorValueB,setHeightOfResView,setWhatCalcIs,setMoreCalory) {
+function WhatIsFatterEb(finelText,setFinelText,setFinelTextB,calorValueA,calorValueB,setCalorValueA,setCalorValueB,setHeightOfResView,setWhatCalcIs,setMoreCalory,handleButtonClick) {
   const {width} = useWindowDimensions();
   const [data, setData] = useState([""]);
   
@@ -2508,7 +2518,7 @@ marginTop:15,
       width:"100%",
     },
     button:{
-      marginTop:38,
+      marginTop:28,
         width:'60%',
       
     },

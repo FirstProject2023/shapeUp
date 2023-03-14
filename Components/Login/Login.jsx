@@ -8,7 +8,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 // import {  } from '@react-native-community/datetimepicker';
@@ -118,7 +118,7 @@ useEffect(()=>{
 
  
   const getUsers = async () => {
-    const data = await AsyncStorage.getDocs(userCollectionRef);
+    const data = await getDocs(userCollectionRef);
     setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
   }
   getUsers();
@@ -126,15 +126,31 @@ useEffect(()=>{
 
 const hendelUpdateGool = async () => {
 
-  let today = new Date(0) ;
+  let today = new Date() ;
   let futureDate=0;
   let diffInDays = 0;
 
+  let currEndDate = new Date(date) 
+ 
   if(WeeklyGoal==0)
   {
-    setFinelDate(endDate);
+    
+
     setEndDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})
-    diffInDays = differenceInDays(today, endDate);
+
+    setFinelDate({
+      day: date.getDate(),
+      month: date.getMonth()+1,
+      year: date.getFullYear(),
+    })
+
+    /* setFinelDate(endDate); */
+
+    
+console.log(currEndDate);
+
+    diffInDays = differenceInDays(currEndDate,today) ;
+
   }
   else{
 
@@ -179,6 +195,7 @@ let daysArr=[];
     activityLevel: 0,
     dailyCalories: 0,
     dailyFood:[],
+    dailyCreationFood:[],
     isTarget: false,
     sleep: 0,
     steps: 0,
@@ -198,8 +215,8 @@ const  handleSignUp =  async () => {
    setFirstScreenIsVisible(true);
    
     try{
-        const user = await AsyncStorage.createUserWithEmailAndPassword(auth, email, password);
-        await AsyncStorage.addDoc(userCollectionRef, {
+        const user = await createUserWithEmailAndPassword(auth, email, password);
+        await addDoc(userCollectionRef, {
             email: email,
             password: password,
             firstName: firstName,
@@ -227,7 +244,7 @@ const  handleSignUp =  async () => {
 }
     const  handleLogin =  async () => {
         try{
-            const user = await AsyncStorage.signInWithEmailAndPassword(auth, email, password);
+            const user = await signInWithEmailAndPassword(auth, email, password);
            
           
         } catch (error){
