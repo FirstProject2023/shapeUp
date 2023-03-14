@@ -136,7 +136,7 @@ const[showSubjects,setShowSubjects] = useState();
       <View style={styles.containerB}>
       <View style={styles.row}>
       {darts.map((dart) => (
-        /* console.log(whatPoint+"   whatPoint"), */
+        console.log(whatPoint+"   whatPoint"),
         <View key={dart.id} style={[styles.dart,{backgroundColor: dart.id == whatPoint ? oreng : 'white'} ]}>
           {/* <Text style={styles.dartText}>{dart.score}</Text> */}
         </View>
