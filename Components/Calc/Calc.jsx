@@ -136,7 +136,7 @@ const[showSubjects,setShowSubjects] = useState();
       <View style={styles.containerB}>
       <View style={styles.row}>
       {darts.map((dart) => (
-         console.log(whatPoint+"   whatPoint"), 
+        /* console.log(whatPoint+"   whatPoint"), */
         <View key={dart.id} style={[styles.dart,{backgroundColor: dart.id == whatPoint.toFixed(0) ? oreng : 'white'} ]}>
           {/* <Text style={styles.dartText}>{dart.score}</Text> */}
         </View>
@@ -403,7 +403,7 @@ function toBack()
 
   return(
     
-    <View style={{height:heightOfResView,width:'90%',backgroundColor:'white',borderBottomLeftRadius: 10,borderBottomRightRadius: 10 }}>
+    <View style={{height:`${heightOfResView}%`,width:'90%',backgroundColor:'white',borderBottomLeftRadius: 10,borderBottomRightRadius: 10 }}>
     
     <Text  style={{fontSize:25,textAlign:'center',marginTop:18}}>Your BMI is:</Text>
     
@@ -542,13 +542,15 @@ function toBack()
       paddingVertical: 8,}}>
 
        {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
-  </View>
-   
-  <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80 }}>
+  <TouchableOpacity style={{ width:'50%' ,marginTop:10 }}>
     { heightOfResView !=0 ? <Button title='back' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
 
+  </View>
+   
+
     </View>
+   
 
     )
     

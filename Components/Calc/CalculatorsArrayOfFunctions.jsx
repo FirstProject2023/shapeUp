@@ -120,7 +120,7 @@ else{
   handleButtonClick();
   setBmiSearchResult(weightValue/((heightValue*0.01)*(heightValue*0.01)));
   setWhatCalcIs(1);
-  setHeightOfResView(420);
+  setHeightOfResView(100);
 }
   }
   
