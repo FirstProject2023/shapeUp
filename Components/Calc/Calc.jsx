@@ -136,13 +136,8 @@ const[showSubjects,setShowSubjects] = useState();
       <View style={styles.containerB}>
       <View style={styles.row}>
       {darts.map((dart) => (
-
-        console.log(whatPoint+"   whatPoint"),
-        <View key={dart.id} style={[styles.dart,{backgroundColor: dart.id == whatPoint ? oreng : 'white'} ]}>
-
-         console.log(whatPoint+"   whatPoint"), 
+        /* console.log(whatPoint+"   whatPoint"), */
         <View key={dart.id} style={[styles.dart,{backgroundColor: dart.id == whatPoint.toFixed(0) ? oreng : 'white'} ]}>
-
           {/* <Text style={styles.dartText}>{dart.score}</Text> */}
         </View>
       ))}
@@ -166,12 +161,12 @@ const[showSubjects,setShowSubjects] = useState();
 
 visible={isTipsView}
 scale={true}
- style={{   zIndex: isTipsView ? 900 : 0 , backgroundColor: '#d8f3dc' ,marginTop: 20, width: '90%', height: '15%',
+ style={{   zIndex: isTipsView ? 900 : 0 , backgroundColor: '#d8f3dc' ,marginTop: 20, width: isTipsView ? '90%' : '0%', height: isTipsView ? '25%' : '0%',
   alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5, 
   padding: 10, borderRadius: 8 , shadowColor:'red' ,shadowOpacity: 0.8, shadowRadius: 2,elevation: 35,}}>
- <Text style={{fontSize: 12,position: 'absolute', fontWeight: '600',top: 30}}>In front of you are five nutrition and fitness calculators, you are welcome to browse through them and enjoy their service To switch between calculators you have to move the screen with your finger to the left</Text>
+ <Text style={{fontSize: 16,position: 'absolute', fontWeight: '600',top: 30}}>In front of you are five nutrition and fitness calculators, you are welcome to browse through them and enjoy their service To switch between calculators you have to move the screen with your finger to the left</Text>
 
- <LottieView autoPlay  style={{ height: 60, width: 0,transform: [{ translateX: 55 }, { translateY: 17 }] , zIndex: isTipsView ? 999 : 0 }}   source={require('../lottieAnimation/swapToSide.json')}/>
+ <LottieView autoPlay  style={{ height: 100, width:50,transform: [{ translateX: 55 }, { translateY: 29 }] , zIndex: isTipsView ? 999 : 0 }}   source={require('../lottieAnimation/swapToSide.json')}/>
 
 <TouchableOpacity style={{position: 'absolute', right: 5, top: 8, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsTipsView(false)}>
 <Feather name="x-circle" size={24} color="#fff"/>
@@ -408,7 +403,7 @@ function toBack()
 
   return(
     
-    <View style={{height:heightOfResView,width:'90%',backgroundColor:'white',borderBottomLeftRadius: 10,borderBottomRightRadius: 10 }}>
+    <View style={{height:`${heightOfResView}%`,width:'90%',backgroundColor:'white',borderBottomLeftRadius: 10,borderBottomRightRadius: 10 }}>
     
     <Text  style={{fontSize:25,textAlign:'center',marginTop:18}}>Your BMI is:</Text>
     
@@ -538,22 +533,24 @@ function toBack()
      <Text style={{fontSize:40,
       fontWeight: 'bold',
       color:oreng,
+      textAlign: 'center',
       textShadowOffset: { width: 2, height: 2 },
       textShadowColor: 'rgba(0, 0, 0, 0.5)',
       textShadowRadius: 4,
-      textAlign: 'center',
       textShadowOpacity: 0.8,
       backgroundColor: 'transparent',
       paddingVertical: 8,}}>
 
        {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
-  </View>
-   
-  <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80 }}>
+  <TouchableOpacity style={{ width:'50%' ,marginTop:10 }}>
     { heightOfResView !=0 ? <Button title='back' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
 
+  </View>
+   
+
     </View>
+   
 
     )
     
