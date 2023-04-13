@@ -12,7 +12,9 @@ import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
+import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
@@ -79,7 +81,20 @@ export default function Diary({ navigation }) {
   const [weight,setWeight] = useState(0);
   const [height,setHeight] = useState(0);
   const [activityLevel,setActivityLevel] = useState(0);
+
+
+  const [showModal, setShowModal] = useState(false);
   
+
+ 
+  const hendleSingOut =()=>{
+    auth
+    .signOut()
+    .then(()=>{
+      navigation.navigate('Login')
+    })
+    .catch(error => log("error"))
+  }
 
   const handleSearch = (text) => {
     setQuery(text);
@@ -156,11 +171,16 @@ export default function Diary({ navigation }) {
   }
 
 
-
+  const handleAddToFavorites = (isCreation,id,foodName,foodAmount) => {
+    // logic to add product to favorites
+    setShowModal(true);
+    updateFavoriteFood(isCreation,id,foodName,foodAmount)
+  };
 
 
 const handleAddFood = () => {
   // Check that all fields are filled before adding the food
+  
   if (!foodName || !foodAmount || !foodCalories || !foodProteins || !foodFat) {
     alert('Please fill all fields.');
     return;
@@ -181,7 +201,60 @@ const handleAddFood = () => {
   carbs: Number(foodCarbs),
 };
 
-  updateFavouritesFood(currentUserData.id ,currentUserData.daysDetails[copyIndexDay].dailyCreationFood)  
+  updateCreationFood(currentUserData.id ,currentUserData.daysDetails[copyIndexDay].dailyCreationFood)  
+
+  // Clear the form fields
+  setFoodName('');
+  setFoodAmount('');
+  setFoodCalories('');
+  setFoodProteins('');
+  setFoodFat('');
+
+
+  Alert.alert(
+    `${foodName} `,
+    "Added successfully",
+    [
+      {
+        text: 'Ok',
+        onPress: () => {
+         
+        },
+        style: 'default',
+        marginVertical: 10, // Adjust the vertical spacing here
+      },
+    
+    ],
+    { cancelable: false }
+  );
+  setModalVisible4(false)
+  // Close the modal
+
+
+
+
+};
+function handleAddFood2(amount,name,calories,proteins,carbs,fat){
+  // Check that all fields are filled before adding the food
+  
+  console.log("name====="+name);
+ 
+  // Add the food to the list of foods
+  let size = currentUserData.daysDetails[copyIndexDay].dailyCreationFood.length;
+  
+
+  currentUserData.daysDetails[copyIndexDay].dailyCreationFood[size]=
+  {
+    id: size+1,
+  name: name,
+  amount: Number(amount),
+  calories: Number(calories),
+  proteins: Number(proteins),
+  fat: Number(fat),
+  carbs: Number(carbs),
+};
+
+  updateCreationFood(currentUserData.id ,currentUserData.daysDetails[copyIndexDay].dailyCreationFood)  
 
   // Clear the form fields
   setFoodName('');
@@ -215,7 +288,7 @@ const handleAddFood = () => {
 
 };
 
-const updateFavouritesFood = async (id,dailyCreationFood) => {
+const updateCreationFood = async (id,dailyCreationFood) => {
 
   const userDoc = doc(db,"users",id)
 
@@ -246,6 +319,80 @@ sum += e.calories ;
 }
 
 
+
+
+const updateFavoriteFood = async (isCreation,id,foodName,foodAmount) => {
+
+
+  if(currentUserData)
+  {
+      
+    const userDoc = doc(db,"users",id)
+    let size = currentUserData.dailyFavoriteFood.length;
+    console.log("siae is:" + size);
+    let currUserData = [...currentUserData.dailyFavoriteFood]
+
+ 
+if(isCreation==0)
+{
+
+  console.log(FavoriteFoodCal);
+  console.log("test-0");
+
+  currentUserData.dailyFavoriteFood[size] = {
+        Type:0,
+        id: size+1,
+        name: foodName,
+        amount: Number(foodAmount),
+        calories: Number(FavoriteFoodCal),
+      proteins: Number(FavoriteFoodPro),
+      fat: Number(FavoriteFoodFat),
+      carbs: Number(FavoriteFoodCarbs),
+    }
+
+    currUserData =currentUserData.dailyFavoriteFood ;
+}
+else if(isCreation==1){
+
+  let currFoodCalory;
+
+  if(currentUserData)
+  {
+
+    currFoodCalory = data2.nutrients.ENERC_KCAL ; 
+  }
+  console.log("test-1");
+
+  console.log(currFoodCalory * (foodAmount/100));
+  
+  currentUserData.dailyFavoriteFood[size] = {
+    
+    Type:1,
+    foodAmount: Number(foodAmount),
+    foodName: foodName ,
+    foodCalory: Number(currFoodCalory * (foodAmount/100)),
+    id: Number(size+1)
+  };
+
+  currUserData =currentUserData.dailyFavoriteFood ;
+  
+}
+
+
+
+const newFields ={dailyFavoriteFood: currUserData } 
+
+await updateDoc(userDoc , newFields)
+
+}
+
+
+} 
+
+
+
+
+
 const updateDayleFood = async (id,foodAmount,foodName) => {
 
   let size = currentUserData.daysDetails[copyIndexDay].dailyFood.length;
@@ -271,15 +418,52 @@ const updateDayleFood = async (id,foodAmount,foodName) => {
 sum += e.foodCalory ;
 
   })
+  currDaysDetails[copyIndexDay].dailyCreationFood.map((e)=>{
+   
+    sum += e.calories ;
+    
+      })
  
   currDaysDetails[copyIndexDay].dailyCalories = sum;
  
-  const newFields ={daysDetails: currDaysDetails } 
+  const newFields ={daysDetails : currDaysDetails } 
 
   await updateDoc(userDoc , newFields)
 
 }
 
+
+
+const deleateFavoriteFood = async(id,foodAmount,foodName,idNum)=>{
+  
+if(currentUserData)
+{
+
+
+
+const newArray =  currentUserData.dailyFavoriteFood.map(item => {
+  
+    if (item.id == idNum ) {
+      return null; // this will remove the item from the array
+    }
+    return item;
+
+  }).filter(Boolean); 
+  
+
+  const userDoc = doc(db,"users",id)
+
+  let currDaysDetails = [...currentUserData.dailyFavoriteFood]
+
+  currentUserData.dailyFavoriteFood = newArray;
+  currDaysDetails = newArray;
+
+  const newFields ={dailyFavoriteFood: currDaysDetails } 
+
+  await updateDoc(userDoc , newFields) 
+
+}
+}
 const deleateFood = async(id,foodAmount,foodName,idNum)=>{
   
 const newArray =  currentUserData.daysDetails[copyIndexDay].dailyFood.map(item => {
@@ -305,6 +489,12 @@ const newArray =  currentUserData.daysDetails[copyIndexDay].dailyFood.map(item =
 sum += e.foodCalory ;
 
   })
+  currDaysDetails[copyIndexDay].dailyCreationFood.map((e,i)=>{
+  
+    sum += e.calories ;
+    
+      })
+  
 
   currDaysDetails[copyIndexDay].dailyCalories = sum;
 
@@ -314,7 +504,9 @@ sum += e.foodCalory ;
   await updateDoc(userDoc , newFields) 
 }
 
-const deleateFavoritFood = async(id,idNum)=>{
+
+
+const deleateCreationFood = async(id,idNum)=>{
   
   const newArray =  currentUserData.daysDetails[copyIndexDay].dailyCreationFood.map(item => {
     
@@ -339,6 +531,14 @@ const deleateFavoritFood = async(id,idNum)=>{
   sum += e.calories ;
   
     })
+
+    
+  currDaysDetails[copyIndexDay].dailyFood.map((e,i)=>{
+
+    sum += e.foodCalory ;
+    
+      })
+      
   
     currDaysDetails[copyIndexDay].dailyCalories = sum;
   
@@ -445,8 +645,8 @@ useEffect(() => {
 
         //real code
         setIndex(differenceInDays(new Date(), currentUserData.daysDetails[0].singleDate.toDate()));
-        console.log(new Date(now));
-        console.log(currentUserData.daysDetails[0].singleDate.toDate());
+       /*  console.log(new Date(now));
+        console.log(currentUserData.daysDetails[0].singleDate.toDate()); */
         
         //test code
         setTestIndex(testIndex + 1)
@@ -495,20 +695,20 @@ useEffect(() => {
 
       }
     }
-  }, 2000); 
+  }, 20000000); 
 
 
 
   // console.log("index in useEffect" +  " " + index);
-  console.log("_____________________");
-  console.log("test index in useEffect" +  " " + testIndex);
+/*   console.log("_____________________");
+  console.log("test index in useEffect" +  " " + testIndex); */
 
   return () => clearInterval(intervalId);
 
 }, [currentUserData, testIndex, weight, height]);
 
 // console.log("index after useEffect" +  " " + index);
-console.log("test index after useEffect" +  " " + testIndex);
+/* console.log("test index after useEffect" +  " " + testIndex); */
 
 
 
@@ -519,7 +719,6 @@ console.log("test index after useEffect" +  " " + testIndex);
 
  const handleSubmit = () => {
 
-  console.log(data2Empty);
 
 if(data2Empty)
 {
@@ -564,6 +763,19 @@ else
 
 }
 
+const handleSubmit2 = (id,foodAmount,foodName) => {
+
+    updateDayleFood(id, foodAmount, foodName )
+    
+  
+    if (  foodAmount && foodName ) {
+      setModalVisible(true);
+    }
+  
+  
+  }
+
+
 function RmrCalculate(activity) {
   setWeight(currentUserData ? currentUserData.weight : null);
     setHeight(currentUserData ? currentUserData.height : null);
@@ -580,13 +792,13 @@ function RmrCalculate(activity) {
     // updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *   (currentUserData ? currentUserData.daysDetails[copyIndexDay].activityLevel : null) )) , copyIndexDay);
     updateDailyDayTarget(currentUserData ? currentUserData.id: null, (Math.floor(currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint : null)) - (currentUserData ? currentUserData.calToLoseDay : null), copyIndexDay);
   
-        console.log("copyIndexDay:" + "  " + copyIndexDay);
+      /*   console.log("copyIndexDay:" + "  " + copyIndexDay);
         console.log("weight:" + "  " + weight);
         console.log("height:" + "  " + height);
         console.log("years:" + "  " + years);
         console.log("activityLevel:" + "  " + activityLevel);
         console.log("balancePoint:" + "  " + (currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint: null));
-        console.log("dayTarget:" + "  " + (currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget: null));
+        console.log("dayTarget:" + "  " + (currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget: null)); */
 
 
 
@@ -749,7 +961,7 @@ onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(cu
     </TouchableOpacity>
     <Text style={{marginTop: 10, fontSize: 25, fontWeight: '600',marginBottom:5}}>Food selection area</Text>
     <TouchableOpacity style={{ position: 'absolute', left: 10, top: 20 }} onPress={()=>setOnAddFood(!onAddFood)}>
-       {onAddFood ? <MaterialCommunityIcons name="pen-plus" size={32} color="white" />  : <MaterialCommunityIcons name="pen-plus" size={34} color="black" />} 
+       {onAddFood ? <MaterialCommunityIcons name="pen-plus" size={34} color="white" />  : <MaterialCommunityIcons name="pen-plus" size={34} color="#808080" />} 
         </TouchableOpacity>
 
 
@@ -826,7 +1038,12 @@ onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(cu
         <TouchableOpacity style={styles.button} onPress={()=>setModalVisible4(true)}>
           <Text style={styles.buttonText}>Create your own dish</Text>
         </TouchableOpacity>
+
+
+        
+
       </View>
+      
 
 :
 null
@@ -835,7 +1052,7 @@ null
 
 
        <TouchableOpacity style={{ position: 'absolute', left: 5, top: 63 }} onPress={()=>[setShowOnAddFood(!ShowOnAddFood)]}>
-       {ShowOnAddFood ?  <AntDesign name="heart" size={32}   color= "red" /> : <AntDesign name="heart" size={32}   color= "green" />} 
+       {ShowOnAddFood ?  <AntDesign name="heart" size={32}   color= "red" /> : <AntDesign name="heart" size={32}   color= "#808080" />} 
         </TouchableOpacity>
 
       
@@ -852,7 +1069,7 @@ null
   data={currentUserData.daysDetails[copyIndexDay].dailyFood.map(item => ({...item, key: uuidv4()}))}
   renderItem={({ item }) => (
     <View style={styles.foodContainer} key={item.key}>  
-      <TouchableOpacity style={{alignItems:'center',justifyContent:'center',marginLeft:3}}>
+      <TouchableOpacity onPress={()=>[handleAddToFavorites(1,currentUserData.id,item.foodName,item.foodAmount ),setQuantity(item.foodAmount), setFinelText2(item.foodName)]} style={{alignItems:'center',justifyContent:'center',marginLeft:3}}>
       <MaterialCommunityIcons name="heart-plus-outline" size={30} color="black" />
       </TouchableOpacity>
       <TouchableOpacity style={{alignItems:'center',justifyContent:'center',marginLeft:5}}>
@@ -879,7 +1096,9 @@ null
   renderItem={({ item }) => (
     <View style={styles.foodContainer} key={item.key}>
 
-      <TouchableOpacity style={{alignItems:'center',justifyContent:'center',marginLeft:3}}>
+<TouchableOpacity onPress={()=>[setQuantity(item.amount), setFinelText2(item.name),setFavoriteFoodAmount(item.amount),
+           setFavoriteFoodName(item.name),setFavoriteFoodCal(item.calories),setFavoriteFoodPro(item.proteins),setFavoriteFoodCarbs(item.carbs),
+           setFavoriteFoodFat(item.fat),handleAddToFavorites(0,currentUserData.id,item.name,item.amount )]} style={{alignItems:'center',justifyContent:'center',marginLeft:3}}>
       <MaterialCommunityIcons name="heart-plus-outline" size={30} color="black" />
       </TouchableOpacity>
 
@@ -898,7 +1117,7 @@ null
         <Text style={styles.foodAmount}>{item.foodCalory.toFixed(0)} calory</Text>
       </View> */}
       <TouchableOpacity style={{alignItems:'center',justifyContent:'center'}}>
-        <AntDesign name="delete" size={24} color="black" onPress={()=>[deleateFavoritFood(currentUserData.id,item.id), setModalVisible2(true)]} />
+        <AntDesign name="delete" size={24} color="black" onPress={()=>[deleateCreationFood(currentUserData.id,item.id), setModalVisible2(true)]} />
       </TouchableOpacity>
     </View>
   )}
@@ -907,9 +1126,8 @@ null
 
            </View>
 
-<Text style={styles.caloriesText}>
-  {currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyCalories : null} cal
-</Text>
+           
+
            
   </View>
 
@@ -920,6 +1138,112 @@ null
 }
 
 
+{
+  
+ currentUserData && ShowOnAddFood ?
+
+<View style={{width:'100%',height:'93%',alignItems:'center'/* ,backgroundColor:'yellow' */}}>
+<Text style={{ fontSize: 20, fontWeight: 'bold', color: 'blue',marginBottom:6,marginTop:10 }}>Favorites list </Text>
+
+<FlatList
+  style={{width:'85%'}}
+  
+  data={currentUserData.dailyFavoriteFood.map(item => ({...item, key: uuidv4()}))}
+  renderItem={({ item }) => (
+
+item.Type==0 ?
+
+    <View style={styles.foodContainer} key={item.key}>  
+
+   <TouchableOpacity onPress={()=>handleAddFood2(item.amount,item.name,item.calories,item.proteins,item.carbs,item.fat)}  style={{alignItems:'center',justifyContent:'center'}}>
+      <MaterialIcons name="addchart" size={38} color={oreng} />
+      </TouchableOpacity>    
+  
+      <TouchableOpacity style={{alignItems:'center',justifyContent:'center',marginLeft:25}}>
+        <FontAwesome name="wpexplorer" size={35} color="black" onPress={()=>[setQuantity(item.foodAmount), setFinelText2(item.foodName),setModalVisible5(true)]} />
+      </TouchableOpacity>
+      
+        
+      <View style={styles.foodInfo}>
+        <Text style={styles.foodName}>{item.name}   <Text style={{fontSize: 12 ,fontWeight: '400', marginBottom: 5,}}>{item.amount}g</Text></Text>
+        <Text style={styles.foodAmount}>{item.calories.toFixed(0)} calory</Text>
+      </View>
+      <TouchableOpacity style={{alignItems:'center',justifyContent:'center'}}>
+        <AntDesign name="delete" size={24} color="black" onPress={()=>[deleateFavoriteFood(currentUserData.id ,item.foodAmount,item.foodName,item.id), setModalVisible2(true)]} />
+      </TouchableOpacity>
+    </View>
+    :
+    
+    <View style={[styles.foodContainer]} key={item.key}>  
+      
+      <TouchableOpacity onPress={()=>[setQuantity(item.foodAmount), setFinelText2(item.foodName),setFoodAmount(item.foodAmount),
+         setFoodName(item.foodName), handleSubmit2(currentUserData.id,item.foodAmount,item.foodName)]}  style={{alignItems:'center',justifyContent:'center'}}>
+      <MaterialIcons name="addchart" size={38} color={oreng} />
+      </TouchableOpacity>
+       <TouchableOpacity style={{alignItems:'center',justifyContent:'center',marginLeft:25}}>
+        <FontAwesome name="wpexplorer" size={32} color="black" onPress={()=>[setQuantity(item.foodAmount), setFinelText2(item.foodName),setModalVisible3(true)]} />
+      </TouchableOpacity> 
+     
+      
+        
+      <View style={styles.foodInfo}>
+        <Text style={styles.foodName}>{item.foodName}   <Text style={{fontSize: 12 ,fontWeight: '400', marginBottom: 5,}}>{item.foodAmount}g</Text></Text>
+        <Text style={styles.foodAmount}>{item.foodCalory.toFixed(0)} calory</Text>
+      </View>
+      <TouchableOpacity style={{alignItems:'center',justifyContent:'center'}}>
+        <AntDesign name="delete" size={24} color="black" onPress={()=>[deleateFavoriteFood(currentUserData.id ,item.foodAmount,item.foodName,item.id), setModalVisible2(true)]} />
+      </TouchableOpacity>
+    </View>
+
+  )}
+/>
+</View>
+:
+null
+}
+
+
+
+  {!ShowOnAddFood ? 
+
+<View style={{width:'65%'}}>
+<Text style={[styles.caloriesText,{textAlign:'center'}]}>
+      {currentUserData ? (currentUserData.daysDetails[copyIndexDay].dailyCalories).toFixed(0) : null} cal
+    </Text>
+</View>
+:
+null}
+
+
+
+<Modal 
+  visible={showModal} 
+  animationType="slide" 
+  transparent={true}
+>
+  <View style={styles.modalContainer}>
+    <View style={styles.modalContent}>
+      <Text style={styles.modalTitle}>Food Info</Text>
+      <View style={styles.modalTextContainer}>
+        <Text style={styles.modalText}>
+        Product added to favorites!
+        </Text>
+      </View>
+        <MaterialCommunityIcons name="heart-plus" size={44} color={oreng} />
+      <TouchableOpacity 
+        style={styles.modalButton} 
+        onPress={() => {
+          setShowModal(false);
+          setFoodName("");
+          setFoodAmount("");
+          setFinelText2("");
+        }}
+      >
+        <Text style={styles.modalButtonText}>Close</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</Modal>
 <Modal 
   visible={modalVisible} 
   animationType="slide" 
@@ -1147,8 +1471,8 @@ null}
      
        // by basic activity
         <View style={{width: '85%', height: '15%', borderRadius: 8, borderWidth: 1.5, marginTop: 25, flexDirection: 'row', justifyContent: 'flex-end'}}>
-      {console.log("basicBalancePoint:" + " " + currentUserData ? currentUserData.basicBalancePoint : null)}
-      {console.log("basicDayTarget:" + " " + currentUserData ? currentUserData.basicDayTarget : null)}
+     {/*  {console.log("basicBalancePoint:" + " " + currentUserData ? currentUserData.basicBalancePoint : null)}
+      {console.log("basicDayTarget:" + " " + currentUserData ? currentUserData.basicDayTarget : null)} */}
 
       {/* red */}
 
@@ -1528,7 +1852,7 @@ buttonTextB: {
   fontSize: 16,
   },
   caloriesText: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: '600',
     marginTop: 13,
     color: oreng, // example color
@@ -1537,6 +1861,12 @@ buttonTextB: {
     borderRadius: 5, // example border radius
     borderWidth: 1, // example border width
     borderColor: 'green', // example border color
+    textShadowOffset: { width: 2, height: 2 },
+      textShadowColor: 'rgba(0, 0, 0, 0.5)',
+      textShadowRadius: 4,
+      textShadowOpacity: 0.8,
+      paddingVertical: 8,
+    
   },
 
 

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,Image, ScrollView,TextInput,Button, StatusBar  } from 'react-native'
+import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,Image, ScrollView,TextInput,Button, StatusBar,Animated,Modal   } from 'react-native'
 import React, { useState,useEffect } from 'react'
 import { oreng,blue } from '../Globals/colors';
 import { Ionicons } from '@expo/vector-icons'; 
@@ -12,6 +12,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
 import { Picker } from '@react-native-picker/picker';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
 
@@ -47,6 +48,8 @@ const[newFirstName,setNewFirstName]=useState("");
 const[newLastName,setNewLastName]=useState("");
 
 const [enterVasibal,setEnterVasibal] = useState(1);
+const [showModal2, setShowModal2] = useState(false);
+const [showModal3, setShowModal3] = useState(false);
 
 const updateWeightGoalUser = async (id,newWeightGoal) => {
 
@@ -59,7 +62,7 @@ setPurposeInputPresented(!purposeInputPresented);
 
 const updateFirstNameAndLastNAmeUser = async (id,NfirstName,NlastName) => {
 
-  setNameInputPresented(!nameInputPresented);
+
   const userDoc = doc(db,"users",id)
   const newFields ={firstName: NfirstName,lastName: NlastName } 
   await updateDoc(userDoc , newFields)
@@ -213,9 +216,67 @@ const days = diffInDays - (years * 365) - (months * 30);
   {
     setGoalInputPresented(!goalInputPresented)
   }
+
+  function enterToDo()
+  {
+   
+    if(newLastName != "" && newFirstName != "")
+    {
+      setShowModal3(true);  
+      updateFirstNameAndLastNAmeUser(currentUserData.id,newFirstName,newLastName)
+      
+    }
+    else{
+      
+      setShowModal2(true);
+    }
+   
+  }
+
+
   function ChangePasswordInput()
   {
     setPasswordInputPresented(!passwordInputPresented)
+  }
+
+  const [showModal, setShowModal] = useState(false);
+  const [fadeAnimation] = useState(new Animated.Value(0));
+
+  const handlePress = () => {
+    setShowModal(true);
+    Animated.timing(fadeAnimation, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handleClose = () => {
+    Animated.timing(fadeAnimation, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => setShowModal(false));
+  };
+
+
+
+
+
+
+  const updateImg = async (id,img) => {
+
+
+    console.log("my img ---->>>>>>>>>" +img);
+
+    const userDoc = doc(db,"users",id)
+  
+    currentUserData.img=img;
+ 
+    const newFields ={img : currentUserData.img } 
+  
+    await updateDoc(userDoc , newFields)
+  
   }
 
 
@@ -229,10 +290,10 @@ const days = diffInDays - (years * 365) - (months * 30);
     /* console.log( "--------->" + result.uri); */
     
     if (!result.cancelled) {
-      setSelectedImage(result.uri);
+      updateImg(currentUserData.id,result.assets[0].uri)
     }
   };
-if(auth.currentUser)
+if(auth.currentUser&& currentUserData)
 {
   return (
     
@@ -256,12 +317,28 @@ if(auth.currentUser)
       
     <View style={{zIndex:90}}>
         <View style={styles.circle}>
-        {selectedImage ?  <Image source={{ uri: selectedImage }} style={{height:'100%',width:'100%',borderRadius: 50}} />
+        {currentUserData.img ?  
+         <TouchableOpacity onPress={handlePress}>
+        <Image source={{ uri: currentUserData.img }} style={{height:'100%',width:'100%',borderRadius: 50}} />
+        
+         </TouchableOpacity>
+
       :
 <Image style={{height:'100%',width:'100%',borderRadius: 50}} source={{uri: "https://www.seekpng.com/png/detail/966-9665493_my-profile-icon-blank-profile-image-circle.png"}} resizeMode= 'cover'/>
       } 
         </View>
     </View>
+
+    <Modal visible={showModal} transparent={true} onRequestClose={handleClose}>
+        <TouchableOpacity style={styles.modalBackground} activeOpacity={1} onPress={handleClose}>
+          <Animated.View style={[styles.modalContent, { opacity: fadeAnimation }]}>
+    <View style={styles.captionContainer}>
+          <Text style={styles.captionText}>{currentUserData.firstName +"  "+ currentUserData.lastName }</Text>
+        </View>
+            <Image source={{ uri: currentUserData.img }} style={styles.largeImage} />
+          </Animated.View>
+        </TouchableOpacity>
+      </Modal>
   
 
       <TouchableOpacity style={{zIndex:100}}>
@@ -344,16 +421,72 @@ if(auth.currentUser)
                />
                
                <View style={{flexDirection:'column'}}>
-{enterVasibal ?   <View style={{height:35,width:80,marginTop:10,marginLeft:14,marginRight:6}}>
-  <Button  title='enter' color='#0a2946'  onPress={()=> [setNewLastName(newLastName),setNewFirstName(newFirstName),setEnterVasibal(!enterVasibal)]}  /> 
+{  <View style={{height:35,width:80,marginTop:10,marginLeft:14,marginRight:6}}>
+  <Button  title='enter' color='#0a2946'  onPress={()=> enterToDo()}  /> 
 </View> 
-: 
-<View style={{height:35,marginTop:10,marginLeft:14,marginRight:6}}>
-<Button  title='upDate' color='#0a2946'  onPress={()=> updateFirstNameAndLastNAmeUser(currentUserData.id,newFirstName,newLastName)}  /> 
-</View>
+
  }
+
+ 
                 
-  
+  {
+    <Modal 
+    visible={showModal2} 
+    animationType="slide" 
+    transparent={true}
+  >
+    <View style={styles.modalContainer}>
+      <View style={styles.modalContent}>
+        <Text style={styles.modalTitle}>error!</Text>
+        <View style={styles.modalTextContainer}>
+          <Text style={styles.modalText}>
+          You need to type a first and last name!
+          </Text>
+        </View>
+          
+        <TouchableOpacity 
+          style={styles.modalButton} 
+          onPress={() => {
+            setShowModal2(false);
+           
+          }}
+        >
+          <Text style={styles.modalButtonText}>Close</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </Modal>
+  }
+{
+    <Modal 
+    visible={showModal3} 
+    animationType="slide" 
+    transparent={true}
+  >
+    <View style={styles.modalContainer}>
+      <View style={styles.modalContent}>
+        <Text style={styles.modalTitle}>Changed successfully</Text>
+        <View style={styles.modalTextContainer}>
+          <Text style={styles.modalText}>
+          When you refresh the app you can see the changes applied
+          </Text>
+        </View>
+          
+        <TouchableOpacity 
+          style={styles.modalButton} 
+          onPress={() => {
+            setShowModal3(false);
+           
+          }}
+        >
+          <Text style={styles.modalButtonText}>Close</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </Modal>
+  }
+
+
 
                </View>
                   <TextInput placeholder='Enter lastName...' 
@@ -769,5 +902,96 @@ details:{
   justifyContent:'space-between'
 
 },
+profileImage: {
+  width: 100,
+  height: 100,
+  borderRadius: 50,
+},
+modalBackground: {
+  flex: 1,
+  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+modalContent: {
+  backgroundColor: 'white',
+  padding: 20,
+  borderRadius: 10,
+},
+largeImage: {
+  marginTop:40,
+  width: 300,
+  height: 300,
+  borderRadius: 150,
+},
+captionContainer: {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  backgroundColor: 'green',
+  paddingVertical: 8,
+  paddingHorizontal: 16,
+},
+captionText: {
+  color: 'white',
+  fontSize: 22,
+  fontWeight: 'bold',
+  textAlign: 'center',
+},
+modalContainer: {
+  flex: 1,
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+modalContent: {
+  backgroundColor: '#FFFFFF',
+  borderRadius: 20,
+  padding: 20,
+  width: '80%',
+  alignItems: 'center',
+  elevation: 3,
+  shadowColor: '#000',
+  shadowOpacity: 0.2,
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+},
+modalTitle: {
+  fontSize: 24,
+  fontWeight: 'bold',
+  marginBottom: 20,
+  color: '#3F3F3F',
+},
+modalTextContainer: {
+  alignItems: 'center',
+  marginVertical: 10,
+},
+modalText: {
+  fontSize: 24,
+  color: '#3F3F3F',
+},
+modalTextHighlight: {
+  fontSize: 20,
+  fontWeight: 'bold',
+  color: '#3F3F3F',
+  marginHorizontal: 5,
+},
+modalButton: {
+  backgroundColor: '#3F3F3F',
+  borderRadius: 20,
+  paddingVertical: 12,
+  paddingHorizontal: 25,
+  marginTop: 20,
+},
+modalButtonText: {
+  color: '#FFFFFF',
+  fontSize: 18,
+  fontWeight: 'bold',
+  textAlign: 'center',
+},
+
 
 })

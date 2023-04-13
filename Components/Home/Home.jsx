@@ -112,7 +112,7 @@ if(auth.currentUser)
 
     </TouchableOpacity>
     <TouchableOpacity style={[styles.sidesDetails, , {position: 'absolute', right: 32, top: 80}]}>
-    <Text style={{fontSize: 20, fontWeight: '800'}}>left</Text>
+    <Text style={{fontSize: 20, fontWeight: '800'}}>{currentUserData ? currentUserData.weight : null}</Text>
 
     </TouchableOpacity>
     

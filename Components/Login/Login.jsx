@@ -33,6 +33,7 @@ export default function Login({ navigation }) {
   const [height, setHeight] = useState(0);
   const [weight, setWeight] = useState(0);
   const [daysDetails,setDaysDetails] = useState([]);
+  const [dailyFavoriteFood,setDailyFavoriteFood] = useState([]);
   const [birthDate, setBirthDate] = useState({
     day: null,
     month: null,
@@ -242,11 +243,14 @@ const  handleSignUp =  async () => {
             WeeklyGoal: WeeklyGoal, 
             endDate: endDate, 
             finelDate: finelDate,
+            img: null,
             daysDetails: daysDetails,
+            dailyFavoriteFood: dailyFavoriteFood,
             calToLoseDay: calToLoseDay,
             averageActivity: averageActivity,
             basicBalancePoint: basicBalancePoint,
             basicDayTarget: basicDayTarget,
+            
 
           });
           setWeeklyGoal(0);
@@ -432,6 +436,7 @@ const  handleSignUp =  async () => {
     </TouchableOpacity>
       <TextInput 
       style={styles.textInput}
+      keyboardType="email-address"
       placeholder='Email'
       leftIcon={<Entypo name="lock" size={24} color="#fff" />}
       
@@ -441,6 +446,7 @@ const  handleSignUp =  async () => {
       
       <TextInput 
        style={styles.textInput}
+       keyboardType="visible-password"
       placeholder='Password'
       placeholderTextColor={'#fff'}
       
@@ -995,3 +1001,6 @@ const styles = StyleSheet.create({
 
     },
 })
+
+
+//1000
