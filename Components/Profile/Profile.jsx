@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,Image, ScrollView,TextInput,Button, StatusBar,Animated,Modal   } from 'react-native'
+import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,Image, ScrollView,TextInput,Button, StatusBar
+  ,Animated,Modal,Alert   } from 'react-native'
 import React, { useState,useEffect } from 'react'
 import { oreng,blue } from '../Globals/colors';
 import { Ionicons } from '@expo/vector-icons'; 
@@ -46,6 +47,8 @@ const [passwordInputPresented,setPasswordInputPresented] = useState(1);
 const[newPurpose,setNewPurpose]=useState("");
 const[newFirstName,setNewFirstName]=useState("");
 const[newLastName,setNewLastName]=useState("");
+const[newpassword,setNewpassword]=useState("");
+const[eye,setEye]=useState(false);
 
 const [enterVasibal,setEnterVasibal] = useState(1);
 const [showModal2, setShowModal2] = useState(false);
@@ -68,7 +71,32 @@ const updateFirstNameAndLastNAmeUser = async (id,NfirstName,NlastName) => {
   await updateDoc(userDoc , newFields)
 
 }
+const updatePassword = async (id,newpassword) => {
+
+
+  const userDoc = doc(db,"users",id)
+  const newFields ={password : newpassword } 
+  await updateDoc(userDoc , newFields)
+
+}
 const updateBirthDay = async (id,date) => {
+
+  const currentDate = new Date();
+  const ageDiff = currentDate.getFullYear() - date.getFullYear();
+ 
+  if (
+    ageDiff < 18 ||
+    (ageDiff === 18 && currentDate.getMonth() < birthDate.month) ||
+    (ageDiff === 18 && currentDate.getMonth() === birthDate.month && currentDate.getDate() < birthDate.day)
+  ) {
+    Alert.alert('Invalid Age', 'You must be at least 18 years old to use this app.');
+    
+  }
+  else if (ageDiff > 120) {
+  Alert.alert('Invalid Age', 'You cannot be more than 120 years old.');
+  
+} else {
+
 
   setDateInputPresented(!dateInputPresented); 
 
@@ -76,6 +104,17 @@ const updateBirthDay = async (id,date) => {
   const newBirthDate={day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear() };
   const newFields ={birthDate: newBirthDate } 
   await updateDoc(userDoc , newFields)
+    
+    /* setBirthDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})
+    setBirthDateIsVisible(false)
+     setGoalIsVisible(true) */
+   
+  }
+
+
+
+
+  
 
 }
 const updateEndDay = async (id,date) => {
@@ -233,6 +272,22 @@ const days = diffInDays - (years * 365) - (months * 30);
    
   }
 
+  function enterToChangePassword()
+  {
+   
+    if(newpassword.length > 5 )
+    {
+      console.log(newpassword);
+      setShowModal3(true);  
+      updatePassword(currentUserData.id,newpassword)
+      
+    }
+    else{
+      setShowModal2(true);
+    }
+   
+  }
+
 
   function ChangePasswordInput()
   {
@@ -279,8 +334,8 @@ const days = diffInDays - (years * 365) - (months * 30);
   
   }
 
-
     const pickImage = async () => {
+      
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -348,24 +403,22 @@ if(auth.currentUser&& currentUserData)
 
 {/* a */}
 
-
-
       <ScrollView>
+
 
 <View style={{height:'12%',width:'100%',justifyContent:'center',alignItems:'center' }}>
       <Text style={{fontSize:20,color:blue,marginRight:30,fontSize:20}}> {/* ({days})({months}) */}{years} years old </Text>
 </View>
 
-
 <View style={{flexDirection:'row'}}>
 
-      <View style={{height:100,width:100,borderRadius:50,position:'absolute',top:10,right:270,zIndex:100,backgroundColor:'#F0FFFF'
+      <TouchableOpacity style={{height:"130%",width:"28%",borderRadius:100, position:'absolute',top:-21,right:255,zIndex:100,backgroundColor:'#F0FFFF'
       ,borderWidth:2,justifyContent:'center',alignItems:'center'}}>
-             <Text style={{fontSize:15,color:oreng,textAlign:'center'}}> {currentUserData ? currentUserData.weightGoal : null } kg </Text>
-          <Text style={{fontSize:15,color:"black",textAlign:'center'}}> Purpose</Text>
-          </View>
+             <Text style={{fontSize:17,color:oreng,textAlign:'center',fontWeight: '700'}}> {currentUserData ? currentUserData.weightGoal : null } kg </Text>
+          <Text style={{fontSize:20,color:"black",textAlign:'center',fontWeight: '700'}}> Purpose</Text>
+          </TouchableOpacity>
 
-        <View style={styles.weightContainer}>
+        <TouchableOpacity style={styles.weightContainer}>
 
 
           <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
@@ -388,14 +441,13 @@ if(auth.currentUser&& currentUserData)
 
           </View>
 
-      </View>
+      </TouchableOpacity>
          
 
       </View>
 
 
-<View style={{width:'90%',justifyContent:'center',alignItems:'center'}}>
-
+<View style={{width:'90%',justifyContent:'center',alignItems:'center',marginTop:20}}>
 
             {
                  nameInputPresented
@@ -412,13 +464,15 @@ if(auth.currentUser&& currentUserData)
           </View>
 
           : 
-
+          <View>
+         <Text style={{fontSize:12}}>** enter your first and last name to update your details.</Text>
           <View style={{width:'100%',alignItems:'center',flexDirection:'row'}}>
+       
                 
             
               <AntDesign name="checkcircleo" size={24} color="black" style={{marginLeft:13}} 
               onPress={ChangeNameInpout}
-               />
+              />
                
                <View style={{flexDirection:'column'}}>
 {  <View style={{height:35,width:80,marginTop:10,marginLeft:14,marginRight:6}}>
@@ -503,7 +557,7 @@ if(auth.currentUser&& currentUserData)
                 
             
         </View>
-
+        </View>
 
 
             }
@@ -533,7 +587,9 @@ if(auth.currentUser&& currentUserData)
           </View>
 
           : 
+<View>
 
+<Text style={{fontSize:12,margin:10}}>** enter your date of birth to update your details.</Text>
           <View style={{width:'100%',alignItems:'center',flexDirection:'row', height:50,}}>
             <AntDesign name="checkcircleo" size={24} color="black" style={{marginLeft:13}} 
               onPress={ChangeDateInput}
@@ -547,7 +603,7 @@ if(auth.currentUser&& currentUserData)
       </TouchableOpacity>
 
         </View>
-
+        </View>
 
 
             }
@@ -568,7 +624,7 @@ if(auth.currentUser&& currentUserData)
           <View style={styles.details}>
           
             
-              <AntDesign name="medium-monogram" size={20} color="black" style={{marginLeft:15}}/>
+          <AntDesign style={{marginLeft:15}} name="lock" size={24} color="black"  />
           <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}>{auth.currentUser?.email}</Text>
           <MaterialIcons style={{marginEnd:20}} name="email" size={24} color="black" />
 
@@ -611,65 +667,32 @@ if(auth.currentUser&& currentUserData)
 {
    isEndDate ? 
 
-   goalInputPresented 
-                  ?
+  
           <View style={styles.details}>
           
-              <FontAwesome5 name="pen" size={20} color="black" style={{marginLeft:15}}
-              onPress={ChangeGoalInpout}
-              />
+          <AntDesign style={{marginLeft:15}} name="lock" size={24} color="black"  />
+
           <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}>
-          <Text style={{fontSize:17}}>end date :  </Text>
+          <Text style={{fontSize:17}}>end date : </Text>
               {currentUserData ? currentUserData.endDate.day + "/"+currentUserData.endDate.month+ "/"+currentUserData.endDate.year : null }</Text>
           <Foundation style={{marginEnd:20}} name="target-two" size={24} color="black" />
 
           </View>
 
-          : 
-
-          <View style={{width:'100%',alignItems:'center',flexDirection:'row', height:50,}}>
-          <AntDesign name="checkcircleo" size={24} color="black" style={{marginLeft:13}} 
-            onPress={ChangeGoalInpout}
-             />
-            
-    <View style={{height:35,marginTop:10,marginLeft:14,marginRight:6}}>
-<Button  title='upDate' color='#0a2946'  onPress={()=> updateEndDay(currentUserData.id,date)}  /> 
-</View>
-            <TouchableOpacity onPress={showDatepicker} style={{width: '45%', marginLeft:30, backgroundColor: 'rgba(255, 178, 71,0.9)', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginTop:0}}>
-    <Text style={{color: '#fff', fontSize: 18, fontWeight: '700'}}>Press to change your end date</Text>
-    </TouchableOpacity>
-
-      </View>
-
+         
         : 
-        purposeInputPresented 
-                  ?
+       
           <View style={styles.details}>
           
-              <FontAwesome5 name="pen" size={20} color="black" style={{marginLeft:15}}
-              onPress={ChangePurposeInpout}
-              />
+          <AntDesign style={{marginLeft:15}} name="lock" size={24} color="black"  />
           <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:40}}>
-          <Text style={{fontSize:13}}> WeeklyGoal : to {massegeAboutWeeklyGoal ? massegeAboutWeeklyGoal : null}  </Text>
+          <Text style={{fontSize:12}}> WeeklyGoal : to {massegeAboutWeeklyGoal ? massegeAboutWeeklyGoal : null}  </Text>
           
               </Text>
           <Foundation style={{marginEnd:20}} name="target-two" size={24} color="black" />
 
           </View>
-
-          : 
-
-          <View style={{width:'100%',alignItems:'center',flexDirection:'row'}}>
-            <AntDesign name="checkcircleo" size={24} color="black" style={{marginLeft:13}} 
-              onPress={ChangePurposeInpout}
-               />
-              <TextInput placeholder=' Enter here ...' 
-                style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'80%',marginLeft:15,marginTop:10,height:40}}
-                ></TextInput>
-                
-        </View>
-
-
+          
 }
 {
 
@@ -685,55 +708,52 @@ if(auth.currentUser&& currentUserData)
   
   }
 {
-  purposeInputPresented 
-                  ?
+ !isEndDate ?
+<View style={styles.details}>
+
+<AntDesign style={{marginLeft:15}} name="lock" size={24} color="black"  />
+
+<Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:40}}>
+<Text style={{fontSize:13}}> end date :  {currentUserData ? currentUserData.finelDate.day + "/"+currentUserData.finelDate.month+ "/"+currentUserData.finelDate.year : null } </Text>
+
+</Text>
+<Foundation style={{marginEnd:20}} name="target-two" size={24} color="black" />
+
+</View>
+:
+null
+
+}
+{
+!isEndDate 
+?
+<View
+    style={{
+      height: 1.5,
+      width:'78%',
+      backgroundColor: 'black',
+      borderRadius:6,
+      marginLeft:28
+    }}
+    />
+    
+    : null
+  }
+
+{
+
           <View style={styles.details}>
           
-              <FontAwesome5 name="pen" size={20} color="black" style={{marginLeft:15}}
-              onPress={ChangePurposeInpout}
-              />
-          <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}>
-          your Purpose {currentUserData ? currentUserData.weightGoal : null } </Text>
+             
+               <AntDesign style={{marginLeft:15}} name="lock" size={24} color="black"  />
+
+          <Text style={{fontSize:16,color:"black",textAlign:'center',marginStart:50}}>
+          your Purpose : {currentUserData ? currentUserData.weightGoal : null } kg</Text>
           <Foundation style={{marginEnd:20}} name="target-two" size={24} color="black" />
 
           </View>
 
-          : 
-
-          <View style={{width:'100%',alignItems:'center',flexDirection:'row'}}>
-            <AntDesign name="checkcircleo" size={24} color="black" style={{marginLeft:13}} 
-              onPress={ChangePurposeInpout}
-               />
-          
-          <View style={{height:35,marginTop:10,marginLeft:24,marginRight:6}}>
-  <Button  title='upDate' color='#0a2946'  onPress={()=>updateWeightGoalUser(currentUserData.id,newPurpose)}  style={{height:'100%'}}/> 
-</View>
-          <Picker
-          style={{
-          marginTop:10,
-          width: '55%',
-          backgroundColor: 'rgba(255, 178, 71,0.9)',
-      }}
-      selectedValue={newPurpose}
-      onValueChange={(itemValue) => setNewPurpose(itemValue)}
       
-      >
-         
-      
-{WeightMap.map((weight,i) => (
-                <Picker.Item key={i} label={`${weight}kg`} value={weight} />
-            ))}
-
-      </Picker>
-    
-   
-
-
-                
-        </View>
-
-
-
             }
 
 <View
@@ -748,29 +768,26 @@ if(auth.currentUser&& currentUserData)
 
 
 {
-  passwordInputPresented
-                  ?
+  
           <View style={styles.details}>
           
-              <FontAwesome5 name="pen" size={20} color="black" style={{marginLeft:15}}
-              onPress={ChangePasswordInput}
-              />
-          <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}>Password</Text>
-          <AntDesign style={{marginEnd:20}} name="lock" size={24} color="black" />
+          <AntDesign style={{marginLeft:15}} name="lock" size={24} color="black"  />
+
+          <FontAwesome style={{marginEnd:0}} name="eye" size={28} color={eye ? "green" : "black" }  
+           onPress={()=> setEye(!eye)}
+           />
+          <Text style={{fontSize:15,color:"black",textAlign:'center',marginEnd:0}}>{ currentUserData && eye ? currentUserData.password : "password" } </Text>
+          
+          <Foundation style={{marginEnd:20}} name="target-two" size={24} color="black" />
 
           </View>
 
-          : 
+          
 
-          <View style={{width:'100%',alignItems:'center',flexDirection:'row'}}>
-            <AntDesign name="checkcircleo" size={24} color="black" style={{marginLeft:13}} 
-              onPress={ChangePasswordInput}
-               />
-              <TextInput placeholder=' Enter here ...' 
-                style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'80%',marginLeft:15,marginTop:10,height:40}}
-                ></TextInput>
+         
+
                 
-        </View>
+      
 
 
 
@@ -859,7 +876,7 @@ const styles = StyleSheet.create({
 singOutButton:{
   width: '60%',
   height: '25%',
-  backgroundColor: 'rgba(255, 178, 71,0.8)',
+  backgroundColor: blue,
   marginTop: 15,
   borderWidth: 2,
   justifyContent: 'center',
@@ -884,14 +901,14 @@ left:70,
 weightContainer:{
   
   marginTop:5,
-  width: 200,
-  height: 110,
+  width: "50%",
+  height: 80,
   borderWidth:2,
   borderRadius: 20,
 backgroundColor:'#F0FFFF',
 alignItems:'center',
 justifyContent:'center',
-marginLeft:120,
+marginLeft:145,
 },
 details:{
   flexDirection:'row',

@@ -6,15 +6,22 @@ import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons'; 
 
 
-
 import tipsData from '../Jsons/tips.json'
 import FadeInOut from 'react-native-fade-in-out';
+
+
+
+import Svg, { Circle, Path } from 'react-native-svg';
 
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
 
 
+
 export default function Home({ navigation }) {
+
+
+
 
 
   const userCollectionRef = collection(db,"users");
@@ -104,10 +111,19 @@ if(auth.currentUser)
     
     <Text style={{fontSize: 20, fontWeight: '800'}}>right</Text>
 
+  
     </TouchableOpacity>
+   
+   
 
-    <TouchableOpacity style={styles.mainDetail}>
     
+    <TouchableOpacity style={styles.mainDetail}>
+  
+
+
+
+
+      
     <Text style={{fontSize: 35, fontWeight: '600', color: '#fff'}}>5436</Text>
 
     </TouchableOpacity>
@@ -123,6 +139,11 @@ if(auth.currentUser)
 
      
       <Text style={{fontSize:30,color:'white'}}>hello {currentUserData ? currentUserData.firstName : null} </Text>
+
+
+
+      
+
 
 
     </View>
@@ -154,6 +175,10 @@ else{
   )
 }
 }
+
+
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -219,5 +244,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
 
 },
+
 
 })

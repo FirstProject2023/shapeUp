@@ -237,7 +237,7 @@ const handleAddFood = () => {
 function handleAddFood2(amount,name,calories,proteins,carbs,fat){
   // Check that all fields are filled before adding the food
   
-  console.log("name====="+name);
+  /* console.log("name====="+name); */
  
   // Add the food to the list of foods
   let size = currentUserData.daysDetails[copyIndexDay].dailyCreationFood.length;
@@ -329,15 +329,15 @@ const updateFavoriteFood = async (isCreation,id,foodName,foodAmount) => {
       
     const userDoc = doc(db,"users",id)
     let size = currentUserData.dailyFavoriteFood.length;
-    console.log("siae is:" + size);
+    /* console.log("siae is:" + size); */
     let currUserData = [...currentUserData.dailyFavoriteFood]
 
  
 if(isCreation==0)
 {
 
-  console.log(FavoriteFoodCal);
-  console.log("test-0");
+  /* console.log(FavoriteFoodCal);
+  console.log("test-0"); */
 
   currentUserData.dailyFavoriteFood[size] = {
         Type:0,
@@ -361,9 +361,9 @@ else if(isCreation==1){
 
     currFoodCalory = data2.nutrients.ENERC_KCAL ; 
   }
-  console.log("test-1");
+  /* console.log("test-1");
 
-  console.log(currFoodCalory * (foodAmount/100));
+  console.log(currFoodCalory * (foodAmount/100)); */
   
   currentUserData.dailyFavoriteFood[size] = {
     
@@ -729,7 +729,7 @@ if(data2Empty)
       {
         text: 'Yes',
         onPress: () => {
-          console.log('Yes Pressed');
+          /* console.log('Yes Pressed'); */
           setModalVisible4(true);
         },
         style: 'default',
@@ -738,7 +738,7 @@ if(data2Empty)
       {
         text: 'No',
         onPress: () => {
-          console.log('No Pressed');
+          /* console.log('No Pressed'); */
           // Add code here to handle the "No" response
         },
         style: 'cancel',
