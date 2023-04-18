@@ -35,8 +35,8 @@ export default function App() {
     }}/>
     <Stack.Screen name="Nav" component={Nav} options={{headerShown: false}}/>
     <Stack.Screen name='Home' component={Home}/>
-    <Stack.Screen name='Article' component={ArticleCard}/>
-    <Stack.Screen name='Recipe' component={RecipeCard}/>
+    <Stack.Screen name='Article' component={ArticleCard} options={{headerShown: false}}/>
+    <Stack.Screen name='Recipe' component={RecipeCard} options={{headerShown: false}}/>
   </Stack.Navigator>
 </NavigationContainer>
 

@@ -4,6 +4,7 @@ import {openBrowserAsync} from 'expo-web-browser'
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons';
 
 
 
@@ -51,6 +52,9 @@ export default function RecipeCard({route, navigation}) {
     <ImageBackground source={{ uri: recipe.image}}  resizeMode= 'cover'>
     <View style={styles.blackContainer}>
     <View style={{backgroundColor: 'rgba(250, 146, 40, 0.17)', width: '100%'}}>
+    <TouchableOpacity onPress={() => navigation.goBack()}>
+    <AntDesign style={{marginTop: 5, marginRight: 5}} name="back" size={40} color="#fff" />
+    </TouchableOpacity>
       <Text style={styles.title}>{recipe.label} <Text style={{fontSize: 16, marginTop: 3, color: '#fff'}}>
        {"\n"} See full recipe on: </Text> <TouchableOpacity style={{marginTop: 15}} onPress={()=> openBrowserAsync(recipe.url)}>
        <Text style={{fontSize: 16, color: '#d8911f',fontWeight: '700', textDecorationLine: 'underline'}} > {recipe.source}</Text></TouchableOpacity> 

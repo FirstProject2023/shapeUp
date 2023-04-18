@@ -200,8 +200,8 @@ export default function Articles({navigation}) {
  return(
    
    <View key={index} style={[ styles.subjectContainer, {width: width * 0.3}]}>
-   <TouchableOpacity style={styles.articleSubButton} onPress={()=> setArticlesCategory(item)} >
-    <Text style={styles.subject}>{item}</Text>
+   <TouchableOpacity style={[styles.articleSubButton, {backgroundColor: articlesCategory == item ? '#d89b5c': '#fff'} ]} onPress={()=> setArticlesCategory(item)} >
+    <Text style={[styles.subject, {color: articlesCategory == item ? '#fff': '#d89b5c'}]}>{item}</Text>
     </TouchableOpacity>
     </View>
  )
@@ -452,7 +452,7 @@ export default function Articles({navigation}) {
       <Text style={{color: '#fff', fontSize: 20, fontWeight: '700'}}>{item.recipe.calories.toFixed()} cal</Text>
       <View style={{flexDirection: 'row'}}>
       <AntDesign style= {{marginTop: 3}} name="clockcircle" size={24} color="#fff" />
-      <Text style={{color: '#fff', fontWeight: '700', fontSize: 20, paddingRight: 1}}>{item.recipe.totalTime}</Text>
+      <Text style={{color: '#fff', fontWeight: '700', fontSize: 20, paddingRight: 1}}>{item.recipe.totalTime}m </Text>
       </View>
 
       </View>
@@ -496,9 +496,9 @@ export default function Articles({navigation}) {
        /> 
     </View>: RecipesFilters()}
     <View style={styles.articlesContainer}>
-    {!isArticles ? <View style={styles.pagesNavContainer}>
+    {/* {!isArticles ? <View style={styles.pagesNavContainer}>
 
-{/* <View style={styles.pagesNav}>
+<View style={styles.pagesNav}>
 
 <TouchableOpacity onPress={()=> [setPrevPage(recipesDataApi),PagesNav(recipesDataApi._links.next.href)]}>
 <FontAwesome5   name="arrow-circle-right" size={34} color="black" />   
@@ -508,8 +508,8 @@ export default function Articles({navigation}) {
 <FontAwesome5    name="arrow-circle-left" size={34} color="black" />
 </TouchableOpacity>
 
-</View> */}
-</View>: null}
+</View>
+</View>: null} */}
 
     
   {!isArticles ? recipesDataApi.count == 0 ? <Text style={{fontSize: 50}}>No results</Text>: null : null}
@@ -582,8 +582,8 @@ const styles = StyleSheet.create({
   
   subjectCarousel:{
     // backgroundColor: '#0a2946',
-    width: '100%',
-    height: '15%',
+    width: '98%',
+    height: '12%',
     alignItems: 'center',
     justifyContent: 'center', 
   },
@@ -592,7 +592,7 @@ const styles = StyleSheet.create({
     // backgroundColor: '#fff',
     justifyContent: 'center',
      alignItems: 'center',
-     height: '100%',
+    
 
   },
   recipesFiltersContainer:{
@@ -642,30 +642,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 2,
     borderColor: '#d89b5c',
-    borderRadius: 22,
+    borderRadius: 20,
     backgroundColor: '#fff',
   },
 
   articleSubButton:{
-    width: 80,
-    height: 80,
+    width: 90,
+    height: 42,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 3.5,
+    borderWidth: 2,
     borderColor: '#d89b5c',
-    borderRadius: 22,
-    backgroundColor: '#fff',
+    borderRadius: 20,
+    // backgroundColor: '#000',
+    
     
     
     
   },
   
   subject:{
-    paddingBottom: 15,
-    fontSize: 18,
     color: '#d89b5c',
-    fontSize: 18,
+    fontSize: 13,
     fontWeight: '600',
+    // marginTop: 5,
+    // alignSelf: 'center'
     
     
     
@@ -725,6 +726,7 @@ const styles = StyleSheet.create({
   articleCardContainer:{
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 35,
 
   },
 
@@ -734,8 +736,8 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 200,
     alignItems: 'center',
-    marginTop: 35,
     borderRadius: 15,
+    
    
     
   },

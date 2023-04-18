@@ -1,5 +1,7 @@
-import { ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import { AntDesign } from '@expo/vector-icons'; 
+
 
 export default function ArticleCard({route, navigation}) {
     const {article, title, topic, img} = route.params;
@@ -7,9 +9,13 @@ export default function ArticleCard({route, navigation}) {
       <View style={styles.articleContainer}>
     <ImageBackground source={{uri: img}} resizeMode= 'cover' >
     <View style={styles.blackContainer}>
-
-
+    <View style={styles.titleContainer}>
+    <TouchableOpacity onPress={() => navigation.goBack()}>
+    <AntDesign style={{marginTop: 5, marginRight: 5}} name="back" size={40} color="#fff" />
+    </TouchableOpacity>
     <Text style={styles.title}>{title}</Text>
+    </View>
+
     <ScrollView>
 
     <Text style={styles.article}>{article}</Text>
@@ -29,6 +35,12 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
     },
 
+    titleContainer:{
+    backgroundColor: 'rgba(250, 146, 40, 0.17)',
+
+        
+    },
+
     title:{
         fontSize: 30,
         fontWeight: '700',
@@ -37,7 +49,7 @@ const styles = StyleSheet.create({
         borderColor: '#a37d08',
         fontWeight: '900',
         padding: 8,
-        backgroundColor: 'rgba(250, 146, 40, 0.17)',
+        // backgroundColor: 'rgba(250, 146, 40, 0.17)',
 
         
         
