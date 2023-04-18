@@ -50,7 +50,6 @@ setHeightOfResView(0);
 handleScrollToTop();
 
 const position = event.nativeEvent.contentOffset.x / 360;
-console.log(position);
 
 setWhatPoint(position)
   };
@@ -386,11 +385,11 @@ if(bmiSearchResult > 30)
 }
  else if(bmiSearchResult < 24.9 && bmiSearchResult > 18.5)
 {
-  console.log("lll");
+
   message="This person's Body Mass Index falls within the normal weight range, indicating a generally healthy weight.";
 }
 else{
-  console.log("asd");
+  
   message="This individual's Body Mass Index is below the normal range, suggesting they may be underweight."
 }
 
@@ -437,7 +436,7 @@ function toBack()
     <Text style={{marginStart:62}} >30</Text>
   </View>
   <View style={{alignItems:'center'}}>
-    { bmiSearchResult < 30 && bmiSearchResult > 25 && heightOfResView != 0 ? 
+    { bmiSearchResult < 30 && bmiSearchResult > 24 && heightOfResView != 0 ? 
       <FontAwesome5 name="hand-point-down" size={24} color="#FF5733" /> : 
       null
     }
@@ -815,7 +814,7 @@ if(bmiSearchResult > 30)
 }
  else if(bmiSearchResult < 24.9 && bmiSearchResult > 18.5)
 {
-  console.log("lll");
+
   message="מדד מסת הגוף של אדם זה נופל בטווח המשקל התקין, מה שמצביע על משקל בריא בדרך כלל.";
 }
 else{

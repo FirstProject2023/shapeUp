@@ -2,11 +2,15 @@ import { StyleSheet, Text, View,useWindowDimensions, TextInput, Button,Modal,Tou
   ScrollView,FlatList,TouchableOpacity } from 'react-native'
 import React, {  useState, useContext,useEffect,useRef } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import FadeInOut from 'react-native-fade-in-out';
 import Slider from '@react-native-community/slider'
 import { FontAwesome5 } from '@expo/vector-icons';
 import {Picker} from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons'; 
 import {oreng,blue } from "../Globals/colors";
+import { AntDesign } from '@expo/vector-icons'; 
+import { Fontisto } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons'; 
 
 
 
@@ -61,6 +65,8 @@ function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResu
 
   const [heightDisplay,setHeightDisplay]  = useState(false);
   const [weightDisplay,setWeightDisplay]  = useState(false);
+
+  const [explanation, setExplanation] = useState(false);
 
   const numberOptions = Array.from({ length: 201 }, (_, index) => index + 100);
   const numberOptions2 = Array.from({ length: 201 }, (_, index) => index + 20);
@@ -133,6 +139,27 @@ else{
       <View style={[styles.container,{ width: width}]}>
   
         <View style={styles.viewContainer}>
+
+        <TouchableOpacity onPress={()=> setExplanation(true)} style={{position: 'absolute', left: 20, top: 11}}>
+        <MaterialCommunityIcons name="cloud-question" size={45} color={oreng} />
+    </TouchableOpacity>
+
+
+    <FadeInOut
+
+visible={explanation}
+scale={true}
+
+ style={{   zIndex: explanation ? 900 : 0 , backgroundColor: '#ffff' ,marginTop: 20,borderWidth:3,borderColor:"black", width: explanation ? '80%' : '0%', height: explanation ? '65%' : '0%',
+  alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5,left:2, 
+padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
+
+ <Text style={{fontSize: 16,position: 'absolute', fontWeight: '600',top: 55}}>In front of you are five nutrition and fitness calculators, you are welcome to browse through them and enjoy their service To switch between calculators you have to move the screen with your finger to the left</Text>
+
+<TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
+<Feather name="x-circle" size={40} color="#fff"/>
+</TouchableOpacity>
+</FadeInOut>
           
       <Text style={styles.text}>Bmi</Text>
         {/*   <View style={{flexDirection:'row',justifyContent:'space-evenly',width:'100%'}}>
@@ -534,11 +561,11 @@ else{
   {
     setIsMan(1)
     setBmiSearchResult((88.36) + ( (13.39 * weightValue)+(4.7* heightValue)-(5.6 * selectedAgeValue)));    
-    console.log(bmiSearchResult);
+   /*  console.log(bmiSearchResult); */
   }
   if(!womanIsFocused)
   {
-    console.log(bmiSearchResult);
+    /* console.log(bmiSearchResult); */
           setIsMan(0)
           setBmiSearchResult((447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)));    
         }
@@ -695,7 +722,6 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
 
   const HaendelWhatActive = (itemValue) => {
    
-    console.log(33);
     switch(itemValue) {
       case "Basic":
         setValueToMult(1)
@@ -718,7 +744,7 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
                 default:
                   setValueToMult(0);
         }
-        console.log(valueToMult + "  "+ "cd");
+        /* console.log(valueToMult + "  "+ "cd"); */
       };
       
       
@@ -809,8 +835,9 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
         
         if(bmiSearchResult){
         }
-        handleButtonClick();
-          setWhatCalcIs(3)
+        
+          handleButtonClick();
+          setWhatCalcIs(8)
           setHeightOfResView(400)
        
       }
@@ -1781,11 +1808,11 @@ else{
   {
     setIsMan(1)
     setBmiSearchResult((88.36) + ( (13.39 * weightValue)+(4.7* heightValue)-(5.6 * selectedAgeValue)));    
-    console.log(bmiSearchResult);
+  /*   console.log(bmiSearchResult); */
   }
   if(!womanIsFocused)
   {
-    console.log(bmiSearchResult);
+    /* console.log(bmiSearchResult); */
           setIsMan(0)
           setBmiSearchResult((447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)));    
         }
@@ -1936,6 +1963,39 @@ function SavingStatusEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBm
   const numberOptions = Array.from({ length: 201 }, (_, index) => index + 100);
   const numberOptions2 = Array.from({ length: 201 }, (_, index) => index + 20);
  
+
+
+  const HaendelWhatActive = (itemValue) => {
+   
+    /* console.log(itemValue); */
+
+    switch(itemValue) {
+      case "בסיסי":
+        setValueToMult(1)
+        break;
+        case "פעילות מועטה או ללא פעילות - עבודה משרדית ליד שולחן":
+        setValueToMult(1.2)
+        break;
+        case "פעילות קטנה - 1-3 פעמים בשבוע":
+          setValueToMult(1.375)
+          break;
+          case "פעילות ממוצעת - 3-5 פעמים בשבוע":
+            setValueToMult(1.55)
+            break;
+            case "פעילות אינטנסיבית - כל יום":
+              setValueToMult(1.725)
+              break;
+              case "פעילות אינטנסיבית בשילוב עבודה פיזית - כל יום":
+                setValueToMult(1.9)
+                  break;
+          default:
+            setValueToMult(0);
+        }
+       
+      };
+
+  
+  
   const HandlePressOnMan = () => {
     if(womanIsFocused)
     {
@@ -2008,31 +2068,10 @@ function SavingStatusEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBm
     }
   else{
 
-    switch(activValue) {
-      case "בסיסי":
-        setValueToMult(1)
-        break;
-        case "פעילות מועטה או ללא פעילות - עבודה משרדית ליד שולחן":
-        setValueToMult(1.2)
-        break;
-        case "פעילות קטנה - 1-3 פעמים בשבוע":
-          setValueToMult(1.375)
-          break;
-          case "פעילות ממוצעת - 3-5 פעמים בשבוע":
-            setValueToMult(1.55)
-            break;
-            case "פעילות אינטנסיבית - כל יום":
-              setValueToMult(1.725)
-              break;
-              case "פעילות אינטנסיבית בשילוב עבודה פיזית - כל יום":
-                setValueToMult(1.9)
-                  break;
-          default:
-            setValueToMult(0);
-        }
+    
         if(!manisFocused)
         {
-         console.log("man");
+    
           setBmiSearchResult((  (88.36) + ( (13.39 * weightValue)+(4.7* heightValue)-(5.6 * selectedAgeValue))  * valueToMult ));
           
         }
@@ -2040,8 +2079,7 @@ function SavingStatusEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBm
         {
          
           setBmiSearchResult(( (447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)) * valueToMult ));    
-        }
-        
+        } 
         if(bmiSearchResult){
         }
         handleButtonClick();
@@ -2049,6 +2087,8 @@ function SavingStatusEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBm
           setHeightOfResView(400)
        
       }
+
+
       }
       
 
@@ -2106,7 +2146,7 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
   marginBottom:20,
 }}
 selectedValue={activValue}
-onValueChange={(itemValue) => setActivValue(itemValue)}
+onValueChange={(itemValue) => [setActivValue(itemValue),HaendelWhatActive(itemValue)]}
 >
 <Picker.Item  label='בסיסי' value='בסיסי' />
 <Picker.Item  label='פעילות מועטה או ללא פעילות - עבודה משרדית ליד שולחן' value='פעילות מועטה או ללא פעילות - עבודה משרדית ליד שולחן' style={{ fontSize: 12 }}  />

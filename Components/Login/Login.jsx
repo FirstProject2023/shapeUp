@@ -76,15 +76,22 @@ export default function Login({ navigation }) {
   const [endDateIsVisible, setEndDateIsVisible] = useState(false);
 
     const [date, setDate] = useState(new Date(0));
+  
+
+    const [flagToShowDate,setFlagToShowDate] = useState(false);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setDate(currentDate);
+   
+   
   };
 
   const showMode = (currentMode) => {
+    const currentDate = new Date();
+
     DateTimePickerAndroid.open({
-      value: date,
+      value: currentDate,
       onChange,
       mode: currentMode,
       is24Hour: true,
@@ -106,8 +113,12 @@ export default function Login({ navigation }) {
     }
   
           const WeightMap = [];
-    for (let i = 30; i <= 200; i += 1) {
+    for (let i = 30; i <= 200 ; i += 1) {
       WeightMap.push(i);
+    }
+          const WeightMap2 = [];
+    for (let i = 30; i <= weight-1 ; i += 1) {
+      WeightMap2.push(i);
     }
     
 
@@ -142,7 +153,6 @@ const hendelUpdateGool = async () => {
   if(WeeklyGoal==0)
   {
     
-
     setEndDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})
 
     setFinelDate({
@@ -151,12 +161,13 @@ const hendelUpdateGool = async () => {
       year: date.getFullYear(),
     })
 
+    diffInDays = differenceInDays(currEndDate,today) ;
+
     /* setFinelDate(endDate); */
 
     
-console.log(currEndDate);
+/* console.log(currEndDate); */
 
-    diffInDays = differenceInDays(currEndDate,today) ;
 
   }
   else{
@@ -187,6 +198,14 @@ console.log(currEndDate);
       month: futureDate.getMonth()+1,
       year: futureDate.getFullYear(),
     })
+
+    console.log({
+      day: futureDate.getDate(),
+      month: futureDate.getMonth() + 1,
+      year: futureDate.getFullYear(),
+    });
+  
+
 
     diffInDays = differenceInDays(futureDate , today);
   
@@ -285,7 +304,91 @@ const  handleSignUp =  async () => {
     setBasicBalancePoint(Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     activity)));
     setBasicDayTarget(basicBalancePoint);
   }
+
+function EmailTextInput()
+ {
+ /*  console.log(email);
+  console.log(password); */
+
+  const emailRegex = /\S+@\S+\.\S+/;
+  if (!emailRegex.test(email)  ) {
+    Alert.alert('Invalid Email', 'Please enter a valid email address.');
+    
+  }else if( password.length < 5)
+  {
+    Alert.alert(
+      'Invalid Password',
+      'Password must contain at least 5 characters.'
+    );
+  } 
+  else {
+   /*  Alert.alert('Valid Email', 'Email address is valid.'); */
+    setSignUpIsVisible(false), setNameIsVisible(true)
+  }
+ 
+   }
+   function nameTextInput(){
+
+    if(firstName == "")
+    {
+      Alert.alert('Invalid Name', 'Please enter a name.');
+    }
+    else if( lastName == "")
+    {
+      Alert.alert('Invalid last Name', 'Please enter a last name.');
+    }
+    else{
+
+      setNameIsVisible(false), setGenderIsVisible(true)
+    }
+    
+   }
+   function HeightWeightTextInput(){
+
+      if(height==0)
+      {
+        Alert.alert('Invalid Height', 'Please enter a Height.');
+      }
+      else if(weight==0)
+      {
+        Alert.alert('Invalid weight', 'Please enter a weight.');
+      }
+      else{
+        setHeightAndWeightIsVisible(false), setAverageActivityIsVisible(true)
+      }
+
+   }
+   function BirthdayTextInput(date){
+
+    const currentDate = new Date();
+    const ageDiff = currentDate.getFullYear() - date.getFullYear();
    
+    if (
+      ageDiff < 18 ||
+      (ageDiff === 18 && currentDate.getMonth() < birthDate.month) ||
+      (ageDiff === 18 && currentDate.getMonth() === birthDate.month && currentDate.getDate() < birthDate.day)
+    ) {
+      Alert.alert('Invalid Age', 'You must be at least 18 years old to use this app.');
+      
+    }
+    else if (ageDiff > 120) {
+    Alert.alert('Invalid Age', 'You cannot be more than 120 years old.');
+    
+  } else {
+      
+      setBirthDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})
+      setBirthDateIsVisible(false)
+       setGoalIsVisible(true)
+     
+    }
+
+    
+    
+    
+  }
+
+ 
+
   return (
     
     <ImageBackground source={{uri: "https://d3h2k7ug3o5pb3.cloudfront.net/image/2020-11-23/3b788920-2d79-11eb-9dcd-8b2ef5358591.jpg"}} resizeMode='cover'>
@@ -459,7 +562,7 @@ const  handleSignUp =  async () => {
     <View style={styles.buttonContainer}>
 
     <TouchableOpacity
-    onPress={()=> [setSignUpIsVisible(false), setNameIsVisible(true)]}
+    onPress={()=>EmailTextInput()}
     style={[styles.loginButton, {marginTop: 35}]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Continue</Text>
@@ -490,6 +593,7 @@ const  handleSignUp =  async () => {
       <TextInput 
       style={styles.textInput}
       placeholder='FirstName'
+      keyboardType="name-phone-pad"
       leftIcon={<Entypo name="lock" size={24} color="#fff" />}
       
       placeholderTextColor={'#fff'}
@@ -499,6 +603,7 @@ const  handleSignUp =  async () => {
       <TextInput 
        style={styles.textInput}
       placeholder='LastName'
+      keyboardType="name-phone-pad"
       placeholderTextColor={'#fff'}
       
         onChangeText={text => setLastName(text)}
@@ -509,7 +614,7 @@ const  handleSignUp =  async () => {
     <View style={styles.buttonContainer}>
     <TouchableOpacity
     style={[styles.loginButton, { marginTop: 40}]}
-    onPress={()=> [setNameIsVisible(false), setGenderIsVisible(true)]}
+    onPress={()=> [nameTextInput()  ]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 19, fontWeight: '800'}}>Continue</Text>
     </TouchableOpacity>
@@ -637,7 +742,7 @@ const  handleSignUp =  async () => {
     <View style={styles.buttonContainer}>
     <TouchableOpacity
     style={[styles.loginButton, { marginTop: 40}]}
-    onPress={()=> [setHeightAndWeightIsVisible(false), setAverageActivityIsVisible(true)]}
+    onPress={()=> [HeightWeightTextInput() ]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 19, fontWeight: '800'}}>Continue</Text>
     </TouchableOpacity>
@@ -740,7 +845,7 @@ const  handleSignUp =  async () => {
     <View style={styles.buttonContainer}>
     <TouchableOpacity
     style={[styles.loginButton, { marginTop: 40}]}
-    onPress={()=> [setBirthDateIsVisible(false), setGoalIsVisible(true), setBirthDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})]}
+    onPress={()=> [ BirthdayTextInput(date)]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 19, fontWeight: '800'}}>Continue</Text>
     </TouchableOpacity>
@@ -781,7 +886,7 @@ const  handleSignUp =  async () => {
       >
          
       
-{WeightMap.map((weight,i) => (
+{WeightMap2.map((weight,i) => (
                 <Picker.Item key={i} label={`${weight}kg`} value={weight} />
             ))}
 
@@ -809,8 +914,11 @@ const  handleSignUp =  async () => {
 
         </TouchableOpacity>
         <View style={{width: '85%',height: '25%', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: '#fff', borderBottomEndRadius: 8, borderBottomLeftRadius: 8}}>
-        <Text style={{color: '#fff', fontSize: 14, fontWeight: '700'}}>{date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}</Text>
-
+        {date ?
+        <Text style={{color: '#fff', fontSize: 14, fontWeight: '700'}}>{date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}  </Text> 
+          :
+        <Text style={{color: '#fff', fontSize: 14, fontWeight: '700'}}>null</Text>  
+          }
         </View>
        </View>
         : null}
