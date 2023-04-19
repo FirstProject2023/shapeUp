@@ -48,35 +48,30 @@ export default function Nav() {
         tabBarButton: (props) => <TouchableOpacity {...props} />,
         tabBarActiveTintColor: 'rgb(225, 150, 30)',
         tabBarActiveBackgroundColor: '#ffefbf',
-        tabBarStyle : {borderBottomWidth: 6, borderColor: '#ffefbf'} ,  
         headerShown: false,
       }}   />
       <BottomTab.Screen name='Calc' component={Calc} options={{
         tabBarButton: (props) => <TouchableOpacity {...props} />,
         tabBarActiveTintColor: 'rgb(225, 150, 30)',
         tabBarActiveBackgroundColor: '#ffefbf',
-        tabBarStyle : {borderBottomWidth: 6, borderColor: '#ffefbf'} ,  
         headerShown: false,
       }} />
       <BottomTab.Screen name='Home' component={Home} options={{
         tabBarButton: (props) => <TouchableOpacity {...props} />,
         tabBarActiveTintColor: 'rgb(225, 150, 30)',
         tabBarActiveBackgroundColor: '#ffefbf',
-        tabBarStyle : {borderBottomWidth: 6, borderColor: '#ffefbf'} , 
         headerShown: false,
       }}/>
       <BottomTab.Screen name='Articles' component={Articles} options={{
         tabBarButton: (props) => <TouchableOpacity {...props} />,
         tabBarActiveTintColor: 'rgb(225, 150, 30)',
         tabBarActiveBackgroundColor: '#ffefbf',
-        tabBarStyle : {borderBottomWidth: 6, borderColor: '#ffefbf'} , 
         headerShown: false,
       }}/>
       <BottomTab.Screen name='Profile' component={Profile} options={{
         tabBarButton: (props) => <TouchableOpacity {...props} />,
         tabBarActiveTintColor: 'rgb(225, 150, 30)',
         tabBarActiveBackgroundColor: '#ffefbf',
-        tabBarStyle : {borderBottomWidth: 6, borderColor: '#ffefbf'} , 
         headerShown: false,
       }}/>
 
