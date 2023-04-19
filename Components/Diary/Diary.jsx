@@ -757,7 +757,8 @@ else
 
   if (  foodAmount && (foodName || finelText2)) {
     setModalVisible(true);
-    
+    setOnAddFood(!onAddFood);
+  
   }
 };
 

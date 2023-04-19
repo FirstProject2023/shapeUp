@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, FlatList, Button ,TouchableOpacity,ScrollView,Modal,modelVisible,StatusBar,onScroll  } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Button ,TouchableOpacity,ScrollView,Modal,
+  modelVisible,StatusBar,onScroll,Animated ,PanResponder,Dimensions,TouchableWithoutFeedback   } from 'react-native'
 import FadeInOut from 'react-native-fade-in-out';
 import React, { useEffect, useState,useRef } from 'react'
 import CalculatorsArrayOfFunctions from './CalculatorsArrayOfFunctions'
@@ -6,11 +7,12 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
+import { Entypo } from '@expo/vector-icons'; 
 import { blue, oreng } from '../Globals/colors';
 import LottieView from 'lottie-react-native';
 
 
-export default function Calc() {
+export default function Calc({ navigation }) {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 const [isEnglish,setIsEnglish]= useState(1);
@@ -42,6 +44,11 @@ const [isEnglish,setIsEnglish]= useState(1);
     { id: '1', score: 3 },
     { id: '0', score: 15 },
   ];
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModalVisible = () => {
+    setModalVisible(!modalVisible);
+  };
 
 
   const handleScroll = (event) => {
@@ -108,11 +115,72 @@ const[showSubjects,setShowSubjects] = useState();
   const [isOpened, setIsOpened] = useState(false);
   const [isTipsView, setIsTipsView] = useState(false);
 
+
+
+
+
+  const width = Dimensions.get('window').width;
+  const [slideIn, setSlideIn] = useState(new Animated.Value(-width));
+
+const position = new Animated.ValueXY();
+
+
+const panResponder = PanResponder.create({
+  onMoveShouldSetPanResponder: (evt, gestureState) => {
+    // Only set pan responder if the swipe is greater than 20 pixels
+    if (Math.abs(gestureState.dx) > 20) {
+      return true;
+    }
+    return false;
+  },
+  /* onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+
+    position.setValue({x: gestureState.dx, y: 0})
+    
+  } */
+  onPanResponderRelease: (evt, gestureState) => {
+    // If swipe is greater than 50 pixels and it's a left swipe, navigate to another component
+    if (gestureState.dx < -50) {
+      navigation.navigate('Diary');
+      Animated.timing(slideIn, {
+        toValue: 0,
+        duration: 1900,
+        useNativeDriver: false,
+      }).start();
+  
+    }
+    if (gestureState.dx > 50) {
+      navigation.navigate('Home');
+    }
+    Animated.spring(position, {
+      toValue: { x: 0, y: 0 },
+    useNativeDriver: false,
+  }).start();
+  },
+  onPanResponderMove: Animated.event([
+    null,
+    { dx: position.x, dy: position.y },
+  ],{ useNativeDriver: false })
+});
+
+
+
   
 
   return (
 
+<Animated.View  
+         {...panResponder.panHandlers}
+         
+        style={{
+         
+          transform: [{ translateX: position.x }, ],
+        }}
+    
+        >
 <ScrollView ref={scrollViewRef}>
+
+
 
 <StatusBar backgroundColor="rgb(255, 178, 71)" />
 <View style={{height:1000}}>
@@ -120,6 +188,7 @@ const[showSubjects,setShowSubjects] = useState();
 
 
 <View style={styles.container}>
+
 
 
       <TouchableOpacity style={styles.buttonTosearch} onPress={handleModalOpen}>
@@ -176,6 +245,42 @@ scale={true}
       <TouchableOpacity onPress={()=> setIsTipsView(true)} style={{position: 'absolute', left: 20, top: 8}}>
     <AntDesign name="questioncircleo" size={30} color="black" />
     </TouchableOpacity>
+    <TouchableOpacity onPress={toggleModalVisible} style={{position: 'absolute', left: 293, top: 8}}>
+        <Entypo name="menu" size={50} color="#000" />
+      </TouchableOpacity>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={toggleModalVisible}
+      >
+        <TouchableWithoutFeedback onPress={toggleModalVisible}>
+          <View style={styles.modalContainer2}>
+            <View style={styles.modalView2}>
+              <TouchableOpacity style={styles.modalButton2}>
+                <Text style={styles.modalButtonText2}>Settings</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.modalButton2}>
+                <Text style={styles.modalButtonText2}>Communication</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.modalButton2}>
+                <Text style={styles.modalButtonText2}>Company Policy</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalButton2}>
+                <Text style={styles.modalButtonText2}>Log out</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.modalCancelButton2} onPress={toggleModalVisible}>
+                <Text style={styles.modalCancelButtonText2}>Cancel</Text>
+              </TouchableOpacity>
+           
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
 
 
     
@@ -236,7 +341,9 @@ setBmiSearchResult={setBmiSearchResult} setWhatCalcIs={setWhatCalcIs} fatValue={
      
       </View>
         
+
 </ScrollView>
+      </Animated.View>
     
   )
 }
@@ -367,6 +474,49 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  
+  modalContainer2: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView2: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalButton2: {
+    marginVertical: 10,
+    padding: 10,
+    backgroundColor: '#f2f2f2',
+    borderRadius: 5,
+    width: '100%',
+    alignItems: 'center',
+  },
+  modalButtonText2: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  modalCancelButton2: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: '#f2f2f2',
+    borderRadius: 5,
+    width: '100%',
+    alignItems: 'center',
+  },
+  modalCancelButtonText2: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#f00',
+  }
 
 })
 

@@ -269,8 +269,8 @@ const  handleSignUp =  async () => {
             averageActivity: averageActivity,
             basicBalancePoint: basicBalancePoint,
             basicDayTarget: basicDayTarget,
+            indexDeyFirebase: 0,
             
-
           });
           setWeeklyGoal(0);
           setEndDate({day: null})
@@ -484,6 +484,8 @@ function EmailTextInput()
       <TextInput 
       style={styles.textInput}
       placeholder='Email'
+      keyboardType="email-address"
+    
       leftIcon={<Entypo name="lock" size={24} color="#fff" />}
       
       placeholderTextColor={'#fff'}
@@ -493,6 +495,8 @@ function EmailTextInput()
       <TextInput 
        style={styles.textInput}
       placeholder='Password'
+      keyboardType="visible-password"
+
       placeholderTextColor={'#fff'}
       
         onChangeText={text => setPassword(text)}

@@ -1,4 +1,6 @@
-import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity, TouchableHighlight, TouchableHighlightComponent, StatusBar } from 'react-native'
+import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity,
+   TouchableHighlight, TouchableHighlightComponent, StatusBar,Animated ,PanResponder,Modal,
+   Dimensions,TouchableWithoutFeedback  } from 'react-native'
 import React,{useState,useEffect} from 'react';
 import { Entypo } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
@@ -22,8 +24,7 @@ export default function Home({ navigation }) {
 
 
 
-
-
+  
   const userCollectionRef = collection(db,"users");
   const [users,setUsers]=useState([]);
   const [currentUserData, setCurrentUserData] = useState(null);
@@ -31,7 +32,12 @@ export default function Home({ navigation }) {
 
   const [tipIndex, setTipIndex] = useState(1);
   const [isOpened, setIsOpened] = useState(false);
-
+  
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModalVisible = () => {
+    setModalVisible(!modalVisible);
+  };
+  
   useEffect(()=>{
 
     const getUsers = async () => {
@@ -76,9 +82,75 @@ const currentTip = tipsData[tipIndex];
     .catch(error => log("error"))
   }
 
+
+  const width = Dimensions.get('window').width;
+  const [slideIn, setSlideIn] = useState(new Animated.Value(-width));
+
+const position = new Animated.ValueXY();
+
+
+const panResponder = PanResponder.create({
+  onMoveShouldSetPanResponder: (evt, gestureState) => {
+    // Only set pan responder if the swipe is greater than 20 pixels
+    if (Math.abs(gestureState.dx) > 20) {
+      return true;
+    }
+    return false;
+  },
+  /* onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+
+    position.setValue({x: gestureState.dx, y: 0})
+    
+  } */
+  onPanResponderRelease: (evt, gestureState) => {
+    // If swipe is greater than 50 pixels and it's a left swipe, navigate to another component
+    if (gestureState.dx < -50) {
+      navigation.navigate('Calc');
+      Animated.timing(slideIn, {
+        toValue: 0,
+        duration: 1900,
+        useNativeDriver: false,
+      }).start();
+  
+    }
+    if (gestureState.dx > 50) {
+      navigation.navigate('Articles');
+    }
+    Animated.spring(position, {
+      toValue: { x: 0, y: 0 },
+    useNativeDriver: false,
+  }).start();
+  },
+  onPanResponderMove: Animated.event([
+    null,
+    { dx: position.x, dy: position.y },
+  ],{ useNativeDriver: false })
+});
+
+
+
+
+
+
+
+
+
+
+
 if(auth.currentUser)
 {
   return (
+
+<Animated.View  
+         {...panResponder.panHandlers}
+         
+        style={{
+         
+          transform: [{ translateX: position.x }, ],
+        }}
+    
+        >
+    
     <TouchableOpacity activeOpacity={1} onPress={()=> setIsTipsView(false) }>
     <StatusBar backgroundColor="rgb(255, 178, 71)" />
     <ImageBackground source={{uri: "https://images.creativemarket.com/0.1.0/ps/8436210/1820/1214/m1/fpnw/wm1/m44uvmmozdjmkaqion0pl0hrji1w6bklbgvybnufi8zayuvvg6brwped97rcsa0n-.jpg?1590762533&s=a010240a0998e1429431994509765bc0"}} resizeMode= 'cover'>
@@ -86,10 +158,52 @@ if(auth.currentUser)
     <View style={styles.container}>
 
       <View style={{marginEnd: 8, width: '100%', height: '10%', alignItems: 'flex-end', justifyContent: 'center'}}>
-      <TouchableOpacity onPress={()=> [setIsTipsView(true), setIsOpened(true)]} style={{borderWidth: 3, width: '50%', height: '70%', borderRadius: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(255, 178, 71)'}}>
+    
+<View style={{width:'100%', flexDirection:'row',justifyContent:'space-between'}}>
+
+      <TouchableOpacity onPress={()=> [setIsTipsView(true), setIsOpened(true)]} style={{borderWidth: 3, width: '50%', height: '70%', borderRadius: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(255, 178, 71)',marginLeft:16}}>
         <Text style={{fontSize: 18, fontWeight: '600'}}>The daily tip</Text>
       {!isOpened ? <FontAwesome style={{position: 'absolute', left: 6}} name="envelope" size={20} color="#fff"/>: null}
       </TouchableOpacity>
+
+      <TouchableOpacity onPress={toggleModalVisible}>
+        <Entypo name="menu" size={50} color="#000" />
+      </TouchableOpacity>
+</View>
+
+<Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={toggleModalVisible}
+      >
+        <TouchableWithoutFeedback onPress={toggleModalVisible}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalView}>
+              <TouchableOpacity style={styles.modalButton}>
+                <Text style={styles.modalButtonText}>Settings</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.modalButton}>
+                <Text style={styles.modalButtonText}>Communication</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.modalButton}>
+                <Text style={styles.modalButtonText}>Company Policy</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalButton} onPress={()=>hendleSingOut()}>
+                <Text style={styles.modalButtonText}>Log out</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.modalCancelButton} onPress={toggleModalVisible}>
+                <Text style={styles.modalCancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+           
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+
 
       </View>
 
@@ -142,13 +256,10 @@ if(auth.currentUser)
 
 
 
-      
-
-
-
     </View>
     </ImageBackground>
     </TouchableOpacity>
+    </Animated.View>
   )
 }
 else{
@@ -170,6 +281,7 @@ else{
         <Text style={{color: '#fff', fontSize: 20}}>Create a user</Text>
     </TouchableOpacity>  
 
+    
     </View>
     </ImageBackground>
   )
@@ -244,6 +356,53 @@ const styles = StyleSheet.create({
     borderRadius: 5,
 
 },
+buttonText: {
+  fontSize: 20,
+  fontWeight: 'bold',
+  padding: 10,
+},
 
+modalContainer: {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+modalView: {
+  backgroundColor: 'white',
+  padding: 20,
+  borderRadius: 10,
+  width: '80%',
+  alignItems: 'center',
+},
+modalButton: {
+  marginVertical: 10,
+  padding: 10,
+  backgroundColor: '#f2f2f2',
+  borderRadius: 5,
+  width: '100%',
+  alignItems: 'center',
+},
+modalButtonText: {
+  fontSize: 18,
+  fontWeight: 'bold',
+},
+modalCancelButton: {
+  marginTop: 20,
+  padding: 10,
+  backgroundColor: '#f2f2f2',
+  borderRadius: 5,
+  width: '100%',
+  alignItems: 'center',
+},
+modalCancelButtonText: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  color: '#f00',
+},
 
 })
