@@ -6,6 +6,9 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons'; 
+import { Foundation } from '@expo/vector-icons'; 
+
+import LottieView from 'lottie-react-native';
 
 
 import tipsData from '../Jsons/tips.json'
@@ -210,7 +213,7 @@ if(auth.currentUser)
     <FadeInOut
     visible={isTipsView}
     scale={true}
-     style={{backgroundColor: '#fff' ,marginTop: 30, width: '90%', height: '15%', alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 355, padding: 10, borderRadius: 8}}>
+     style={{backgroundColor: '#fff' ,marginTop: 0, width: '90%', height: '15%', alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 355, padding: 10, borderRadius: 8}}>
       {/* {console.log(currentTip)} */}
       {currentTip && <Text style={{fontSize: 16, fontWeight: '600'}}>{currentTip.tip}</Text>}
       
@@ -253,6 +256,22 @@ if(auth.currentUser)
 
      
       <Text style={{fontSize:30,color:'white'}}>hello {currentUserData ? currentUserData.firstName : null} </Text>
+      <View style={{width: '100%', height: '15%', marginTop: 50, alignItems: 'center', justifyContent: 'center'}}>
+      <Text style={{padding: 10, fontSize: 18, color: '#fff', fontWeight: '700'}}>progress</Text>
+
+      <View style={{backgroundColor: 'rgba(255,255,255, 0.5)',width: '85%', height: '40%', borderRadius: 8, borderWidth: 1.5, flexDirection: 'row', justifyContent: 'flex-end'}}>
+    
+      <Foundation style={{ color: '#fff', fontWeight: '700', position: 'absolute', left: -25, top: 8}}  name="target-two" size={22} color="red" />
+      {/* <Text style={{fontSize: 16, color: '#fff', fontWeight: '700', position: 'absolute', left: -25, top: 8}}>60</Text> */}
+
+      
+      <View style={{backgroundColor: '#0974c0',height: '100%', width: `${((currentUserData ? currentUserData.indexDeyFirebase: null)/60) * 100}%`,borderTopEndRadius: 8, borderBottomEndRadius: 8,borderTopStartRadius: 8, borderBottomStartRadius: 8, justifyContent: 'center', alignItems: 'center'}}>
+      <Text style={{fontSize: 12, color: '#fff', fontWeight: '700'}}>{currentUserData ? currentUserData.indexDeyFirebase: null} days</Text>
+      <LottieView style={{height: 50, position: 'absolute', left: -4.9}}  autoPlay source={require('../lottieAnimation/walk_progress.json')}/>
+      </View>
+      </View>
+      </View>
+        
 
 
 
