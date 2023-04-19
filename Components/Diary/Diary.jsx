@@ -616,6 +616,15 @@ const deleateCreationFood = async(id,idNum)=>{
     await updateDoc(userDoc , newFields)
   
   }
+
+  const updateIndexDeyFirebase = async (id, index) => {
+
+
+    const userDoc = doc(db,"users",id)
+    const newFields ={indexDeyFirebase : index } 
+    await updateDoc(userDoc , newFields)
+  
+  }
   
  
 
@@ -645,6 +654,7 @@ useEffect(() => {
 
         //real code
         setIndex(differenceInDays(new Date(), currentUserData.daysDetails[0].singleDate.toDate()));
+        updateIndexDeyFirebase(currentUserData.id, index);
        /*  console.log(new Date(now));
         console.log(currentUserData.daysDetails[0].singleDate.toDate()); */
         
