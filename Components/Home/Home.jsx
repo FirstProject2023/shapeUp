@@ -265,7 +265,7 @@ if(auth.currentUser)
   
       <View style={{backgroundColor: '#0974c0',height: '100%', width: `${((currentUserData ? currentUserData.indexDeyFirebase: null) / 60) * 100}%`,borderTopEndRadius: 8, borderBottomEndRadius: 8,borderTopStartRadius: 8, borderBottomStartRadius: 8, justifyContent: 'center', alignItems: 'center'}}>
       <Text style={{fontSize: 12, color: '#fff', fontWeight: '700'}}>{currentUserData ? currentUserData.indexDeyFirebase: null} days</Text>
-      <LottieView style={{height: 50, position: 'absolute', left: -4.9}}  autoPlay source={require('../lottieAnimation/walk_progress.json')}/>
+      <LottieView style={{height: 50, position: 'absolute', left: -5.7}}  autoPlay source={require('../lottieAnimation/walk_progress.json')}/>
       </View>
       </View>
       </View>
