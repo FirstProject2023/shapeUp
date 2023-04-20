@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,Image, ScrollView,TextInput,Button, StatusBar
-  ,Animated,Modal,Alert   } from 'react-native'
+  ,Animated,Modal,Alert ,PanResponder,Dimensions  } from 'react-native'
 import React, { useState,useEffect } from 'react'
 import { oreng,blue } from '../Globals/colors';
 import { Ionicons } from '@expo/vector-icons'; 
@@ -348,10 +348,61 @@ const days = diffInDays - (years * 365) - (months * 30);
       updateImg(currentUserData.id,result.assets[0].uri)
     }
   };
+
+
+  const width = Dimensions.get('window').width;
+  const [slideIn, setSlideIn] = useState(new Animated.Value(-width));
+  const position = new Animated.ValueXY();
+  
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: (evt, gestureState) => {
+      // Only set pan responder if the swipe is greater than 20 pixels
+      if (Math.abs(gestureState.dx) > 20) {
+        return true;
+      }
+      return false;
+    },
+    /* onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+  
+      position.setValue({x: gestureState.dx, y: 0})
+      
+    } */
+    onPanResponderRelease: (evt, gestureState) => {
+      // If swipe is greater than 50 pixels and it's a left swipe, navigate to another component
+      if (gestureState.dx < -150) {
+        navigation.navigate('Articles');
+        Animated.timing(slideIn, {
+          toValue: 0,
+          duration: 1900,
+          useNativeDriver: false,
+        }).start();
+    
+      }
+     
+      Animated.spring(position, {
+        toValue: { x: 0, y: 0 },
+      useNativeDriver: false,
+    }).start();
+    },
+    onPanResponderMove: Animated.event([
+      null,
+      { dx: position.x, dy: position.y },
+    ],{ useNativeDriver: false })
+  });
+  
 if(auth.currentUser&& currentUserData)
 {
   return (
     
+    <Animated.View  
+         {...panResponder.panHandlers}
+         
+        style={{
+         
+          transform: [{ translateX: position.x }, ],
+        }}
+    
+        >
     <View style={styles.container}>
     <StatusBar backgroundColor="rgb(255, 178, 71)" />
 
@@ -363,7 +414,7 @@ if(auth.currentUser&& currentUserData)
         resizeMode= 'cover'
         >
           <View style={{height:'100%',width:'100%',backgroundColor:'rgba(0,0,0,0.6)',alignItems:'center',justifyContent:'center'}}>
-              <Text style={{fontSize:30,color:'white'}}>{currentUserData ? currentUserData.firstName : null}</Text>
+              <Text style={{fontSize:35,color:'white',fontWeight:'700'}}>{currentUserData ? currentUserData.firstName : null}</Text>
           </View>
         </ImageBackground>
 
@@ -821,6 +872,7 @@ null
 
 
     </View>
+    </Animated.View>
     
   )
 }

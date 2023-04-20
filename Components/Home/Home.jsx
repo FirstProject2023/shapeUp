@@ -2,6 +2,8 @@ import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity,
    TouchableHighlight, TouchableHighlightComponent, StatusBar,Animated ,PanResponder,Modal,
    Dimensions,TouchableWithoutFeedback  } from 'react-native'
 import React,{useState,useEffect} from 'react';
+
+
 import { Entypo } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
@@ -27,7 +29,6 @@ export default function Home({ navigation }) {
 
 
 
-  
   const userCollectionRef = collection(db,"users");
   const [users,setUsers]=useState([]);
   const [currentUserData, setCurrentUserData] = useState(null);
@@ -107,7 +108,7 @@ const panResponder = PanResponder.create({
   } */
   onPanResponderRelease: (evt, gestureState) => {
     // If swipe is greater than 50 pixels and it's a left swipe, navigate to another component
-    if (gestureState.dx < -50) {
+    if (gestureState.dx < -150) {
       navigation.navigate('Calc');
       Animated.timing(slideIn, {
         toValue: 0,
@@ -116,7 +117,7 @@ const panResponder = PanResponder.create({
       }).start();
   
     }
-    if (gestureState.dx > 50) {
+    if (gestureState.dx > 150) {
       navigation.navigate('Articles');
     }
     Animated.spring(position, {
@@ -226,7 +227,7 @@ if(auth.currentUser)
     <View style={styles.detailsHome}>
     <TouchableOpacity style={[styles.sidesDetails, {position: 'absolute', left: 32, top: 80}]}>
     
-    <Text style={{fontSize: 20, fontWeight: '800'}}>right</Text>
+    <Text style={{fontSize: 20, fontWeight: '800'}}> {currentUserData ? currentUserData.weightGoal : null}kg</Text>
 
   
     </TouchableOpacity>
@@ -241,11 +242,11 @@ if(auth.currentUser)
 
 
       
-    <Text style={{fontSize: 35, fontWeight: '600', color: '#fff'}}>5436</Text>
+    <Text style={{fontSize: 35, fontWeight: '600', color: '#fff'}}>5431</Text>
 
     </TouchableOpacity>
     <TouchableOpacity style={[styles.sidesDetails, , {position: 'absolute', right: 32, top: 80}]}>
-    <Text style={{fontSize: 20, fontWeight: '800'}}>{currentUserData ? currentUserData.weight : null}</Text>
+    <Text style={{fontSize: 20, fontWeight: '800'}}>{currentUserData ? currentUserData.weight : null}kg</Text>
 
     </TouchableOpacity>
     
@@ -254,6 +255,8 @@ if(auth.currentUser)
     </View>
      
       <Text style={{fontSize:30,color:'white'}}>hello {currentUserData ? currentUserData.firstName : null} </Text>
+  
+
       <View style={{width: '100%', height: '15%', marginTop: 50, alignItems: 'center', justifyContent: 'center'}}>
       <Text style={{padding: 10, fontSize: 18, color: '#fff', fontWeight: '700'}}>progress</Text>
 
@@ -261,7 +264,7 @@ if(auth.currentUser)
     
       <Foundation style={{ color: '#fff', fontWeight: '700', position: 'absolute', left: -25, top: 8}}  name="target-two" size={22} color="red" />
   
-      <View style={{backgroundColor: '#0974c0',height: '100%', width: `${((currentUserData ? currentUserData.indexDeyFirebase: null) / (currentUserData ? currentUserData.daysDetails.length : null)  ) * 100}%`,borderTopEndRadius: 8, borderBottomEndRadius: 8,borderTopStartRadius: 8, borderBottomStartRadius: 8, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{backgroundColor: '#0974c0',height: '100%', width: `${((currentUserData ? currentUserData.indexDeyFirebase: null) / (currentUserData ? currentUserData.daysDetails.length : null)  ) * 100 }%`,borderTopEndRadius: 8, borderBottomEndRadius: 8,borderTopStartRadius: 8, borderBottomStartRadius: 8, justifyContent: 'center', alignItems: 'center'}}>
       <Text style={{fontSize: 12, color: '#fff', fontWeight: '700'}}>{currentUserData ? currentUserData.indexDeyFirebase: null} days</Text>
       <LottieView style={{height: 50, position: 'absolute', left: -5.7}}  autoPlay source={require('../lottieAnimation/walk_progress.json')}/>
       </View>

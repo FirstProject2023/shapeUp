@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,useWindowDimensions,TextInput,Button,Alert,Modal,FlatList,Image } from 'react-native'
+import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,useWindowDimensions,TextInput,
+  Button,Alert,Modal,FlatList,Image,Animated ,PanResponder,Dimensions } from 'react-native'
 import React, {useState, useEffect,PureComponent, memo } from 'react'
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc} from 'firebase/firestore';
@@ -129,10 +130,8 @@ export default function Diary({ navigation }) {
         return response.json();
       })
       .then((data) => {
-        setData2(data.parsed[0].food)
+       setData2(data.parsed[0].food) 
         setData2Empty(false)
-        
-        
       })
       .catch(error => {
         setData2Empty(true)
@@ -142,7 +141,7 @@ export default function Diary({ navigation }) {
       });
     }, [finelText2]);
     
-  const {width} = useWindowDimensions();
+  /* const {width} = useWindowDimensions(); */
 
   useEffect(()=>{
 
@@ -171,10 +170,40 @@ export default function Diary({ navigation }) {
   }
 
 
-  const handleAddToFavorites = (isCreation,id,foodName,foodAmount) => {
+  const handleAddToFavorites = (isCreation,id,foodName,foodAmount,itemCalories,itemProteins,itemCarbs,itemFat) => {
     // logic to add product to favorites
+
+
+    console.log(itemFat);
+
+if(isCreation==1)
+{
+
+
+    fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&ingr=${foodName}`)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      updateFavoriteFood(isCreation,id,foodName,foodAmount,itemCalories,itemProteins,itemCarbs,itemFat,data.parsed[0].food)
+      setShowModal(true);
+    
+      setData2Empty(false)
+    })
+    .catch(error => {
+      setData2Empty(true)
+  
+     
+      // handle the error
+    });
+
+  }
+  else if(isCreation==0)
+  {
+    updateFavoriteFood(isCreation,id,foodName,foodAmount,itemCalories,itemProteins,itemCarbs,itemFat,data2)
     setShowModal(true);
-    updateFavoriteFood(isCreation,id,foodName,foodAmount)
+  }
+    
   };
 
 
@@ -201,6 +230,7 @@ const handleAddFood = () => {
   carbs: Number(foodCarbs),
 };
 
+setOnAddFood(!onAddFood)
   updateCreationFood(currentUserData.id ,currentUserData.daysDetails[copyIndexDay].dailyCreationFood)  
 
   // Clear the form fields
@@ -321,9 +351,13 @@ sum += e.calories ;
 
 
 
-const updateFavoriteFood = async (isCreation,id,foodName,foodAmount) => {
+const updateFavoriteFood = async (isCreation,id,foodName,foodAmount,itemCalories,itemProteins,itemCarbs,itemFat,data3) => {
 
 
+console.log(itemCarbs);
+console.log("efllo");
+
+  setShowOnAddFood(!ShowOnAddFood)
   if(currentUserData)
   {
       
@@ -331,36 +365,39 @@ const updateFavoriteFood = async (isCreation,id,foodName,foodAmount) => {
     let size = currentUserData.dailyFavoriteFood.length;
     /* console.log("siae is:" + size); */
     let currUserData = [...currentUserData.dailyFavoriteFood]
-
  
 if(isCreation==0)
 {
 
-  /* console.log(FavoriteFoodCal);
-  console.log("test-0"); */
+  console.log(FavoriteFoodCal);
+  console.log("test-0");
 
+  
   currentUserData.dailyFavoriteFood[size] = {
         Type:0,
         id: size+1,
         name: foodName,
         amount: Number(foodAmount),
-        calories: Number(FavoriteFoodCal),
-      proteins: Number(FavoriteFoodPro),
-      fat: Number(FavoriteFoodFat),
-      carbs: Number(FavoriteFoodCarbs),
+        calories: Number(itemCalories),
+      proteins: Number(itemProteins),
+      fat: Number(itemFat),
+      carbs: Number(itemCarbs),
     }
 
     currUserData =currentUserData.dailyFavoriteFood ;
 }
 else if(isCreation==1){
-
+ 
   let currFoodCalory;
 
-  if(currentUserData)
+
+  if(currentUserData && data3)
   {
 
-    currFoodCalory = data2.nutrients.ENERC_KCAL ; 
+      currFoodCalory = data3.nutrients.ENERC_KCAL ; 
+    
   }
+ 
   /* console.log("test-1");
 
   console.log(currFoodCalory * (foodAmount/100)); */
@@ -375,6 +412,10 @@ else if(isCreation==1){
   };
 
   currUserData =currentUserData.dailyFavoriteFood ;
+
+
+
+
   
 }
 
@@ -393,14 +434,14 @@ await updateDoc(userDoc , newFields)
 
 
 
-const updateDayleFood = async (id,foodAmount,foodName) => {
+const updateDayleFood = async (id,foodAmount,foodName,data3) => {
 
   let size = currentUserData.daysDetails[copyIndexDay].dailyFood.length;
 
   const userDoc = doc(db,"users",id)
 
   let currDaysDetails = [...currentUserData.daysDetails]
-  let currFoodCalory = data2.nutrients.ENERC_KCAL ;
+  let currFoodCalory = data3.nutrients.ENERC_KCAL ;
 
 
   currDaysDetails[copyIndexDay].dailyFood[size] = {
@@ -762,9 +803,8 @@ if(data2Empty)
 }
 else
 { 
-  updateDayleFood(currentUserData.id,foodAmount , (foodName || finelText2))
+  updateDayleFood(currentUserData.id,foodAmount , (foodName || finelText2),data2)
   
-
   if (  foodAmount && (foodName || finelText2)) {
     setModalVisible(true);
     setOnAddFood(!onAddFood);
@@ -776,7 +816,24 @@ else
 
 const handleSubmit2 = (id,foodAmount,foodName) => {
 
-    updateDayleFood(id, foodAmount, foodName )
+  fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&ingr=${foodName}`)
+  .then((response) => {
+    return response.json();
+  })
+  .then((data) => {
+   setData2(data.parsed[0].food) 
+   updateDayleFood(id, foodAmount, foodName,data.parsed[0].food )
+    setData2Empty(false)
+  })
+  .catch(error => {
+    setData2Empty(true)
+
+   
+    // handle the error
+  });
+
+
+   
     
   
     if (  foodAmount && foodName ) {
@@ -828,11 +885,66 @@ function RmrCalculate(activity) {
 }
 
 
+const width = Dimensions.get('window').width;
+  const [slideIn, setSlideIn] = useState(new Animated.Value(-width));
+
+const position = new Animated.ValueXY();
+
+
+const panResponder = PanResponder.create({
+  onMoveShouldSetPanResponder: (evt, gestureState) => {
+    // Only set pan responder if the swipe is greater than 20 pixels
+    if (Math.abs(gestureState.dx) > 20) {
+      return true;
+    }
+    return false;
+  },
+  /* onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+
+    position.setValue({x: gestureState.dx, y: 0})
+    
+  } */
+  onPanResponderRelease: (evt, gestureState) => {
+    // If swipe is greater than 50 pixels and it's a left swipe, navigate to another component
+    /* if (gestureState.dx < -50) {
+      navigation.navigate('Calc');
+      Animated.timing(slideIn, {
+        toValue: 0,
+        duration: 1900,
+        useNativeDriver: false,
+      }).start();
+  
+    } */
+    if (gestureState.dx > 150) {
+      navigation.navigate('Calc');
+    }
+    Animated.spring(position, {
+      toValue: { x: 0, y: 0 },
+    useNativeDriver: false,
+  }).start();
+  },
+  onPanResponderMove: Animated.event([
+    null,
+    { dx: position.x, dy: position.y },
+  ],{ useNativeDriver: false })
+});
+
+
+
 
 if(auth.currentUser)
 {
   return (
     
+     <Animated.View  
+         {...panResponder.panHandlers}
+         
+        style={{
+         
+          transform: [{ translateX: position.x }, ],
+        }}
+    
+        >
     <ImageBackground source={{uri: "https://images.indianexpress.com/2021/12/GettyImages-fasting-diet-plan-1200.jpg"}} resizeMode= 'cover'>
      {/* <ScrollView> */}
     <View style={styles.container}>
@@ -958,14 +1070,14 @@ onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(cu
     </View>
 
     <Text style={{fontSize: 16, fontWeight: '500', marginTop: 10}}>what did you eat today?</Text>
-    <TouchableOpacity onPress={()=> setIsFoodArea(true)} style={{backgroundColor: '#11f1f1', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, alignItems: 'center', justifyContent: 'center'}}>
+    <TouchableOpacity onPress={()=> setIsFoodArea(true)} style={{backgroundColor: '#d4f1f9', width: '90%', height: '11%', marginTop: 10, borderRadius: 8,borderColor:'#11a1f9',borderWidth:2, alignItems: 'center', justifyContent: 'center'}}>
       <Text style={{fontSize: 21}}>Food selection area</Text>
     </TouchableOpacity>
 
     <FadeInOut
     visible={isFoodArea}
     scale={true}
-     style={{backgroundColor: oreng ,marginTop: 0, width: isFoodArea ? '105%' : 0 ,  height: isFoodArea ? '119%': 0, alignItems: 'center', position: 'absolute', top:-53, padding: 10, borderRadius: 8, zIndex: isFoodArea ? 999 : 0, borderWidth: 1}}>
+     style={{backgroundColor: '#eedab6' ,marginTop: 0, width: isFoodArea ? '105%' : 0 ,  height: isFoodArea ? '119%': 0, alignItems: 'center', position: 'absolute', top:-53, padding: 10, borderRadius: 8, zIndex: isFoodArea ? 999 : 0, borderWidth: 1}}>
       
     <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsFoodArea(false)}>
     <Feather name="x-circle" size={30} color="#fff"/>
@@ -980,7 +1092,12 @@ onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(cu
   onAddFood && !ShowOnAddFood ? 
   
 
+  
   <View style={styles.inputContainer}>
+
+    <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setOnAddFood(!onAddFood)}>
+    <Feather name="x-circle" size={40} color="#fff"/>
+    </TouchableOpacity>
     <Text style={{  fontSize: 24, fontWeight: 'bold', color: oreng ,marginRight:80,padding:4,marginBottom:2}}>Add food</Text>
         <View style={styles.inputRow}>
             <View style={{flexDirection:'row'}}>
@@ -1072,7 +1189,7 @@ null
   currentUserData && !ShowOnAddFood && !onAddFood ?
   <View style={{width:'100%',height:'93%',alignItems:'center'/* ,backgroundColor:'yellow' */}}>
 
-<Text style={{ fontSize: 20, fontWeight: 'bold', color: 'blue',marginBottom:10 }}>what did i eat today</Text>
+<Text style={{ fontSize: 20, fontWeight: '900', color: oreng ,marginBottom:10 }}>what did i eat today</Text>
 <View style={{width:'100%',height: currentUserData.daysDetails[copyIndexDay].dailyCreationFood.length > 0 ? '50%' : '93%' ,alignItems:'center'/* ,backgroundColor:'red' */}}>
 <FlatList
   style={{width:'85%'}}
@@ -1080,7 +1197,7 @@ null
   data={currentUserData.daysDetails[copyIndexDay].dailyFood.map(item => ({...item, key: uuidv4()}))}
   renderItem={({ item }) => (
     <View style={styles.foodContainer} key={item.key}>  
-      <TouchableOpacity onPress={()=>[handleAddToFavorites(1,currentUserData.id,item.foodName,item.foodAmount ),setQuantity(item.foodAmount), setFinelText2(item.foodName)]} style={{alignItems:'center',justifyContent:'center',marginLeft:3}}>
+      <TouchableOpacity onPress={()=>[setFinelText2(item.foodName),handleAddToFavorites(1,currentUserData.id,item.foodName,item.foodAmount,item.calories,item.proteins,item.carbs,item.fat ),setQuantity(item.foodAmount)]} style={{alignItems:'center',justifyContent:'center',marginLeft:3}}>
       <MaterialCommunityIcons name="heart-plus-outline" size={30} color="black" />
       </TouchableOpacity>
       <TouchableOpacity style={{alignItems:'center',justifyContent:'center',marginLeft:5}}>
@@ -1109,7 +1226,7 @@ null
 
 <TouchableOpacity onPress={()=>[setQuantity(item.amount), setFinelText2(item.name),setFavoriteFoodAmount(item.amount),
            setFavoriteFoodName(item.name),setFavoriteFoodCal(item.calories),setFavoriteFoodPro(item.proteins),setFavoriteFoodCarbs(item.carbs),
-           setFavoriteFoodFat(item.fat),handleAddToFavorites(0,currentUserData.id,item.name,item.amount )]} style={{alignItems:'center',justifyContent:'center',marginLeft:3}}>
+           setFavoriteFoodFat(item.fat),handleAddToFavorites(0,currentUserData.id,item.name,item.amount,item.calories,item.proteins,item.carbs,item.fat )]} style={{alignItems:'center',justifyContent:'center',marginLeft:3}}>
       <MaterialCommunityIcons name="heart-plus-outline" size={30} color="black" />
       </TouchableOpacity>
 
@@ -1153,19 +1270,23 @@ null
   
  currentUserData && ShowOnAddFood ?
 
-<View style={{width:'100%',height:'93%',alignItems:'center'/* ,backgroundColor:'yellow' */}}>
-<Text style={{ fontSize: 20, fontWeight: 'bold', color: 'blue',marginBottom:6,marginTop:10 }}>Favorites list </Text>
+<View style={{width:'100%',height:'93%',alignItems:'center'}}>
+<TouchableOpacity style={{position: 'absolute', right: 12.5, top: 12.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setShowOnAddFood(!ShowOnAddFood)}>
+    <Feather name="x-circle" size={40} color="#fff"/>
+    </TouchableOpacity>
+<Text style={{ fontSize: 25, fontWeight: '900', color: oreng ,marginBottom:6,marginTop:40 }}>Favorites list </Text>
 
 <FlatList
-  style={{width:'85%'}}
+  style={{width:'85%',marginTop:0}}
   
   data={currentUserData.dailyFavoriteFood.map(item => ({...item, key: uuidv4()}))}
   renderItem={({ item }) => (
 
 item.Type==0 ?
 
-    <View style={styles.foodContainer} key={item.key}>  
+    <View style={styles.foodContainer2} key={item.key}>  
 
+     
    <TouchableOpacity onPress={()=>handleAddFood2(item.amount,item.name,item.calories,item.proteins,item.carbs,item.fat)}  style={{alignItems:'center',justifyContent:'center'}}>
       <MaterialIcons name="addchart" size={38} color={oreng} />
       </TouchableOpacity>    
@@ -1185,10 +1306,12 @@ item.Type==0 ?
     </View>
     :
     
-    <View style={[styles.foodContainer]} key={item.key}>  
+    <View style={[styles.foodContainer2]} key={item.key}>  
       
       <TouchableOpacity onPress={()=>[setQuantity(item.foodAmount), setFinelText2(item.foodName),setFoodAmount(item.foodAmount),
-         setFoodName(item.foodName), handleSubmit2(currentUserData.id,item.foodAmount,item.foodName)]}  style={{alignItems:'center',justifyContent:'center'}}>
+    
+    setFoodName(item.foodName), handleSubmit2(currentUserData.id,item.foodAmount,item.foodName)]}  style={{alignItems:'center',justifyContent:'center'}}>
+      
       <MaterialIcons name="addchart" size={38} color={oreng} />
       </TouchableOpacity>
        <TouchableOpacity style={{alignItems:'center',justifyContent:'center',marginLeft:25}}>
@@ -1550,6 +1673,7 @@ null}
 
     {/* </ScrollView> */}
     </ImageBackground>
+    </Animated.View>
   )
 }
 else{
@@ -1719,6 +1843,23 @@ foodContainer: {
   padding: 10,
   borderRadius: 10,
   backgroundColor: '#fff',
+  shadowColor: '#000a',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.23,
+  shadowRadius: 2.62,
+  elevation: 4,
+},
+foodContainer2: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginVertical: 10,
+  padding: 10,
+  borderRadius: 10,
+  backgroundColor: '#f3d9d9',
   shadowColor: '#000a',
   shadowOffset: {
     width: 0,

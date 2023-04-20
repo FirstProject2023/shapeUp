@@ -140,7 +140,7 @@ const panResponder = PanResponder.create({
   } */
   onPanResponderRelease: (evt, gestureState) => {
     // If swipe is greater than 50 pixels and it's a left swipe, navigate to another component
-    if (gestureState.dx < -50) {
+    if (gestureState.dx < -150) {
       navigation.navigate('Diary');
       Animated.timing(slideIn, {
         toValue: 0,
@@ -149,7 +149,7 @@ const panResponder = PanResponder.create({
       }).start();
   
     }
-    if (gestureState.dx > 50) {
+    if (gestureState.dx > 150) {
       navigation.navigate('Home');
     }
     Animated.spring(position, {

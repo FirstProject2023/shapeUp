@@ -1,4 +1,6 @@
-import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions, TouchableOpacity, Image, TextInput, ImageBackground, ActivityIndicator, KeyboardAvoidingView, StatusBar } from 'react-native'
+import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions,
+   TouchableOpacity, Image, TextInput, ImageBackground, ActivityIndicator,
+    KeyboardAvoidingView, StatusBar, Animated, PanResponder, Dimensions } from 'react-native'
 import React, { useState , useEffect} from 'react'
 import articlesData from '../Jsons/articles.json'
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -468,7 +470,63 @@ export default function Articles({navigation}) {
   }
   
   
+
+
+  const [slideIn, setSlideIn] = useState(new Animated.Value(-width));
+
+const position = new Animated.ValueXY();
+
+
+const panResponder = PanResponder.create({
+  onMoveShouldSetPanResponder: (evt, gestureState) => {
+    // Only set pan responder if the swipe is greater than 20 pixels
+    if (Math.abs(gestureState.dx) > 20) {
+      return true;
+    }
+    return false;
+  },
+  /* onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+
+    position.setValue({x: gestureState.dx, y: 0})
+    
+  } */
+  onPanResponderRelease: (evt, gestureState) => {
+    // If swipe is greater than 50 pixels and it's a left swipe, navigate to another component
+    if (gestureState.dx < -150) {
+      navigation.navigate('Home');
+      Animated.timing(slideIn, {
+        toValue: 0,
+        duration: 1900,
+        useNativeDriver: false,
+      }).start();
+  
+    }
+    if (gestureState.dx > 150) {
+      navigation.navigate('Profile');
+    }
+    Animated.spring(position, {
+      toValue: { x: 0, y: 0 },
+    useNativeDriver: false,
+  }).start();
+  },
+  onPanResponderMove: Animated.event([
+    null,
+    { dx: position.x, dy: position.y },
+  ],{ useNativeDriver: false })
+});
+
   return (   
+
+<Animated.View  
+         {...panResponder.panHandlers}
+         
+        style={{
+         
+          transform: [{ translateX: position.x }, ],
+        }}
+    
+        >
+
 
     <ImageBackground source={{uri: "https://media.istockphoto.com/id/1368401341/photo/process-of-preparing-food-salad-of-vegetables-oil-dish-spring-vitamins-summer-vegetables.jpg?s=612x612&w=0&k=20&c=XwvilDaZPy57eDJXrMpx-1udYPEZhO9jQGUD-MHf2Cc="}} resizeMode= 'cover'>
     <StatusBar backgroundColor="rgb(255, 178, 71)" />
@@ -535,6 +593,7 @@ export default function Articles({navigation}) {
     </View>
     </View>
     </ImageBackground>
+    </Animated.View>
  
   )
 }
