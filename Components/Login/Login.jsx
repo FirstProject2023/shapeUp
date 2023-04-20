@@ -11,6 +11,8 @@ import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fn
 
 
 
+
+
 // import {  } from '@react-native-community/datetimepicker';
 
 import LottieView from 'lottie-react-native';
@@ -70,10 +72,11 @@ export default function Login({ navigation }) {
     const [heightAndWeightIsVisible, setHeightAndWeightIsVisible] = useState(false);
     const [averageActivityIsVisible, setAverageActivityIsVisible] = useState(false);
     const [birthDateIsVisible, setBirthDateIsVisible] = useState(false);
+    //One of them
+    const [WeeklyGoalIsVisible, setWeeklyGoalIsVisible] = useState(false);
+    const [endDateIsVisible, setEndDateIsVisible] = useState(false);
+    const [startViewIsVisible, setStartViewIsVisible] = useState(false);
 
-      //One of them
-  const [WeeklyGoalIsVisible, setWeeklyGoalIsVisible] = useState(false);
-  const [endDateIsVisible, setEndDateIsVisible] = useState(false);
 
     const [date, setDate] = useState(new Date(0));
   
@@ -144,6 +147,8 @@ useEffect(()=>{
 
 const hendelUpdateGool = async () => {
 
+  setStartViewIsVisible(true)
+  console.log("get in***************");
   let today = new Date() ;
   let futureDate=0;
   let diffInDays = 0;
@@ -269,7 +274,7 @@ const  handleSignUp =  async () => {
             averageActivity: averageActivity,
             basicBalancePoint: basicBalancePoint,
             basicDayTarget: basicDayTarget,
-            indexDeyFirebase: 0,
+            // indexDeyFirebase: 0,
             
           });
           setWeeklyGoal(0);
@@ -445,7 +450,7 @@ function EmailTextInput()
         <Text style={{color: '#fff', fontSize: 20, fontWeight: '800'}}>Login</Text>
     </TouchableOpacity>
     <TouchableOpacity
-    onPress={()=> [setFirstScreenIsVisible(false), setSignUpIsVisible(true)]} 
+    onPress={()=> [setFirstScreenIsVisible(false), setSignUpIsVisible(true), setStartViewIsVisible(false)]} 
     style={[styles.loginButton, {width: '80%', marginTop: 10, backgroundColor: '#fff'}]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Sign Up</Text>
@@ -986,12 +991,63 @@ function EmailTextInput()
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>maoz</Text>
     </TouchableOpacity>
 
-    <TouchableOpacity
-    onPress={handleSignUp}
-    style={styles.loginButton}
+    
+
+
+    <FadeInOut style={{ 
+        //startView
+        width: '100%',
+        height: startViewIsVisible ? '350%' : 0 ,
+        alignItems: 'center',
+        position: 'absolute',
+        top: -550,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        zIndex: startViewIsVisible ?  999 : 0,}}
+        
+
+        visible={startViewIsVisible}
+        duration={!startViewIsVisible ? 400 : 800}
+        scale={true}
+        >
+        <Text style={{fontSize: 20, fontWeight: '700', marginTop: 100}}>The registration process is complete!</Text>
+
+        <View style={{ width: 250, height: 250, marginTop: 100 }}>
+        <LottieView  style={{ flex: 1 }}  autoPlay source={require('../lottieAnimation/success_sign_up2.json')}/>
+       </View>
+
+        {/* <LottieView  style={{height: 300, width: 300, marginTop: 50}}  autoPlay source={require('../lottieAnimation/success_sign_up')}/> */}
+        
+          <TouchableOpacity
+            onPress={handleSignUp}
+            style={[styles.loginButton, {marginTop: 80, height: 55, width: 300}]}
     >
-        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Start</Text>
-    </TouchableOpacity>
+             <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Start</Text>
+          </TouchableOpacity>
+
+        {/* <TouchableOpacity
+            onPress={handleSignUp}
+            style={[{marginTop: 50, height: 195, width: 350}]}
+    >
+    <LottieView  style={{ flex: 1 }}  autoPlay source={require('../lottieAnimation/start_button2.json')}/>
+             
+          </TouchableOpacity> */}
+
+        </FadeInOut>
+
+    {/* <FadeInOut style={{ 
+        //startView
+        width: '70%',
+        height: '60%',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 160,
+        zIndex: startViewIsVisible ?  999 : 0,}}
+
+        visible={startViewIsVisible}
+        duration={!startViewIsVisible ? 400 : 800}
+        scale={true}
+        ></FadeInOut> */}
 
     <TouchableOpacity
     onPress={()=>{ [navigation.navigate('Nav'), setGoalIsVisible(false), setFirstScreenIsVisible(true) ]}}
