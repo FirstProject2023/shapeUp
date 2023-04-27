@@ -147,8 +147,15 @@ useEffect(()=>{
 
 const hendelUpdateGool = async () => {
 
-  setStartViewIsVisible(true)
-  console.log("get in***************");
+
+
+ const currentDate = new Date();
+  const age = currentDate.getFullYear() - birthDate.year ;
+
+   console.log(age + "ageeeeee!");
+
+
+
   let today = new Date() ;
   let futureDate=0;
   let diffInDays = 0;
@@ -239,10 +246,46 @@ let daysArr=[];
 
 setDaysDetails(daysArr); 
 
-setCalToLoseDay(Math.floor(((weight - weightGoal) * 7700) / diffInDays));
-setBasicBalancePoint(Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     averageActivity)));
-    setBasicDayTarget(basicBalancePoint - calToLoseDay);
+setCalToLoseDay( (  ((weight - weightGoal) * 7700) / diffInDays  ) );
+setBasicBalancePoint( ( ( (88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * age) ) )  *  averageActivity   ) );
 
+setBasicDayTarget(basicBalancePoint - calToLoseDay);
+
+
+if(  (  ((weight - weightGoal) * 7700) / diffInDays  ) > 2566   )
+{
+
+  
+  Alert.alert(
+    'error',
+    'The person will need to provide new, realistic weight measurements in order to proceed with their goal of losing weight.',
+     [
+        { text: 'No', onPress: () => console.log('OK Pressed') },
+        
+      ],
+    {cancelable: false},
+  );
+
+}
+else if((  ((weight - weightGoal) * 7700) / diffInDays  ) < 2566 && (  ((weight - weightGoal) * 7700) / diffInDays  ) > 1500)
+{
+  Alert.alert(
+    '!!!',
+    'Following the measurements of the weights that you entered, your process will be very intensive. And we do not recommend it .Are you sure you want to enter this goal relative to the end time you entered?.',
+     [
+        { text: 'No', onPress: () => console.log('OK Pressed') },
+        { text: 'Yes', onPress: () => setStartViewIsVisible(true) },
+      ],
+    {cancelable: false},
+  );
+
+}
+else{
+  setStartViewIsVisible(true)
+}
+
+    
+    
 }
 
 const  handleSignUp =  async () => {
@@ -301,14 +344,14 @@ const  handleSignUp =  async () => {
     }
 
     
-    const removeStartAnimation = (activity) => {
+/*     const removeStartAnimation = (activity) => {
       setTimeout(() => {[setAnimationStartIsVisible(false), setFirstScreenIsVisible(true)]}, 2000);
   }
 
   const BalanceEndTargetCreate = () => {
     setBasicBalancePoint(Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     activity)));
     setBasicDayTarget(basicBalancePoint);
-  }
+  } */
 
 function EmailTextInput()
  {
@@ -988,7 +1031,7 @@ function EmailTextInput()
     onPress={hendelUpdateGool}
     style={styles.loginButton}
     >
-        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>maoz</Text>
+        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>maoz!!</Text>
     </TouchableOpacity>
 
     
