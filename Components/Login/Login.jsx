@@ -543,12 +543,13 @@ function EmailTextInput()
       <TextInput 
        style={styles.textInput}
       placeholder='Password'
-      keyboardType="visible-password"
+      secureTextEntry
 
       placeholderTextColor={'#fff'}
       
         onChangeText={text => setPassword(text)}
-        secureTextEntry
+        
+        
        
         />
     </View>
@@ -601,12 +602,12 @@ function EmailTextInput()
       
       <TextInput 
        style={styles.textInput}
-       keyboardType="visible-password"
+      
       placeholder='Password'
       placeholderTextColor={'#fff'}
+      secureTextEntry
       
         onChangeText={text => setPassword(text)}
-        secureTextEntry
        
         />
     </View>
@@ -659,7 +660,7 @@ function EmailTextInput()
       placeholderTextColor={'#fff'}
       
         onChangeText={text => setLastName(text)}
-        secureTextEntry
+       
        
         />
     </View>
