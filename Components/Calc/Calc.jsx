@@ -213,6 +213,10 @@ const panResponder = PanResponder.create({
     </View>
       <Modal visible={isModalVisible} >
         <View style={styles.modalContainer}>
+        <TouchableOpacity  style={{position:'absolute' ,top:40,right:30}} onPress={()=>setIsModalVisible(false)}>
+          <Feather name="x-circle" size={54} color={oreng} />
+           </TouchableOpacity>
+
           <Text style={styles.modalTitle}>Please select a language:</Text>
           <TouchableOpacity style={styles.modalButton} onPress={handleModalChange1}>
             <Text style={styles.modalButtonText}>English</Text>
@@ -220,6 +224,7 @@ const panResponder = PanResponder.create({
           <TouchableOpacity style={styles.modalButton} onPress={handleModalChange2}>
             <Text style={styles.modalButtonText}>Hebrew</Text>
           </TouchableOpacity>
+        
         </View>
       </Modal>
 
@@ -382,6 +387,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 
+ 
+
 
   container: {
     alignItems:'center',
@@ -409,7 +416,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   resBmi: {
-    marginTop:30,
+    marginTop:0,
       width:'100%',
       alignItems:'center',
       justifyContent:'center',
@@ -419,6 +426,20 @@ const styles = StyleSheet.create({
       textShadowColor: '#000',
       textShadowOffset: { width: 2, height: 2 },
       textShadowRadius: 4,
+      
+  },
+  resBmi2: {
+    marginTop:0,
+      width:'100%',
+      alignItems:'center',
+      justifyContent:'center',
+      marginBottom:0,   
+      fontWeight: 'bold',
+      color: '#fff',
+      textShadowColor: '#000',
+      textShadowOffset: { width: 2, height: 2 },
+      textShadowRadius: 4,
+      
   },
   graphResults:{
     height:50,
@@ -527,20 +548,20 @@ let message="";
 
 if(bmiSearchResult > 30)
 {
-  message="This individual's Body Mass Index is significantly above the normal range, suggesting they are at a high risk for obesity-related health problems."; 
+  message="This result puts you in the 'Obese' category. Ideally, your BMI should be between 18.5-24.9. The result means that your body weight may significantly increase the chance that you will suffer from health problems such as: heart disease, diabetes, hypertension, certain types of cancer and more."; 
 }else if(bmiSearchResult < 30 && bmiSearchResult > 25)
 {
- 
-  message="The person's Body Mass Index is above the normal range, indicating they may be at an increased risk for health problems related to being overweight.";
+  
+  message="This result puts you in the Overweight' category. Ideally, your BMI should be between 18.5-24.9. The result means that your body weight may increase the chance that you will suffer from health problems such as: heart disease, diabetes, hypertension, certain types of cancer and more.";
 }
- else if(bmiSearchResult < 24.9 && bmiSearchResult > 18.5)
+else if(bmiSearchResult < 24.9 && bmiSearchResult > 18.5)
 {
-
-  message="This person's Body Mass Index falls within the normal weight range, indicating a generally healthy weight.";
+  
+  message="This result puts you in the 'Healthy Weight' category. The result means that your body weight significantly reduces the chance that you will suffer from health problems such as: heart disease, diabetes, hypertension, certain types of cancer and more.";
 }
 else{
+  message="This result puts you in the 'underweight' category. Which indicates that your nutritional menu does not match the nutritional requirements of your body (you eat too little). Ideally, your BMI should be between 18.5-24.9. This condition increases the chance of damage to your heart, bones and other tissues in your body. It is recommended that you start increasing your caloric intake to maintain a healthy level of body fat."; 
   
-  message="This individual's Body Mass Index is below the normal range, suggesting they may be underweight."
 }
 
 function toBack()
@@ -572,7 +593,7 @@ function toBack()
       justifyContent:'center'
     }} >
       
-      <Text style={{color:'white',marginTop:-6,fontSize:13}}> you are fat</Text>
+      <Text style={{color:'white',marginTop:-6,fontSize:13}}>obesity</Text>
          
     </View>
     <View style={{
@@ -600,7 +621,7 @@ function toBack()
       justifyContent:'center'
     }} > 
      
-     <Text style={{color:'white',marginTop:-6,fontSize:13}}> Not good</Text>
+     <Text style={{color:'white',marginTop:-6,fontSize:13}}>over-weight</Text>
         
     </View>
     <View style={{
@@ -628,7 +649,7 @@ function toBack()
       justifyContent:'center'
     }} >
 
-<Text style={{color:'white',marginTop:-6,fontSize:13}}> Very good</Text>
+<Text style={{color:'white',marginTop:-6,fontSize:12}}>proper weight</Text>
          
     </View>
     <View style={{
@@ -675,7 +696,7 @@ function toBack()
 </View>
 
   <View>
-    <Text style={{fontSize:15,}}>{message ? message : null}</Text>
+    <Text style={{fontSize: message.length > 274 ? 11 : 14   }}>{message ? message : null}</Text>
   </View>
   
   <View style={styles.resBmi}>
@@ -885,7 +906,7 @@ function WhatIsFatterRes(heightOfResView,bmiSearchResult,setHeightOfResView,calo
     
     <View style={{height:heightOfResView,width:'90%',backgroundColor:'#fff',borderBottomLeftRadius: 10,borderBottomRightRadius: 10, display: heightOfResView>0 ? null : 'none'}}>
     
-    <Text  style={{fontSize:20,textAlign:'center',marginTop:18}}>The food and weight you chose to contain more calories:</Text>
+    <Text  style={{fontSize:18,textAlign:'center',marginTop:4}}>The food and weight you chose to contain more calories:</Text>
 
 <View style={{flexDirection:'row',justifyContent:'space-evenly',marginTop:40}}>
 <TouchableOpacity>
@@ -956,19 +977,20 @@ let message="";
 
 if(bmiSearchResult > 30)
 {
-  message="מדד מסת הגוף של אדם זה נמצא משמעותית מעל הטווח הנורמלי, מה שמצביע על כך שהם נמצאים בסיכון גבוה לבעיות בריאות הקשורות להשמנה."; 
+  message="תוצאה זאת מכניסה אותך לקטגוריה של 'השמנה' (Obese). במצב האידיאלי ה-BMI שלך צריך להיות בערכים של 18.5-24.9. משמעות התוצאה היא שמשקל גופך עלול להגדיל משמעותית את הסיכוי שתסבול מבעיות בריאות כגון: מחלות לב, סוכרת, יתר לחץ דם, סוגים מסוימים של סרטן ועוד."; 
 }else if(bmiSearchResult < 30 && bmiSearchResult > 25)
 {
  
-  message="מדד מסת הגוף של האדם הוא מעל הטווח הנורמלי, מה שמצביע על כך שהוא עלול להיות בסיכון מוגבר לבעיות בריאות הקשורות לעודף משקל.";
+  message="תוצאה זאת מכניסה אותך לקטגוריה של 'עודף משקל' (Overweight). במצב האידיאלי ה-BMI שלך צריך להיות בערכים של 18.5-24.9. משמעות התוצאה היא שמשקל גופך עלול להגדיל את הסיכוי שתסבול מבעיות בריאות כגון: מחלות לב, סוכרת, יתר לחץ דם, סוגים מסוימים של סרטן ועוד.";
 }
  else if(bmiSearchResult < 24.9 && bmiSearchResult > 18.5)
 {
 
-  message="מדד מסת הגוף של אדם זה נופל בטווח המשקל התקין, מה שמצביע על משקל בריא בדרך כלל.";
+  message="תוצאה זאת מכניסה אותך לקטגוריה של 'משקל בריא' (Healthy Weight). משמעות התוצאה היא שמשקל גופך מקטין משמעותית את הסיכוי שתסבול מבעיות בריאות כגון: מחלות לב, סוכרת, יתר לחץ דם, סוגים מסוימים של סרטן ועוד.";
 }
 else{
-  message="מדד מסת הגוף של אדם זה נמצא מתחת לטווח הנורמלי, מה שמצביע על כך שהוא עלול להיות בתת משקל."
+  message="תוצאה זאת מכניסה אותך לקטגוריה של 'תת משקל' (Underweight). דבר המעיד על כך שהתפריט התזונתי שלך אינו תואם את הדרישות התזונתיות של    הגוף שלך (אתה אוכל פחות מדי). במצב האידיאלי ה-BMI שלך צריך להיות בערכים של 18.5-24.9. מצב זה מגביר את הסיכוי לנזק ללב, לעצמות ולרקמות אחרות בגופך. מומלץ כי תתחיל להגביר את הצריכה הקלורית שלך, כדי לשמור על רמה בריאה של שומן בגוף."
+
 }
 
 function toBack()
@@ -1000,7 +1022,7 @@ function toBack()
       justifyContent:'center'
     }} >
       
-        <Text style={{color:'white'}}>אתה שמן</Text>
+        <Text style={{color:'white'}}>השמנה</Text>
          
     </View>
     <View style={{
@@ -1028,7 +1050,7 @@ function toBack()
       justifyContent:'center'
     }} > 
      
-        <Text style={{color:'white'}}>לא משו</Text>
+        <Text style={{color:'white'}}>עודף משקל</Text>
         
     </View>
     <View style={{
@@ -1056,7 +1078,7 @@ function toBack()
       justifyContent:'center'
     }} >
 
-        <Text style={{color:'white'}}>טוב מאד!</Text>
+        <Text style={{color:'white'}}>משקל תקין</Text>
          
     </View>
     <View style={{
@@ -1102,10 +1124,11 @@ function toBack()
 </View>
 
   <View>
-    <Text style={{fontSize:15,}}>{message ? message : null}</Text>
+    <Text style={{fontSize: message.length > 244 ? 11 : 14   }}>{message ? message : null}</Text>
+
   </View>
   
-  <View style={styles.resBmi}>
+  <View style={styles.resBmi2}>
      <Text style={{fontSize:40,
       fontWeight: 'bold',
       color:oreng,
@@ -1124,6 +1147,7 @@ function toBack()
   <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80 }}>
     { heightOfResView !=0 ? <Button title='חזרה' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
+ 
 
     </View>
 
@@ -1143,12 +1167,12 @@ function ProteinIntakeResEb(heightOfResView,bmiSearchResult,setHeightOfResView,f
     
     <View style={{flexDirection:'row',width:'100%'}}>
 
-<View style={{width:'45%',height:'100%', marginTop:28}}>
+<View style={{width:'45%',height:'100%', marginTop:8}}>
     <Text  style={{fontSize:15,textAlign:'center',color:'#0a2946',
      borderColor:'#d89b5c',borderWidth:2,marginLeft:30,borderRadius:15,justifyContent:'center'}}>{finelText}</Text>
      </View>
      <View style={{width:'100%'}}>
-      <Text  style={{fontSize:40,textAlign:'center',marginTop:28,color:'#0a2946',width:'55%'}}>קלוריות{"\n"} {caloriesValue.toFixed(0)}</Text>
+      <Text  style={{fontSize:40,textAlign:'center',marginTop:3,color:'#0a2946',width:'55%'}}>קלוריות{"\n"} {caloriesValue.toFixed(0)}</Text>
      </View>
     
      </View>

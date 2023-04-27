@@ -110,7 +110,7 @@ const panResponder = PanResponder.create({
     // If swipe is greater than 50 pixels and it's a left swipe, navigate to another component
     if (gestureState.dx < -150) {
       navigation.navigate('Calc');
-      Animated.timing(slideIn, {
+      Animated.timing(slideIn,{
         toValue: 0,
         duration: 1900,
         useNativeDriver: false,

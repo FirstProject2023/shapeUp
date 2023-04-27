@@ -154,14 +154,15 @@ scale={true}
   alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5,left:2, 
 padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
 
- <Text style={{fontSize: 16,position: 'absolute', fontWeight: '600',top: 55}}>In front of you are five nutrition and fitness calculators, you are welcome to browse through them and enjoy their service To switch between calculators you have to move the screen with your finger to the left</Text>
+ <Text style={{fontSize: 16,position: 'absolute', fontWeight: '600',top: 55}}>
+ BMI calculator allows you to find out what your BMI is. The Body Mass Index is an index that measures the ratio between body weight and height. The result shows the ratio (proportion) between your height and weight. This index serves as a tool for measuring excess and underweight.   </Text>
 
 <TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
 <Feather name="x-circle" size={40} color="#fff"/>
 </TouchableOpacity>
 </FadeInOut>
           
-      <Text style={styles.text}>Bmi</Text>
+      <Text style={styles.text}>BMI</Text>
         {/*   <View style={{flexDirection:'row',justifyContent:'space-evenly',width:'100%'}}>
     <Ionicons name="arrow-forward-outline"  size={44} color="black" />
       <Ionicons name="arrow-back" size={44} color="black" />
@@ -275,6 +276,7 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
     , fatValue,setFatValue,carbohydratesValue,setCarbohydratesValue,proteinValue,
     setProteinValue,finelText,setFinelText,caloriesValue,setCaloriesValue,handleButtonClick ) {
 
+      const [explanation, setExplanation] = useState(false);
      
   const {width} = useWindowDimensions();
 
@@ -282,6 +284,7 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
   const [quantity,setQuantity]=useState('');
  
 
+  
 
   const [data2, setData2] = useState([""]);  
   const [query, setQuery] = useState('');
@@ -387,8 +390,31 @@ function ChangeText()
       <View style={[styles.container,{ width: width}]}>
 
         <View style={styles.viewContainer}>
+
+        <TouchableOpacity onPress={()=> setExplanation(true)} style={{position: 'absolute', left: 20, top: 11}}>
+        <MaterialCommunityIcons name="cloud-question" size={45} color={oreng} />
+    </TouchableOpacity>
+
+
+    <FadeInOut
+
+visible={explanation}
+scale={true}
+
+ style={{   zIndex: explanation ? 900 : 0 , backgroundColor: '#ffff' ,marginTop: 20,borderWidth:3,borderColor:"black", width: explanation ? '80%' : '0%', height: explanation ? '65%' : '0%',
+  alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5,left:2, 
+padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
+
+ <Text style={{fontSize: 16,position: 'absolute', fontWeight: '600',top: 55}}>
+ The nutrition / calorie calculator shows you the caloric and nutritional value of foods and drinks of your choice.   </Text>
+
+<TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
+<Feather name="x-circle" size={40} color="#fff"/>
+</TouchableOpacity>
+</FadeInOut>
+
           
-      <Text style={styles.text}>ProteinIntake</Text>
+      <Text style={styles.textFontB}>ProteinIntake</Text>
       <View style={{width:'100%', flexDirection:'row' ,justifyContent:'space-evenly',marginTop:10}}>
         
       <Ionicons name="ios-pizza-outline" size={34} color="black" />
@@ -479,6 +505,9 @@ quantities.map((quantity,i) => (
 
 function BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,setIsMan,handleButtonClick) {
 
+
+
+  const [explanation, setExplanation] = useState(false);
 
   const [manisFocused, setManisFocused] = useState(true);
   const [womanIsFocused, setWomanIsFocused] = useState(true);
@@ -583,6 +612,29 @@ else{
       <View style={styles.viewContainer}>
         
     <Text style={styles.text}>BMR</Text>
+
+    <TouchableOpacity onPress={()=> setExplanation(true)} style={{position: 'absolute', left: 20, top: 11}}>
+        <MaterialCommunityIcons name="cloud-question" size={45} color={oreng} />
+    </TouchableOpacity>
+
+
+    <FadeInOut
+
+visible={explanation}
+scale={true}
+
+ style={{   zIndex: explanation ? 900 : 0 , backgroundColor: '#ffff' ,marginTop: 20,borderWidth:3,borderColor:"black", width: explanation ? '80%' : '0%', height: explanation ? '65%' : '0%',
+  alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5,left:2, 
+padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
+
+ <Text style={{fontSize: 14,position: 'absolute', fontWeight: '600',top: 54}}>
+ The BMR (Basal Metabolic Rate) is a measure that represents the amount of energy the body burns at complete rest. That is, the amount of energy necessary to maintain necessary physical functions only, such as: cell multiplication, activation of respiratory muscles, heart muscle and smooth muscles, transmission of nerve impulses and active transmission through cell membranes.
+This calculator checks what your BMR is. That is, how many calories you burn in a day just to maintain necessary physical functions. </Text>
+
+<TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
+<Feather name="x-circle" size={40} color="#fff"/>
+</TouchableOpacity>
+</FadeInOut>
 
 
   <View style={styles.icons} >
@@ -705,6 +757,8 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
 }
 
 function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick  ) {
+  
+   const [explanation, setExplanation] = useState(false);
   const [manisFocused, setManisFocused] = useState(true);
   const [womanIsFocused, setWomanIsFocused] = useState(true);
   const [heightValue, setHeightValue] = useState(0);
@@ -837,7 +891,7 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
         }
         
           handleButtonClick();
-          setWhatCalcIs(8)
+          setWhatCalcIs(3)
           setHeightOfResView(400)
        
       }
@@ -851,6 +905,31 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
       <View style={styles.viewContainer}>
         
     <Text style={{fontSize:20,marginTop:5}}>SavingStatus</Text>
+
+
+    <TouchableOpacity onPress={()=> setExplanation(true)} style={{position: 'absolute', left: 20, top: 11}}>
+        <MaterialCommunityIcons name="cloud-question" size={45} color={oreng} />
+    </TouchableOpacity>
+
+
+    <FadeInOut
+
+visible={explanation}
+scale={true}
+
+ style={{   zIndex: explanation ? 900 : 0 , backgroundColor: '#ffff' ,marginTop: 20,borderWidth:3,borderColor:"black", width: explanation ? '80%' : '0%', height: explanation ? '65%' : '0%',
+  alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5,left:2, 
+padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
+
+ <Text style={{fontSize: 14,position: 'absolute', fontWeight: '600',top: 54}}>
+ Recommended daily calorie intake calculator is a tool that checks the recommended daily calorie intake according to the type of work and the amount of effort invested in it.
+According to the result in this calculator, you will be able to know how many calories to consume to maintain the existing weight, consumption beyond the result will lead to weight gain, and consumption below will lead to weight loss.
+ </Text>
+
+<TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
+<Feather name="x-circle" size={40} color="#fff"/>
+</TouchableOpacity>
+</FadeInOut>
 
 
   <View style={styles.icons} >
@@ -993,6 +1072,9 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
   const {width} = useWindowDimensions();
   const [data, setData] = useState([""]);
   
+  const [explanation, setExplanation] = useState(false);
+
+
   const [newDataA, setNewDataA] = useState([""]);
   const [newDataB, setNewDataB] =useState([""]);
 
@@ -1215,7 +1297,31 @@ function ChangeTextB()
 
         <View style={styles.viewContainer}>
           
-      <Text style={styles.text}>What Is Fatter</Text>
+      <Text style={styles.textFontB}>What Is Fatter</Text>
+
+
+      <TouchableOpacity onPress={()=> setExplanation(true)} style={{position: 'absolute', left: 20, top: 11}}>
+        <MaterialCommunityIcons name="cloud-question" size={45} color={oreng} />
+    </TouchableOpacity>
+
+
+    <FadeInOut
+
+visible={explanation}
+scale={true}
+
+ style={{   zIndex: explanation ? 900 : 0 , backgroundColor: '#ffff' ,marginTop: 20,borderWidth:3,borderColor:"black", width: explanation ? '80%' : '0%', height: explanation ? '65%' : '0%',
+  alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5,left:2, 
+padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
+
+ <Text style={{fontSize: 16,position: 'absolute', fontWeight: '600',top: 60}}>
+Confused about what is better to eat? Here you can compare two foods and find out which of their components is more fattening (with a higher caloric value).
+ </Text>
+
+<TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
+<Feather name="x-circle" size={40} color="#fff"/>
+</TouchableOpacity>
+</FadeInOut>
 
  
 <View style={{flexDirection:'row',width:'100%',marginTop:15}}>
@@ -1371,6 +1477,7 @@ onValueChange={(itemValue) => setQuantityB(itemValue)}
 }
 function BmiEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick) {
 
+  const [explanation, setExplanation] = useState(false);
   const {width} = useWindowDimensions();
   const [heightValue, setHeightValue] = useState(0);
   const [weightValue,setWeightValue] = useState(0);
@@ -1452,7 +1559,30 @@ else{
   
         <View style={styles.viewContainer}>
           
-      <Text style={styles.text}>מחשבון מסת הגוף</Text>
+      <Text style={styles.text}>BMI</Text>
+
+
+      <TouchableOpacity onPress={()=> setExplanation(true)} style={{position: 'absolute', left: 20, top: 11}}>
+        <MaterialCommunityIcons name="cloud-question" size={45} color={oreng} />
+    </TouchableOpacity>
+
+
+    <FadeInOut
+
+visible={explanation}
+scale={true}
+
+ style={{   zIndex: explanation ? 900 : 0 , backgroundColor: '#ffff' ,marginTop: 20,borderWidth:3,borderColor:"black", width: explanation ? '80%' : '0%', height: explanation ? '65%' : '0%',
+  alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5,left:2, 
+padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
+
+ <Text style={{fontSize: 16,position: 'absolute', fontWeight: '600',top: 60}}>
+ מחשבון BMI מאפשר לך לברר מהו ה-BMI שלך. מדד מסת הגוף (Body Mass Index) הוא מדד המודד את היחס בין משקל הגוף לגובה. התוצאה מלמדת על היחס (פרופורציה) בין הגובה למשקל שלך. מדד זה משמש כלי למדידת עודף ותת-משקל. </Text>
+
+<TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
+<Feather name="x-circle" size={40} color="#fff"/>
+</TouchableOpacity>
+</FadeInOut>
         {/*   <View style={{flexDirection:'row',justifyContent:'space-evenly',width:'100%'}}>
     <Ionicons name="arrow-forward-outline"  size={44} color="black" />
       <Ionicons name="arrow-back" size={44} color="black" />
@@ -1568,7 +1698,7 @@ function ProteinIntakeEb(heightOfResView,setHeightOfResView,bmiSearchResult,setB
   const [quantity,setQuantity]=useState('');
   const[flagToGetFinelRes,setFlagToGetFinelRes]=useState(0)
 
-
+  const [explanation, setExplanation] = useState(false);
   const [data, setData] = useState([""]);
 
 
@@ -1651,7 +1781,29 @@ function ChangeText()
 
         <View style={styles.viewContainer}>
           
-      <Text style={styles.text}>מחשבון תזונה</Text>
+      <Text style={styles.textFontB}>מחשבון תזונה</Text>
+
+      <TouchableOpacity onPress={()=> setExplanation(true)} style={{position: 'absolute', left: 20, top: 11}}>
+        <MaterialCommunityIcons name="cloud-question" size={45} color={oreng} />
+    </TouchableOpacity>
+
+
+    <FadeInOut
+
+visible={explanation}
+scale={true}
+
+ style={{   zIndex: explanation ? 900 : 0 , backgroundColor: '#ffff' ,marginTop: 20,borderWidth:3,borderColor:"black", width: explanation ? '80%' : '0%', height: explanation ? '65%' : '0%',
+  alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5,left:2, 
+padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
+
+ <Text style={{fontSize: 18,position: 'absolute', fontWeight: '600',top: 63}}>
+ מחשבון התזונה / קלוריות  מציג בפניך את הערך הקלורי והתזונתי של מזונות ומשקאות לפי בחירתכם. </Text>
+
+<TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
+<Feather name="x-circle" size={40} color="#fff"/>
+</TouchableOpacity>
+</FadeInOut>
       <View style={{width:'100%', flexDirection:'row' ,justifyContent:'space-evenly',marginTop:10}}>
         
       <Ionicons name="ios-pizza-outline" size={34} color="black" />
@@ -1733,6 +1885,9 @@ function BMREb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchRe
   const [weightValue,setWeightValue] = useState(0);
 
   const [selectedAgeValue, setSelectedAgeValue] = useState('');
+
+  const [explanation, setExplanation] = useState(false);
+
 
   const [heightDisplay,setHeightDisplay]  = useState(false);
   const [weightDisplay,setWeightDisplay]  = useState(false);
@@ -1829,7 +1984,31 @@ else{
 
       <View style={styles.viewContainer}>
         
-    <Text style={{marginTop:20, fontSize: 30,}}>מחשבון המחזור היומי</Text>
+    <Text style={{marginTop:20, fontSize: 30,}}>BMR</Text>
+
+    <TouchableOpacity onPress={()=> setExplanation(true)} style={{position: 'absolute', left: 20, top: 11}}>
+        <MaterialCommunityIcons name="cloud-question" size={45} color={oreng} />
+    </TouchableOpacity>
+
+
+    <FadeInOut
+
+visible={explanation}
+scale={true}
+
+ style={{   zIndex: explanation ? 900 : 0 , backgroundColor: '#ffff' ,marginTop: 20,borderWidth:3,borderColor:"black", width: explanation ? '80%' : '0%', height: explanation ? '65%' : '0%',
+  alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5,left:2, 
+padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
+
+ <Text style={{fontSize: 14,position: 'absolute', fontWeight: '600',top: 60}}>
+ ה- BMR (הקצב המטאבולי הבסיסי - Basal Metabolic Rate) הוא מדד המייצג את כמות האנרגיה שהגוף שורף במצב מנוחה מוחלטת. כלומר, כמות האנרגיה הנחוצה לשם שמירה על תפקודים גופניים הכרחיים בלבד, כגון: הכפלת תאים, הפעלת שרירי הנשימה, שריר הלב ושרירים חלקים, העברת גירויים עצביים והעברה פעילה דרך קרומי תאים.
+מחשבון זה בודק מהו ה-BMR שלכם. כלומר כמה קלוריות אתם שורפים ביממה רק לשם שמירה על תפקודים גופניים הכרחיים.
+ </Text>
+
+<TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
+<Feather name="x-circle" size={40} color="#fff"/>
+</TouchableOpacity>
+</FadeInOut>
 
 
   <View style={styles.icons} >
@@ -1957,6 +2136,8 @@ function SavingStatusEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBm
   const [activValue,setActivValue] = useState(0);
   const [valueToMult,setValueToMult]=useState(0);
   
+  const [explanation, setExplanation] = useState(false);
+
   const [heightDisplay,setHeightDisplay]  = useState(false);
   const [weightDisplay,setWeightDisplay]  = useState(false);
 
@@ -2098,7 +2279,33 @@ function SavingStatusEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBm
 
       <View style={styles.viewContainer}>
         
-    <Text style={{fontSize:20,marginTop:8}}>מחשבון לשמירת המשקל</Text>
+    <Text style={{fontSize:18,marginTop:8}}>מחשבון לשמירת המשקל</Text>
+
+    <TouchableOpacity onPress={()=> setExplanation(true)} style={{position: 'absolute', left: 20, top: 11}}>
+        <MaterialCommunityIcons name="cloud-question" size={45} color={oreng} />
+    </TouchableOpacity>
+
+
+    <FadeInOut
+
+visible={explanation}
+scale={true}
+
+ style={{   zIndex: explanation ? 900 : 0 , backgroundColor: '#ffff' ,marginTop: 20,borderWidth:3,borderColor:"black", width: explanation ? '80%' : '0%', height: explanation ? '65%' : '0%',
+  alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5,left:2, 
+padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
+
+ <Text style={{fontSize: 16,position: 'absolute', fontWeight: '600',top: 60}}>
+ מחשבון לשמירת המשקל הינו כלי עזר הבודק את צריכת הקלוריות היומיות המומלצת על פי סוג העבודה ומידת המאמץ המושקעת בה.
+לפי התוצאה במחשבון זה, תוכל לדעת כמה קלוריות לצרוך בכדי לשמור על המשקל הקיים, צריכה מעבר לתוצאה תוביל להעלאה במשקל, וצריכה מת
+חת תוביל להורדה.
+
+ </Text>
+
+<TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
+<Feather name="x-circle" size={40} color="#fff"/>
+</TouchableOpacity>
+</FadeInOut>
 
 
   <View style={styles.icons} >
@@ -2239,6 +2446,8 @@ onValueChange={(itemValue) => [setActivValue(itemValue),HaendelWhatActive(itemVa
 function WhatIsFatterEb(finelText,setFinelText,setFinelTextB,calorValueA,calorValueB,setCalorValueA,setCalorValueB,setHeightOfResView,setWhatCalcIs,setMoreCalory,handleButtonClick) {
   const {width} = useWindowDimensions();
   const [data, setData] = useState([""]);
+
+  const [explanation, setExplanation] = useState(false);
   
   const [newDataA, setNewDataA] = useState([""]);
   const [newDataB, setNewDataB] =useState([""]);
@@ -2387,7 +2596,31 @@ function ChangeTextB()
 
         <View style={styles.viewContainer}>
           
-      <Text style={{marginTop:20,fontSize: 20,}}>מחשבון השוואת צריכת קלוריות למזון</Text>
+        <TouchableOpacity onPress={()=> setExplanation(true)} style={{position: 'absolute', left: 20, top: 11}}>
+        <MaterialCommunityIcons name="cloud-question" size={45} color={oreng} />
+    </TouchableOpacity>
+
+
+    <FadeInOut
+
+visible={explanation}
+scale={true}
+
+ style={{   zIndex: explanation ? 900 : 0 , backgroundColor: '#ffff' ,marginTop: 20,borderWidth:3,borderColor:"black", width: explanation ? '80%' : '0%', height: explanation ? '65%' : '0%',
+  alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5,left:2, 
+padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
+
+ <Text style={{fontSize: 18,position: 'absolute', fontWeight: '600',top: 63}}>
+	מתלבט מה עדיף לאכול? כאן תוכל להשוות בין שני מאכלים ולגלות מה מבניהם משמין יותר (בעל ערך קלורי גבוה יותר). </Text>
+
+<TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
+<Feather name="x-circle" size={40} color="#fff"/>
+</TouchableOpacity>
+</FadeInOut>
+
+      <Text style={{marginTop:20,fontSize: 20,}}>מה יותר משמין?</Text>
+
+      
 
       <View style={{flexDirection:'row',marginTop:20}}>
 
@@ -2540,6 +2773,10 @@ const styles = StyleSheet.create({
     text: {
       marginTop:20,
        fontSize: 36,
+    },
+    textFontB: {
+      marginTop:20,
+       fontSize: 30,
     },
     icons:{
       flexDirection:'row',
