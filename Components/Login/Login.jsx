@@ -405,6 +405,7 @@ function EmailTextInput()
   const emailRegex = /\S+@\S+\.\S+/;
   if (!emailRegex.test(email)  ) {
     Alert.alert('Invalid Email', 'Please enter a valid email address.');
+    setErrorEmail(true);
     
   }else if( password.length < 5)
   {
@@ -611,35 +612,11 @@ function EmailTextInput()
        null
     }
     
-    {/* <FadeInOut style={{ 
-        //firstScreen
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgb(255, 178, 71)',
-        alignItems: 'center',
-        // justifyContent: 'center',
-        zIndex: animationStartIsVisible ?  999 : 0,}}
-        visible={animationStartIsVisible}
-        duration={!animationStartIsVisible ? 400 : 800}
-        scale={true}
-        >
-        <LottieView
-        style={{width: 150, height: 150, marginTop: 115}}
-        source={require('../lottieAnimation/animation_start.json')}
-          autoPlay         
-        />
-       { removeStartAnimation()}
-
-        
-
-        </FadeInOut> */}
     
-    <Text style={styles.title}>ShapeUp</Text>
-
     <FadeInOut style={{ 
         //firstScreen
-        width: '100%',
-        height: '100%',
+        width: firstScreenIsVisible ? '100%' : 0,
+        height: firstScreenIsVisible ? '100%' : 0,
         alignItems: 'center',
         position: 'absolute',
         top: 160,
@@ -758,13 +735,13 @@ function EmailTextInput()
     <Entypo  name="back" size={40} color="#fff" />
     </TouchableOpacity>
       <TextInput 
-      style={styles.textInput}
+      style={[styles.textInput,{borderColor : errorEmail ? 'rgb(168,29,29)' : '#fff'  }]}
       keyboardType="email-address"
       placeholder='Email'
       leftIcon={<Entypo name="lock" size={24} color="#fff" />}
       
       placeholderTextColor={'#fff'}
-        onChangeText={text => setEmail(text)}
+        onChangeText={text => ChakeEmailError(text)}
       />
       
       <TextInput 
@@ -1199,7 +1176,7 @@ function EmailTextInput()
     onPress={hendelUpdateGool}
     style={styles.loginButton}
     >
-        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>maoz!!</Text>
+        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Continue</Text>
     </TouchableOpacity>
 
     
@@ -1208,7 +1185,7 @@ function EmailTextInput()
     <FadeInOut style={{ 
         //startView
         width: '100%',
-        height: startViewIsVisible ? '350%' : 0 ,
+        height: startViewIsVisible ? '550%' : 0 ,
         alignItems: 'center',
         position: 'absolute',
         top: -550,
