@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,Image, ScrollView,TextInput,Button, StatusBar
-  ,Animated,Modal,Alert ,PanResponder,Dimensions  } from 'react-native'
+  ,Animated,Modal,Alert ,PanResponder,Dimensions, Keyboard ,TouchableWithoutFeedback  } from 'react-native'
 import React, { useState,useEffect } from 'react'
 import { oreng,blue } from '../Globals/colors';
 import { Ionicons } from '@expo/vector-icons'; 
@@ -258,9 +258,39 @@ const days = diffInDays - (years * 365) - (months * 30);
     setGoalInputPresented(!goalInputPresented)
   }
 
+function changeName()
+{
+console.log(newFirstName);
+console.log(newLastName);
+  
+  Alert.alert(
+    'Confirmation',
+    'Are you sure you want to change a username?',
+    [
+      {
+        text: 'No',
+        style: 'cancel',
+      },
+      {
+        text: 'Yes',
+        onPress: () => {
+          // Handle the user's confirmation here
+          enterToDo();
+        },
+      },
+    ],
+    { cancelable: false }
+  );
+
+}
+
   function enterToDo()
   {
    
+    console.log(newLastName);
+    console.log("banana");
+    console.log(newFirstName);
+
     if(newLastName != "" && newFirstName != "")
     {
       setShowModal3(true);  
@@ -290,6 +320,26 @@ const days = diffInDays - (years * 365) - (months * 30);
    
   }
 
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleKeyboardDidHide);
+
+    return () => {
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  const handleKeyboardDidHide = () => {
+    // Automatically trigger button press when keyboard is hidden
+   
+   changeName()
+  
+   
+  };
+
+  const handleBackgroundPress = () => {
+    
+    Keyboard.dismiss(); // Dismiss the keyboard when clicking on the background
+  };
 
   function ChangePasswordInput()
   {
@@ -398,6 +448,8 @@ const days = diffInDays - (years * 365) - (months * 30);
 if(auth.currentUser&& currentUserData)
 {
   return (
+    
+    
     
     <Animated.View  
          {...panResponder.panHandlers}
@@ -532,7 +584,7 @@ if(auth.currentUser&& currentUserData)
                
                <View style={{flexDirection:'column'}}>
 {  <View style={{height:35,width:80,marginTop:10,marginLeft:14,marginRight:6}}>
-  <Button  title='enter' color='#0a2946'  onPress={()=> enterToDo()}  /> 
+  <Button  title='enter' color='#0a2946'  onPress={()=> changeName()}  /> 
 </View> 
 
  }
@@ -601,7 +653,7 @@ if(auth.currentUser&& currentUserData)
                </View>
                   <TextInput placeholder='Enter lastName...' 
                    value={newLastName}
-                   onChangeText={textA => setNewLastName(textA)}
+                   onChangeText={textA => [setNewLastName(textA),console.log(textA)]}
                 style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'25%',marginLeft:15,marginTop:10,height:40}}
                 ></TextInput>
                 
@@ -878,6 +930,7 @@ null
 
     </View>
     </Animated.View>
+    
     
   )
 }

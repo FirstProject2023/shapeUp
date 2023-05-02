@@ -768,7 +768,7 @@ useEffect(() => {
 
       }
     }
-  }, 200); 
+  }, 200000); 
 
 
    
@@ -1670,10 +1670,10 @@ null}
 
 
       <Text style={{fontSize: 9, position: 'absolute', bottom: -13,left: 0, fontWeight: '800'}}>|</Text>
-      <Text style={{fontSize: 11, position: 'absolute', bottom: -27,left: -13}}>{Math.floor(currentUserData ? currentUserData.basicBalancePoint : null)}</Text>
+      <Text style={{fontSize: 11, position: 'absolute', bottom: -27,left: -13}}>{currentUserData ? currentUserData.basicBalancePoint : null}</Text>
 
       <Text style={{fontSize: 9, position: 'absolute', bottom: 16,left: 50, fontWeight: '800'}}>|</Text>
-      <Text style={{fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>basic({Math.floor((currentUserData ? currentUserData.basicDayTarget : null))})</Text>
+      <Text style={{fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>basic({(currentUserData ? currentUserData.basicDayTarget : null)})</Text>
 
       </View>
 

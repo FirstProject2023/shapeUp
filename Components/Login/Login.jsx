@@ -1,8 +1,15 @@
-import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert, Button, StatusBar, Image } from 'react-native'
+import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert, Button, StatusBar, Image, Keyboard , Modal   } from 'react-native'
 import React, { useEffect, useState } from 'react'
-// import { TextInput } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons'; 
+
+
+
+
+
 import FadeInOut from 'react-native-fade-in-out';
+
+
+
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
 import { Picker } from '@react-native-picker/picker';
@@ -29,8 +36,8 @@ export default function Login({ navigation }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [gender, setGender] = useState(1);
-  const [height, setHeight] = useState(0);
-  const [weight, setWeight] = useState(0);
+  const [height, setHeight] = useState(170);
+  const [weight, setWeight] = useState(70);
   const [daysDetails,setDaysDetails] = useState([]);
   const [dailyFavoriteFood,setDailyFavoriteFood] = useState([]);
   const [birthDate, setBirthDate] = useState({
@@ -38,7 +45,7 @@ export default function Login({ navigation }) {
     month: null,
     year: null,
   });
-  const [weightGoal, setWeightGoal] = useState(0);
+  const [weightGoal, setWeightGoal] = useState(70);
   
   //One of them
   const [WeeklyGoal, setWeeklyGoal] = useState(0);
@@ -74,11 +81,18 @@ export default function Login({ navigation }) {
     const [endDateIsVisible, setEndDateIsVisible] = useState(false);
     const [startViewIsVisible, setStartViewIsVisible] = useState(false);
 
+    const [isModalVisible, setModalVisible] = useState(false);
+
 
     const [date, setDate] = useState(new Date(0));
   
 
     const [flagToShowDate,setFlagToShowDate] = useState(false);
+
+  
+    const closeModal = () => {
+      setModalVisible(false);
+    };
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -106,6 +120,7 @@ export default function Login({ navigation }) {
     const [goalIsVisible, setGoalIsVisible] = useState(false);
 
 
+    
 
     const HeightMap = [];
     for (let i = 100; i <= 300; i += 1) {
@@ -366,24 +381,40 @@ const  handleSignUp =  async () => {
 
 }
     const  handleLogin =  async () => {
+
+
         try{
             const user = await signInWithEmailAndPassword(auth, email, password);
            
           
         } catch (error){
             console.log("error");
+            setModalVisible(true);
            
         }
     
     }
+const [falg99,setFlag99]=useState(false);
 
 
-    const removeStartAnimation = () => {
-      useEffect(()=>{
-        setTimeout(() => {[setOpeningScreenIsVisible(false), setFirstScreenIsVisible(true)]}, 1600);
-      },[])
-  }
+    useEffect(() => {
+      const removeStartAnimation = () => {
+        setTimeout(() => {
+          setOpeningScreenIsVisible(false);
+          if(!falg99)
+          {
+            setFirstScreenIsVisible(true);
+          }
+          
+          setFlag99(true)
+          console.log("i cal you!.......");
+        }, 3000);
+      };
+      
+      removeStartAnimation();
+    }, []);
 
+    
   // const BalanceEndTargetCreate = () => {
   //   setBasicBalancePoint(Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     activity)));
   //   setBasicDayTarget(basicBalancePoint);
@@ -588,6 +619,23 @@ function EmailTextInput()
     <View style={styles.loginContainer}>
 
       
+
+
+    <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={closeModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>Incorrect username or password.</Text>
+            <TouchableOpacity onPress={closeModal}>
+              <Text style={styles.closeButton}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     <FadeInOut style={{ 
         //openingScreen
         width: openingScreenIsVisible ? '100%': 0,
@@ -600,9 +648,8 @@ function EmailTextInput()
         duration={!openingScreenIsVisible ? 0 : 800}
         // scale={true}
         >
-        <Image style={{height: 100, width: 200}} source={require('../../assets/shapeup_logo.png')}/>
-       {removeStartAnimation()}   
-
+        <Image style={{height: openingScreenIsVisible ? 100 : 0, width: openingScreenIsVisible ? 100 : 0}} source={require('../../assets/shapeup_logo.png')}/>
+        
         </FadeInOut>
     
         {
@@ -738,6 +785,7 @@ function EmailTextInput()
       style={[styles.textInput,{borderColor : errorEmail ? 'rgb(168,29,29)' : '#fff'  }]}
       keyboardType="email-address"
       placeholder='Email'
+      caretColor="red"
       leftIcon={<Entypo name="lock" size={24} color="#fff" />}
       
       placeholderTextColor={'#fff'}
@@ -750,6 +798,7 @@ function EmailTextInput()
       placeholder='Password'
       placeholderTextColor={'#fff'}
       secureTextEntry
+      caretColor="red"
       
         onChangeText={text => ChakePasswordError(text)}
        
@@ -811,7 +860,7 @@ function EmailTextInput()
     <View style={styles.buttonContainer}>
     <TouchableOpacity
     style={[styles.loginButton, { marginTop: 40}]}
-    onPress={()=> [nameTextInput()  ]}
+    onPress={()=> [nameTextInput(), Keyboard.dismiss() ]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 19, fontWeight: '800'}}>Continue</Text>
     </TouchableOpacity>
@@ -1077,7 +1126,8 @@ function EmailTextInput()
           width: '35%',
           backgroundColor: 'rgba(255, 178, 71,0.9)',
       }}
-      selectedValue={weight}
+      selectedValue={weightGoal}
+      
       onValueChange={(itemValue) => setWeightGoal(itemValue)}
       
       >
@@ -1184,8 +1234,8 @@ function EmailTextInput()
 
     <FadeInOut style={{ 
         //startView
-        width: '100%',
-        height: startViewIsVisible ? '550%' : 0 ,
+        width: startViewIsVisible ? '100%' : 0,
+        height: startViewIsVisible ? '390%' : 0 ,
         alignItems: 'center',
         position: 'absolute',
         top: -550,
@@ -1199,8 +1249,9 @@ function EmailTextInput()
         scale={true}
         >
         <Text style={{fontSize: 20, fontWeight: '700', marginTop: 100}}>The registration process is complete!</Text>
+        <AntDesign name="stepforward" size={24} color="black"  onPress={()=>setStartViewIsVisible(false)}/>
 
-        <View style={{ width: 250, height: 250, marginTop: 100 }}>
+        <View style={{ width: startViewIsVisible ? 250 : 0, height: startViewIsVisible ? 250 : 0, marginTop: startViewIsVisible ? 100 : 0 }}>
         <LottieView  style={{ flex: 1 }}  autoPlay source={require('../lottieAnimation/success_sign_up2.json')}/>
        </View>
 
@@ -1353,8 +1404,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 16,
         
-        
-
+      
+    },
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+      backgroundColor: '#fff',
+      padding: 20,
+      borderRadius: 8,
+      alignItems: 'center',
+    },
+    modalText: {
+      fontSize: 18,
+      marginBottom: 20,
+    },
+    closeButton: {
+      fontSize: 16,
+      color: 'blue',
     },
 })
 

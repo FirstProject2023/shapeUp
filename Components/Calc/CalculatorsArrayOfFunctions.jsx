@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View,useWindowDimensions, TextInput, Button,Modal,TouchableHighlight,Alert,
-  ScrollView,FlatList,TouchableOpacity } from 'react-native'
+  ScrollView,FlatList,TouchableOpacity, Keyboard } from 'react-native'
 import React, {  useState, useContext,useEffect,useRef } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FadeInOut from 'react-native-fade-in-out';
@@ -11,6 +11,7 @@ import {oreng,blue } from "../Globals/colors";
 import { AntDesign } from '@expo/vector-icons'; 
 import { Fontisto } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons'; 
+
 
 
 
@@ -291,6 +292,23 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
   const [results, setResults] = useState([]);
   const [finelText2,setFinelText2] = useState('');
   const [showFlat,setShowFlat] = useState(1);
+
+
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleKeyboardDidHide);
+
+    return () => {
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  const handleKeyboardDidHide = () => {
+    // Automatically trigger button press when keyboard is hidden
+   
+  };
+
+
+
 
   useEffect(() => {
     
