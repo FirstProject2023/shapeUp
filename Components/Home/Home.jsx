@@ -288,7 +288,7 @@ if(auth.currentUser)
 <TouchableOpacity>
 <FontAwesome style={{  marginLeft:20}} name="envelope" size={35} color="rgb(255, 178, 71)" onPress={()=>[setShowTip(true),updateDailyTipDay(currentUserData ? currentUserData.id : null , currentUserData.indexDeyFirebase ) ]}/>
 {
-   currentUserData && !(currentUserData.daysDetails[currentUserData.indexDeyFirebase].WatchTheTip) ?
+  currentUserData && !(currentUserData.daysDetails[0].WatchTheTip) ?
 
 <MaterialIcons style={{position:'absolute',left:12,top:-2}} name="brightness-1" size={15} color="red" />
 
@@ -501,18 +501,56 @@ if(auth.currentUser)
     </View>
      
   
-      <View style={{width: '100%', height: '15%', marginTop: 50, alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{width: '100%', height: '25%', marginTop: 50, alignItems: 'center', justifyContent: 'center'}}>
       <Text style={{padding: 10, fontSize: 23, color: '#000', fontWeight: '700'}}> your progress</Text>
 
-      <View style={{backgroundColor: 'rgba(214,247,208,0.4)',width: '85%', height: '40%', borderRadius: 8, borderWidth: 1.5, flexDirection: 'row', justifyContent: 'flex-end'}}>
-    
+      <View style={{backgroundColor: 'rgba(214,247,208,0.4)',width: '85%', height: '24%', borderRadius: 8, borderWidth: 1.5, flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10}}>
+      <Text style={{position: 'absolute', right: 5, top: -21, fontWeight: '600'}}>{(currentUserData ? currentUserData.indexDeyFirebase: null)}/{(currentUserData ? currentUserData.daysDetails.length : null)} days</Text>
       <Foundation style={{ color: '#fff', fontWeight: '700', position: 'absolute', left: -25, top: 8}}  name="target-two" size={22} color="red" />
   
-      <View style={{backgroundColor: 'rgb(40,161,18)',height: '100%', width: `${((currentUserData ? currentUserData.indexDeyFirebase: null) / (currentUserData ? currentUserData.daysDetails.length : null)  ) * 100 }%`,borderTopEndRadius: 8, borderBottomEndRadius: 8,borderTopStartRadius: 8, borderBottomStartRadius: 8, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{fontSize: 12, color: '#fff', fontWeight: '700'}}>{currentUserData ? currentUserData.indexDeyFirebase: null} days</Text>
-      <LottieView style={{height: 50, position: 'absolute', left: -7.7}}  autoPlay source={require('../lottieAnimation/walk_progress.json')}/>
+      <View style={{backgroundColor: 'rgb(40,161,18)',height: '100%', width: `${((currentUserData ? currentUserData.indexDeyFirebase: null) / (currentUserData ? currentUserData.daysDetails.length : null)  ) * 100 }%`,borderTopEndRadius: 7, borderBottomEndRadius: 7,borderTopStartRadius: 5, borderBottomStartRadius: 5, justifyContent: 'center', alignItems: 'center'}}>
+      {
+        (currentUserData ? currentUserData.daysDetails.length : null) != (currentUserData ? currentUserData.indexDeyFirebase: null) ?
+      <LottieView style={{height: 50, position: 'absolute', left: -7.7}}  autoPlay source={require('../lottieAnimation/walk_progress.json')}/> :
+      <LottieView style={{height: 50, position: 'absolute', left: -7.7}}  autoPlay source={require('../lottieAnimation/standing_man.json.json')}/> 
+
+      }
       </View>
       </View>
+      {
+        (currentUserData ? currentUserData.indexDeyFirebase: null) == 0 ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>good luck!</Text> : 
+        (currentUserData ? currentUserData.indexDeyFirebase: null) == 5 ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>no excuses! keep persevering...</Text> : 
+        (currentUserData ? currentUserData.indexDeyFirebase: null) == 10 ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>They say the first ten days are the hardest...</Text> : 
+        (currentUserData ? currentUserData.indexDeyFirebase: null) == ((currentUserData ? currentUserData.daysDetails.length : null) * 0.5) ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>You are halfway there!</Text> :
+        (currentUserData ? currentUserData.indexDeyFirebase: null) == ((currentUserData ? currentUserData.daysDetails.length : null) * 0.75) ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>Come on! Just a little more!</Text> :
+
+      (currentUserData ? currentUserData.daysDetails.length : null) - (currentUserData ? currentUserData.indexDeyFirebase: null) == 10 ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>Wow, 10 days and you're done!</Text> : 
+      (currentUserData ? currentUserData.daysDetails.length : null) - (currentUserData ? currentUserData.indexDeyFirebase: null) == 9 ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>You reach the goal in 9 days!</Text> : 
+      (currentUserData ? currentUserData.daysDetails.length : null) - (currentUserData ? currentUserData.indexDeyFirebase: null) == 8 ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>8 days from now!!</Text> : 
+      (currentUserData ? currentUserData.daysDetails.length : null) - (currentUserData ? currentUserData.indexDeyFirebase: null) == 7 ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>You reach the goal in 7 days!</Text> : 
+      (currentUserData ? currentUserData.daysDetails.length : null) - (currentUserData ? currentUserData.indexDeyFirebase: null) == 6 ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>You reach the goal in 6 days!</Text> : 
+      (currentUserData ? currentUserData.daysDetails.length : null) - (currentUserData ? currentUserData.indexDeyFirebase: null) == 5 ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>5 days and it's yours!</Text> : 
+      (currentUserData ? currentUserData.daysDetails.length : null) - (currentUserData ? currentUserData.indexDeyFirebase: null) == 4 ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>4 days left, come on!</Text> : 
+      (currentUserData ? currentUserData.daysDetails.length : null) - (currentUserData ? currentUserData.indexDeyFirebase: null) == 3 ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>You reach the goal in 3 days!</Text> : 
+      (currentUserData ? currentUserData.daysDetails.length : null) - (currentUserData ? currentUserData.indexDeyFirebase: null) == 2 ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>Last two days.. last-ditch effort!</Text> : 
+      (currentUserData ? currentUserData.daysDetails.length : null) - (currentUserData ? currentUserData.indexDeyFirebase: null) == 1 ? 
+      <Text style={{marginTop: 8, fontSize: 16, fontWeight: '300'}}>You reach the goal in 1 day!</Text> : null
+      
+      }        
       </View>
         
     </View>
