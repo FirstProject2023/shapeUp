@@ -615,8 +615,8 @@ function EmailTextInput()
     
     <FadeInOut style={{ 
         //firstScreen
-        width: firstScreenIsVisible ? '100%' : 0,
-        height: firstScreenIsVisible ? '100%' : 0,
+        width: '100%' ,
+        height : '100%' ,
         alignItems: 'center',
         position: 'absolute',
         top: 160,
