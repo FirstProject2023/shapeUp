@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, FlatList, Button ,TouchableOpacity,ScrollView,Modal,
-  modelVisible,StatusBar,onScroll,Animated ,PanResponder,Dimensions,TouchableWithoutFeedback   } from 'react-native'
+  modelVisible,StatusBar,onScroll,Animated ,PanResponder,Dimensions,TouchableWithoutFeedback,Linking   } from 'react-native'
 import FadeInOut from 'react-native-fade-in-out';
 import React, { useEffect, useState,useRef } from 'react'
 import CalculatorsArrayOfFunctions from './CalculatorsArrayOfFunctions'
@@ -10,6 +10,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons'; 
 import { blue, oreng } from '../Globals/colors';
 import LottieView from 'lottie-react-native';
+import { auth, db } from '../../firebase'
+import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
 
 
 export default function Calc({ navigation }) {
@@ -37,6 +39,7 @@ const [isEnglish,setIsEnglish]= useState(1);
 
   const flatListRef = useRef(null);
 
+ 
   const darts = [
     { id: '4', score: 10 },
     { id: '3', score: 5 },
@@ -544,7 +547,40 @@ const styles = StyleSheet.create({
 
 function BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView,handleScrollToTop)
 {
-let message="";
+  
+  let message="";
+  const userCollectionRef = collection(db,"users");
+  const [users,setUsers]=useState([]);
+  const [currentUserData, setCurrentUserData] = useState(null);
+
+
+  useEffect(()=>{
+
+    const getUsers = async () => {
+      const data = await getDocs(userCollectionRef);
+      setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
+    }
+    getUsers();
+  },[]);
+
+
+  if(auth.currentUser)
+  {  
+
+    useEffect(() => {
+      
+      const currentUser = users.find((user) => user && user.email ? user.email.toLowerCase() == auth.currentUser.email.toLowerCase() : null );
+      
+    if (currentUser !== null) {
+      setCurrentUserData(currentUser);
+    }
+    
+  }, [users]);
+}
+
+ 
+
+
 
 if(bmiSearchResult > 30)
 {
@@ -564,9 +600,15 @@ else{
   
 }
 
+const WhatsAppMessage = `Hey! ${currentUserData ? currentUserData.firstName : 'A friend'}  wanted to share his BMI result with you.\n\nTheir BMI is *${bmiSearchResult.toFixed(
+  1
+)}*, which indicates that they are ${message}.\n\nI invite you to download the app and try it yourself!`;
+
+const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(WhatsAppMessage)}`;
+
 function toBack()
 {
-
+  
   handleScrollToTop();
  setHeightOfResView(0);
 }
@@ -699,6 +741,8 @@ function toBack()
     <Text style={{fontSize: message.length > 274 ? 11 : 14   }}>{message ? message : null}</Text>
   </View>
   
+
+  
   <View style={styles.resBmi}>
      <Text style={{fontSize:40,
       fontWeight: 'bold',
@@ -712,9 +756,26 @@ function toBack()
       paddingVertical: 8,}}>
 
        {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
+
+
+
   <TouchableOpacity style={{ width:'50%' ,marginTop:10 }}>
     { heightOfResView !=0 ? <Button title='back' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
+
+  <TouchableOpacity style={{ position:'absolute',top:25,left:0 }} onPress={()=>Linking.openURL(whatsappUrl)}>
+    { heightOfResView !=0 ? 
+
+    <View style={{justifyContent:'center',alignItems:'center' }}>
+<Text style={{fontSize:10,color:'green',fontWeight:'800'}}>Share the result </Text>
+     <FontAwesome name="whatsapp" size={44} color="green" />
+    </View>
+      : null
+     }
+
+
+  </TouchableOpacity>
+
 
   </View>
    
@@ -793,32 +854,52 @@ function ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,fat
 function BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView,isMan,handleScrollToTop)
 {
 
+  const userCollectionRef = collection(db,"users");
+  const [users,setUsers]=useState([]);
+  const [currentUserData, setCurrentUserData] = useState(null);
+
+
+  useEffect(()=>{
+
+    const getUsers = async () => {
+      const data = await getDocs(userCollectionRef);
+      setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
+    }
+    getUsers();
+  },[]);
+
+
+  if(auth.currentUser)
+  {  
+
+    useEffect(() => {
+      
+      const currentUser = users.find((user) => user && user.email ? user.email.toLowerCase() == auth.currentUser.email.toLowerCase() : null );
+      
+    if (currentUser !== null) {
+      setCurrentUserData(currentUser);
+    }
+    
+  }, [users]);
+}
+
+
   function toBack()
   {
     handleScrollToTop();
    setHeightOfResView(0);
   }
 
-
-  let massege;
-   if(isMan)
-  {
-     if( bmiSearchResult>1800 && bmiSearchResult<2400 )
-    {
-      massege="Great job, maintaining an average BMR is a sign of a balanced and healthy diet.";
-    }
-    else if( bmiSearchResult <1800)
-    {
-      massege="You may want to consider talking to a healthcare professional and reviewing your diet and activity levels to ensure you are meeting your daily energy needs.";
-    }
-    else{
-      massege=`It's great that you have a high metabolism, however, consuming an average of ${bmiSearchResult.toFixed(0)} calories per day is quite high and may result in unwanted weight gain.`;
-    }
+  const WhatsAppMessage = `Hey! ${currentUserData ? currentUserData.firstName : 'A friend'}  wanted to share his BMR result with you.\n\nTheir BMR is *${bmiSearchResult.toFixed(
+    1
+  )}*  \n The BMR (Basal Metabolic Rate) calculator is a tool that estimates the number of calories your body burns at rest to maintain basic bodily functions such as breathing, blood circulation, and body temperature regulation. The calculator takes into account factors such as age, gender, height, weight, and body composition to assess the BMR. \n\nI invite you to download the app and try it yourself!`;
   
-  } 
+  const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(WhatsAppMessage)}`;
 
   return(
     
+
+
     <View style={{height:heightOfResView,width:'90%',backgroundColor:'#fff',borderBottomLeftRadius: 10,borderBottomRightRadius: 10}}>
     
     <Text  style={{fontSize:25,textAlign:'center',marginTop:18}}>Your BMR is:</Text>
@@ -841,11 +922,23 @@ function BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView,isMan,handleS
        {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
   </View>
    <View style={{width:'80%',alignItems:'center',justifyContent:'center',marginLeft:30}}>
-  <Text style={{fontSize:15}}>{massege}</Text>
+  <Text style={{fontSize:15}}>The BMR (Basal Metabolic Rate) calculator is a tool that estimates the number of calories your body burns at rest to maintain basic bodily functions such as breathing, blood circulation, and body temperature regulation. The calculator takes into account factors such as age, gender, height, weight, and body composition to assess the BMR.</Text>
    </View>
 
   <TouchableOpacity style={{ width:'50%' ,marginStart:80,marginTop:30 }}>
     { heightOfResView !=0 ? <Button title='back' color={blue} onPress={toBack}  /> : null}
+  </TouchableOpacity>
+  <TouchableOpacity style={{ position:'absolute',top:85,left:0 }} onPress={()=>Linking.openURL(whatsappUrl)}>
+    { heightOfResView !=0 ? 
+
+    <View style={{justifyContent:'center',alignItems:'center' }}>
+<Text style={{fontSize:10,color:'green',fontWeight:'800'}}>Share the result </Text>
+     <FontAwesome name="whatsapp" size={44} color="green" />
+    </View>
+      : null
+     }
+
+
   </TouchableOpacity>
  
   
@@ -856,6 +949,43 @@ function BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView,isMan,handleS
 }
 function SavingStatusRes(heightOfResView,bmiSearchResult,setHeightOfResView,handleScrollToTop)
 {
+
+  const userCollectionRef = collection(db,"users");
+  const [users,setUsers]=useState([]);
+  const [currentUserData, setCurrentUserData] = useState(null);
+
+
+  useEffect(()=>{
+
+    const getUsers = async () => {
+      const data = await getDocs(userCollectionRef);
+      setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
+    }
+    getUsers();
+  },[]);
+
+
+  if(auth.currentUser)
+  {  
+
+    useEffect(() => {
+      
+      const currentUser = users.find((user) => user && user.email ? user.email.toLowerCase() == auth.currentUser.email.toLowerCase() : null );
+      
+    if (currentUser !== null) {
+      setCurrentUserData(currentUser);
+    }
+    
+  }, [users]);
+}
+
+const WhatsAppMessage = `Hey! ${currentUserData ? currentUserData.firstName : 'A friend'}  wanted to share his SavingStatus result with you.\n\nTheir number of calory to SavingStatus is *${bmiSearchResult.toFixed(
+  1
+)}*,\n\nI invite you to download the app and try it yourself!`;
+
+const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(WhatsAppMessage)}`;
+
+  
   function toBack()
   {
     handleScrollToTop();
@@ -886,6 +1016,19 @@ function SavingStatusRes(heightOfResView,bmiSearchResult,setHeightOfResView,hand
   <TouchableOpacity style={{ width:'50%' ,marginStart:80,marginTop:30 }}>
     { heightOfResView !=0 ? <Button title='back' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
+  <TouchableOpacity style={{ position:'absolute',top:135,left:0 }} onPress={()=>Linking.openURL(whatsappUrl)}>
+    { heightOfResView !=0 ? 
+
+    <View style={{justifyContent:'center',alignItems:'center' }}>
+<Text style={{fontSize:10,color:'green',fontWeight:'800'}}>Share the result </Text>
+     <FontAwesome name="whatsapp" size={44} color="green" />
+    </View>
+      : null
+     }
+
+
+  </TouchableOpacity>
+  
   
     </View>
     : null
@@ -933,8 +1076,7 @@ function WhatIsFatterRes(heightOfResView,bmiSearchResult,setHeightOfResView,calo
         <View style={styles.winCircle}>
         
           <Text style={{color:'#0a2946',fontSize:30,textShadowOffset: { width: 2, height: 2 },
-             textShadowColor: '#d89b5c',
-               textShadowRadius: 5}}>win</Text>
+             textShadowColor: '#d89b5c',textShadowRadius: 5}}>win</Text>
           <Text style={{color:'#0a2946',fontSize:20}}>{finelTextB}</Text>
           <Text style={{color:'#d89b5c',fontSize:15}}>{calorValueA>calorValueB ? calorValueA.toFixed(1) : calorValueB.toFixed(1)}</Text>
         </View>
@@ -967,6 +1109,35 @@ function WhatIsFatterRes(heightOfResView,bmiSearchResult,setHeightOfResView,calo
 
 function BmiResEb(heightOfResView,bmiSearchResult,setHeightOfResView,handleScrollToTop)
 {
+   const userCollectionRef = collection(db,"users");
+  const [users,setUsers]=useState([]);
+  const [currentUserData, setCurrentUserData] = useState(null);
+
+
+  useEffect(()=>{
+
+    const getUsers = async () => {
+      const data = await getDocs(userCollectionRef);
+      setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
+    }
+    getUsers();
+  },[]);
+
+
+  if(auth.currentUser)
+  {  
+
+    useEffect(() => {
+      
+      const currentUser = users.find((user) => user && user.email ? user.email.toLowerCase() == auth.currentUser.email.toLowerCase() : null );
+      
+    if (currentUser !== null) {
+      setCurrentUserData(currentUser);
+    }
+    
+  }, [users]);
+}
+
   function toBack()
   {
     handleScrollToTop();
@@ -992,6 +1163,14 @@ else{
   message="תוצאה זאת מכניסה אותך לקטגוריה של 'תת משקל' (Underweight). דבר המעיד על כך שהתפריט התזונתי שלך אינו תואם את הדרישות התזונתיות של    הגוף שלך (אתה אוכל פחות מדי). במצב האידיאלי ה-BMI שלך צריך להיות בערכים של 18.5-24.9. מצב זה מגביר את הסיכוי לנזק ללב, לעצמות ולרקמות אחרות בגופך. מומלץ כי תתחיל להגביר את הצריכה הקלורית שלך, כדי לשמור על רמה בריאה של שומן בגוף."
 
 }
+
+const WhatsAppMessage = `שלום! ${currentUserData ? currentUserData.firstName : 'חבר'} רצה לשתף את התוצאות של המדד BMI שלו איתך.\n\nתוצאת הBMI שלו הינה *${bmiSearchResult.toFixed(
+  1
+  )}*,  ${message}.\n\nאני מזמין אותך להוריד את האפליקציה ולנסות זאת בעצמך!`;
+
+  const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(WhatsAppMessage)}`;
+
+
 
 function toBack()
 {
@@ -1143,10 +1322,21 @@ function toBack()
        {bmiSearchResult ? bmiSearchResult.toFixed(1) : null}</Text>
   </View>
 
-   
+  <TouchableOpacity style={{ position:'absolute',top:285,left:0 }} onPress={()=>Linking.openURL(whatsappUrl)}>
+    { heightOfResView !=0 ? 
+
+    <View style={{justifyContent:'center',alignItems:'center' }}>
+<Text style={{fontSize:10,color:'green',fontWeight:'800'}}>שתף את התוצאה </Text>
+     <FontAwesome name="whatsapp" size={44} color="green" />
+    </View>
+      : null
+     }
+
+  </TouchableOpacity>
   <TouchableOpacity style={{height: 50, width:'50%' ,marginStart:80 }}>
     { heightOfResView !=0 ? <Button title='חזרה' color={blue} onPress={toBack}  /> : null}
   </TouchableOpacity>
+  
  
 
     </View>
@@ -1221,30 +1411,49 @@ function ProteinIntakeResEb(heightOfResView,bmiSearchResult,setHeightOfResView,f
 }
 function BmrResEb(heightOfResView,bmiSearchResult,setHeightOfResView,isMan,handleScrollToTop)
 {
+
+  const userCollectionRef = collection(db,"users");
+  const [users,setUsers]=useState([]);
+  const [currentUserData, setCurrentUserData] = useState(null);
+
+
+  useEffect(()=>{
+
+    const getUsers = async () => {
+      const data = await getDocs(userCollectionRef);
+      setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
+    }
+    getUsers();
+  },[]);
+
+
+  if(auth.currentUser)
+  {  
+
+    useEffect(() => {
+      
+      const currentUser = users.find((user) => user && user.email ? user.email.toLowerCase() == auth.currentUser.email.toLowerCase() : null );
+      
+    if (currentUser !== null) {
+      setCurrentUserData(currentUser);
+    }
+    
+  }, [users]);
+}
+
+
+const WhatsAppMessage = `שלום! ${currentUserData ? currentUserData.firstName : 'חבר'} רצה לשתף את תוצאת ה-BMR שלו איתך.\n\nה-BMR שלו הוא ${bmiSearchResult.toFixed(
+  1
+  )} \n מחשבון BMR (Basal Metabolic Rate) הוא כלי שמעריך את מספר הקלוריות שגופך שורף במנוחה כדי לשמור על תפקודי גוף בסיסיים כמו נשימה, זרימת דם ושמירה על טמפרטורת הגוף. המחשבון לוקח בחשבון גורמים כמו גיל, מין, גובה, משקל והרכב הגוף כדי להעריך את ה-BMR.\n\nאני מזמין אותך להוריד את האפליקציה ולנסות זאת בעצמך!`;
+
+const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(WhatsAppMessage)}`;
+
+
   function toBack()
   {
     handleScrollToTop();
    setHeightOfResView(0);
   }
-
- /*  const[massege,setMassege]=useState("nk"); */
-
-  let massege;
-   if(isMan)
-  {
-     if( bmiSearchResult>1800 && bmiSearchResult<2400 )
-    {
-      massege="Great job, maintaining an average BMR is a sign of a balanced and healthy diet.";
-    }
-    else if( bmiSearchResult <1800)
-    {
-      massege="You may want to consider talking to a healthcare professional and reviewing your diet and activity levels to ensure you are meeting your daily energy needs.";
-    }
-    else{
-      massege=`It's great that you have a high metabolism, however, consuming an average of ${bmiSearchResult.toFixed(0)} calories per day is quite high and may result in unwanted weight gain.`;
-    }
-  
-  } 
 
   return(
     
@@ -1274,6 +1483,18 @@ function BmrResEb(heightOfResView,bmiSearchResult,setHeightOfResView,isMan,handl
   
   <TouchableOpacity style={{ width:'50%' ,marginStart:80,marginTop:30 }}>
     { heightOfResView !=0 ? <Button title='חזרה' color={blue} onPress={toBack}  /> : null}
+  </TouchableOpacity>
+  <TouchableOpacity style={{ position:'absolute',top:225,left:0 }} onPress={()=>Linking.openURL(whatsappUrl)}>
+    { heightOfResView !=0 ? 
+
+    <View style={{justifyContent:'center',alignItems:'center' }}>
+<Text style={{fontSize:10,color:'green',fontWeight:'800'}}>Share the result </Text>
+     <FontAwesome name="whatsapp" size={44} color="green" />
+    </View>
+      : null
+     }
+
+
   </TouchableOpacity>
  
   

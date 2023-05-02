@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity,
+import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity,Button,ScrollView ,
    TouchableHighlight, TouchableHighlightComponent, StatusBar,Animated ,PanResponder,Modal,
-   Dimensions,TouchableWithoutFeedback  } from 'react-native'
+   Dimensions,TouchableWithoutFeedback,Linking   } from 'react-native'
 import React,{useState,useEffect} from 'react';
 
 
@@ -16,12 +16,18 @@ import LottieView from 'lottie-react-native';
 import tipsData from '../Jsons/tips.json'
 import FadeInOut from 'react-native-fade-in-out';
 
+import { MaterialIcons } from '@expo/vector-icons';
+
 
 
 import Svg, { Circle, Path } from 'react-native-svg';
 
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
+import { SceneView } from 'react-navigation';
+
+import tips from '../Jsons/tips.json';
+
 
 
 
@@ -36,8 +42,49 @@ export default function Home({ navigation }) {
 
   const [tipIndex, setTipIndex] = useState(1);
   const [isOpened, setIsOpened] = useState(false);
+
+  const [showTip, setShowTip] = useState(false);
   
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible7, setModalVisible7] = useState(false);
+  const [modalVisible8, setModalVisible8] = useState(false);
+
+  const privacyPolicyText = `
+  Your privacy matters to us. We are committed to protecting your personal information and ensuring its confidentiality.
+  
+  We collect only the necessary data required to provide you with our services, and we never share or sell your information to third parties.
+  
+  Our privacy policy explains in detail what data we collect, how we use it, and the security measures we have in place to safeguard your information.
+  
+  We respect your choices and provide options to manage your privacy preferences. You are in control of your data.`;
+
+const termsOfServiceText = `
+  By using our app, you agree to abide by our Terms of Service, which outline the rules and guidelines for using our platform.
+  
+  We encourage responsible and respectful use of our app. Prohibited activities include harassment, hate speech, and any form of unlawful behavior.
+  
+  Our Terms of Service ensure fair usage, protect intellectual property rights, and maintain a positive community environment.
+  
+  We value your feedback and encourage you to report any violations or concerns regarding the Terms of Service.`;
+
+const contentGuidelinesText = `
+  Our app fosters a community where users can share content and engage with others. To maintain a safe and inclusive environment, we have content guidelines in place.
+  
+  We encourage you to express yourself freely, but please ensure that your content aligns with our guidelines.
+  
+  We do not tolerate any form of hate speech, harassment, explicit content, or violations of intellectual property rights.
+  
+  By adhering to these guidelines, you help us create a respectful and enjoyable experience for all users.`;
+
+const securityDataProtectionText = `
+  We take the security of your data seriously. We implement robust security measures to protect your personal information from unauthorized access.
+  
+  Your data is encrypted during transmission and securely stored on our servers. We regularly update our systems to stay ahead of potential threats.
+  
+  In the event of a security breach, we have procedures in place to promptly respond, mitigate the impact, and notify affected users as necessary.
+  
+  We are committed to transparency and will keep you informed about our security practices and any updates related to data protection.`;
+
   const toggleModalVisible = () => {
     setModalVisible(!modalVisible);
   };
@@ -138,6 +185,79 @@ const panResponder = PanResponder.create({
 
 
 
+const latitude = 32.187434 ; // Example latitude
+    const longitude = 34.953375; // Example longitude
+    const url = `geo:${latitude},${longitude}`;
+
+    /* 32.186562038552445, 34.953032008751535 */
+
+
+
+
+    const phoneNumber1 = '0542588518'; // Replace with the phone number you want to message
+    const message = `Thank you for choosing our application! We invite you to join and experience its features. Click the link to download: https://www.example.com/app`; // Customize the message and replace the link with your application's download link
+
+    const whatsappUrlTest2 = `whatsapp://send?text=${encodeURIComponent(message)}`;
+    const whatsappUrlTest = `whatsapp://send?phone=${phoneNumber1}&text=${encodeURIComponent(message)}`;
+  
+    const whatsappToMaoz = `whatsapp://send?phone=${phoneNumber1}`;
+
+    const phoneNumber2 = '0542588518'; // Replace with the phone number you want to message
+  
+    const whatsappUrlToShneor = `whatsapp://send?phone=${phoneNumber2}`;
+
+
+
+
+ 
+  
+   
+    const openGooglePlayStore = (packageName) => {
+      const playStoreUrl = `market://details?id=${packageName}`;
+      Linking.openURL(playStoreUrl)
+        .catch(() => {
+          // Handle error if opening the Google Play Store fails
+          console.log('Failed to open the Google Play Store');
+        });
+    };
+
+
+
+    const [counter, setCounter] = useState(0);
+
+    useEffect(() => {
+      const intervalId = setInterval(() => {
+     
+          if(counter < 60){
+
+                setCounter(counter+1);
+
+          }
+          else
+          {
+            setCounter(0);
+          }
+        
+      }, 300000);     
+      return () => clearInterval(intervalId);
+    
+    }, [counter]);
+
+
+    const updateDailyTipDay = async (id,singleDay) => {
+
+      const userDoc = doc(db,"users",id)
+  
+      console.log(singleDay);
+      let currDaysDetails = [...currentUserData.daysDetails]
+    
+      currDaysDetails[singleDay].WatchTheTip = true;
+  
+      const newFields ={daysDetails: currDaysDetails } 
+  
+      await updateDoc(userDoc , newFields)
+    
+    }
 
 
 
@@ -157,7 +277,7 @@ if(auth.currentUser)
     
     <TouchableOpacity activeOpacity={1} onPress={()=> setIsTipsView(false) }>
     <StatusBar backgroundColor="rgb(255, 178, 71)" />
-    <ImageBackground source={{uri: "https://images.creativemarket.com/0.1.0/ps/8436210/1820/1214/m1/fpnw/wm1/m44uvmmozdjmkaqion0pl0hrji1w6bklbgvybnufi8zayuvvg6brwped97rcsa0n-.jpg?1590762533&s=a010240a0998e1429431994509765bc0"}} resizeMode= 'cover'>
+    <ImageBackground source={require('../../assets/homePage.png')}  resizeMode= 'cover'>
 
     <View style={styles.container}>
 
@@ -165,15 +285,130 @@ if(auth.currentUser)
     
 <View style={{width:'100%', flexDirection:'row',justifyContent:'space-between'}}>
 
-      <TouchableOpacity onPress={()=> [setIsTipsView(true), setIsOpened(true)]} style={{borderWidth: 3, width: '50%', height: '70%', borderRadius: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(255, 178, 71)',marginLeft:16}}>
-        <Text style={{fontSize: 18, fontWeight: '600'}}>The daily tip</Text>
-      {!isOpened ? <FontAwesome style={{position: 'absolute', left: 6}} name="envelope" size={20} color="#fff"/>: null}
-      </TouchableOpacity>
+<TouchableOpacity>
+<FontAwesome style={{  marginLeft:20}} name="envelope" size={35} color="rgb(255, 178, 71)" onPress={()=>[setShowTip(true),updateDailyTipDay(currentUserData ? currentUserData.id : null , currentUserData.indexDeyFirebase ) ]}/>
+{
+   currentUserData && !(currentUserData.daysDetails[currentUserData.indexDeyFirebase].WatchTheTip) ?
+
+<MaterialIcons style={{position:'absolute',left:12,top:-2}} name="brightness-1" size={15} color="red" />
+
+  :
+  null
+}
+</TouchableOpacity>
 
       <TouchableOpacity onPress={toggleModalVisible}>
-        <Entypo name="menu" size={50} color="#000" />
+        <Entypo name="menu" size={40} color="#000" />
       </TouchableOpacity>
 </View>
+
+
+<Modal visible={showTip} animationType="slide" transparent={true}>
+        <View style={styles.modalContainer9}>
+          <View style={styles.modalContent9}>
+            <Text style={styles.tipTitle9}>Daily Tip</Text>
+            <Text style={styles.tipText9}>
+              {tips[counter].tip}
+            </Text>
+            <TouchableOpacity style={styles.closeButton9} onPress={()=>setShowTip(false)}>
+              <Text style={styles.closeButtonText9}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+
+
+
+<Modal
+        visible={modalVisible7}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalVisible7(false)}
+      >
+        <View style={styles.modalContainer7}>
+          <View style={styles.modalContent7}>
+            <ScrollView>
+              <Text style={styles.sectionTitle7}>Privacy Policy</Text>
+              <Text style={styles.policyText7}>{privacyPolicyText}</Text>
+
+              <Text style={styles.sectionTitle7}>Terms of Service</Text>
+              <Text style={styles.policyText7}>{termsOfServiceText}</Text>
+
+              <Text style={styles.sectionTitle7}>Content Guidelines</Text>
+              <Text style={styles.policyText7}>{contentGuidelinesText}</Text>
+
+              <Text style={styles.sectionTitle7}>Security and Data Protection</Text>
+              <Text style={styles.policyText7}>{securityDataProtectionText}</Text>
+            </ScrollView>
+
+            <Button title="Close" onPress={() => setModalVisible7(false)} />
+          </View>
+          </View>
+
+          </Modal>
+<Modal
+        visible={modalVisible8}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalVisible8(false)}
+      >
+        <View style={styles.modalContainer8}>
+          <View style={styles.modalContent8}>
+            <Button title="Contact via Email" /* onPress={openEmail8} */ />
+            <Button title="Contact via Phone" /* onPress={openPhone8} */ />
+            <Button title="Contact via WhatsApp" /* onPress={openWhatsApp8} */ />
+            <Button title="Contact via SMS" /* onPress={openSMS8} */ />
+            <Button title="Close" onPress={() => setModalVisible8(false)} />
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        visible={modalVisible8}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalVisible8(false)}
+      >
+        <View style={styles.modalContainer8}>
+          <View style={styles.modalContent8}>
+            <Text style={styles.title8}>Contact Options</Text>
+
+            <View style={styles.buttonContainer8}>
+
+            <TouchableOpacity style={styles.contactButton} onPress={ ()=> Linking.openURL(whatsappToMaoz)}>
+              <Text style={styles.contactButtonText}>Contact via WhatsApp</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.contactButton}  onPress={()=>Linking.openURL('mailto:abhtur321@gmail.com')}>
+              <Text style={styles.contactButtonText}>Contact via Email</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.contactButton}  onPress={()=>Linking.openURL('tel:0585710584')}>
+              <Text style={styles.contactButtonText}>Contact via Phone</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.contactButton} onPress={()=>Linking.openURL('sms:0585710584')}>
+              <Text style={styles.contactButtonText}>Contact via SMS</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.contactButton2} onPress={()=>Linking.openURL(url)}>
+              <Text style={styles.contactButtonText}>Where are we located?</Text>
+            </TouchableOpacity>
+
+           
+
+
+            <TouchableOpacity style={{backgroundColor:'#0974c0', borderRadius: 8,paddingVertical: 10,paddingHorizontal: 16,marginBottom: 10,marginTop:20}}
+             onPress={() => setModalVisible8(false)}>
+              <Text style={styles.contactButtonText}>Close</Text>
+            </TouchableOpacity>
+           
+
+             
+            </View>
+
+           
+          </View>
+        </View>
+      </Modal>
+
 
 <Modal
         animationType="slide"
@@ -184,15 +419,26 @@ if(auth.currentUser)
         <TouchableWithoutFeedback onPress={toggleModalVisible}>
           <View style={styles.modalContainer}>
             <View style={styles.modalView}>
-              <TouchableOpacity style={styles.modalButton}>
+              <TouchableOpacity style={styles.modalButton} onPress={()=>  Linking.openSettings()}>
                 <Text style={styles.modalButtonText}>Settings</Text>
               </TouchableOpacity>
-
-              <TouchableOpacity style={styles.modalButton}>
-                <Text style={styles.modalButtonText}>Communication</Text>
+            {/*   <TouchableOpacity style={styles.modalButton} onPress={() => Linking.openURL('https://www.youtube.com/watch?v=wrKWEaTYxjw')}>
+                <Text style={styles.modalButtonText}>youtube</Text>
               </TouchableOpacity>
+              <TouchableOpacity style={styles.modalButton} onPress={()=> openGooglePlayStore('com.instagram.android')}>
+                <Text style={styles.modalButtonText}>instegramAppStore</Text>
+              </TouchableOpacity>
+             
+              <TouchableOpacity style={styles.modalButton} onPress={()=> Linking.openURL(url)}>
+                <Text style={styles.modalButtonText}>map</Text>
+              </TouchableOpacity> */}
+             
 
-              <TouchableOpacity style={styles.modalButton}>
+    
+              <TouchableOpacity style={styles.modalButton} onPress={()=>setModalVisible8(true)}>
+                <Text style={styles.modalButtonText}>Contact Us</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalButton} onPress={()=>setModalVisible7(true)}>
                 <Text style={styles.modalButtonText}>Company Policy</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.modalButton} onPress={()=>hendleSingOut()}>
@@ -207,6 +453,8 @@ if(auth.currentUser)
           </View>
         </TouchableWithoutFeedback>
       </Modal>
+
+     
 
 
       </View>
@@ -224,29 +472,28 @@ if(auth.currentUser)
     </FadeInOut>
 
     <View style={styles.detailsHomeContainer}>
+  
+    <Text style={{fontSize:30,color:'black',fontWeight:'800'}}>hey {currentUserData ? currentUserData.firstName : null} !</Text>
+
+
     <View style={styles.detailsHome}>
-    <TouchableOpacity style={[styles.sidesDetails, {position: 'absolute', left: 32, top: 80}]}>
+    <TouchableOpacity style={[styles.sidesDetails, {position: 'absolute', left: 20, top: 80}]}>
     
-    <Text style={{fontSize: 20, fontWeight: '800'}}> {currentUserData ? currentUserData.weightGoal : null}kg</Text>
+    <Text style={{fontSize: 20, fontWeight: '800',color: '#fff'}}> {currentUserData ? currentUserData.weightGoal : null}kg</Text>
 
   
     </TouchableOpacity>
    
-   
-
-    
+     
     <TouchableOpacity style={styles.mainDetail}>
-  
-
-
-
-
-      
-    <Text style={{fontSize: 35, fontWeight: '600', color: '#fff'}}>5431</Text>
+      <View style={{alignItems:'center',justifyContent:'center'}}>
+    <Text style={{fontSize: 35, fontWeight: '600', color: '#fff'}}>{currentUserData  ? currentUserData.daysDetails[0].dailyCalories : null}</Text>
+    <Text style={{fontSize: 22, fontWeight: '400', color: '#fff'}}>cal</Text>
+      </View>
 
     </TouchableOpacity>
-    <TouchableOpacity style={[styles.sidesDetails, , {position: 'absolute', right: 32, top: 80}]}>
-    <Text style={{fontSize: 20, fontWeight: '800'}}>{currentUserData ? currentUserData.weight : null}kg</Text>
+    <TouchableOpacity style={[styles.sidesDetails, , {position: 'absolute', right: 20, top: 80}]}>
+    <Text style={{fontSize: 20,color: '#fff', fontWeight: '600'}}>{currentUserData ? currentUserData.weight : null}kg</Text>
 
     </TouchableOpacity>
     
@@ -254,26 +501,21 @@ if(auth.currentUser)
     </View>
     </View>
      
-      <Text style={{fontSize:30,color:'white'}}>hello {currentUserData ? currentUserData.firstName : null} </Text>
   
-
       <View style={{width: '100%', height: '15%', marginTop: 50, alignItems: 'center', justifyContent: 'center'}}>
-      <Text style={{padding: 10, fontSize: 18, color: '#fff', fontWeight: '700'}}>progress</Text>
+      <Text style={{padding: 10, fontSize: 23, color: '#000', fontWeight: '700'}}> your progress</Text>
 
-      <View style={{backgroundColor: 'rgba(255,255,255, 0.5)',width: '85%', height: '40%', borderRadius: 8, borderWidth: 1.5, flexDirection: 'row', justifyContent: 'flex-end'}}>
+      <View style={{backgroundColor: 'rgba(214,247,208,0.4)',width: '85%', height: '40%', borderRadius: 8, borderWidth: 1.5, flexDirection: 'row', justifyContent: 'flex-end'}}>
     
       <Foundation style={{ color: '#fff', fontWeight: '700', position: 'absolute', left: -25, top: 8}}  name="target-two" size={22} color="red" />
   
-      <View style={{backgroundColor: '#0974c0',height: '100%', width: `${((currentUserData ? currentUserData.indexDeyFirebase: null) / (currentUserData ? currentUserData.daysDetails.length : null)  ) * 100 }%`,borderTopEndRadius: 8, borderBottomEndRadius: 8,borderTopStartRadius: 8, borderBottomStartRadius: 8, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{backgroundColor: 'rgb(40,161,18)',height: '100%', width: `${((currentUserData ? currentUserData.indexDeyFirebase: null) / (currentUserData ? currentUserData.daysDetails.length : null)  ) * 100 }%`,borderTopEndRadius: 8, borderBottomEndRadius: 8,borderTopStartRadius: 8, borderBottomStartRadius: 8, justifyContent: 'center', alignItems: 'center'}}>
       <Text style={{fontSize: 12, color: '#fff', fontWeight: '700'}}>{currentUserData ? currentUserData.indexDeyFirebase: null} days</Text>
-      <LottieView style={{height: 50, position: 'absolute', left: -5.7}}  autoPlay source={require('../lottieAnimation/walk_progress.json')}/>
+      <LottieView style={{height: 50, position: 'absolute', left: -7.7}}  autoPlay source={require('../lottieAnimation/walk_progress.json')}/>
       </View>
       </View>
       </View>
         
-
-
-
     </View>
     </ImageBackground>
     </TouchableOpacity>
@@ -312,7 +554,7 @@ else{
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgba(0,0,0,0.6)',
+     /* backgroundColor: 'rgba(0,0,0,0.1)', */
     width: '100%',
     height: '100%',
     alignItems: 'center',
@@ -330,6 +572,7 @@ const styles = StyleSheet.create({
   },
 
   detailsHome:{
+    marginTop:20,
     width: '100%',
     height: '75%',
 
@@ -339,10 +582,10 @@ const styles = StyleSheet.create({
   },
 
   mainDetail:{
-    width: '46%',
-    height: '95%',
-    backgroundColor: 'rgba(0,0,0,1)',
-    borderWidth: 3.5,
+    width: 170,
+    height: 170,
+    backgroundColor: '#d89b5c',
+    borderWidth: 7.5,
     borderColor: '#fff',
     borderRadius: 100,
     alignItems: 'center',
@@ -350,9 +593,9 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   sidesDetails:{
-    width: '27%',
-    height: '56%',
-    backgroundColor: 'rgba(249, 199, 46,0.5)',
+    width: 110,
+    height: 110,
+    backgroundColor: 'rgb(230,190,99)',
     borderWidth: 3.5,
     borderColor: '#fff',
     borderRadius: 100,
@@ -422,5 +665,129 @@ modalCancelButtonText: {
   fontWeight: 'bold',
   color: '#f00',
 },
+modalContainer7: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+modalContent7: {
+  backgroundColor: '#FFF',
+  padding: 20,
+  borderRadius: 8,
+  elevation: 5,
+  maxHeight: '80%', // Set a maximum height to allow scrolling
+},
+sectionTitle7: {
+  fontSize: 22, // Increase the font size
+  fontWeight: 'bold',
+  marginBottom: 10,
+},
+policyText7: {
+  fontSize: 14, // Increase the font size
+  marginBottom: 10,
+},
+container8: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+modalContainer8: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+modalContent8: {
+  height:'60%',
+  width:'80%',
+  backgroundColor: '#FFF',
+  padding: 20,
+  borderRadius: 8,
+  elevation: 5,
+},
+title8: {
+  fontSize: 22,
+  fontWeight: 'bold',
+  
+  marginBottom: 10,
+},
+buttonContainer8: {
+  marginBottom: 20,
+  
+},
+contactButton: {
+  backgroundColor: '#2ecc71',
+  borderRadius: 8,
+  paddingVertical: 10,
+  paddingHorizontal: 16,
+  marginBottom: 10,
+},
+contactButton2: {
+  backgroundColor: '#2ecca1',
+  borderRadius: 8,
+  paddingVertical: 10,
+  paddingHorizontal: 16,
+  marginBottom: 10,
+},
+contactButtonText: {
+  color: '#FFF',
+  fontSize: 16,
+  fontWeight: 'bold',
+  textAlign: 'center',
+},
+container9: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+button9: {
+  backgroundColor: '#007bff',
+  paddingHorizontal: 16,
+  paddingVertical: 10,
+  borderRadius: 5,
+},
+buttonText9: {
+  color: '#fff',
+  fontSize: 18,
+  fontWeight: 'bold',
+},
+modalContainer9: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+modalContent9: {
+  backgroundColor: '#fff',
+  borderRadius: 10,
+  padding: 20,
+  width: '80%',
+},
+tipTitle9: {
+  fontSize: 24,
+  fontWeight: 'bold',
+  marginBottom: 10,
+  textAlign: 'center',
+},
+tipText9: {
+  fontSize: 16,
+  marginBottom: 20,
+  textAlign: 'center',
+},
+closeButton9: {
+  backgroundColor: 'green',
+  paddingHorizontal: 16,
+  paddingVertical: 10,
+  borderRadius: 5,
+  alignSelf: 'center',
+},
+closeButtonText9: {
+  color: '#fff',
+  fontSize: 18,
+  fontWeight: 'bold',
+},
+
+
 
 })

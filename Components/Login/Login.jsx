@@ -8,12 +8,10 @@ import { AntDesign } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
+import { Feather } from '@expo/vector-icons'; 
 
 
-
-
-
-// import {  } from '@react-native-community/datetimepicker';
+import { oreng,blue } from '../Globals/colors';
 
 import LottieView from 'lottie-react-native';
 
@@ -240,6 +238,7 @@ let daysArr=[];
     sleep: 0,
     steps: 0,
     water: 0,
+    WatchTheTip: false,
   } 
   
 }
@@ -249,8 +248,7 @@ setDaysDetails(daysArr);
 setCalToLoseDay( (  ((weight - weightGoal) * 7700) / diffInDays  ) );
 setBasicBalancePoint( ( ( (88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * age) ) )  *  averageActivity   ) );
 
-setBasicDayTarget(basicBalancePoint - calToLoseDay);
-
+setBasicDayTarget((( ( (88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * age) ) )  *  averageActivity   ) - (  ((weight - weightGoal) * 7700) / diffInDays  )));
 
 if(  (  ((weight - weightGoal) * 7700) / diffInDays  ) > 2566   )
 {
@@ -317,7 +315,7 @@ const  handleSignUp =  async () => {
             averageActivity: averageActivity,
             basicBalancePoint: basicBalancePoint,
             basicDayTarget: basicDayTarget,
-            // indexDeyFirebase: 0,
+             indexDeyFirebase: 0,
             
           });
           setWeeklyGoal(0);
@@ -353,14 +351,22 @@ const  handleSignUp =  async () => {
     setBasicDayTarget(basicBalancePoint);
   } */
 
+  const [errorEmail,setErrorEmail] = useState(false);
+
+
+
 function EmailTextInput()
  {
  /*  console.log(email);
   console.log(password); */
 
+
+
+
   const emailRegex = /\S+@\S+\.\S+/;
   if (!emailRegex.test(email)  ) {
     Alert.alert('Invalid Email', 'Please enter a valid email address.');
+    setErrorEmail(true);
     
   }else if( password.length < 5)
   {
@@ -435,6 +441,21 @@ function EmailTextInput()
     
   }
 
+  
+  function ChakeEmailError(text)
+  {
+    const emailRegex = /\S+@\S+\.\S+/;
+
+    if(emailRegex.test(text))
+    {
+      setErrorEmail(false)
+    }
+
+    setEmail(text)
+
+  }
+  
+
  
 
   return (
@@ -443,31 +464,13 @@ function EmailTextInput()
     <StatusBar backgroundColor="rgb(255, 178, 71)" />
     
     <View style={styles.loginContainer}>
-    
-    {/* <FadeInOut style={{ 
-        //firstScreen
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgb(255, 178, 71)',
-        alignItems: 'center',
-        // justifyContent: 'center',
-        zIndex: animationStartIsVisible ?  999 : 0,}}
-        visible={animationStartIsVisible}
-        duration={!animationStartIsVisible ? 400 : 800}
-        scale={true}
-        >
-        <LottieView
-        style={{width: 150, height: 150, marginTop: 115}}
-        source={require('../lottieAnimation/animation_start.json')}
-          autoPlay         
-        />
-       { removeStartAnimation()}
-
-        
-
-        </FadeInOut> */}
-    
-    <Text style={styles.title}>ShapeUp</Text>
+      
+     {
+      firstScreenIsVisible ?
+       <Text style={styles.title}>ShapeUp</Text>
+       :
+       null
+    }
 
     <FadeInOut style={{ 
         //firstScreen
@@ -485,7 +488,7 @@ function EmailTextInput()
         
     
 
-    <View style={[styles.buttonContainer, {marginTop: 40}]}>
+    <View style={[styles.buttonContainer, {marginTop: 70}]}>
     <TouchableOpacity
     style={[styles.loginButton, {backgroundColor: 'rgba(255, 178, 71,0.9)', width: '80%'}]}
     onPress={()=> [setFirstScreenIsVisible(false), setLoginIsVisible(true)]} 
@@ -500,7 +503,7 @@ function EmailTextInput()
     </TouchableOpacity>
     <TouchableOpacity
     onPress={()=>{ navigation.navigate('Transition')}}
-    // onPress={()=>{ navigation.navigate('Nav')}}
+  
     style={[styles.loginButton,{backgroundColor: 'rgba(243,243,243,0.9)', marginTop: 24, height: 40, borderWidth: 2, borderColor: '#78ab04'}]}
     >
         <Text style={{color: '#000', fontSize: 17,}}>Continue as  a guest</Text>
@@ -590,16 +593,19 @@ function EmailTextInput()
     <TouchableOpacity onPress={()=> [setSignUpIsVisible(false), setFirstScreenIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
     <Entypo  name="back" size={40} color="#fff" />
     </TouchableOpacity>
+    
       <TextInput 
-      style={styles.textInput}
+      style={[styles.textInput,{borderColor : errorEmail ? 'rgb(168,29,29)' : '#fff'  }]}
       keyboardType="email-address"
       placeholder='Email'
       leftIcon={<Entypo name="lock" size={24} color="#fff" />}
       
       placeholderTextColor={'#fff'}
-        onChangeText={text => setEmail(text)}
+        onChangeText={text =>ChakeEmailError(text)}
       />
-      
+
+
+       
       <TextInput 
        style={styles.textInput}
       
@@ -696,13 +702,13 @@ function EmailTextInput()
     <View style={{width: '80%', height: '20%', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-evenly' }}>
     
     <TouchableOpacity onPress={()=> [setGenderIsVisible(false), setHeightAndWeightIsVisible(true), setGender(0)]}>
-    <View style={{height: 100, width: 100, borderWidth: 3, borderColor: '#fff', borderRadius: 100, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(253, 92, 175, 0.4)'}}>
+    <View style={{height: 100, width: 100, borderWidth: 3, borderColor: '#fff', borderRadius: 100, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(253, 72, 175, 0.4)'}}>
     <MaterialCommunityIcons name="face-woman" size={65} color="#fff" />
     </View>       
     </TouchableOpacity>
 
     <TouchableOpacity onPress={()=> [setGenderIsVisible(false), setHeightAndWeightIsVisible(true), setGender(1)]}>
-    <View style={{height: 100, width: 100, borderWidth: 3, borderColor: '#fff', borderRadius: 100, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(27, 112, 249, 0.4)'}}>
+    <View style={{height: 100, width: 100, borderWidth: 3, borderColor: '#fff', borderRadius: 100, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(27, 202, 249, 0.4)'}}>
 
     <MaterialCommunityIcons  name="face-man" size={65} color="#fff" />
     </View>
@@ -767,6 +773,8 @@ function EmailTextInput()
         </View>
         <View style={{width: '35%', height: '75%', alignItems: 'center'}}>
         <Text style={{color: '#fff', fontSize: 20, fontWeight: '800'}}>Weight</Text>
+
+  
         <Picker
           style={{
           marginTop:10,
@@ -783,6 +791,8 @@ function EmailTextInput()
             ))}
 
       </Picker>
+      
+
       {weight != "" ? <View style={{width: '80%', height: '30%', borderWidth: 2, borderRadius: 15, marginTop: 10, borderColor: '#fff', flexDirection: 'row', justifyContent: 'space-evenly', paddingTop: 6}}>
       <MaterialCommunityIcons name="weight" size={30} color="#fff" />
       <Text style={{color: '#fff', fontSize: 20}}>{weight}<Text style={{fontSize: 12}} >kg</Text></Text>
@@ -911,25 +921,26 @@ function EmailTextInput()
 
     <FadeInOut style={{ 
         //goalScreen
+        
         width: '100%',
         height: '100%',
         alignItems: 'center',
         position: 'absolute',
-        top: 160,
+        top: 90,
         zIndex: goalIsVisible ?  999 : 0,}} 
         visible={goalIsVisible}
         duration={!goalIsVisible ?  400 : 800}
         scale={true}>
 
     <View style={[styles.inputsContainer, {height: '45%'}]}>
-     <TouchableOpacity onPress={()=> [setGoalIsVisible(false), setBirthDateIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
+     <TouchableOpacity  onPress={()=> [setGoalIsVisible(false), setBirthDateIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
     <Entypo  name="back" size={40} color="#fff" />
     </TouchableOpacity>
 
-    <Text  style={{fontSize: 25, color: '#fff', fontWeight: 'bold'}}>what is your goal weight?</Text>
+    <Text  style={{fontSize: 25, color: '#fff', fontWeight: 'bold',marginTop:15}}>what is your goal weight?</Text>
     <Picker
           style={{
-          marginTop:10,
+          marginTop:30,
           width: '35%',
           backgroundColor: 'rgba(255, 178, 71,0.9)',
       }}
@@ -948,8 +959,8 @@ function EmailTextInput()
       <Text style={{color: '#fff', fontSize: 14, fontWeight: '700'}}>{weightGoal}</Text>
 
       <View style={{width: '100%', height: '50%', marginTop: 10, alignItems:'center'}}>
-      <Text style={{marginTop: 8, color: '#fff', fontSize: 20, fontWeight: '600'}}>Choose one way</Text>
-      <View style={{width: '100%', height: '80%', flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10}}>
+      <Text style={{marginTop: 8, color: '#fff', fontSize: 24, fontWeight: '600'}}>Choose one way</Text>
+      <View style={{width: '100%', height: '80%', flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 17}}>
       <View style={{ width: '32%', alignItems: 'center'}}>
       <TouchableOpacity onPress={()=> [setEndDateIsVisible(true), setWeeklyGoalIsVisible(false) ]} style={{width: '100%',height: '25%', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderRadius: 15, borderColor: '#fff'}}>
         <Text style={{fontSize: 16, color: '#fff'}}>
@@ -1026,25 +1037,26 @@ function EmailTextInput()
     
     
     </View>
-    <View style={[styles.buttonContainer, {marginTop: 10}]}>
+    <View style={[styles.buttonContainer, {marginTop: 80}]}>
 
     <TouchableOpacity
     onPress={hendelUpdateGool}
     style={styles.loginButton}
     >
-        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>maoz!!</Text>
+        <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Continue</Text>
     </TouchableOpacity>
 
     
 
 
-    <FadeInOut style={{ 
+    <FadeInOut 
+    style={{ 
         //startView
-        width: '100%',
-        height: startViewIsVisible ? '350%' : 0 ,
+        width: startViewIsVisible ? '100%' : 0,
+        height: startViewIsVisible ? '400%' : 0 ,
         alignItems: 'center',
         position: 'absolute',
-        top: -550,
+        top: startViewIsVisible ? -550 : 200,
         backgroundColor: '#fff',
         borderRadius: 10,
         zIndex: startViewIsVisible ?  999 : 0,}}
@@ -1054,13 +1066,15 @@ function EmailTextInput()
         duration={!startViewIsVisible ? 400 : 800}
         scale={true}
         >
-        <Text style={{fontSize: 20, fontWeight: '700', marginTop: 100}}>The registration process is complete!</Text>
+<View style={{width:'90%'}}>
 
-        <View style={{ width: 250, height: 250, marginTop: 100 }}>
+        <Text style={{fontSize: 33, fontWeight: '700', marginTop: 157,}}> process is complete{'\n\t\t\t\t\t\t\t\t'} <Text style={{fontSize:38,fontWeight: '200'}}>we are ready !</Text></Text>
+</View>
+
+
+        <View style={{ width: 250, height: 250, marginTop: 40 }}>
         <LottieView  style={{ flex: 1 }}  autoPlay source={require('../lottieAnimation/success_sign_up2.json')}/>
        </View>
-
-        {/* <LottieView  style={{height: 300, width: 300, marginTop: 50}}  autoPlay source={require('../lottieAnimation/success_sign_up')}/> */}
         
           <TouchableOpacity
             onPress={handleSignUp}
@@ -1069,29 +1083,10 @@ function EmailTextInput()
              <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Start</Text>
           </TouchableOpacity>
 
-        {/* <TouchableOpacity
-            onPress={handleSignUp}
-            style={[{marginTop: 50, height: 195, width: 350}]}
-    >
-    <LottieView  style={{ flex: 1 }}  autoPlay source={require('../lottieAnimation/start_button2.json')}/>
-             
-          </TouchableOpacity> */}
-
+  
         </FadeInOut>
 
-    {/* <FadeInOut style={{ 
-        //startView
-        width: '70%',
-        height: '60%',
-        alignItems: 'center',
-        position: 'absolute',
-        top: 160,
-        zIndex: startViewIsVisible ?  999 : 0,}}
-
-        visible={startViewIsVisible}
-        duration={!startViewIsVisible ? 400 : 800}
-        scale={true}
-        ></FadeInOut> */}
+  
 
     <TouchableOpacity
     onPress={()=>{ [navigation.navigate('Nav'), setGoalIsVisible(false), setFirstScreenIsVisible(true) ]}}
@@ -1119,6 +1114,7 @@ function EmailTextInput()
 
 const styles = StyleSheet.create({
     loginContainer:{
+      
         width: '100%',
         height: '100%',
         alignItems: 'center',
@@ -1128,10 +1124,10 @@ const styles = StyleSheet.create({
 
     },
     title:{
-        fontSize: 38,
+        fontSize: 45,
         color: '#fff',
         fontWeight: '900',
-        marginTop: 70,
+        marginTop: 110,
         marginBottom: 20,
 
     },
@@ -1171,7 +1167,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '22%',
         alignItems: 'center',
-        // backgroundColor: 'rgba(25,255,255,0.3)'
+        
 
     },
     textInput:{
@@ -1194,7 +1190,7 @@ const styles = StyleSheet.create({
         height: '30%',
         alignItems: 'center',
         marginTop: 30,
-        // backgroundColor: 'rgba(255,25,255,0.3)'
+        
         
 
     },

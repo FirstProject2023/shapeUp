@@ -20,6 +20,8 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 
+
+
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc} from 'firebase/firestore';
 
@@ -334,6 +336,8 @@ const days = diffInDays - (years * 365) - (months * 30);
   
   }
 
+
+
     const pickImage = async () => {
       
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -346,6 +350,7 @@ const days = diffInDays - (years * 365) - (months * 30);
     
     if (!result.cancelled) {
       updateImg(currentUserData.id,result.assets[0].uri)
+     
     }
   };
 

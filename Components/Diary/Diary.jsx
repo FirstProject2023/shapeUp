@@ -56,6 +56,8 @@ export default function Diary({ navigation }) {
   const [modalVisible3, setModalVisible3] = useState(false);
   const [modalVisible4, setModalVisible4] = useState(false);
   const [modalVisible5, setModalVisible5] = useState(false);
+  const [modalVisible6, setModalVisible6] = useState(false);
+  const [modalVisible7, setModalVisible7] = useState(false);
 
   const [FavoriteFoodName,setFavoriteFoodName] = useState('');
   const [FavoriteFoodAmount,setFavoriteFoodAmount] = useState('');
@@ -87,8 +89,21 @@ export default function Diary({ navigation }) {
   const [showModal, setShowModal] = useState(false);
   
 
+
+  const policies = [
+    'Policy 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    'Policy 2: Nulla venenatis metus vel feugiat interdum.',
+    'Policy 3: Fusce eget sapien aliquet, tempus felis vel, aliquam tellus.',
+    'Policy 4: Sed efficitur erat a bibendum pretium.'
+    // Add more policies as needed
+  ];
+
+  const hendleToFinishApp =()=>{
+    setModalVisible6(true);
+  }
  
   const hendleSingOut =()=>{
+
     auth
     .signOut()
     .then(()=>{
@@ -690,7 +705,7 @@ useEffect(() => {
   const intervalId = setInterval(() => {
     if (currentUserData) {
  
-      if(testIndex < 25){
+      if(testIndex < 10){
       // if(testIndex < (currentUserData ? currentUserData.daysDetails.length : null)){
 
         //real code
@@ -745,10 +760,20 @@ useEffect(() => {
 
 
       }
+      else
+      {
+        clearInterval(intervalId);
+        hendleToFinishApp();
+        setModalVisible6(true);
+
+      }
     }
-  }, 20000000); 
+  }, 2000000); 
 
 
+
+ 
+    
 
   // console.log("index in useEffect" +  " " + index);
 /*   console.log("_____________________");
@@ -947,6 +972,31 @@ if(auth.currentUser)
         >
     <ImageBackground source={{uri: "https://images.indianexpress.com/2021/12/GettyImages-fasting-diet-plan-1200.jpg"}} resizeMode= 'cover'>
      {/* <ScrollView> */}
+
+{/* al models!! */}
+
+
+     <Modal 
+  visible={modalVisible6}
+  animationType='slide'
+  transparent={true}
+  >
+
+  <View style={styles.modalContainerEnd}>
+    <View style={styles.modalContentEnd}>
+      <Text style={styles.titleEnd}>End of Process</Text>
+      <Text style={styles.descriptionEnd}>
+        Thank you for using our application. This is the end of the process.
+      </Text>
+
+      <TouchableOpacity style={styles.buttonEnd} onPress={()=>hendleSingOut()}>
+        <Text style={styles.buttonTextEnd}>ok</Text>
+      </TouchableOpacity>
+      
+    </View>
+  </View>
+</Modal>
+
     <View style={styles.container}>
 
     <View style={{backgroundColor: '#fff', width: '90%', height: '8%',marginTop: 10, borderRadius: 8 ,flexDirection:'row',justifyContent:'space-evenly',alignItems:'center'}}>
@@ -1650,11 +1700,11 @@ null}
 
 
       <Text style={{fontSize: 9, position: 'absolute', bottom: -13,left: 0, fontWeight: '800'}}>|</Text>
-      <Text style={{fontSize: 11, position: 'absolute', bottom: -27,left: -13}}>{currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint: null}</Text>
+      <Text style={{fontSize: 11, position: 'absolute', bottom: -27,left: -13}}>{Math.floor((currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint: null))}</Text>
 
       <Text style={{fontSize: 9, position: 'absolute', bottom: 16,left: 50, fontWeight: '800'}}>|</Text>
-      <Text style={{fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>target({(currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget : null)})</Text>
-
+      <Text style={{fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>target({Math.floor((currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget : null))})</Text>
+      
       </View>
       
       }
@@ -2020,6 +2070,59 @@ buttonTextB: {
       paddingVertical: 8,
     
   },
+
+  modalContainerEnd: {
+    
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContentEnd: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  titleEnd: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  descriptionEnd: {
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  buttonEnd: {
+    backgroundColor: '#2196F3',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  buttonTextEnd: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  modalContainer7: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+  },
+  modalContent7: {
+    backgroundColor: '#FFF',
+    padding: 20,
+    borderRadius: 8,
+    elevation: 5
+  },
+  title7: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10
+  },
+  policyText7: {
+    marginBottom: 10
+  }
 
 
 })
