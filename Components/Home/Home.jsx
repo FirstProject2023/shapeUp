@@ -497,7 +497,6 @@ if(auth.currentUser)
 
     </TouchableOpacity>
     
-
     </View>
     </View>
      

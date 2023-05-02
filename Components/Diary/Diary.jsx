@@ -771,9 +771,7 @@ useEffect(() => {
   }, 2000000); 
 
 
-
- 
-    
+   
 
   // console.log("index in useEffect" +  " " + index);
 /*   console.log("_____________________");

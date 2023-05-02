@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert, Button, StatusBar } from 'react-native'
+import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert, Button, StatusBar, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 // import { TextInput } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons'; 
@@ -61,8 +61,8 @@ export default function Login({ navigation }) {
   
   const [users,setUsers]=useState([]);
   
-  const [animationStartIsVisible, setAnimationStartIsVisible] = useState(true);
-    const [firstScreenIsVisible, setFirstScreenIsVisible] = useState(true);
+  const [openingScreenIsVisible, setOpeningScreenIsVisible] = useState(true);
+  const [firstScreenIsVisible, setFirstScreenIsVisible] = useState(false);
     const [loginIsVisible, setLoginIsVisible] = useState(false);
     const [signUpIsVisible, setSignUpIsVisible] = useState(false);
     const [nameIsVisible, setNameIsVisible] = useState(false);
@@ -145,145 +145,160 @@ useEffect(()=>{
 
 const hendelUpdateGool = async () => {
 
-
-
- const currentDate = new Date();
-  const age = currentDate.getFullYear() - birthDate.year ;
-
-   console.log(age + "ageeeeee!");
-
-
-
-  let today = new Date() ;
-  let futureDate=0;
-  let diffInDays = 0;
-
-  let currEndDate = new Date(date) 
- 
-  if(WeeklyGoal==0)
+  if(!WeeklyGoalIsVisible && !endDateIsVisible)
   {
-    
-    setEndDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})
 
-    setFinelDate({
-      day: date.getDate(),
-      month: date.getMonth()+1,
-      year: date.getFullYear(),
-    })
+    Alert.alert(
+      'error',
+      'To continue the process, you must choose whether you will do the process by losing weight based on WeeklyGoal or based on endDate',
+      [
+          { text: 'ok', onPress: () => console.log('OK Pressed') },
+          
+        ],
+      {cancelable: false},
+    );
 
-    diffInDays = differenceInDays(currEndDate,today) ;
-
-    /* setFinelDate(endDate); */
-
-    
-/* console.log(currEndDate); */
-
-
+  
   }
   else{
 
-    let numberOfDaysToAdd = 0 ;
-  
-    if(WeeklyGoal == 1){
+              const currentDate = new Date();
+              const age = currentDate.getFullYear() - birthDate.year ;
 
-       numberOfDaysToAdd = ( ((weight-weightGoal) / 0.25) * 7 )    
-    }
-    else if(WeeklyGoal == 2){
-       numberOfDaysToAdd = ( ((weight-weightGoal) / 0.5) * 7 )
-    }
-    else if(WeeklyGoal == 3){
-       numberOfDaysToAdd = ( ((weight-weightGoal) / 0.75) * 7 )
-    }
-    else if(WeeklyGoal == 4){
-       numberOfDaysToAdd = ( ((weight-weightGoal) / 1) * 7 )
-       
-    }
-   
-     today = new Date();
-     futureDate = new Date(today.getTime() + numberOfDaysToAdd * 24 * 60 * 60 * 1000);
-    
-    
-    setFinelDate({
-      day: futureDate.getDate(),
-      month: futureDate.getMonth()+1,
-      year: futureDate.getFullYear(),
-    })
+              console.log(age + "ageeeeee!");
 
-    console.log({
-      day: futureDate.getDate(),
-      month: futureDate.getMonth() + 1,
-      year: futureDate.getFullYear(),
-    });
-  
+              
+
+              let today = new Date() ;
+              let futureDate=0;
+              let diffInDays = 0;
+              
+              let currEndDate = new Date(date) 
+              
+              if(WeeklyGoal==0)
+              {
+                
+                setEndDate({day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()})
+
+                setFinelDate({
+                  day: date.getDate(),
+                  month: date.getMonth()+1,
+                  year: date.getFullYear(),
+                })
+
+                diffInDays = differenceInDays(currEndDate,today) ;
+
+                /* setFinelDate(endDate); */
+
+                
+            /* console.log(currEndDate); */
 
 
-    diffInDays = differenceInDays(futureDate , today);
-  
-  }
+              }
+              else{
 
-let daysArr=[];
+                let numberOfDaysToAdd = 0 ;
+              
+                if(WeeklyGoal == 1){
 
- for(let i = 0; i < diffInDays ; i++)
-{
-  daysArr[i] = {
-    
-    singleDate: new Date(today.getTime() + i * 24 * 60 * 60 * 1000),
-    activityLevel: 0,
-    dailyCalories: 0,
-    dailyBalancePoint: 0,
-    dayTarget: 0,
-    dailyFood:[],
-    dailyCreationFood:[],
-    isTarget: false,
-    sleep: 0,
-    steps: 0,
-    water: 0,
-    WatchTheTip: false,
-  } 
-  
-}
+                  numberOfDaysToAdd = ( ((weight-weightGoal) / 0.25) * 7 )    
+                }
+                else if(WeeklyGoal == 2){
+                  numberOfDaysToAdd = ( ((weight-weightGoal) / 0.5) * 7 )
+                }
+                else if(WeeklyGoal == 3){
+                  numberOfDaysToAdd = ( ((weight-weightGoal) / 0.75) * 7 )
+                }
+                else if(WeeklyGoal == 4){
+                  numberOfDaysToAdd = ( ((weight-weightGoal) / 1) * 7 )
+                  
+                }
+              
+                today = new Date();
+                futureDate = new Date(today.getTime() + numberOfDaysToAdd * 24 * 60 * 60 * 1000);
+                
+                
+                setFinelDate({
+                  day: futureDate.getDate(),
+                  month: futureDate.getMonth()+1,
+                  year: futureDate.getFullYear(),
+                })
 
-setDaysDetails(daysArr); 
+                console.log({
+                  day: futureDate.getDate(),
+                  month: futureDate.getMonth() + 1,
+                  year: futureDate.getFullYear(),
+                });
+              
 
-setCalToLoseDay( (  ((weight - weightGoal) * 7700) / diffInDays  ) );
-setBasicBalancePoint( ( ( (88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * age) ) )  *  averageActivity   ) );
 
-setBasicDayTarget((( ( (88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * age) ) )  *  averageActivity   ) - (  ((weight - weightGoal) * 7700) / diffInDays  )));
+                diffInDays = differenceInDays(futureDate , today);
+              
+              }
 
-if(  (  ((weight - weightGoal) * 7700) / diffInDays  ) > 2566   )
-{
+            let daysArr=[];
 
-  
-  Alert.alert(
-    'error',
-    'The person will need to provide new, realistic weight measurements in order to proceed with their goal of losing weight.',
-     [
-        { text: 'No', onPress: () => console.log('OK Pressed') },
-        
-      ],
-    {cancelable: false},
-  );
+            for(let i = 0; i < diffInDays ; i++)
+            {
+              daysArr[i] = {
+                
+                singleDate: new Date(today.getTime() + i * 24 * 60 * 60 * 1000),
+                activityLevel: 0,
+                dailyCalories: 0,
+                dailyBalancePoint: 0,
+                dayTarget: 0,
+                dailyFood:[],
+                dailyCreationFood:[],
+                isTarget: false,
+                sleep: 0,
+                steps: 0,
+                water: 0,
+                WatchTheTip: false,
+              } 
+              
+            }
 
-}
-else if((  ((weight - weightGoal) * 7700) / diffInDays  ) < 2566 && (  ((weight - weightGoal) * 7700) / diffInDays  ) > 1500)
-{
-  Alert.alert(
-    '!!!',
-    'Following the measurements of the weights that you entered, your process will be very intensive. And we do not recommend it .Are you sure you want to enter this goal relative to the end time you entered?.',
-     [
-        { text: 'No', onPress: () => console.log('OK Pressed') },
-        { text: 'Yes', onPress: () => setStartViewIsVisible(true) },
-      ],
-    {cancelable: false},
-  );
+            setDaysDetails(daysArr); 
 
-}
-else{
-  setStartViewIsVisible(true)
-}
+            setCalToLoseDay( (  ((weight - weightGoal) * 7700) / diffInDays  ) );
+            setBasicBalancePoint( ( ( (88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * age) ) )  *  averageActivity   ) );
 
-    
-    
+            setBasicDayTarget((( ( (88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * age) ) )  *  averageActivity   ) - (  ((weight - weightGoal) * 7700) / diffInDays  )));
+
+            if(  (  ((weight - weightGoal) * 7700) / diffInDays  ) > 2566   )
+            {
+
+              
+              Alert.alert(
+                'error',
+                'The person will need to provide new, realistic weight measurements in order to proceed with their goal of losing weight.',
+                [
+                    { text: 'No', onPress: () => console.log('OK Pressed') },
+                    
+                  ],
+                {cancelable: false},
+              );
+
+            }
+            else if((  ((weight - weightGoal) * 7700) / diffInDays  ) < 2566 && (  ((weight - weightGoal) * 7700) / diffInDays  ) > 1500)
+            {
+              Alert.alert(
+                '!!!',
+                'Following the measurements of the weights that you entered, your process will be very intensive. And we do not recommend it .Are you sure you want to enter this goal relative to the end time you entered?.',
+                [
+                    { text: 'No', onPress: () => console.log('OK Pressed') },
+                    { text: 'Yes', onPress: () => setStartViewIsVisible(true) },
+                  ],
+                {cancelable: false},
+              );
+
+            }
+            else{
+              setStartViewIsVisible(true)
+            }
+
+                
+      }
 }
 
 const  handleSignUp =  async () => {
@@ -341,17 +356,23 @@ const  handleSignUp =  async () => {
     
     }
 
-    
-/*     const removeStartAnimation = (activity) => {
-      setTimeout(() => {[setAnimationStartIsVisible(false), setFirstScreenIsVisible(true)]}, 2000);
+
+    const removeStartAnimation = () => {
+      useEffect(()=>{
+        setTimeout(() => {[setOpeningScreenIsVisible(false), setFirstScreenIsVisible(true)]}, 1600);
+      },[])
   }
 
-  const BalanceEndTargetCreate = () => {
-    setBasicBalancePoint(Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     activity)));
-    setBasicDayTarget(basicBalancePoint);
-  } */
+  // const BalanceEndTargetCreate = () => {
+  //   setBasicBalancePoint(Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     activity)));
+  //   setBasicDayTarget(basicBalancePoint);
+  // }
+
 
   const [errorEmail,setErrorEmail] = useState(false);
+  const [errorPassword,setErrorPassword] = useState(false);
+  const [errorFirstName,setErrorFirstName] = useState(false);
+  const [errorLastName,setErrorLastName] = useState(false);
 
 
 
@@ -370,6 +391,7 @@ function EmailTextInput()
     
   }else if( password.length < 5)
   {
+    setErrorPassword(true);
     Alert.alert(
       'Invalid Password',
       'Password must contain at least 5 characters.'
@@ -385,10 +407,12 @@ function EmailTextInput()
 
     if(firstName == "")
     {
+      setErrorFirstName(true);
       Alert.alert('Invalid Name', 'Please enter a name.');
     }
     else if( lastName == "")
     {
+      setErrorLastName(true);
       Alert.alert('Invalid last Name', 'Please enter a last name.');
     }
     else{
@@ -414,10 +438,18 @@ function EmailTextInput()
    }
    function BirthdayTextInput(date){
 
+
+    console.log(date.getFullYear());
     const currentDate = new Date();
     const ageDiff = currentDate.getFullYear() - date.getFullYear();
    
-    if (
+
+    if(date.getFullYear() == 1970 && date.getMonth() + 1 == 1 && date.getDate() == 1)
+    {
+         
+          Alert.alert('Invalid Age', 'You Must choose an age to use this app.');
+    }
+     else if (
       ageDiff < 18 ||
       (ageDiff === 18 && currentDate.getMonth() < birthDate.month) ||
       (ageDiff === 18 && currentDate.getMonth() === birthDate.month && currentDate.getDate() < birthDate.day)
@@ -454,6 +486,78 @@ function EmailTextInput()
     setEmail(text)
 
   }
+  function ChakePasswordError(text)
+  {
+
+    console.log(text);
+    if(text.length > 5)
+    {
+      console.log("found error");
+      setErrorPassword(false)
+    }
+
+    setPassword(text)
+
+  }
+  function ChakeFirstNameError(text)
+  {
+
+    console.log(text);
+
+    if(text != "")
+    {
+      
+      setErrorFirstName(false)
+    }
+
+    setFirstName(text)
+
+  }
+  function ChakeLastNameError(text)
+  {
+
+    console.log(text);
+    if(text != "")
+    {
+      console.log("found error");
+      setErrorLastName(false)
+    }
+
+    setLastName(text)
+
+  }
+
+  function ContinueAsAGuest()
+  {
+
+    Alert.alert(
+      'Enter as Guest',
+      'Are you sure you want to enter as a guest?',
+      [
+        { text: 'Yes', onPress: handleEnterAsGuest  },
+        { text: 'No', onPress: console.log("not enterd") },
+      ]
+    );
+
+    
+  
+    
+  };
+  
+
+  const handleEnterAsGuest = () => {
+    // Logic to handle entering as a guest
+    Alert.alert('You have entered as a guest!');
+
+    navigation.navigate('Nav')
+    setGoalIsVisible(false)
+    setFirstScreenIsVisible(true)
+  };
+
+  const handleCancel = () => {
+    // Logic to handle canceling
+    Alert.alert('You have canceled entering as a guest!');
+  };
   
 
  
@@ -465,7 +569,24 @@ function EmailTextInput()
     
     <View style={styles.loginContainer}>
       
-     {
+    <FadeInOut style={{ 
+        //openingScreen
+        width: openingScreenIsVisible ? '100%': 0,
+        height:  openingScreenIsVisible ? '100%': 0,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: openingScreenIsVisible ?  999 : 0,}}
+        visible={openingScreenIsVisible}
+        duration={!openingScreenIsVisible ? 0 : 800}
+        // scale={true}
+        >
+        <Image style={{height: 100, width: 200}} source={require('../../assets/shapeup_logo.png')}/>
+       {removeStartAnimation()}   
+
+        </FadeInOut>
+    
+        {
       firstScreenIsVisible ?
        <Text style={styles.title}>ShapeUp</Text>
        :
@@ -607,13 +728,13 @@ function EmailTextInput()
 
        
       <TextInput 
-       style={styles.textInput}
+       style={[styles.textInput,{borderColor : errorPassword ? 'rgb(168,29,29)' : '#fff'  }]}
       
       placeholder='Password'
       placeholderTextColor={'#fff'}
       secureTextEntry
       
-        onChangeText={text => setPassword(text)}
+        onChangeText={text => ChakePasswordError(text)}
        
         />
     </View>
@@ -650,22 +771,22 @@ function EmailTextInput()
     <Entypo  name="back" size={40} color="#fff" />
     </TouchableOpacity>
       <TextInput 
-      style={styles.textInput}
+      style={[styles.textInput,{borderColor : errorFirstName ? 'rgb(168,29,29)' : '#fff'  }]}
       placeholder='FirstName'
       keyboardType="name-phone-pad"
       leftIcon={<Entypo name="lock" size={24} color="#fff" />}
       
       placeholderTextColor={'#fff'}
-        onChangeText={text => setFirstName(text)}
+        onChangeText={text => ChakeFirstNameError(text)}
       />
       
       <TextInput 
-       style={styles.textInput}
+       style={[styles.textInput,{borderColor : errorLastName ? 'rgb(168,29,29)' : '#fff'  }]}
       placeholder='LastName'
       keyboardType="name-phone-pad"
       placeholderTextColor={'#fff'}
       
-        onChangeText={text => setLastName(text)}
+        onChangeText={text => ChakeLastNameError(text)}
        
        
         />
@@ -1089,7 +1210,7 @@ function EmailTextInput()
   
 
     <TouchableOpacity
-    onPress={()=>{ [navigation.navigate('Nav'), setGoalIsVisible(false), setFirstScreenIsVisible(true) ]}}
+    onPress={()=>{ [ContinueAsAGuest()]}}
     style={[styles.loginButton,{backgroundColor: 'rgba(243,243,243,0.9)', marginTop: 24, height: 40, borderWidth: 2, borderColor: '#78ab04'}]}
     >
         <Text style={{color: '#000', fontSize: 17,}}>Continue as  a guest</Text>
