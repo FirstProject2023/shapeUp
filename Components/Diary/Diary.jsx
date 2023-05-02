@@ -768,13 +768,13 @@ useEffect(() => {
 
       }
     }
-  }, 2000000); 
+  }, 200); 
 
 
    
 
   // console.log("index in useEffect" +  " " + index);
-/*   console.log("_____________________");
+/*   console.log("_______");
   console.log("test index in useEffect" +  " " + testIndex); */
 
   return () => clearInterval(intervalId);
@@ -1027,7 +1027,6 @@ if(auth.currentUser)
     <TouchableOpacity onPress={()=> setIsInstructions(true)} style={{position: 'absolute', left: 5, top: 5}}>
     <AntDesign name="questioncircleo" size={25} color="black" />
     </TouchableOpacity>
-
     <FadeInOut
     visible={isInstructions}
     scale={true}
