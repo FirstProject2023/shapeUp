@@ -485,10 +485,10 @@ padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
  
 
 <Text style={{marginTop:9}}>Please choose the amount in grams</Text>
+<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '58%', height: '12%', alignItems: 'center', marginTop:20, justifyContent: 'center'}}>
 <Picker
   style={{
-    marginTop:10,
-  width: '70%',
+  width: '93%',
   backgroundColor: oreng,
 
 }}
@@ -502,8 +502,7 @@ quantities.map((quantity,i) => (
             }
 
 </Picker>
-
-
+</View>
 
 
 
@@ -674,12 +673,12 @@ This calculator checks what your BMR is. That is, how many calories you burn in 
 
 <Text style={{color: oreng,fontSize:20,marginTop:10}}>your age</Text>
 
-
+<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '40%', height: '12%', alignItems: 'center', marginTop:20, justifyContent: 'center'}}>
     <Picker
   style={{
   
-    marginTop:32,
-  width: '70%',
+    marginTop: 20,
+  width: '93%',
   backgroundColor: oreng,
   marginBottom:20,
 }}
@@ -691,6 +690,7 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
         ))}
 
 </Picker>
+</View>
 
 <Text style={{marginTop:10,color:'white', fontSize:20,color:oreng}} >Height</Text>
 <View style={styles.slider}>
@@ -969,11 +969,11 @@ According to the result in this calculator, you will be able to know how many ca
 
 <Text style={{color: oreng,fontSize:13,marginTop:5}}>your age</Text>
 
-
+<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '60%', height: '12%', alignItems: 'center', marginTop:20, justifyContent: 'center'}}>
     <Picker
   style={{
-    marginTop:7,
-  width: '70%',
+    marginTop: 20,
+  width: '93%',
   backgroundColor: oreng,
   marginBottom:20,
 }}
@@ -985,12 +985,15 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
         ))}
 
 </Picker>
+</View>
 
-<Text style={{color: oreng,fontSize:13}}>Your level of sporting activity</Text>
-<Picker
+<Text style={{color: oreng,fontSize:13, marginTop: 10}}>Your level of sporting activity</Text>
+
+<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '60%', height: '12%', alignItems: 'center', marginTop:20, justifyContent: 'center'}}>
+    <Picker
   style={{
-    marginTop:17,
-  width: '70%',
+    marginTop: 20,
+  width: '93%',
   backgroundColor: oreng,
   marginBottom:20,
 }}
@@ -1005,6 +1008,7 @@ onValueChange={(itemValue) => [setActivValue(itemValue),HaendelWhatActive(itemVa
 <Picker.Item  label='Intense activity combined with physical work - every day' value='Intense activity combined with physical work' />
 
 </Picker>
+</View>
 
 <Text style={{color:'white', fontSize:15,color: oreng}} >Height</Text>
 <View style={styles.slider}>
@@ -1443,11 +1447,11 @@ Confused about what is better to eat? Here you can compare two foods and find ou
 <View style={{width:'50%',alignItems:'center'}}>
 
 <Text style={{marginTop:9}}>Type an amount of food number two</Text>
+<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '75%', height: '30%', alignItems: 'center', marginTop:10, justifyContent: 'center'}}>
 <Picker
   style={{
     marginRight:0,
-    marginTop:10,
-  width: '80%',
+  width: '93%',
   backgroundColor: oreng,
 }}
 selectedValue={quantityA}
@@ -1458,16 +1462,19 @@ onValueChange={(itemValue) => setQuantityA(itemValue)}
             ))}
 
 </Picker>
+</View>
 
 </View>
 
 <View style={{width:'50%',alignItems:'center'}}>
 
 <Text style={{marginTop:9}}>Type an amount of food number one</Text>
+
+<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '75%', height: '30%', alignItems: 'center', marginTop:10, justifyContent: 'center'}}>
 <Picker
   style={{
-    marginTop:10,
-  width: '80%',
+    marginRight:0,
+  width: '93%',
   backgroundColor: oreng,
 }}
 selectedValue={quantityB}
@@ -1478,12 +1485,13 @@ onValueChange={(itemValue) => setQuantityB(itemValue)}
             ))}
 
 </Picker>
+</View>
 
 </View>
 </View>
 
   <View style={styles.button}   >
-  <TouchableOpacity style={{height: 50,marginTop:50}}>
+  <TouchableOpacity style={{height: 50, marginTop:10}}>
   <Button  title='result' color='#0a2946' onPress={Res} style={{height: 150}}/> 
   </TouchableOpacity>
  
@@ -1841,11 +1849,10 @@ value={text}
 </View>
 </View>
 
-
+<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '80%', height: '12%', alignItems: 'center', marginTop:20, justifyContent: 'center'}}>
 <Picker
   style={{
-    marginTop:15,
-  width: '70%',
+  width: '93%',
   backgroundColor: oreng,
 }}
 selectedValue={finelText}
@@ -1856,12 +1863,14 @@ onValueChange={(itemValue) => setFinelText(itemValue)}
   }
 
 </Picker>
+</View>
 
 <Text style={{marginTop:19}}>נא לבחור את הכמות בגרמים</Text>
+
+<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '80%', height: '12%', alignItems: 'center', marginTop:20, justifyContent: 'center'}}>
 <Picker
   style={{
-    marginTop:10,
-  width: '70%',
+  width: '93%',
   backgroundColor: oreng,
 
 }}
@@ -1875,6 +1884,7 @@ quantities.map((quantity,i) => (
             }
 
 </Picker>
+</View>
 
 
 
@@ -2048,11 +2058,11 @@ padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
 
 <Text style={{color: oreng,fontSize:20,marginTop:20}}>הגיל שלך</Text>
 
-
+<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '40%', height: '12%', alignItems: 'center', marginTop:20, justifyContent: 'center'}}>
     <Picker
   style={{
-    marginTop:5,
-  width: '70%',
+    marginTop: 20,
+  width: '93%',
   backgroundColor: oreng,
   marginBottom:20,
 }}
@@ -2064,6 +2074,7 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
         ))}
 
 </Picker>
+</View>
 
 <Text style={{marginTop:10,color:'white', fontSize:20,color:oreng}} >גובה</Text>
 <View style={styles.slider}>
@@ -2345,11 +2356,11 @@ padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
 
 <Text style={{color: oreng,fontSize:13,marginTop:5}}>הגיל שלך</Text>
 
-
+<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '60%', height: '12%', alignItems: 'center', marginTop:20, justifyContent: 'center'}}>
     <Picker
   style={{
-    marginTop:17,
-  width: '70%',
+    marginTop: 20,
+  width: '93%',
   backgroundColor: oreng,
   marginBottom:20,
 }}
@@ -2361,12 +2372,15 @@ onValueChange={(itemValue) => setSelectedAgeValue(itemValue)}
         ))}
 
 </Picker>
+</View>
 
-<Text style={{color: oreng,fontSize:13}}>רמת הפעילות הספורטיבית שלך</Text>
-<Picker
+<Text style={{color: oreng, fontSize:13, marginTop: 10}}>רמת הפעילות הספורטיבית שלך</Text>
+
+<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '60%', height: '12%', alignItems: 'center', marginTop:20, justifyContent: 'center'}}>
+    <Picker
   style={{
-    marginTop:17,
-  width: '70%',
+    marginTop: 20,
+  width: '93%',
   backgroundColor: oreng,
   marginBottom:20,
 }}
@@ -2381,6 +2395,7 @@ onValueChange={(itemValue) => [setActivValue(itemValue),HaendelWhatActive(itemVa
 <Picker.Item  label='פעילות אינטנסיבית בשילוב עבודה פיזית - כל יום' value='פעילות אינטנסיבית בשילוב עבודה פיזית - כל יום' style={{ fontSize: 14 }} />
 
 </Picker>
+</View>
 
 <Text style={{color:'white', fontSize:15,color: oreng}} >גובה</Text>
 <View style={styles.slider}>
@@ -2678,12 +2693,10 @@ value={textB}
 
 
 <View style={{flexDirection:'row',marginTop:20}}>
-
+<View style={{marginRight:14, backgroundColor: '#d89b5c',borderRadius: 8 ,width: '38%', height: '43%', alignItems: 'center', marginTop:10, justifyContent: 'center'}}>
 <Picker
   style={{
-    marginTop:15,
-    marginRight:14,
-      width: '35%',
+      width: '93%',
   backgroundColor:oreng,
 }}
 selectedValue={finelText}
@@ -2694,11 +2707,12 @@ onValueChange={(itemValue) => setFinelText(itemValue)}
   }
  
 </Picker>
+</View>
 
+<View style={{marginRight:14, backgroundColor: '#d89b5c',borderRadius: 8 ,width: '38%', height: '43%', alignItems: 'center', marginTop:10, justifyContent: 'center'}}>
 <Picker
   style={{
-    marginTop:15,
-  width: '35%',
+      width: '93%',
   backgroundColor: oreng,
 }}
 selectedValue={finelText}
@@ -2709,20 +2723,20 @@ onValueChange={(itemValue) => setFinelText(itemValue)}
   }
 
 </Picker>
+</View>
 
 
 
 </View>
 
 
-<View style={{flexDirection:'row',marginTop:30}}>
+<View style={{flexDirection:'row',marginTop: -60}}>
 
 
+<View style={{marginRight:14, backgroundColor: '#d89b5c',borderRadius: 8 ,width: '38%', height: '40%', alignItems: 'center', marginTop:10, justifyContent: 'center'}}>
 <Picker
   style={{
-    marginRight:14,
-    marginTop:10,
-  width: '35%',
+      width: '93%',
   backgroundColor: oreng,
 }}
 selectedValue={quantityA}
@@ -2733,10 +2747,13 @@ onValueChange={(itemValue) => setQuantityA(itemValue)}
             ))}
 
 </Picker>
+</View>
+
+
+<View style={{marginRight:14, backgroundColor: '#d89b5c',borderRadius: 8 ,width: '38%', height: '40%', alignItems: 'center', marginTop:10, justifyContent: 'center'}}>
 <Picker
   style={{
-    marginTop:10,
-  width: '35%',
+      width: '93%',
   backgroundColor: oreng,
 }}
 selectedValue={quantityB}
@@ -2749,8 +2766,10 @@ onValueChange={(itemValue) => setQuantityB(itemValue)}
 </Picker>
 </View>
 
+</View>
+
   <View style={styles.button}   >
-  <TouchableOpacity style={{height: 50,marginTop:50}}>
+  <TouchableOpacity style={{height: 50,marginTop: 10}}>
   <Button  title='תוצאה' color='#0a2946' onPress={Res} style={{height: 150}}/> 
   </TouchableOpacity>
  

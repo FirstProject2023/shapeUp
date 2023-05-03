@@ -132,7 +132,7 @@ export default function Login({ navigation }) {
       WeightMap.push(i);
     }
           const WeightMap2 = [];
-    for (let i = 30; i <= weight-1 ; i += 1) {
+    for (let i = 40; i <= weight-1 ; i += 1) {
       WeightMap2.push(i);
     }
     
@@ -934,10 +934,10 @@ function EmailTextInput()
     <View style={{width: '100%', height: '85%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly'}}>
         <View style={{width: '35%', height: '75%', alignItems: 'center'}}> 
         <Text style={{color: '#fff', fontSize: 20, fontWeight: '800'}}>Height</Text>
+        <View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '42%', height: 66, alignItems: 'center', marginTop:10, justifyContent: 'center'}}>
         <Picker
           style={{
-          marginTop:10,
-          width: '35%',
+          width: '90%',
           backgroundColor: '#d89b5c',
       }}
       selectedValue={height}
@@ -950,6 +950,7 @@ function EmailTextInput()
             ))}
 
       </Picker>
+      </View>
       {height != "" ? <View style={{width: '80%', height: '30%', borderWidth: 2, borderRadius: 15, marginTop: 10, borderColor: '#fff', flexDirection: 'row', justifyContent: 'space-evenly', paddingTop: 6}}>
       <MaterialCommunityIcons name="human-male-height" size={30} color="#fff" />
       <Text style={{color: '#fff', fontSize: 20}}>{height}<Text style={{fontSize: 12}} >cm</Text></Text>
@@ -960,10 +961,10 @@ function EmailTextInput()
         </View>
         <View style={{width: '35%', height: '75%', alignItems: 'center'}}>
         <Text style={{color: '#fff', fontSize: 20, fontWeight: '800'}}>Weight</Text>
+        <View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '42%', height: 66, alignItems: 'center', marginTop:10, justifyContent: 'center'}}>
         <Picker
           style={{
-          marginTop:10,
-          width: '35%',
+          width: '90%',
           backgroundColor: '#d89b5c',
       }}
       selectedValue={weight}
@@ -976,6 +977,7 @@ function EmailTextInput()
             ))}
 
       </Picker>
+      </View>
       {weight != "" ? <View style={{width: '80%', height: '30%', borderWidth: 2, borderRadius: 15, marginTop: 10, borderColor: '#fff', flexDirection: 'row', justifyContent: 'space-evenly', paddingTop: 6}}>
       <MaterialCommunityIcons name="weight" size={30} color="#fff" />
       <Text style={{color: '#fff', fontSize: 20}}>{weight}<Text style={{fontSize: 12}} >kg</Text></Text>
@@ -1018,11 +1020,12 @@ function EmailTextInput()
 
 
     <Text style={{fontSize: 20, color: '#fff', marginTop: 20}}>How active are you usually?</Text>
+    <View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '72%', height: 66, alignItems: 'center', marginTop:50, justifyContent: 'center'}}>
     <Picker
     style={{
-    marginTop: 30,
-    width: '70%',
-    backgroundColor: 'rgb(255, 178, 71)',
+    marginTop: 20,
+    width: '95%',
+    backgroundColor: '#d89b5c',
     marginBottom:20,
   }}
   selectedValue={averageActivity}
@@ -1036,6 +1039,7 @@ function EmailTextInput()
     <Picker.Item  label='Intense activity combined with physical work - every day' value={1.9} />
 
     </Picker>
+    </View>
 
     <View style={styles.buttonContainer}>
       <TouchableOpacity
@@ -1075,7 +1079,7 @@ function EmailTextInput()
     <Entypo  name="back" size={40} color="#fff" />
     </TouchableOpacity>
 
-      <TouchableOpacity onPress={showDatepicker} style={{width: '75%', height: '30%', backgroundColor: 'rgba(255, 178, 71,0.9)', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginTop: 40}}>
+      <TouchableOpacity onPress={showDatepicker} style={{width: '75%', height: '30%', backgroundColor: 'rgba(255, 178, 71,0.9)', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginTop: 80}}>
       <Text style={{color: '#fff', fontSize: 18, fontWeight: '700'}}>Press to select your birth date</Text>
       </TouchableOpacity>
 
@@ -1090,7 +1094,7 @@ function EmailTextInput()
 
     <View style={styles.buttonContainer}>
     <TouchableOpacity
-    style={[styles.loginButton, { marginTop: 40}]}
+    style={[styles.loginButton, { marginTop: 60}]}
     onPress={()=> [ BirthdayTextInput(date)]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 19, fontWeight: '800'}}>Continue</Text>
@@ -1108,7 +1112,7 @@ function EmailTextInput()
         height: '100%',
         alignItems: 'center',
         position: 'absolute',
-        top: 160,
+        top: 100,
         zIndex: goalIsVisible ?  999 : 0,}} 
         visible={goalIsVisible}
         duration={!goalIsVisible ?  400 : 800}
@@ -1120,11 +1124,11 @@ function EmailTextInput()
     </TouchableOpacity>
 
     <Text  style={{fontSize: 25, color: '#fff', fontWeight: 'bold'}}>what is your goal weight?</Text>
+    <View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '48%', height: 66, alignItems: 'center', marginTop:20, justifyContent: 'center'}}>
     <Picker
           style={{
-          marginTop:10,
-          width: '35%',
-          backgroundColor: 'rgba(255, 178, 71,0.9)',
+          width: '75%',
+          backgroundColor: '#d89b5c',
       }}
       selectedValue={weightGoal}
       
@@ -1138,15 +1142,21 @@ function EmailTextInput()
             ))}
 
       </Picker>
+      </View>
+
+      {weightGoal != "" ? <View style={{width: '30%', height: '14%', borderWidth: 2, borderRadius: 15, marginTop: 10, borderColor: '#fff', flexDirection: 'row', justifyContent: 'space-evenly', paddingTop: 6}}>
+      <MaterialCommunityIcons name="weight" size={30} color="#fff" />
+      <Text style={{color: '#fff', fontSize: 20}}>{weightGoal}<Text style={{fontSize: 12}} >kg</Text></Text>
       
-      <Text style={{color: '#fff', fontSize: 14, fontWeight: '700'}}>{weightGoal}</Text>
+      </View>: null}
+      
 
       <View style={{width: '100%', height: '50%', marginTop: 10, alignItems:'center'}}>
       <Text style={{marginTop: 8, color: '#fff', fontSize: 20, fontWeight: '600'}}>Choose one way</Text>
       <View style={{width: '100%', height: '80%', flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10}}>
       <View style={{ width: '32%', alignItems: 'center'}}>
-      <TouchableOpacity onPress={()=> [setEndDateIsVisible(true), setWeeklyGoalIsVisible(false) ]} style={{width: '100%',height: '25%', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderRadius: 15, borderColor: '#fff'}}>
-        <Text style={{fontSize: 16, color: '#fff'}}>
+      <TouchableOpacity onPress={()=> [setEndDateIsVisible(true), setWeeklyGoalIsVisible(false) ]} style={{width: '100%',height: '25%', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderRadius: 15, borderColor: endDateIsVisible ? 'rgba(255, 178, 71,0.9)' : '#fff'}}>
+        <Text style={{fontSize: 16, color: endDateIsVisible ? 'rgba(255, 178, 71,0.9)' : '#fff'}}>
          End date
         </Text>
       </TouchableOpacity>
@@ -1155,7 +1165,7 @@ function EmailTextInput()
        {endDateIsVisible ?
        <View style={{ alignItems: 'center', height: '75%', width: '100%'}}>
 
-        <TouchableOpacity onPress={showDatepicker} style={{width: '40%', height: '58%', backgroundColor: 'rgba(255, 178, 71,0.9)', alignItems: 'center', justifyContent: 'center',marginTop:10}}>
+        <TouchableOpacity onPress={showDatepicker} style={{width: '50%', height: '57%', backgroundColor: '#d89b5c',borderTopRightRadius: 6,borderTopLeftRadius: 6, alignItems: 'center', justifyContent: 'center',marginTop:10}}>
       
         <AntDesign name="calendar" size={24} color="#fff" />
 
@@ -1174,20 +1184,20 @@ function EmailTextInput()
       </View>
 
       <View style={{ width: '32%', alignItems: 'center'}}>
-      <TouchableOpacity onPress={()=> [setWeeklyGoalIsVisible(true), setEndDateIsVisible(false)]} style={{width: '100%',height: '25%', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderRadius: 15, borderColor: '#fff'}}>
-        <Text style={{fontSize: 16, color: '#fff'}}>
+      <TouchableOpacity onPress={()=> [setWeeklyGoalIsVisible(true), setEndDateIsVisible(false)]} style={{width: '100%',height: '25%', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderRadius: 15, borderColor: WeeklyGoalIsVisible ? 'rgba(255, 178, 71,0.9)' : '#fff'}}>
+        <Text style={{fontSize: 16, color: WeeklyGoalIsVisible ? 'rgba(255, 178, 71,0.9)' : '#fff'}}>
           Weekly goal
         </Text>
       </TouchableOpacity>
       {
         WeeklyGoalIsVisible ?
         <View style={{ alignItems: 'center', height: '75%', width: '100%'}}>
-
+        <View style={{backgroundColor: '#d89b5c',borderTopRightRadius: 6,borderTopLeftRadius: 6,width: '50%', height: '57%', alignItems: 'center', marginTop: 10, justifyContent: 'center'}}>
          <Picker
           style={{
           marginTop:10,
-          width: '40%',
-          backgroundColor: 'rgba(255, 178, 71,0.9)',
+          width: '82%',
+          backgroundColor: '#d89b5c',
       }}
       selectedValue={weight}
       onValueChange={(itemValue) => setWeeklyGoal(itemValue)}
@@ -1201,6 +1211,7 @@ function EmailTextInput()
       <Picker.Item  label='Lose 1 kg per week' value={4} />
 
       </Picker>
+      </View>
       <View style={{width: '88%',height: '25%', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: '#fff', borderBottomEndRadius: 8, borderBottomLeftRadius: 8, paddingBottom: 1}}>
         <Text style={{color: '#fff', fontSize: 13, fontWeight: '700'}}>{WeeklyGoal}</Text>
 
@@ -1224,7 +1235,7 @@ function EmailTextInput()
 
     <TouchableOpacity
     onPress={hendelUpdateGool}
-    style={styles.loginButton}
+    style={[styles.loginButton,{marginTop: 80}]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Continue</Text>
     </TouchableOpacity>
@@ -1238,7 +1249,7 @@ function EmailTextInput()
         height: startViewIsVisible ? '390%' : 0 ,
         alignItems: 'center',
         position: 'absolute',
-        top: -550,
+        top: startViewIsVisible ? -550: 300,
         backgroundColor: '#fff',
         borderRadius: 10,
         zIndex: startViewIsVisible ?  999 : 0,}}

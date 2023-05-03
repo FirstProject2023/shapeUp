@@ -194,7 +194,7 @@ const panResponder = PanResponder.create({
 
 
 
-      <TouchableOpacity style={styles.buttonTosearch} onPress={handleModalOpen}>
+      <TouchableOpacity style={[styles.buttonTosearch]} onPress={handleModalOpen}>
         
         {isEnglish ? <Text style={styles.buttonText}>Select Language</Text> 
         :
