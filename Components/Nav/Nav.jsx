@@ -18,7 +18,7 @@ import { TouchableOpacity } from 'react-native';
 
 
 export default function Nav() {
-
+  
     const BottomTab  = createBottomTabNavigator();
 
   return (

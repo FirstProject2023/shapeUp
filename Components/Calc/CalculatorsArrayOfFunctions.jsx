@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View,useWindowDimensions, TextInput, Button,Modal,TouchableHighlight,Alert,
-  ScrollView,FlatList,TouchableOpacity, Keyboard } from 'react-native'
+  ScrollView,FlatList,TouchableOpacity, Keyboard , KeyboardAvoidingView } from 'react-native'
 import React, {  useState, useContext,useEffect,useRef } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FadeInOut from 'react-native-fade-in-out';
@@ -12,9 +12,6 @@ import { AntDesign } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons'; 
 
-
-
-
 export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeightOfResView,
   bmiSearchResult,setBmiSearchResult,setWhatCalcIs,fatValue,setFatValue,carbohydratesValue,setIsMan,
   setCarbohydratesValue,proteinValue,setProteinValue,finelText,setFinelText,setFinelTextB,caloriesValue,setCaloriesValue,
@@ -23,10 +20,10 @@ export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeig
   
   
   let arrOfFunctions = [
+    Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick),
     ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult ,setWhatCalcIs
       ,fatValue,setFatValue,carbohydratesValue,setCarbohydratesValue,proteinValue,setProteinValue,
       finelText,setFinelText,caloriesValue,setCaloriesValue,handleButtonClick),
-    Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick),
      BMR(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,setIsMan,handleButtonClick),
      SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick),
        WhatIsFatter( finelText,setFinelText,setFinelTextB,calorValueA,calorValueB,setCalorValueA,setCalorValueB,
@@ -126,7 +123,7 @@ else{
 
   handleButtonClick();
   setBmiSearchResult(weightValue/((heightValue*0.01)*(heightValue*0.01)));
-  setWhatCalcIs(1);
+  setWhatCalcIs(0);
   setHeightOfResView(100);
 }
   }
@@ -137,7 +134,7 @@ else{
 
     return(
       
-      <View style={[styles.container,{ width: width}]}>
+      <View style={[styles.container,{ width: width }]}>
   
         <View style={styles.viewContainer}>
 
@@ -294,19 +291,7 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
   const [showFlat,setShowFlat] = useState(1);
 
 
-  useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleKeyboardDidHide);
-
-    return () => {
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
-  const handleKeyboardDidHide = () => {
-    // Automatically trigger button press when keyboard is hidden
-   
-  };
-
+ 
 
 
 
@@ -339,11 +324,52 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
    
   };
 
+  const [approval2 , setApproval2] =useState(true);
+
+
+  const handleResOfProteintake = (text) => {
+    
+console.log(text);
+
+    setFinelText2(text)
+    setFinelText(text)
+    setResults([]);
+
+    fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&ingr=${text}`)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      setData2(data.parsed[0].food)
+      setApproval2(true)
+
+  
+    })
+    .catch(error => {
+      Alert.alert(
+        'Erro',
+        'No result found ',
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        {cancelable: false},
+      );
+
+      setApproval2(false)
+      
+    });
+
+
+    
+  };
+
   const handleChange = (item) => {
 
     setFinelText2(item);
     setFinelText(item)
     setResults([]);
+
+
   }
  
   
@@ -362,13 +388,18 @@ function ChangeText()
 }
 
 
-  function Res()
-  {
-    if(!data2.nutrients)
+function Res()
+{
+
+
+  console.log(approval2);
+
+
+    if(!data2.nutrients || !approval2)
      {
        Alert.alert(
          'Erro',
-         'Mast to ctype food ',
+         'No result found ',
          [
            {text: 'OK', onPress: () => console.log('OK Pressed')},
          ],
@@ -397,7 +428,7 @@ function ChangeText()
     setCaloriesValue(data2.nutrients.ENERC_KCAL * (quantity/100));
    
     handleButtonClick();
-      setWhatCalcIs(0);
+      setWhatCalcIs(1);
       setHeightOfResView(420);
     
   }
@@ -405,12 +436,12 @@ function ChangeText()
   } 
     return(
     
-      <View style={[styles.container,{ width: width}]}>
+      <View style={[styles.container,{ width: width }]}>
 
         <View style={styles.viewContainer}>
 
         <TouchableOpacity onPress={()=> setExplanation(true)} style={{position: 'absolute', left: 20, top: 11}}>
-        <MaterialCommunityIcons name="cloud-question" size={45} color={oreng} />
+        <MaterialCommunityIcons name="cloud-question" size={35} color={oreng} />
     </TouchableOpacity>
 
 
@@ -441,19 +472,32 @@ padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
       <Text style={{marginTop:19}}>Here you will type the name of the product </Text>
       
 
-{/*  <TouchableOpacity style={{height: 40,marginRight:200}}>
-  <Button  title='result' color='#0a2946' onPress={Res} style={{height: 150}}/> 
-  </TouchableOpacity> */}
       
-      <TextInput
-      placeholder=' Enter here ...' 
-      style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'70%',marginTop:10}}
-       
-        value={query}
-        onChangeText={handleSearch}
-      />
+      <View style={{flexDirection:'row'}}>
 
-      {finelText2  ? <Text style={{marginTop:9,fontSize:20}}>{finelText2}</Text> : null}
+
+   
+ <TouchableOpacity style={{height: 40,marginRight:10,marginTop:13}}>
+  <Button  title='result' color='#0a2946' onPress={()=> handleResOfProteintake(finelText2 || query)} style={{height: 150}}/> 
+  </TouchableOpacity>
+ 
+
+      <TextInput
+      placeholder='   Enter here ...' 
+      style={{backgroundColor:'#fff',borderColor:'black',borderWidth:2,width:'55%',marginTop:10, borderRadius:4}}
+      
+      value={query}
+        onChangeText={handleSearch}
+        />
+
+
+        </View>
+
+      {finelText2 && results.length == 0  ? 
+      <View style={{borderWidth:1,borderColor:'black', marginTop:3,borderRadius:4 , alignItems:'center', justifyContent:'center'}}>
+      <Text style={{padding:5 , fontSize:20}}>{finelText2}</Text> 
+      </View>
+      : null}
 
  {
   showFlat ?
@@ -463,8 +507,8 @@ padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
   renderItem={({ item }) =>
   <TouchableOpacity onPress={()=>handleChange(item)}>
 
-    <View style={{borderWidth:2,borderColor:'black',height:30,width:228}} >
-<Text>{item}</Text>
+    <View style={{borderWidth:2,borderColor:'black',height:30,width:228 , borderRadius:4}} >
+<Text>{item }</Text>
  
   </View>
 
@@ -1140,6 +1184,7 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
       })
       .then((data) => {
         setData1(data.parsed[0].food)
+        console.log(data1);
         
         
       })
@@ -1165,6 +1210,7 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
       })
       .then((data) => {
         setData2(data.parsed[0].food)
+        console.log(data2);
         
         
       })
@@ -1177,16 +1223,33 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
     const handleSearch1 = (text) => {
       setQuery1(text);
       setShowFlat(1);
+      setEnter2(false)
      
     };
     const handleSearch2 = (text) => {
       setQuery2(text);
       setShowFlat(1);
+      setEnter1(false)
      
     };
   
     const handleChange1 = (item) => {
   
+      
+        fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&ingr=${item}`)
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            setData1(data.parsed[0].food)
+            console.log(data1);
+            
+            
+          })
+          .catch(error => {
+            // handle the error
+          });
+       
       setFinelText2(item);
       setFinelText(item)
       setResults1([]);
@@ -1194,13 +1257,37 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
     }
     const handleChange2 = (item) => {
   
+      fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&ingr=${item}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setData2(data.parsed[0].food)
+        console.log(data2);
+        
+      })
+      .catch(error => {
+        // handle the error
+      });
+
       setFinelText3(item);
-      setFinelText(item)
+      setFinelTextB(item)
       setResults2([]);
       setShowFlat(0);
     }
+    const handleEnter1 = (item) => {
+      
+      setFinelText3(item);
+      setEnter1(true)
+    }
+    const handleEnter2 = (item) => {
+      
+      setFinelText2(item);
+      setEnter2(true)
+    }
    
-
+const [enter1,setEnter1]=useState(false);
+const [enter2,setEnter2]=useState(false);
 
 
 
@@ -1249,11 +1336,14 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
       
         function Res()
         {
+
+
+
           if(!data2.nutrients || !data1.nutrients)
           {
             Alert.alert(
               'Erro',
-              'Mast to ctype food ',
+              'Mast to enter a food',
               [
                 {text: 'OK', onPress: () => console.log('OK Pressed')},
               ],
@@ -1303,27 +1393,19 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
         }
 
 
-  function ChangeTextA()
-{
- setFinelA(textA)
- 
-}
-function ChangeTextB()
-{
-  setFinelB(textB);
-}
+
   
     return(
     
-      <View style={[styles.container,{ width: width}]}>
+      <View style={[styles.container,{ width: width }]}>
 
-        <View style={styles.viewContainer}>
+        <View style={[styles.viewContainer]}>
           
       <Text style={styles.textFontB}>What Is Fatter</Text>
 
 
       <TouchableOpacity onPress={()=> setExplanation(true)} style={{position: 'absolute', left: 20, top: 11}}>
-        <MaterialCommunityIcons name="cloud-question" size={45} color={oreng} />
+        <MaterialCommunityIcons name="cloud-question" size={35} color={oreng} />
     </TouchableOpacity>
 
 
@@ -1346,7 +1428,7 @@ Confused about what is better to eat? Here you can compare two foods and find ou
 </FadeInOut>
 
  
-<View style={{flexDirection:'row',width:'100%',marginTop:15}}>
+<View style={{flexDirection:'row',width:'100%',marginTop:15 }}>
 
 
 
@@ -1355,16 +1437,23 @@ Confused about what is better to eat? Here you can compare two foods and find ou
 <Text style={{marginTop:19}}>Type the name of food number one</Text>
       <TextInput
       placeholder=' Enter here ...' 
-      style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'70%',marginTop:15}}
+      style={{backgroundColor:'#fff',borderColor:'black',borderWidth:2,borderRadius:4,  width:'80%',marginTop:15}}
        
         value={query2}
         onChangeText={handleSearch2}
       />
 
-      {finelText3  ? 
-     
-      <Text style={{marginTop:9,fontSize:20,color:oreng}}>{finelText3}</Text> 
-     
+  
+      {finelText3  && results2.length == 0   ? 
+      <View style={{flexDirection:'row'}}>
+      <View style={{backgroundColor: enter1 ? 'green' : '#fff', borderWidth:1,borderColor:'black' , marginTop:3,borderRadius:4 , alignItems:'center', justifyContent:'center'}}>
+      <Text style={{padding:8 , fontSize:17, color: enter1 ? '#fff' : oreng }}>{finelText3}</Text> 
+      </View>
+       <TouchableOpacity style={{padding:10, backgroundColor:oreng ,borderWidth:1,borderColor:'black', marginTop:3,
+       borderRadius:4 , alignItems:'center', justifyContent:'center', marginLeft:2} } onPress={()=> handleEnter1(finelText3)}  >
+       <Text style={{color:'#fff'}}>ENTER</Text>
+     </TouchableOpacity>
+      </View>
       : null}
 
  {
@@ -1400,13 +1489,28 @@ Confused about what is better to eat? Here you can compare two foods and find ou
 <Text style={{marginTop:19}}>Type the name of food number two</Text>
       <TextInput
       placeholder=' Enter here ...' 
-      style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'70%',marginTop:15}}
+      style={{backgroundColor:'#fff',borderColor:'black',borderWidth:2,borderRadius:4,  width:'80%',marginTop:15}}
        
         value={query1}
         onChangeText={handleSearch1}
       />
 
-      {finelText2  ? <Text style={{marginTop:9,fontSize:20,color:oreng}}>{finelText2}</Text> : null}
+{finelText2  && results1.length == 0   ? 
+
+<View style={{flexDirection:'row'}}>
+
+      <View style={{backgroundColor:enter2 ? 'green' : '#fff', borderWidth:1,borderColor:'black', marginTop:3,borderRadius:4 , alignItems:'center', justifyContent:'center' }}>
+      <Text style={{padding:8 , fontSize:17, color: enter2 ? '#fff' : oreng }}>{finelText2}</Text> 
+      </View>
+
+      <TouchableOpacity style={{padding:10, backgroundColor:oreng ,borderWidth:1,borderColor:'black',
+       marginTop:3,borderRadius:4 , alignItems:'center', justifyContent:'center', marginLeft:2}} onPress={()=> handleEnter2(finelText2)} >
+      <Text style={{color:'#fff'}}>ENTER</Text>
+    </TouchableOpacity>
+</View>
+      : null}
+
+    
 
  {
   showFlat ?
@@ -1441,13 +1545,13 @@ Confused about what is better to eat? Here you can compare two foods and find ou
 </View>
 
 
-<View style={{flexDirection:'row',marginTop:20}}>
+<View style={{flexDirection:'row',marginTop:0}}>
 
 
-<View style={{width:'50%',alignItems:'center'}}>
+<View style={{width:'50%',height:'70%' ,alignItems:'center' }}>
 
 <Text style={{marginTop:9}}>Type an amount of food number two</Text>
-<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '75%', height: '30%', alignItems: 'center', marginTop:10, justifyContent: 'center'}}>
+<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '75%', height: '40%', alignItems: 'center', marginTop:20, justifyContent: 'center'}}>
 <Picker
   style={{
     marginRight:0,
@@ -1466,11 +1570,11 @@ onValueChange={(itemValue) => setQuantityA(itemValue)}
 
 </View>
 
-<View style={{width:'50%',alignItems:'center'}}>
+<View style={{width:'50%',alignItems:'center',height:'70%'}}>
 
 <Text style={{marginTop:9}}>Type an amount of food number one</Text>
 
-<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '75%', height: '30%', alignItems: 'center', marginTop:10, justifyContent: 'center'}}>
+<View style={{backgroundColor: '#d89b5c',borderRadius: 8 ,width: '75%', height: '40%', alignItems: 'center', marginTop:20, justifyContent: 'center'}}>
 <Picker
   style={{
     marginRight:0,
@@ -1490,12 +1594,10 @@ onValueChange={(itemValue) => setQuantityB(itemValue)}
 </View>
 </View>
 
-  <View style={styles.button}   >
-  <TouchableOpacity style={{height: 50, marginTop:10}}>
-  <Button  title='result' color='#0a2946' onPress={Res} style={{height: 150}}/> 
+  <TouchableOpacity style={{width:'60%' }}>
+  <Button  title='result' color='#0a2946' onPress={Res} /> 
   </TouchableOpacity>
- 
-  </View>
+  
   </View>
   </View>
 
@@ -2625,7 +2727,7 @@ function ChangeTextB()
   
     return(
     
-      <View style={[styles.container,{ width: width}]}>
+      <View style={[styles.container,{ width: width , }]}>
 
         <View style={styles.viewContainer}>
           
@@ -2783,14 +2885,15 @@ const styles = StyleSheet.create({
     container: {
     
         alignItems:'center',
-      height:'100%',
+      height:'80%',
       width:'100%',
     
     },
     viewContainer: {
       zIndex:999,
       borderTopLeftRadius: 10,
-     borderTopRightRadius: 10,
+      borderTopRightRadius: 10,
+      
      backgroundColor:'white',
     shadowColor: 'black',
     shadowOpacity: 0.8,
@@ -2832,7 +2935,7 @@ marginTop:15,
       width:"100%",
     },
     button:{
-      marginTop:28,
+     
         width:'60%',
       
     },

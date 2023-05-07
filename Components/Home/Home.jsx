@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View,Image, ImageBackground,TouchableOpacity,Button,ScrollView ,
    TouchableHighlight, TouchableHighlightComponent, StatusBar,Animated ,PanResponder,Modal,
-   Dimensions,TouchableWithoutFeedback,Linking   } from 'react-native'
+   Dimensions,TouchableWithoutFeedback,Linking , InteractionManager   } from 'react-native'
 import React,{useState,useEffect} from 'react';
 
 
@@ -12,15 +12,10 @@ import { Foundation } from '@expo/vector-icons';
 
 import LottieView from 'lottie-react-native';
 
-
 import tipsData from '../Jsons/tips.json'
 import FadeInOut from 'react-native-fade-in-out';
 
 import { MaterialIcons } from '@expo/vector-icons';
-
-
-
-import Svg, { Circle, Path } from 'react-native-svg';
 
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
@@ -28,11 +23,17 @@ import { SceneView } from 'react-navigation';
 
 import tips from '../Jsons/tips.json';
 
-
-
-
 export default function Home({ navigation }) {
-
+  
+    useEffect(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        // Perform your animations or long-running tasks here
+      });
+  
+      return () => {
+        task.cancel(); // Cancel the task if the component unmounts
+      };
+    }, []);
 
 
   const userCollectionRef = collection(db,"users");
@@ -248,8 +249,8 @@ const latitude = 32.187434 ; // Example latitude
 
       const userDoc = doc(db,"users",id)
   
-      console.log(singleDay);
-      let currDaysDetails = [...currentUserData.daysDetails]
+/*       console.log(singleDay);
+ */      let currDaysDetails = [...currentUserData.daysDetails]
     
       currDaysDetails[singleDay].WatchTheTip = true;
   

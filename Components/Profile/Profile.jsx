@@ -260,8 +260,7 @@ const days = diffInDays - (years * 365) - (months * 30);
 
 function changeName()
 {
-console.log(newFirstName);
-console.log(newLastName);
+
   
   Alert.alert(
     'Confirmation',
@@ -286,10 +285,7 @@ console.log(newLastName);
 
   function enterToDo()
   {
-   
-    console.log(newLastName);
-    console.log("banana");
-    console.log(newFirstName);
+  
 
     if(newLastName != "" && newFirstName != "")
     {
@@ -320,21 +316,7 @@ console.log(newLastName);
    
   }
 
-  useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleKeyboardDidHide);
 
-    return () => {
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
-  const handleKeyboardDidHide = () => {
-    // Automatically trigger button press when keyboard is hidden
-   
-   changeName()
-  
-   
-  };
 
   const handleBackgroundPress = () => {
     
@@ -520,7 +502,7 @@ if(auth.currentUser&& currentUserData)
 
 <View style={{flexDirection:'row'}}>
 
-      <TouchableOpacity style={{height:"130%",width:"28%",borderRadius:100, position:'absolute',top:-21,right:255,zIndex:100,backgroundColor:'#F0FFFF'
+      <TouchableOpacity style={{height:"130%",width:"28%",borderRadius:100, position:'absolute',top:-21,left:20,zIndex:100,backgroundColor:'#F0FFFF'
       ,borderWidth:2,justifyContent:'center',alignItems:'center'}}>
              <Text style={{fontSize:17,color:oreng,textAlign:'center',fontWeight: '700'}}> {currentUserData ? currentUserData.weightGoal : null } kg </Text>
           <Text style={{fontSize:20,color:"black",textAlign:'center',fontWeight: '700'}}> Purpose</Text>
@@ -879,9 +861,9 @@ null
   
           <View style={styles.details}>
           
-          <AntDesign style={{marginLeft:15}} name="lock" size={24} color="black"  />
+          
 
-          <FontAwesome style={{marginEnd:0}} name="eye" size={28} color={eye ? "green" : "black" }  
+          <FontAwesome style={{marginLeft:15}} name="eye" size={28} color={eye ? "green" : "black" }  
            onPress={()=> setEye(!eye)}
            />
           <Text style={{fontSize:15,color:"black",textAlign:'center',marginEnd:0}}>{ currentUserData && eye ? currentUserData.password : "password" } </Text>
