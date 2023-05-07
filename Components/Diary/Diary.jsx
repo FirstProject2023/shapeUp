@@ -6,6 +6,7 @@ import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc} from 'fire
 import { oreng,blue } from '../Globals/colors';
 import {Picker} from '@react-native-picker/picker';
 import FadeInOut from 'react-native-fade-in-out';
+import {openBrowserAsync} from 'expo-web-browser';
 // שניאור
 import { v4 as uuidv4 } from 'uuid';
 import { AntDesign } from '@expo/vector-icons'; 
@@ -27,6 +28,11 @@ export default function Diary({ navigation }) {
   const [currentUserData, setCurrentUserData] = useState(null);
 
   const [isInstructions, setIsInstructions] = useState(false);
+  const [isWaterInstructions, setIsWaterInstructions] = useState(false);
+  const [isSleepInstructions, setIsSleepInstructions] = useState(false);
+  const [isActivityInstructions, setIsActivityInstructions] = useState(false);
+  const [isFoodInstructions, setIsFoodInstructions] = useState(false);
+  const [isCaloriesInstructions, setIsCaloriesInstructions] = useState(false);
   const [isFoodArea, setIsFoodArea] = useState(false);
   
   const [water, setWater] = useState(0);
@@ -879,33 +885,26 @@ function RmrCalculate(activity) {
     else{
       updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     (currentUserData ? currentUserData.averageActivity : null)  )) , copyIndexDay);
     }
-
-    // updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *   (currentUserData ? currentUserData.daysDetails[copyIndexDay].activityLevel : null) )) , copyIndexDay);
     updateDailyDayTarget(currentUserData ? currentUserData.id: null, (Math.floor(currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint : null)) - (currentUserData ? currentUserData.calToLoseDay : null), copyIndexDay);
-  
-      /*   console.log("copyIndexDay:" + "  " + copyIndexDay);
-        console.log("weight:" + "  " + weight);
-        console.log("height:" + "  " + height);
-        console.log("years:" + "  " + years);
-        console.log("activityLevel:" + "  " + activityLevel);
-        console.log("balancePoint:" + "  " + (currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint: null));
-        console.log("dayTarget:" + "  " + (currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget: null)); */
-
-
-
-
-        // dayTarget
-
-        
-
+   
       }
       
-      else{
+      else{ 
+
+    if(activity != 0){
+      updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((447.593) + ( (9.25 * weight)+(4.7 * height)-(5.6 * years))  *     activity )) , copyIndexDay);
+    }
+    else{
+      updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((447.593) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     (currentUserData ? currentUserData.averageActivity : null)  )) , copyIndexDay);
+    }
+    updateDailyDayTarget(currentUserData ? currentUserData.id: null, (Math.floor(currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint : null)) - (currentUserData ? currentUserData.calToLoseDay : null), copyIndexDay);
+  
         
-        
-        // setRmrPerDay(( (447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)) * valueToMult ));    
       } 
 }
+
+
+
 
 
 const width = Dimensions.get('window').width;
@@ -1024,18 +1023,98 @@ if(auth.currentUser)
 
 
     <View style={{backgroundColor: '#fff', width: '90%', height: '70%', marginTop: 5, alignItems: 'center', flexDirection: 'column', borderRadius: 8}}>
-    <TouchableOpacity onPress={()=> setIsInstructions(true)} style={{position: 'absolute', left: 5, top: 5}}>
+  {/* WaterInstructions */}
+    <FadeInOut
+    visible={isWaterInstructions}
+    scale={true}
+     style={{backgroundColor: '#FFE7C3' ,marginTop: 30, width: 280,  height: isWaterInstructions ? 320: 0, alignItems: 'center', position: 'absolute', top: 150,left: 60, padding: 10, borderRadius: 8, zIndex: isWaterInstructions ? 999: 0, borderWidth: 1}}>
+      
+    <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsWaterInstructions(false)}>
+    <Feather name="x-circle" size={30} color="#fff"/>
+    </TouchableOpacity>
+    <Text style={{marginTop: 5, fontSize: 20, fontWeight: '600'}}>drinking water</Text>
+    <Text>Drinking water can aid in weight loss by increasing feelings of fullness, boosting metabolism, and reducing calorie intake when consumed in place of high-calorie beverages. {"\n\n"} Try to make sure you drink enough every day, here you can mark the amount of water you drank so you can keep track of it. {"\n"}</Text>
+    <Text style={{fontWeight: '600'}}>How much should you drink a day? 
+    <TouchableOpacity onPress={()=> openBrowserAsync('https://www.medindia.net/patients/calculators/daily-water-requirement.asp')}>
+    <Text style={{color: '#d8911f', textDecorationLine: 'underline', fontSize: 15, fontWeight: '800'}}>press here</Text>
+    </TouchableOpacity>
+    </Text>
+    </FadeInOut>
+
+  {/* sleepInstructions */}
+    <FadeInOut
+    visible={isSleepInstructions}
+    scale={true}
+     style={{backgroundColor: '#FFE7C3' ,marginTop: 30, width: 320,  height: isSleepInstructions ? 225: 0, alignItems: 'center', position: 'absolute', top: 255,left: 35, padding: 10, borderRadius: 8, zIndex: isSleepInstructions ? 999: 0, borderWidth: 1}}>
+      
+    <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsSleepInstructions(false)}>
+    <Feather name="x-circle" size={30} color="#fff"/>
+    </TouchableOpacity>
+    <Text style={{marginTop: 5, fontSize: 20, fontWeight: '600'}}>Sleep</Text>
+    <Text>Getting sufficient sleep can assist in maintaining or losing weight by regulating appetite hormones, reducing food cravings, and improving metabolism.{"\n"} Try to organize your day so that you can sleep on time.{"\n"}</Text>
+    <Text style={{fontWeight: '600'}}>How many hours should you sleep a day?
+    <TouchableOpacity onPress={()=> openBrowserAsync('https://www.cdc.gov/sleep/about_sleep/how_much_sleep.html')}>
+    <Text style={{color: '#d8911f', textDecorationLine: 'underline', fontSize: 15, fontWeight: '800'}}>press here</Text>
+    </TouchableOpacity>
+    </Text>
+    </FadeInOut>
+
+  {/* activityInstructions */}
+    <FadeInOut
+    visible={isActivityInstructions}
+    scale={true}
+     style={{backgroundColor: '#FFE7C3' ,marginTop: 30, width: 300,  height: isActivityInstructions ? 260: 0, alignItems: 'center', position: 'absolute', top: 5,left: 40, padding: 10, borderRadius: 8, zIndex: isActivityInstructions ? 999: 0, borderWidth: 1}}>
+      
+    <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsActivityInstructions(false)}>
+    <Feather name="x-circle" size={30} color="#fff"/>
+    </TouchableOpacity>
+    <Text style={{marginTop: 5, fontSize: 20, fontWeight: '600'}}>Activity</Text>
+    <Text>Based on your activity level, we can estimate how many calories you will burn today, and based on that, the number of calories you can eat to meet your goal.{"\n"}</Text>
+    <Text style={{fontWeight: '600'}}>If you do not select an activity level, the calculation will be based on your average activity level. (as you mentioned in the registration)</Text>
+    </FadeInOut>
+
+  {/* foodInstructions */}
+    <FadeInOut
+    visible={isFoodInstructions}
+    scale={true}
+     style={{backgroundColor: '#FFE7C3' ,marginTop: 30, width: 220,  height: isFoodInstructions ? 270: 0, alignItems: 'center', position: 'absolute', top: 120,left: 30, padding: 10, borderRadius: 8, zIndex: isFoodInstructions ? 999: 0, borderWidth: 1}}>
+      
+    <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsFoodInstructions(false)}>
+    <Feather name="x-circle" size={30} color="#fff"/>
+    </TouchableOpacity>
+    <Text style={{marginTop: 5, fontSize: 20, fontWeight: '600'}}>Food area</Text>
+    <Text>In this area you can add the food you ate to a daily list, view its nutritional values, and the calories of each food will be added to the daily calorie intake.{"\n"}</Text>
+    <Text>You can also add foods to a list of favorites, and also add your own foods that do not appear in our database</Text>
+    </FadeInOut>
+
+  {/* caloriesInstructions */}
+    <FadeInOut
+    visible={isCaloriesInstructions}
+    scale={true}
+     style={{backgroundColor: '#FFE7C3' ,marginTop: 30, width: 300,  height: isCaloriesInstructions ? 280: 0, alignItems: 'center', position: 'absolute', top: 180,left: 30, padding: 10, borderRadius: 8, zIndex: isCaloriesInstructions ? 999: 0, borderWidth: 1}}>
+      
+    <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsCaloriesInstructions(false)}>
+    <Feather name="x-circle" size={30} color="#fff"/>
+    </TouchableOpacity>
+    <Text style={{marginTop: 5, fontSize: 20, fontWeight: '600'}}>daily calories</Text>
+    <Text>In this graph you can see the amount of calories you consumed today, when the graph has two markings, {"\n\n"} the first marks the amount of calories you can eat to meet your goal, {"\n\n"} and the second (at the end of the graph) marks the amount of calories that if you reach it, you will stay at the same weight (ie the number of calories that your body needs per day){"\n"}</Text>
+    </FadeInOut>
+
+    {/* instructions */}
+    <TouchableOpacity onPress={()=> setIsInstructions(true)} style={{position: 'absolute', right: 5, top: 5}}>
     <AntDesign name="questioncircleo" size={25} color="black" />
     </TouchableOpacity>
     <FadeInOut
     visible={isInstructions}
     scale={true}
-     style={{backgroundColor: '#d4f1f9' ,marginTop: 30, width:'80%',  height: isInstructions ? '75%': 0, alignItems: 'center', position: 'absolute', top: 25, padding: 10, borderRadius: 8, zIndex: isInstructions ? 999: 0, borderWidth: 1}}>
+     style={{backgroundColor: '#FFE7C3' ,marginTop: 30, width:'80%',  height: isInstructions ? '75%': 0, alignItems: 'center', position: 'absolute', top: 25, padding: 10, borderRadius: 8, zIndex: isInstructions ? 999: 0, borderWidth: 1}}>
       
     <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsInstructions(false)}>
     <Feather name="x-circle" size={30} color="#fff"/>
     </TouchableOpacity>
-    <Text style={{marginTop: 20, fontSize: 20, fontWeight: '600'}}>instructions</Text>
+    <Text style={{marginTop: 25, fontSize: 20, fontWeight: '600', marginBottom: 10}}>Welcome to the Diary</Text>
+    <Text>In this area you will be able to track various indicators on a daily basis, which will help you meet your goal. The diary is divided into 4 parts, each part has its own explanation.{"\n"}</Text>
+    <Text style={{fontWeight: '600'}}>May you be able to track your progress in the process, good luck!</Text>
     </FadeInOut>
 
     <View style={{ width: '70%', height: '10%', marginTop: 10,marginBottom: 20, flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
@@ -1050,53 +1129,64 @@ if(auth.currentUser)
 
       <Text style={{fontSize: 16, fontWeight: '500'}}>how much water did you drink today?</Text>
      
-    <View style={{backgroundColor: '#d4f1f9', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, flexDirection: 'row'}}>
+    <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '11%', marginTop: 14, borderRadius: 8, flexDirection: 'row'}}>
     <TouchableOpacity  onPress={()=> [setWater(3), updateWater(currentUserData.id,3,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopStartRadius: 8, borderBottomLeftRadius: 8,
-     alignItems: 'center', justifyContent: 'center',borderColor: '#11a1f9', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 3 ? '#11a1f9' : '#d4f1f9' : null}}>
+     alignItems: 'center', justifyContent: 'center',borderColor: 'rgb(255, 178, 71)', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 3 ? 'rgb(255, 178, 71)' : '#FFE7C3' : null}}>
       <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 3 ? '#fff' : '#000' : null}}>12-17</Text>
       <Entypo style={{position: 'absolute', bottom: 2, left: 2}} name="cup" size={19} color= {currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 3 ? '#fff' : '#000' : null} />
     </TouchableOpacity>
     <TouchableOpacity onPress={()=> [setWater(2), updateWater(currentUserData.id,2,copyIndexDay)]} style={{height: '100%', width: '33.3333333333%', borderTopWidth: 2, borderBottomWidth: 2, alignItems: 'center',
-     justifyContent: 'center', borderColor: '#11a1f9', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 2 ? '#11a1f9' : '#d4f1f9' : null}}>
+     justifyContent: 'center', borderColor: 'rgb(255, 178, 71)', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 2 ? 'rgb(255, 178, 71)' : '#FFE7C3' : null}}>
     <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 2 ? '#fff' : '#000' : null}}>8-11</Text>
     <Entypo style={{position: 'absolute', bottom: 2, left: 2}} name="cup" size={19} color= {currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 2 ? '#fff' : '#000' : null} />
     </TouchableOpacity>
     <TouchableOpacity onPress={()=> [setWater(1), updateWater(currentUserData.id,1,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopEndRadius: 8, borderBottomRightRadius: 8,
-     alignItems: 'center', justifyContent: 'center', borderColor: '#11a1f9', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 1 ? '#11a1f9' : '#d4f1f9' : null}}>
+     alignItems: 'center', justifyContent: 'center', borderColor: 'rgb(255, 178, 71)', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 1 ? 'rgb(255, 178, 71)' : '#FFE7C3' : null}}>
     <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 1 ? '#fff' : '#000' : null}}>5-7</Text>
     <Entypo style={{position: 'absolute', bottom: 2, left: 2}} name="cup" size={19} color= {currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 1 ? '#fff' : '#000' : null} />
     </TouchableOpacity>
+
+    {/* WaterInstructions */}
+    <TouchableOpacity onPress={()=> setIsWaterInstructions(true)} style={{position: 'absolute', left: -16, top: -22}}>
+    <AntDesign name="questioncircleo" size={24} color="black" />
+    </TouchableOpacity>
+    
     </View>
 
     <Text style={{fontSize: 16, fontWeight: '500', marginTop: 10}}>How many hours did you sleep last night?</Text>
 
-    <View style={{backgroundColor: '#d4f1f9', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, flexDirection: 'row'}}>
+    <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '11%', marginTop: 20, borderRadius: 8, flexDirection: 'row'}}>
     <TouchableOpacity  onPress={()=> [setSleep(3),updateSleep(currentUserData.id,3,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopStartRadius: 8, borderBottomLeftRadius: 8,
-     alignItems: 'center', justifyContent: 'center', borderColor: '#11a1f9', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 3 ? '#11a1f9' : '#d4f1f9' : null}}>
+     alignItems: 'center', justifyContent: 'center', borderColor: 'rgb(255, 178, 71)', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 3 ? 'rgb(255, 178, 71)' : '#FFE7C3' : null}}>
       <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 3 ? '#fff' : '#000' : null}}>8-11</Text>
       <FontAwesome style={{position: 'absolute', bottom: 2, left: 2}} name="bed" size={19} color= {currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 3 ? '#fff' : '#000' : null} />
     </TouchableOpacity>
     <TouchableOpacity  onPress={()=> [setSleep(2),updateSleep(currentUserData.id,2,copyIndexDay)]} style={{height: '100%', width: '33.3333333333%', borderTopWidth: 2, borderBottomWidth: 2, alignItems: 'center',
-     justifyContent: 'center', borderColor: '#11a1f9', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 2 ? '#11a1f9' : '#d4f1f9' : null}}>
+     justifyContent: 'center', borderColor: 'rgb(255, 178, 71)', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 2 ? 'rgb(255, 178, 71)' : '#FFE7C3' : null}}>
     <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 2 ? '#fff' : '#000' : null}}>7-9</Text>
     <FontAwesome style={{position: 'absolute', bottom: 2, left: 2}} name="bed" size={19} color= {currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 2 ? '#fff' : '#000' : null} />
     </TouchableOpacity>
     <TouchableOpacity onPress={()=> [setSleep(1),updateSleep(currentUserData.id,1,copyIndexDay)]} style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopEndRadius: 8, borderBottomRightRadius: 8,
-     alignItems: 'center', justifyContent: 'center', borderColor: '#11a1f9', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 1 ? '#11a1f9' : '#d4f1f9' : null}}>
+     alignItems: 'center', justifyContent: 'center', borderColor: 'rgb(255, 178, 71)', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 1 ? 'rgb(255, 178, 71)' : '#FFE7C3' : null}}>
     <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 1 ? '#fff' : '#000' : null}}>3-6</Text>
     <FontAwesome style={{position: 'absolute', bottom: 2, left: 2}} name="bed" size={19} color= {currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 1 ? '#fff' : '#000' : null} />
+    </TouchableOpacity>
+
+    {/* isSleepInstructions */}
+    <TouchableOpacity onPress={()=> setIsSleepInstructions(true)} style={{position: 'absolute', left: -16, top: -22}}>
+    <AntDesign name="questioncircleo" size={24} color="black" />
     </TouchableOpacity>
     </View>
     
     <Text style={{fontSize: 16, fontWeight: '500', marginTop: 10}}>how much did you move today?</Text>
 
-    <View style={{backgroundColor: '#d4f1f9', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, alignItems: 'center', justifyContent: 'center'}}>
     <Picker
     
   style={{
     marginTop:17,
   width: '96%',
-  backgroundColor: '#d4f1f9',
+  backgroundColor: '#FFE7C3',
   marginBottom:20,
   
   
@@ -1114,11 +1204,20 @@ onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(cu
 <Picker.Item  label='5' value={1.9} />
 </Picker>
 
+    {/* activityInstructions */}
+    <TouchableOpacity onPress={()=> setIsActivityInstructions(true)} style={{position: 'absolute', left: -16, top: -22}}>
+    <AntDesign name="questioncircleo" size={24} color="black" />
+    </TouchableOpacity>
     </View>
 
     <Text style={{fontSize: 16, fontWeight: '500', marginTop: 10}}>what did you eat today?</Text>
-    <TouchableOpacity onPress={()=> setIsFoodArea(true)} style={{backgroundColor: '#d4f1f9', width: '90%', height: '11%', marginTop: 10, borderRadius: 8,borderColor:'#11a1f9',borderWidth:2, alignItems: 'center', justifyContent: 'center'}}>
+    <TouchableOpacity onPress={()=> setIsFoodArea(true)} style={{backgroundColor: '#FFE7C3', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, alignItems: 'center', justifyContent: 'center'}}>
       <Text style={{fontSize: 21}}>Food selection area</Text>
+
+    {/* foodInstructions */}
+    <TouchableOpacity onPress={()=> setIsFoodInstructions(true)} style={{position: 'absolute', left: -16, top: -24}}>
+    <AntDesign name="questioncircleo" size={24} color="black" />
+    </TouchableOpacity>
     </TouchableOpacity>
 
     <FadeInOut
@@ -1644,6 +1743,10 @@ null}
     !isFoodArea ? 
     <View style={{backgroundColor: '#fff', width: '90%', height: '15%',marginTop: 10, borderRadius: 8 ,flexDirection:'column',alignItems:'center', zIndex: isFoodArea ? -5: 9999}}>
       {/* {RmrCalculate()} */}
+      {/* caloriesInstructions */}
+    <TouchableOpacity onPress={()=> setIsCaloriesInstructions(true)} style={{position: 'absolute', right: 5, top: 5}}>
+    <AntDesign name="questioncircleo" size={24} color="black" />
+    </TouchableOpacity>
       <Text style={{marginTop: 4, fontSize: 16, fontWeight: '600'}}>Daily calories</Text>
 
 
@@ -1670,10 +1773,10 @@ null}
 
 
       <Text style={{fontSize: 9, position: 'absolute', bottom: -13,left: 0, fontWeight: '800'}}>|</Text>
-      <Text style={{fontSize: 11, position: 'absolute', bottom: -27,left: -13}}>{currentUserData ? currentUserData.basicBalancePoint : null}</Text>
+      <Text style={{fontSize: 11, position: 'absolute', bottom: -27,left: -13}}>{Math.floor((currentUserData ? currentUserData.basicBalancePoint : null))}</Text>
 
       <Text style={{fontSize: 9, position: 'absolute', bottom: 16,left: 50, fontWeight: '800'}}>|</Text>
-      <Text style={{fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>basic({(currentUserData ? currentUserData.basicDayTarget : null)})</Text>
+      <Text style={{fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>{Math.floor((currentUserData ? currentUserData.basicDayTarget : null))}</Text>
 
       </View>
 
@@ -1700,7 +1803,7 @@ null}
       <Text style={{fontSize: 11, position: 'absolute', bottom: -27,left: -13}}>{Math.floor((currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint: null))}</Text>
 
       <Text style={{fontSize: 9, position: 'absolute', bottom: 16,left: 50, fontWeight: '800'}}>|</Text>
-      <Text style={{fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>target({Math.floor((currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget : null))})</Text>
+      <Text style={{fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>{Math.floor((currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget : null))}</Text>
       
       </View>
       
