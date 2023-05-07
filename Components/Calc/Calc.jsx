@@ -100,9 +100,9 @@ const[showSubjects,setShowSubjects] = useState();
   };
 
   let arrOfFunctions = [
+    BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView,handleScrollToTop),
     ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,
       fatValue,carbohydratesValue,proteinValue,finelText,caloriesValue,handleScrollToTop),
-    BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView,handleScrollToTop),
     BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView,isMan,handleScrollToTop),
     SavingStatusRes(heightOfResView,bmiSearchResult,setHeightOfResView,handleScrollToTop),
     WhatIsFatterRes(heightOfResView,bmiSearchResult,setHeightOfResView,
@@ -186,7 +186,7 @@ const panResponder = PanResponder.create({
 
 
 <StatusBar backgroundColor="rgb(255, 178, 71)" />
-<View style={{height:1000}}>
+<View style={{height:1180}}>
 
 
 
@@ -205,31 +205,30 @@ const panResponder = PanResponder.create({
       </TouchableOpacity>
 
       <View style={styles.containerB}>
-      <View style={styles.row}>
-      {darts.map((dart) => (
-        /* console.log(whatPoint+"   whatPoint"), */
-        <View key={dart.id} style={[styles.dart,{backgroundColor: dart.id == whatPoint.toFixed(0) ? oreng : 'white'} ]}>
-          {/* <Text style={styles.dartText}>{dart.score}</Text> */}
-        </View>
-      ))}
-    </View>
+ 
     </View>
       <Modal visible={isModalVisible} >
         <View style={styles.modalContainer}>
-        <TouchableOpacity  style={{position:'absolute' ,top:40,right:30}} onPress={()=>setIsModalVisible(false)}>
-          <Feather name="x-circle" size={54} color={oreng} />
+        <TouchableOpacity  style={{position:'absolute' ,top:15,right:15}} onPress={()=>setIsModalVisible(false)}>
+          <Feather name="x-circle" size={34} color={oreng} />
            </TouchableOpacity>
 
-          <Text style={styles.modalTitle}>Please select a language:</Text>
+          <Text style={styles.modalTitle}> select a language</Text>
+          <View style={{marginTop:50,width:'100%' ,justifyContent:'center',alignItems:'center'}}>
           <TouchableOpacity style={styles.modalButton} onPress={handleModalChange1}>
             <Text style={styles.modalButtonText}>English</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.modalButton} onPress={handleModalChange2}>
             <Text style={styles.modalButtonText}>Hebrew</Text>
           </TouchableOpacity>
+          </View>
         
         </View>
       </Modal>
+
+
+      <Text style={{fontSize: 32,fontWeight: '200',color: '#333', textAlign: 'center',}}>Nutrition Calculators</Text>
+      <View style={styles.line} />
 
      
 
@@ -253,51 +252,27 @@ scale={true}
       <TouchableOpacity onPress={()=> setIsTipsView(true)} style={{position: 'absolute', left: 20, top: 8}}>
     <AntDesign name="questioncircleo" size={30} color="black" />
     </TouchableOpacity>
-    <TouchableOpacity onPress={toggleModalVisible} style={{position: 'absolute', left: 293, top: 8}}>
-        <Entypo name="menu" size={50} color="#000" />
-      </TouchableOpacity>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={toggleModalVisible}
-      >
-        <TouchableWithoutFeedback onPress={toggleModalVisible}>
-          <View style={styles.modalContainer2}>
-            <View style={styles.modalView2}>
-              <TouchableOpacity style={styles.modalButton2}>
-                <Text style={styles.modalButtonText2}>Settings</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.modalButton2}>
-                <Text style={styles.modalButtonText2}>Communication</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.modalButton2}>
-                <Text style={styles.modalButtonText2}>Company Policy</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.modalButton2}>
-                <Text style={styles.modalButtonText2}>Log out</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.modalCancelButton2} onPress={toggleModalVisible}>
-                <Text style={styles.modalCancelButtonText2}>Cancel</Text>
-              </TouchableOpacity>
-           
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+  
 
 
-    
+    <View style={styles.row}>
+      {darts.map((dart) => (
+        /* console.log(whatPoint+"   whatPoint"), */
+        <View key={dart.id} style={[styles.dart,{backgroundColor: dart.id == whatPoint.toFixed(0) ? oreng : 'white'} ]}>
+          {/* <Text style={styles.dartText}>{dart.score}</Text> */}
+        </View>
+      ))}
+    </View>
 
          
 
 {
   isEnglish ?
+  
   <View style={styles.FlatListContainer}>
+
+
+    
 
 <FlatList  ref={flatListRef} onScroll={onScroll || handleScroll} data={numbers} renderItem={({item}) =>  <CalculatorsArrayOfFunctions num={item} 
 heightOfResView={heightOfResView} setHeightOfResView={setHeightOfResView} bmiSearchResult={bmiSearchResult} setIsMan={setIsMan}
@@ -360,7 +335,7 @@ const styles = StyleSheet.create({
 
   buttonTosearch: {
     marginTop:10,
-    backgroundColor: oreng,
+    backgroundColor: blue,
     borderRadius: 5,
     padding: 10,
   },
@@ -369,25 +344,30 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   modalContainer: {
+    height:'100%',
     backgroundColor: '#FFFFdf',
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   modalTitle: {
     color:blue,
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: 40,
+    marginTop: 140,
+    fontWeight:'700'
   },
   modalButton: {
+    width:'80%',
+    height:'22%',
     backgroundColor:oreng,
     borderRadius: 5,
     padding: 10,
-    marginBottom: 10,
+    marginBottom: 10
+    ,justifyContent:'center',
+    alignItems:'center'
   },
   modalButtonText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 25,
+    fontWeight:'700'
   },
 
  
@@ -407,7 +387,7 @@ const styles = StyleSheet.create({
    shadowRadius: 2,
    elevation: 25,
 
-    marginTop:15,
+    marginTop:20,
     height:'50%',
     width:'100%',
    
@@ -479,6 +459,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   row: {
+    marginTop:30,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -540,7 +521,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#f00',
-  }
+  },
+  line: {
+    borderBottomWidth: 2,
+    borderBottomColor: oreng ,
+    width: '85%',
+    marginTop: 8,
+
+    backgroundColor:'red',
+
+  },
+
+  
 
 })
 
@@ -796,7 +788,7 @@ function ProteinIntakeRes(heightOfResView,bmiSearchResult,setHeightOfResView,fat
 }
 
   return(
-    <View style={{height: heightOfResView ,width:'90%',backgroundColor:'#fff',borderBottomLeftRadius: 10,borderBottomRightRadius: 10, display: heightOfResView>0 ? null : 'none' }}>
+    <View style={{height: heightOfResView ,width:'90%',backgroundColor:'#fff',borderBottomLeftRadius: 10,borderBottomRightRadius: 10, display: heightOfResView>0 ? null : 'none'  }}>
     
     <View style={{flexDirection:'row'}}>
 <View style={{alignItems:'center',justifyContent:'center', fontSize:15,textAlign:'center',marginTop:18,color:'#0a2946',width:'40%',height:40,
@@ -1039,6 +1031,10 @@ const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(WhatsAppMessage)}
 function WhatIsFatterRes(heightOfResView,bmiSearchResult,setHeightOfResView,calorValueA,calorValueB,
   moreCalory,finelText,finelTextB,handleScrollToTop)
 {
+
+  console.log(finelText);
+  console.log(finelTextB);
+  
   function toBack()
   {
     handleScrollToTop();

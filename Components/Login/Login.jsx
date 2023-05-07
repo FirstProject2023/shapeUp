@@ -2,13 +2,10 @@ import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Al
 import React, { useEffect, useState } from 'react'
 import { Entypo } from '@expo/vector-icons'; 
 
-
-
-
-
 import FadeInOut from 'react-native-fade-in-out';
 
 
+import {oreng,blue } from "../Globals/colors";
 
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
@@ -21,9 +18,12 @@ import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fn
 
 import LottieView from 'lottie-react-native';
 
-import {createUserWithEmailAndPassword,signInWithEmailAndPassword} from 'firebase/auth'
+import {createUserWithEmailAndPassword,signInWithEmailAndPassword ,
+   sendPasswordResetEmail, updatePassword, confirmPasswordReset, verifyPasswordResetCode, getAuth } from 'firebase/auth'
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
+import { FirebaseAuth } from '@react-native-firebase/auth';
+
 
 
 
@@ -32,9 +32,11 @@ export default function Login({ navigation }) {
   const userCollectionRef = collection(db,"users");
 
   const [email, setEmail] = useState('');
+  const [newEmail, setNewEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [phone, setphone] = useState(0);
   const [gender, setGender] = useState(1);
   const [height, setHeight] = useState(170);
   const [weight, setWeight] = useState(70);
@@ -139,8 +141,29 @@ export default function Login({ navigation }) {
 
 
 useEffect(()=>{
-   const unSubscribe = auth.onAuthStateChanged(user=>{
+   const unSubscribe =  auth.onAuthStateChanged(async user=>{
     if(user){
+      
+      if(confirmedPassword)
+      {
+console.log(confirmedPassword);
+        const currentUser = users.find((user) => user && user.email ? user.email.toLowerCase() == auth.currentUser.email.toLowerCase() : null );
+        
+        console.log(currentUser.id);
+        console.log(user.email);
+        
+        const userDoc = doc(db,"users",currentUser.id)
+
+      
+      console.log(userDoc);
+      
+      await updateDoc(userDoc, {
+        password: confirmedPassword, // Replace 'parameterName' with the actual field name you want to update
+      });
+      
+    }
+     
+
       navigation.navigate('Nav')
     }
     return unSubscribe
@@ -382,7 +405,6 @@ const  handleSignUp =  async () => {
 }
     const  handleLogin =  async () => {
 
-
         try{
             const user = await signInWithEmailAndPassword(auth, email, password);
            
@@ -394,11 +416,69 @@ const  handleSignUp =  async () => {
         }
     
     }
+
+    const [isReset,setIsreset]= useState(false);
+
+    const handleForgotPassword = async (email) => {
+      console.log(email);
+      try {
+        const user  = await sendPasswordResetEmail(auth, email);
+
+        Alert.alert(
+          'Password reset email sent successfully!',
+          'Log in to your email and change the password',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                // Perform an action when OK is pressed
+                setIsreset(true)
+
+                            },
+            },
+          ]
+        );
+      
+        // Display a success message or navigate to a confirmation screen
+      } catch (error) {
+        console.error('Failed to send password reset email:', error);
+        // Display an error message to the user
+      }
+    };
+    const updateThePassword = async (newPassword) => {
+      if(newPassword != confirmedPassword)
+      {
+        Alert.alert('The passwords are not equal');
+      }
+      try {
+        
+        console.log(newPassword);
+        const user = await signInWithEmailAndPassword(auth, newEmail, confirmedPassword);
+
+      
+    /*     console.log(getAuth().name);
+        console.log("1"); */
+
+      /*   const userDoc = doc(db,"users",auth.currentUser.providerId)
+        let currDaysDetails = [... auth.currentUser]
+
+        const newFields ={password : newPassword } 
+
+        await updateDoc(userDoc , newFields) 
+ */
+        /* const user = auth.currentUser;
+  await updatePassword(user, newPassword); */
+
+      } catch (error) {
+        console.error('Failed to update password:', error);
+        // Display an error message to the user
+      }
+    };
+
 const [falg99,setFlag99]=useState(false);
 
-
-    useEffect(() => {
-      const removeStartAnimation = () => {
+  useEffect(() => {
+    const removeStartAnimation = () => {
         setTimeout(() => {
           setOpeningScreenIsVisible(false);
           if(!falg99)
@@ -425,6 +505,7 @@ const [falg99,setFlag99]=useState(false);
   const [errorPassword,setErrorPassword] = useState(false);
   const [errorFirstName,setErrorFirstName] = useState(false);
   const [errorLastName,setErrorLastName] = useState(false);
+  const [errorPhone,setErrorPhone] = useState(false);
 
 
 
@@ -454,6 +535,7 @@ function EmailTextInput()
    }
    function nameTextInput(){
 
+
     if(firstName == "")
     {
       setErrorFirstName(true);
@@ -462,14 +544,45 @@ function EmailTextInput()
     else if( lastName == "")
     {
       setErrorLastName(true);
+
+      
       Alert.alert('Invalid last Name', 'Please enter a last name.');
     }
-    else{
+    else if(phone > 999999999 || phone < 99999999)
+    {
+      
 
-      setNameIsVisible(false), setGenderIsVisible(true)
+      Alert.alert(
+        'Invalid phone number ',
+        'Are you sure you do not want to enter your cell phone number?',
+        [
+          {
+            text: 'No',
+            style: 'cancel',
+          },
+          {
+            text: 'Yes',
+            style: 'destructive',
+            onPress: () => {
+              // Perform action when user confirms
+              setErrorPhone(true);
+              setGenderIsVisible(true);
+              setNameIsVisible(false);
+            },
+          },
+        ],
+      );        
     }
+      else{
+        setNameIsVisible(false), setGenderIsVisible(true)
+
+      }
+
     
    }
+
+
+   
    function HeightWeightTextInput(){
 
       if(height==0)
@@ -568,11 +681,26 @@ function EmailTextInput()
     console.log(text);
     if(text != "")
     {
-      console.log("found error");
+      
       setErrorLastName(false)
     }
 
     setLastName(text)
+
+  }
+  function ChakePhoneError(text)
+  {
+
+    console.log(phone);
+
+    if(text > 999999999 || text < 99999999 )
+    {
+     console.log("ok....");
+setErrorPhone(false)
+
+    }
+
+    setphone(text)
 
   }
 
@@ -609,6 +737,10 @@ function EmailTextInput()
   };
   
 
+const [visible ,setVisible]=useState(false);
+
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmedPassword, setConfirmedPassword] = useState('');
 
 
   return (
@@ -620,6 +752,83 @@ function EmailTextInput()
 
       
 
+
+<Modal visible={visible} animationType="slide" transparent>
+
+      
+<ImageBackground source={{uri: "https://d3h2k7ug3o5pb3.cloudfront.net/image/2020-11-23/3b788920-2d79-11eb-9dcd-8b2ef5358591.jpg"}} resizeMode='cover'>
+        <View style={styles.modalContent2}>
+
+      
+
+          {
+            !isReset   ?
+            
+            <View style={styles.inputsContainer}>
+
+              <Text style={{fontSize:26 ,color:'#fff',fontWeight:'700'}}>
+                Forgot your email address?{"\n"}
+</Text>
+<Text style={{fontSize:20 ,color:'#fff'}}> 
+The email address must be entered to restore the account
+</Text>
+          <TextInput
+          style={styles.textInput}
+          placeholder="Enter your email"
+          secureTextEntry
+          value={newEmail}
+          onChangeText={setNewEmail}
+          placeholderTextColor={'#fff'}
+          />
+          <TouchableOpacity  style={[styles.button,]} onPress={ ()=> handleForgotPassword(newEmail)}> 
+                          <Text style={styles.buttonText}>Reset Password</Text>
+          </TouchableOpacity> 
+           <TouchableOpacity  style={[styles.button,]} onPress={ ()=> setVisible(false)}> 
+                          <Text style={styles.buttonText}>Cancel</Text>
+          </TouchableOpacity> 
+          </View>
+        
+        : 
+        
+        <View style={[styles.inputsContainer,{marginTop:30}]}>
+
+          <Text style={{fontSize:25,color:'#fff' , fontWeight:'800'}}>Type the new password !</Text>
+        
+        <TextInput
+        style={[styles.textInput,{marginTop:20}]}
+        placeholder="New Password"
+        secureTextEntry
+        value={newPassword}
+        onChangeText={setNewPassword}
+        placeholderTextColor={'#fff'}
+        />
+      <TextInput
+        style={styles.textInput}
+        placeholder="Confirm New Password"
+        secureTextEntry
+        value={confirmedPassword}
+        onChangeText={setConfirmedPassword}
+        placeholderTextColor={'#fff'}
+      />
+           <TouchableOpacity  style={[styles.button,]} onPress={ ()=> updateThePassword(newPassword)}> 
+                          <Text style={styles.buttonText}>Update Password</Text>
+          </TouchableOpacity> 
+         
+           <TouchableOpacity  style={[styles.button,]} onPress={ ()=> setVisible(false)}> 
+                          <Text style={styles.buttonText}>Cancel</Text>
+          </TouchableOpacity> 
+
+      </View>
+        
+          
+      }
+            
+
+         
+        </View>
+      </ImageBackground>
+      
+    </Modal>
 
     <Modal
         animationType="slide"
@@ -689,13 +898,25 @@ function EmailTextInput()
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Sign Up</Text>
     </TouchableOpacity>
+<TouchableOpacity style={[styles.loginButton2, {width: '60%', marginTop: 10, backgroundColor: '#fff'}]}
+onPress={ ()=> setVisible(true)}
+>
+  
+<Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 17, fontWeight: '700'}}>Forgot the password</Text>
+</TouchableOpacity>
+
     <TouchableOpacity
     onPress={()=>{ navigation.navigate('Transition')}}
     // onPress={()=>{ navigation.navigate('Nav')}}
     style={[styles.loginButton,{backgroundColor: 'rgba(243,243,243,0.9)', marginTop: 24, height: 40, borderWidth: 2, borderColor: '#78ab04'}]}
     >
         <Text style={{color: '#000', fontSize: 17,}}>Continue as  a guest</Text>
+
     </TouchableOpacity>
+       
+
+
+      
 
     </View>
     </FadeInOut>
@@ -856,10 +1077,21 @@ function EmailTextInput()
        
        
         />
+
+      <TextInput 
+       style={[styles.textInput,{borderColor : errorPhone ? 'rgb(168,29,29)' : '#fff'   } ]}
+      placeholder='phone number'
+      keyboardType="phone-pad"
+      placeholderTextColor={'#fff'}
+      
+        onChangeText={text => ChakePhoneError(text)}
+       
+       
+        />
     </View>
     <View style={styles.buttonContainer}>
     <TouchableOpacity
-    style={[styles.loginButton, { marginTop: 40}]}
+    style={[styles.loginButton, { marginTop: 95}]}
     onPress={()=> [nameTextInput(), Keyboard.dismiss() ]}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 19, fontWeight: '800'}}>Continue</Text>
@@ -1417,6 +1649,19 @@ const styles = StyleSheet.create({
         
       
     },
+    loginButton2:{
+        width: '30%',
+        height: '20%',
+        backgroundColor: 'rgba(255, 255, 255,0.2)',  
+        marginTop: 8,
+        borderWidth: 2,
+        borderColor: 'rgba(255, 138, 71,0.9)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 16,
+        
+      
+    },
     container: {
       flex: 1,
       justifyContent: 'center',
@@ -1442,6 +1687,37 @@ const styles = StyleSheet.create({
       fontSize: 16,
       color: 'blue',
     },
+   
+    modalContent2: {
+      marginTop:100,
+      height:'100%',
+      width:'100%',
+      padding: 16,
+      borderRadius: 8,
+    },
+    input2: {
+      height: 40,
+      borderColor: 'gray',
+      borderWidth: 1,
+      marginBottom: 12,
+      paddingHorizontal: 8,
+    },
+    button: {
+      marginTop:20 ,
+      backgroundColor: '#e91e63',
+      borderRadius: 8,
+      paddingVertical: 12,
+      paddingHorizontal: 24,
+      marginVertical: 8,
+    },
+ 
+    buttonText: {
+      color: '#ffffff',
+      fontSize: 21,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+  
 })
 
 
