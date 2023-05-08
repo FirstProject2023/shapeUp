@@ -19,6 +19,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+
 import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
 
 export default function Diary({ navigation }) {
@@ -999,7 +1000,7 @@ if(auth.currentUser)
 
     <View style={styles.container}>
 
-    <View style={{ width: '90%', height: '8%',marginTop: 10, borderRadius: 8 ,flexDirection:'row',justifyContent:'space-evenly',alignItems:'center'}}>
+    <View style={{ width: '90%', height: '8%',marginTop: 15, borderRadius: 8 ,flexDirection:'row',justifyContent:'space-evenly',alignItems:'center'}}>
 
     {
       copyIndexDay!=testIndex ?
@@ -1014,7 +1015,7 @@ if(auth.currentUser)
       <Text style={{color:'#fff'}}>{(index + 1)}</Text>
       <Text style={{color:'#fff'}}>{testIndex + 1}</Text> */}
       {/* <Text style={{color:'#fff'}}>{(currentUserData ? currentUserData.indexDeyFirebase: null)}</Text> */}
-      <Text style={{color:'#fff' ,fontSize:32,fontWeight:'700'}}>{(futureDate.getDate())}/{futureDate.getMonth()+1}/{futureDate.getFullYear()}</Text>
+      <Text style={{color:'#fff' ,fontSize:28,fontWeight:'700'}}>{(futureDate.getDate())}/{futureDate.getMonth()+1}/{futureDate.getFullYear()}</Text>
 
     {  
       copyIndexDay > 0 ?
@@ -1032,7 +1033,7 @@ if(auth.currentUser)
     <FadeInOut
     visible={isWaterInstructions}
     scale={true}
-     style={{backgroundColor: '#FFE7C3' ,marginTop: 30, width: 280,  height: isWaterInstructions ? 320: 0, alignItems: 'center', position: 'absolute', top: 150,left: 60, padding: 10, borderRadius: 8, zIndex: isWaterInstructions ? 999: 0, borderWidth: 1}}>
+     style={{backgroundColor: '#a9d7f9' ,marginTop: 30, width: 280,  height: isWaterInstructions ? 320: 0, alignItems: 'center', position: 'absolute', top: 150,left: 60, padding: 10, borderRadius: 8, zIndex: isWaterInstructions ? 999: 0, borderWidth: 1}}>
       
     <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsWaterInstructions(false)}>
     <Feather name="x-circle" size={30} color="#fff"/>
@@ -1122,19 +1123,21 @@ if(auth.currentUser)
     <Text style={{fontWeight: '600'}}>May you be able to track your progress in the process, good luck!</Text>
     </FadeInOut>
 
-    <View style={{ width: '85%', height: '10%', marginTop: 10,marginBottom: 20, flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
- 
-    <Ionicons name="ios-barbell" size={50} color="#fff" />
-    <FontAwesome name="bed" size={50} color="#fff" />
-    <Entypo name="cup" size={50} color="#fff" />
+    <View style={{borderColor: '#fff',borderWidth: 3,borderRadius: 12, width: '28%', height: '10%',marginBottom: 20, flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
+    {/* Today */}
+    <Text style={{color: '#fff', fontSize: 24, fontWeight: '400'}}>
+    {copyIndexDay + 1}
+    </Text>
+    
     </View>
 
 
  {/*    <Text style={{fontSize: 16, fontWeight: '500',color:'red'}}>{indexDay ? indexDay : null }</Text> */}
 
-      <Text style={{color:'#fff', fontSize: 16, fontWeight: '500'}}>how much water did you drink today?</Text>
+      <Text style={{color:'#fff', fontSize: 16, fontWeight: '600'}}>how much water did you drink today?</Text>
      
-    <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '11%', marginTop: 14, borderRadius: 8, flexDirection: 'row'}}>
+    <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '12%', marginTop: 14, borderRadius: 8, flexDirection: 'row'}}>
+    <Entypo style={{position: 'absolute',top: 16, right: -30}} name="cup" size={28} color="#fff" />
     <TouchableOpacity  onPress={()=> [setWater(3), updateWater(currentUserData.id,3,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopStartRadius: 8, borderBottomLeftRadius: 8,
      alignItems: 'center', justifyContent: 'center',borderColor: 'rgb(255, 178, 71)', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 3 ? 'rgb(255, 178, 71)' : '#FFE7C3' : null}}>
       <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 3 ? '#fff' : '#000' : null}}>12-17</Text>
@@ -1158,9 +1161,10 @@ if(auth.currentUser)
     
     </View>
 
-    <Text style={{color:'#fff',fontSize: 16, fontWeight: '500', marginTop: 10}}>How many hours did you sleep last night?</Text>
+    <Text style={{color:'#fff',fontSize: 16, fontWeight: '600', marginTop: 10}}>How many hours did you sleep last night?</Text>
 
-    <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '11%', marginTop: 20, borderRadius: 8, flexDirection: 'row'}}>
+    <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '12%', marginTop: 20, borderRadius: 8, flexDirection: 'row'}}>
+    <FontAwesome style={{position: 'absolute',top: 16, right: -32}} name="bed" size={25} color="#fff" />
     <TouchableOpacity  onPress={()=> [setSleep(3),updateSleep(currentUserData.id,3,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopStartRadius: 8, borderBottomLeftRadius: 8,
      alignItems: 'center', justifyContent: 'center', borderColor: 'rgb(255, 178, 71)', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 3 ? 'rgb(255, 178, 71)' : '#FFE7C3' : null}}>
       <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 3 ? '#fff' : '#000' : null}}>8-11</Text>
@@ -1183,16 +1187,16 @@ if(auth.currentUser)
     </TouchableOpacity>
     </View>
     
-    <Text style={{color:'#fff', fontSize: 16, fontWeight: '500', marginTop: 10}}>how much did you move today?</Text>
+    <Text style={{color:'#fff', fontSize: 16, fontWeight: '600', marginTop: 10}}>how much did you move today?</Text>
 
-    <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '12%', marginTop: 10, borderRadius: 8, alignItems: 'center', justifyContent: 'center'}}>
+    <Ionicons style={{position: 'absolute',top: 16, right: -32}} name="ios-barbell" size={28} color="#fff" />
     <Picker
     
   style={{
-    marginTop:17,
   width: '96%',
   backgroundColor: '#FFE7C3',
-  marginBottom:20,
+  
   
   
 
@@ -1215,8 +1219,9 @@ onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(cu
     </TouchableOpacity>
     </View>
 
-    <Text style={{color:'#fff', fontSize: 16, fontWeight: '500', marginTop: 10}}>what did you eat today?</Text>
-    <TouchableOpacity onPress={()=> setIsFoodArea(true)} style={{backgroundColor: '#FFE7C3', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, alignItems: 'center', justifyContent: 'center'}}>
+    <Text style={{color:'#fff', fontSize: 16, fontWeight: '600', marginTop: 10}}>what did you eat today?</Text>
+    <TouchableOpacity onPress={()=> setIsFoodArea(true)} style={{backgroundColor: '#FFE7C3', width: '90%', height: '12%', marginTop: 10, borderRadius: 8, alignItems: 'center', justifyContent: 'center'}}>
+    <FontAwesome5 style={{position: 'absolute',top: 16, right: -32}} name="apple-alt" size={28} color="#fff" />
       <Text style={{fontSize: 21}}>Food selection area</Text>
 
     {/* foodInstructions */}
@@ -1777,11 +1782,11 @@ null}
       </View>
 
 
-      <Text style={{fontSize: 9, position: 'absolute', bottom: -13,left: 0, fontWeight: '800'}}>|</Text>
-      <Text style={{fontSize: 11, position: 'absolute', bottom: -27,left: -13}}>{Math.floor((currentUserData ? currentUserData.basicBalancePoint : null))}</Text>
+      <Text style={{color:'#fff',fontSize: 9, position: 'absolute', bottom: -13,left: 0, fontWeight: '800'}}>|</Text>
+      <Text style={{color:'#fff',fontSize: 11, position: 'absolute', bottom: -27,left: -13}}>{Math.floor((currentUserData ? currentUserData.basicBalancePoint : null))}</Text>
 
-      <Text style={{fontSize: 9, position: 'absolute', bottom: 16,left: 50, fontWeight: '800'}}>|</Text>
-      <Text style={{fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>{Math.floor((currentUserData ? currentUserData.basicDayTarget : null))}</Text>
+      <Text style={{color:'#fff',fontSize: 9, position: 'absolute', bottom: 16,left: 50, fontWeight: '800'}}>|</Text>
+      <Text style={{color:'#fff',fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>{Math.floor((currentUserData ? currentUserData.basicDayTarget : null))}</Text>
 
       </View>
 
