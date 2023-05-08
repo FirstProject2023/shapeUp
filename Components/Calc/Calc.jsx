@@ -1032,8 +1032,6 @@ function WhatIsFatterRes(heightOfResView,bmiSearchResult,setHeightOfResView,calo
   moreCalory,finelText,finelTextB,handleScrollToTop)
 {
 
-  console.log(finelText);
-  console.log(finelTextB);
   
   function toBack()
   {

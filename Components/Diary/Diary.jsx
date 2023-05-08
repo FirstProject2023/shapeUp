@@ -696,7 +696,7 @@ const deleateCreationFood = async(id,idNum)=>{
 const currentDate = new Date(now);
 
 
-const futureDate = new Date(currentDate.setDate(currentDate.getDate() + 2));
+const futureDate = new Date(currentDate.setDate(currentDate.getDate() - (currentUserData ? currentUserData.indexDeyFirebase: null)));
 /* console.log(futureDate); */
 
 
@@ -874,16 +874,17 @@ const handleSubmit2 = (id,foodAmount,foodName) => {
 
 
 function RmrCalculate(activity) {
+  console.log(activity);
   setWeight(currentUserData ? currentUserData.weight : null);
     setHeight(currentUserData ? currentUserData.height : null);
     // setActivityLevel(currentUserData ? currentUserData.daysDetails[copyIndexDay].activityLevel : null);
   if(currentUserData ? currentUserData.gender == 1 : null){
 
     if(activity != 0){
-      updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     activity )) , copyIndexDay);
+      updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * (currentUserData ? currentUserData.weight : null))+(4.7 * (currentUserData ? currentUserData.height : null))-(5.6 * years))  *     activity )) , copyIndexDay);
     }
     else{
-      updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     (currentUserData ? currentUserData.averageActivity : null)  )) , copyIndexDay);
+      updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * (currentUserData ? currentUserData.weight : null))+(4.7 * (currentUserData ? currentUserData.height : null))-(5.6 * years))  *     (currentUserData ? currentUserData.averageActivity : null)  )) , copyIndexDay);
     }
     updateDailyDayTarget(currentUserData ? currentUserData.id: null, (Math.floor(currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint : null)) - (currentUserData ? currentUserData.calToLoseDay : null), copyIndexDay);
    
@@ -892,10 +893,10 @@ function RmrCalculate(activity) {
       else{ 
 
     if(activity != 0){
-      updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((447.593) + ( (9.25 * weight)+(4.7 * height)-(5.6 * years))  *     activity )) , copyIndexDay);
+      updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((447.593) + ( (9.25 * (currentUserData ? currentUserData.weight : null))+(4.7 * (currentUserData ? currentUserData.height : null))-(5.6 * years))  *     activity )) , copyIndexDay);
     }
     else{
-      updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((447.593) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     (currentUserData ? currentUserData.averageActivity : null)  )) , copyIndexDay);
+      updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((447.593) + ( (13.39 * (currentUserData ? currentUserData.weight : null))+(4.7 * (currentUserData ? currentUserData.height : null))-(5.6 * years))  *     (currentUserData ? currentUserData.averageActivity : null)  )) , copyIndexDay);
     }
     updateDailyDayTarget(currentUserData ? currentUserData.id: null, (Math.floor(currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint : null)) - (currentUserData ? currentUserData.calToLoseDay : null), copyIndexDay);
   
@@ -954,6 +955,8 @@ const panResponder = PanResponder.create({
 
 
 
+
+
 if(auth.currentUser)
 {
   return (
@@ -996,25 +999,27 @@ if(auth.currentUser)
 
     <View style={styles.container}>
 
-    <View style={{backgroundColor: '#fff', width: '90%', height: '8%',marginTop: 10, borderRadius: 8 ,flexDirection:'row',justifyContent:'space-evenly',alignItems:'center'}}>
+    <View style={{ width: '90%', height: '8%',marginTop: 10, borderRadius: 8 ,flexDirection:'row',justifyContent:'space-evenly',alignItems:'center'}}>
 
     {
       copyIndexDay!=testIndex ?
     <TouchableOpacity onPress={()=>setCopyIndexDay(copyIndexDay+1)} >
-    <FontAwesome5 name="arrow-circle-right" size={34} color="black" />
+    <FontAwesome5 name="arrow-circle-right" size={34} color="#fff" />
     </TouchableOpacity>
     : <View style={{width:34,height:34}}></View>
 
     }
 
-    <Text>{(copyIndexDay + 1)}</Text>
-      <Text>{(index + 1)}</Text>
-      <Text>{testIndex + 1}</Text>
+   {/*  <Text style={{color:'#fff'}}>{(copyIndexDay + 1)}</Text>
+      <Text style={{color:'#fff'}}>{(index + 1)}</Text>
+      <Text style={{color:'#fff'}}>{testIndex + 1}</Text> */}
+      {/* <Text style={{color:'#fff'}}>{(currentUserData ? currentUserData.indexDeyFirebase: null)}</Text> */}
+      <Text style={{color:'#fff' ,fontSize:32,fontWeight:'700'}}>{(futureDate.getDate())}/{futureDate.getMonth()+1}/{futureDate.getFullYear()}</Text>
 
     {  
       copyIndexDay > 0 ?
     <TouchableOpacity onPress={()=>setCopyIndexDay(copyIndexDay-1)}>
-    <FontAwesome5 name="arrow-circle-left" size={34} color="black" />
+    <FontAwesome5 name="arrow-circle-left" size={34} color="#fff"/>
     </TouchableOpacity>
     : <View style={{width:34,height:34}}></View>
     }
@@ -1022,7 +1027,7 @@ if(auth.currentUser)
     </View>
 
 
-    <View style={{backgroundColor: '#fff', width: '90%', height: '70%', marginTop: 5, alignItems: 'center', flexDirection: 'column', borderRadius: 8}}>
+    <View style={{ width: '90%', height: '70%', marginTop: 5, alignItems: 'center', flexDirection: 'column', borderRadius: 8}}>
   {/* WaterInstructions */}
     <FadeInOut
     visible={isWaterInstructions}
@@ -1102,7 +1107,7 @@ if(auth.currentUser)
 
     {/* instructions */}
     <TouchableOpacity onPress={()=> setIsInstructions(true)} style={{position: 'absolute', right: 5, top: 5}}>
-    <AntDesign name="questioncircleo" size={25} color="black" />
+    <AntDesign name="questioncircleo" size={25} color="#fff" />
     </TouchableOpacity>
     <FadeInOut
     visible={isInstructions}
@@ -1117,17 +1122,17 @@ if(auth.currentUser)
     <Text style={{fontWeight: '600'}}>May you be able to track your progress in the process, good luck!</Text>
     </FadeInOut>
 
-    <View style={{ width: '70%', height: '10%', marginTop: 10,marginBottom: 20, flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
+    <View style={{ width: '85%', height: '10%', marginTop: 10,marginBottom: 20, flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
  
-    <Ionicons name="ios-barbell" size={30} color="black" />
-    <FontAwesome name="bed" size={30} color="black" />
-    <Entypo name="cup" size={30} color="black" />
+    <Ionicons name="ios-barbell" size={50} color="#fff" />
+    <FontAwesome name="bed" size={50} color="#fff" />
+    <Entypo name="cup" size={50} color="#fff" />
     </View>
 
 
  {/*    <Text style={{fontSize: 16, fontWeight: '500',color:'red'}}>{indexDay ? indexDay : null }</Text> */}
 
-      <Text style={{fontSize: 16, fontWeight: '500'}}>how much water did you drink today?</Text>
+      <Text style={{color:'#fff', fontSize: 16, fontWeight: '500'}}>how much water did you drink today?</Text>
      
     <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '11%', marginTop: 14, borderRadius: 8, flexDirection: 'row'}}>
     <TouchableOpacity  onPress={()=> [setWater(3), updateWater(currentUserData.id,3,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopStartRadius: 8, borderBottomLeftRadius: 8,
@@ -1148,12 +1153,12 @@ if(auth.currentUser)
 
     {/* WaterInstructions */}
     <TouchableOpacity onPress={()=> setIsWaterInstructions(true)} style={{position: 'absolute', left: -16, top: -22}}>
-    <AntDesign name="questioncircleo" size={24} color="black" />
+    <AntDesign name="questioncircleo" size={24} color="#fff" />
     </TouchableOpacity>
     
     </View>
 
-    <Text style={{fontSize: 16, fontWeight: '500', marginTop: 10}}>How many hours did you sleep last night?</Text>
+    <Text style={{color:'#fff',fontSize: 16, fontWeight: '500', marginTop: 10}}>How many hours did you sleep last night?</Text>
 
     <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '11%', marginTop: 20, borderRadius: 8, flexDirection: 'row'}}>
     <TouchableOpacity  onPress={()=> [setSleep(3),updateSleep(currentUserData.id,3,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopStartRadius: 8, borderBottomLeftRadius: 8,
@@ -1174,11 +1179,11 @@ if(auth.currentUser)
 
     {/* isSleepInstructions */}
     <TouchableOpacity onPress={()=> setIsSleepInstructions(true)} style={{position: 'absolute', left: -16, top: -22}}>
-    <AntDesign name="questioncircleo" size={24} color="black" />
+    <AntDesign name="questioncircleo" size={24} color="#fff" />
     </TouchableOpacity>
     </View>
     
-    <Text style={{fontSize: 16, fontWeight: '500', marginTop: 10}}>how much did you move today?</Text>
+    <Text style={{color:'#fff', fontSize: 16, fontWeight: '500', marginTop: 10}}>how much did you move today?</Text>
 
     <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, alignItems: 'center', justifyContent: 'center'}}>
     <Picker
@@ -1206,17 +1211,17 @@ onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(cu
 
     {/* activityInstructions */}
     <TouchableOpacity onPress={()=> setIsActivityInstructions(true)} style={{position: 'absolute', left: -16, top: -22}}>
-    <AntDesign name="questioncircleo" size={24} color="black" />
+    <AntDesign name="questioncircleo" size={24} color="#fff" />
     </TouchableOpacity>
     </View>
 
-    <Text style={{fontSize: 16, fontWeight: '500', marginTop: 10}}>what did you eat today?</Text>
+    <Text style={{color:'#fff', fontSize: 16, fontWeight: '500', marginTop: 10}}>what did you eat today?</Text>
     <TouchableOpacity onPress={()=> setIsFoodArea(true)} style={{backgroundColor: '#FFE7C3', width: '90%', height: '11%', marginTop: 10, borderRadius: 8, alignItems: 'center', justifyContent: 'center'}}>
       <Text style={{fontSize: 21}}>Food selection area</Text>
 
     {/* foodInstructions */}
     <TouchableOpacity onPress={()=> setIsFoodInstructions(true)} style={{position: 'absolute', left: -16, top: -24}}>
-    <AntDesign name="questioncircleo" size={24} color="black" />
+    <AntDesign name="questioncircleo" size={24} color="#fff" />
     </TouchableOpacity>
     </TouchableOpacity>
 
@@ -1741,13 +1746,13 @@ null}
     </View>
 {
     !isFoodArea ? 
-    <View style={{backgroundColor: '#fff', width: '90%', height: '15%',marginTop: 10, borderRadius: 8 ,flexDirection:'column',alignItems:'center', zIndex: isFoodArea ? -5: 9999}}>
+    <View style={{width: '90%', height: '15%',marginTop: 10, borderRadius: 8 ,flexDirection:'column',alignItems:'center', zIndex: isFoodArea ? -5: 9999}}>
       {/* {RmrCalculate()} */}
       {/* caloriesInstructions */}
     <TouchableOpacity onPress={()=> setIsCaloriesInstructions(true)} style={{position: 'absolute', right: 5, top: 5}}>
-    <AntDesign name="questioncircleo" size={24} color="black" />
+    <AntDesign name="questioncircleo" size={24} color="#fff" />
     </TouchableOpacity>
-      <Text style={{marginTop: 4, fontSize: 16, fontWeight: '600'}}>Daily calories</Text>
+      <Text style={{marginTop: 4, fontSize: 16, fontWeight: '600',color:'#fff'}}>Daily calories</Text>
 
 
     {  (currentUserData ? currentUserData.daysDetails[copyIndexDay].activityLevel : null) == 0 ?
@@ -1799,18 +1804,18 @@ null}
       </View>
 
 
-      <Text style={{fontSize: 9, position: 'absolute', bottom: -13,left: 0, fontWeight: '800'}}>|</Text>
-      <Text style={{fontSize: 11, position: 'absolute', bottom: -27,left: -13}}>{Math.floor((currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint: null))}</Text>
+      <Text style={{color:'#fff', fontSize: 9, position: 'absolute', bottom: -13,left: 0, fontWeight: '800'}}>|</Text>
+      <Text style={{color:'#fff', fontSize: 11, position: 'absolute', bottom: -27,left: -13}}>{Math.floor((currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint: null))}</Text>
 
-      <Text style={{fontSize: 9, position: 'absolute', bottom: 16,left: 50, fontWeight: '800'}}>|</Text>
-      <Text style={{fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>{Math.floor((currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget : null))}</Text>
+      <Text style={{color:'#fff', fontSize: 9, position: 'absolute', bottom: 16,left: 50, fontWeight: '800'}}>|</Text>
+      <Text style={{color:'#fff', fontSize: 11, position: 'absolute', bottom: 27,left: 35}}>{Math.floor((currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget : null))}</Text>
       
       </View>
       
       }
       
 
-      <Text style={{marginTop: 8, fontWeight: '700', fontSize: 16}}>{currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyCalories : null} calories</Text>
+      <Text style={{color:'#fff', marginTop: 8, fontWeight: '700', fontSize: 16}}>{currentUserData ? (currentUserData.daysDetails[copyIndexDay].dailyCalories).toFixed(0) : null} calories</Text>
     </View>
       :
       
@@ -1965,7 +1970,7 @@ const styles = StyleSheet.create({
     
 
   container: {
-    backgroundColor: 'rgba(0,0,0,0.6)',
+        backgroundColor: 'rgba(0,0,0,0.6)',
     width: '100%',
     height: '100%',
     alignItems: 'center',

@@ -576,12 +576,30 @@ const panResponder = PanResponder.create({
 
   {!isArticles ? GetContent() : null}
 
-    <FlatList data={isArticles ? filteredArticlesData : recipesDataApi.hits} renderItem={({item, index})=>
+    {/* <FlatList data={isArticles ? filteredArticlesData : recipesDataApi.hits} renderItem={({item, index})=>
        isArticles ? ArticlesList(item, index) :   [PagesNav(item, index) , RecipesList(item, index)]}
       //  horizontal 
 
         bounces= {false}
-       />
+       /> */}
+
+<FlatList
+  data={isArticles ? filteredArticlesData : recipesDataApi.hits}
+  renderItem={({ item, index }) => {
+    if (isArticles) {
+      return <React.Fragment key={item.articleId}>{ArticlesList(item, index)}</React.Fragment>;
+    } else {
+      return (
+        <React.Fragment key={item.pageId}>
+        {/*   {PagesNav(item, index)} */}
+          {RecipesList(item, index)}
+        </React.Fragment>
+        
+      );
+    }
+  }}
+/>
+       
 
 
 

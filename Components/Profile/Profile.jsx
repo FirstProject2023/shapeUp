@@ -41,6 +41,7 @@ const [password,setPassword]=useState('12378asd3');
 const [nameInputPresented,setNameInputPresented] = useState(1);
 const [ageInputPresented,setAgeInputPresented] = useState(1);
 const [emailInputPresented,setEmailInputPresented] = useState(1);
+const [phoneInputPresented,setPhoneInputPresented] = useState(1);
 const [purposeInputPresented,setPurposeInputPresented] = useState(1);
 const [goalInputPresented,setGoalInputPresented] = useState(1);
 const [dateInputPresented,setDateInputPresented] = useState(1);
@@ -75,6 +76,8 @@ const updateFirstNameAndLastNAmeUser = async (id,NfirstName,NlastName) => {
 }
 const updatePassword = async (id,newpassword) => {
 
+
+  console.log(newpassword);
 
   const userDoc = doc(db,"users",id)
   const newFields ={password : newpassword } 
@@ -249,6 +252,23 @@ const days = diffInDays - (years * 365) - (months * 30);
   {
     setEmailInputPresented(!emailInputPresented)
   }
+  function ChangePhoneInpout()
+  {
+    setPhoneInputPresented(!phoneInputPresented)
+  }
+  function ChangePasswordInpout()
+  {
+    setPasswordInputPresented(!passwordInputPresented)
+    Alert.alert(
+      'Password Changed',
+      'Your password has been updated. Please refresh the app to see the changes.',
+      [
+        { text: 'OK', onPress: () => changePassword() },
+        { text: 'Dont Change', onPress: () => console.log('OK pressed') },
+      ]
+    );
+    
+  }
   function ChangePurposeInpout()
   {
     setPurposeInputPresented(!purposeInputPresented)
@@ -280,6 +300,10 @@ function changeName()
     ],
     { cancelable: false }
   );
+
+}
+function changePassword(){
+  enterToChangePassword()
 
 }
 
@@ -372,15 +396,14 @@ function changeName()
 
     const pickImage = async () => {
       
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-    /* console.log( "--------->" + result.uri); */
     
-    if (!result.cancelled) {
+    if (!result.canceled) {
       updateImg(currentUserData.id,result.assets[0].uri)
      
     }
@@ -745,6 +768,43 @@ if(auth.currentUser&& currentUserData)
       marginLeft:28
     }}
   />
+{
+  phoneInputPresented
+                  ?
+          <View style={styles.details}>
+          
+            
+          <AntDesign style={{marginLeft:15}} name="lock" size={24} color="black"  />
+          <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}>{currentUserData ? currentUserData.phone : null}</Text>
+          <MaterialIcons style={{marginEnd:20}} name="email" size={24} color="black" />
+
+          </View>
+
+          : 
+
+          <View style={{width:'100%',alignItems:'center',flexDirection:'row'}}>
+            <AntDesign name="checkcircleo" size={24} color="black" style={{marginLeft:13}} 
+              onPress={ChangePhoneInpout}
+               />
+              <TextInput placeholder=' Enter here ...' 
+                style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'80%',marginLeft:15,marginTop:10,height:40}}
+                ></TextInput>
+                
+        </View>
+
+
+
+            }
+
+<View
+    style={{
+      height: 1.5,
+      width:'78%',
+      backgroundColor: 'black',
+      borderRadius:6,
+      marginLeft:28
+    }}
+  />
 
 
 
@@ -859,13 +919,19 @@ null
 
 {
   
+
+  passwordInputPresented ?
           <View style={styles.details}>
           
           
-
+          <View style={{flexDirection: "row"}}>
           <FontAwesome style={{marginLeft:15}} name="eye" size={28} color={eye ? "green" : "black" }  
            onPress={()=> setEye(!eye)}
            />
+           <FontAwesome5 name="pen" size={20} color="black" style={{marginLeft:15}}
+              onPress={ChangePasswordInput}
+              />
+           </View>
           <Text style={{fontSize:15,color:"black",textAlign:'center',marginEnd:0}}>{ currentUserData && eye ? currentUserData.password : "password" } </Text>
           
           <Foundation style={{marginEnd:20}} name="target-two" size={24} color="black" />
@@ -873,7 +939,22 @@ null
           </View>
 
           
+: 
+<View style={{}}>
 
+<Text style={{fontSize:12}}>** enter your password (The password will not really change).</Text>
+<View style={{width:'100%',alignItems:'center',flexDirection:'row'}}>
+
+<AntDesign name="checkcircleo" size={24} color="black" style={{marginLeft:13}} 
+              onPress={ChangePasswordInpout}
+              />
+<TextInput placeholder=' Enter here ...'  
+  value={newpassword}
+  onChangeText={textB => setNewpassword(textB)}
+  style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,marginLeft:15,marginTop:10,height:40,width:'78%'}}
+  ></TextInput>
+  </View>
+</View>
          
 
                 

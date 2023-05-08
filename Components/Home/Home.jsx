@@ -19,12 +19,19 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
+import {oreng,blue } from "../Globals/colors";
+
 import { SceneView } from 'react-navigation';
 
 import tips from '../Jsons/tips.json';
 
-export default function Home({ navigation }) {
-  
+import { useRoute } from '@react-navigation/native';
+
+
+export default function Home({ navigation  }) {
+
+ 
+
     useEffect(() => {
       const task = InteractionManager.runAfterInteractions(() => {
         // Perform your animations or long-running tasks here
@@ -278,7 +285,7 @@ if(auth.currentUser)
     
     <TouchableOpacity activeOpacity={1} onPress={()=> setIsTipsView(false) }>
     <StatusBar backgroundColor="rgb(255, 178, 71)" />
-    <ImageBackground source={require('../../assets/homePage.png')}  resizeMode= 'cover'>
+  
 
     <View style={styles.container}>
 
@@ -474,7 +481,7 @@ if(auth.currentUser)
 
     <View style={styles.detailsHomeContainer}>
   
-    <Text style={{fontSize:30,color:'black',fontWeight:'800'}}>hey {currentUserData ? currentUserData.firstName : null} !</Text>
+    <Text style={{fontSize:30,color:blue,fontWeight:'800'}}>hey {currentUserData ? currentUserData.firstName : null} !</Text>
 
 
     <View style={styles.detailsHome}>
@@ -502,14 +509,15 @@ if(auth.currentUser)
     </View>
      
   
-      <View style={{width: '100%', height: '25%', marginTop: 50, alignItems: 'center', justifyContent: 'center'}}>
-      <Text style={{padding: 10, fontSize: 23, color: '#000', fontWeight: '700'}}> your progress</Text>
+      <View style={{width: '100%', height: '25%', marginTop: 70, alignItems: 'center', justifyContent: 'center'}}>
+      
+      <Text style={{padding: 10, fontSize: 30, fontWeight: '900',color: blue, padding: 10 }}> your progress</Text>
 
-      <View style={{backgroundColor: 'rgba(214,247,208,0.4)',width: '85%', height: '24%', borderRadius: 8, borderWidth: 1.5, flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10}}>
+      <View style={{backgroundColor: '#f5ecdc',width: '85%', height: '24%', borderRadius: 8, borderWidth: 1.5, flexDirection: 'row', justifyContent: 'flex-end', marginTop: 20}}>
       <Text style={{position: 'absolute', right: 5, top: -21, fontWeight: '600'}}>{(currentUserData ? currentUserData.indexDeyFirebase: null)}/{(currentUserData ? currentUserData.daysDetails.length : null)} days</Text>
       <Foundation style={{ color: '#fff', fontWeight: '700', position: 'absolute', left: -25, top: 8}}  name="target-two" size={22} color="red" />
   
-      <View style={{backgroundColor: 'rgb(40,161,18)',height: '100%', width: `${((currentUserData ? currentUserData.indexDeyFirebase: null) / (currentUserData ? currentUserData.daysDetails.length : null)  ) * 100 }%`,borderTopEndRadius: 7, borderBottomEndRadius: 7,borderTopStartRadius: 5, borderBottomStartRadius: 5, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{backgroundColor: oreng ,height: '100%', width: `${((currentUserData ? currentUserData.indexDeyFirebase: null) / (currentUserData ? currentUserData.daysDetails.length : null)  ) * 100 }%`,borderTopEndRadius: 7, borderBottomEndRadius: 7,borderTopStartRadius: 5, borderBottomStartRadius: 5, justifyContent: 'center', alignItems: 'center'}}>
       {
         (currentUserData ? currentUserData.daysDetails.length : null) != (currentUserData ? currentUserData.indexDeyFirebase: null) ?
       <LottieView style={{height: 50, position: 'absolute', left: -7.7}}  autoPlay source={require('../lottieAnimation/walk_progress.json')}/> :
@@ -553,9 +561,18 @@ if(auth.currentUser)
       
       }        
       </View>
+      <View style={{flexDirection:'row',width:170,justifyContent:'center',justifyContent:'space-evenly',marginTop:30}}>
+
+      <Entypo  name="bar-graph" size={50} color={oreng} />
+      <View>
+        <Text style={{fontSize:20,fontWeight:'300'}}>{(((currentUserData ? currentUserData.indexDeyFirebase: null) / (currentUserData ? currentUserData.daysDetails.length : null)  ) * 100 ).toFixed(0)}%</Text>
+        <Text style={{fontSize:17,fontWeight:'200'}}>of progress</Text>
+      </View>
+      </View>
+    
         
     </View>
-    </ImageBackground>
+    
     </TouchableOpacity>
     </Animated.View>
   )
@@ -592,7 +609,7 @@ else{
 
 const styles = StyleSheet.create({
   container: {
-     /* backgroundColor: 'rgba(0,0,0,0.1)', */
+     backgroundColor: '#fff',
     width: '100%',
     height: '100%',
     alignItems: 'center',
@@ -634,8 +651,8 @@ const styles = StyleSheet.create({
     width: 110,
     height: 110,
     backgroundColor: 'rgb(230,190,99)',
-    borderWidth: 3.5,
-    borderColor: '#fff',
+   /*  borderWidth: 3.5, */
+   /*  borderColor: '#fff', */
     borderRadius: 100,
     // marginTop: 50,
     alignItems: 'center',
@@ -825,6 +842,7 @@ closeButtonText9: {
   fontSize: 18,
   fontWeight: 'bold',
 },
+
 
 
 

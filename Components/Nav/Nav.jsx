@@ -16,9 +16,12 @@ import Profile from "../Profile/Profile";
 import Login from '../Login/Login';
 import { TouchableOpacity } from 'react-native';
 
+import { useRoute } from '@react-navigation/native';
 
 export default function Nav() {
   
+ 
+
     const BottomTab  = createBottomTabNavigator();
 
   return (
@@ -56,11 +59,12 @@ export default function Nav() {
         tabBarActiveBackgroundColor: '#ffefbf',
         headerShown: false,
       }} />
-      <BottomTab.Screen name='Home' component={Home} options={{
+      <BottomTab.Screen name='Home' component={Home}  options={{
         tabBarButton: (props) => <TouchableOpacity {...props} />,
         tabBarActiveTintColor: 'rgb(225, 150, 30)',
         tabBarActiveBackgroundColor: '#ffefbf',
         headerShown: false,
+      
       }}/>
       <BottomTab.Screen name='Articles' component={Articles} options={{
         tabBarButton: (props) => <TouchableOpacity {...props} />,

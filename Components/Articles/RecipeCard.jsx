@@ -133,24 +133,20 @@ export default function RecipeCard({route, navigation}) {
       {
         recipe.ingredients.map((item, index)=>{
           return(
-            <TouchableOpacity  onPress={()=> setIsIngredientsDetails(!isIngredientsDetails)}>
-
-            <View key={index} style={styles.ingredientsDetails2}>
-
-          <ImageBackground  borderRadius={10} source={{uri: item.image}} resizeMode= 'cover'>
-          <View style={styles.ingredientContainer}>
-         { isIngredientsDetails ? <View style={{width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.4)', alignItems: 'center', justifyContent: 'center', flexDirection : 'row'}}>
-           {ingredientIcon(item)}
-           <Text style={{fontSize: 30, fontWeight: '800', color: '#fff'}}>{ parseFloat(item.quantity) === item.quantity && item.quantity % 1 !== 0 ? item.quantity.toFixed(2) :  item.quantity}</Text>
-
-
-          </View> : null}
-          
-
-          </View>
+           <TouchableOpacity key={index} onPress={() => setIsIngredientsDetails(!isIngredientsDetails)}>
+        <View style={styles.ingredientsDetails2}>
+          <ImageBackground borderRadius={10} source={{ uri: item.image }} resizeMode="cover">
+            <View style={styles.ingredientContainer}>
+              {isIngredientsDetails ? (
+                <View style={{ width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.4)', alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                  {ingredientIcon(item)}
+                  <Text style={{ fontSize: 30, fontWeight: '800', color: '#fff' }}>{parseFloat(item.quantity) === item.quantity && item.quantity % 1 !== 0 ? item.quantity.toFixed(2) : item.quantity}</Text>
+                </View>
+              ) : null}
+            </View>
           </ImageBackground>
-          </View>
-            </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
           )
       
 

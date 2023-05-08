@@ -36,7 +36,7 @@ export default function Login({ navigation }) {
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [phone, setphone] = useState(0);
+  const [phone, setphone] = useState(null);
   const [gender, setGender] = useState(1);
   const [height, setHeight] = useState(170);
   const [weight, setWeight] = useState(70);
@@ -140,35 +140,16 @@ export default function Login({ navigation }) {
     
 
 
-useEffect(()=>{
-   const unSubscribe =  auth.onAuthStateChanged(async user=>{
-    if(user){
-      
-      if(confirmedPassword)
-      {
-console.log(confirmedPassword);
-        const currentUser = users.find((user) => user && user.email ? user.email.toLowerCase() == auth.currentUser.email.toLowerCase() : null );
+    useEffect(() => {
+      const unSubscribe = auth.onAuthStateChanged(async (user) => {
+        if (user) {
         
-        console.log(currentUser.id);
-        console.log(user.email);
-        
-        const userDoc = doc(db,"users",currentUser.id)
-
-      
-      console.log(userDoc);
-      
-      await updateDoc(userDoc, {
-        password: confirmedPassword, // Replace 'parameterName' with the actual field name you want to update
+            navigation.navigate('Nav');
+        }
       });
-      
-    }
-     
-
-      navigation.navigate('Nav')
-    }
-    return unSubscribe
-  })
-},[])
+    
+      return unSubscribe;
+    }, []);
 
 useEffect(()=>{
 
@@ -202,8 +183,8 @@ const hendelUpdateGool = async () => {
               const currentDate = new Date();
               const age = currentDate.getFullYear() - birthDate.year ;
 
-              console.log(age + "ageeeeee!");
-
+/*               console.log(age + "ageeeeee!");
+ */
               
 
               let today = new Date() ;
@@ -366,7 +347,14 @@ const  handleSignUp =  async () => {
   setGoalIsVisible(false);
    setFirstScreenIsVisible(true);
    
+  /*  let thePhone=null;
+
+   if(phone > 999999999 || phone < 99999999)
+   {
+    thePhone=phone;
+   }
    
+   console.log(thePhone); */
     try{
         const user = await createUserWithEmailAndPassword(auth, email, password);
         await addDoc(userCollectionRef, {
@@ -374,6 +362,7 @@ const  handleSignUp =  async () => {
             password: password,
             firstName: firstName,
             lastName: lastName,
+            phone: phone,
             gender: gender,
             weight: weight,
             height: height,
@@ -441,38 +430,48 @@ const  handleSignUp =  async () => {
       
         // Display a success message or navigate to a confirmation screen
       } catch (error) {
-        console.error('Failed to send password reset email:', error);
-        // Display an error message to the user
+        Alert.alert("Failed to send password reset email:");
+/*         console.error('Failed to send password reset email:', error);
+ */        // Display an error message to the user
       }
     };
+
+    const signInWithNewPAssword = async ()=>{
+
+/*       console.log(confirmedPassword + "!!!@#");
+ */     try{
+       const user = await signInWithEmailAndPassword(auth, newEmail, confirmedPassword)
+
+     }
+     catch (error) {
+       Alert.alert('The password is not the same as what you typed in the email verification');
+      
+      // Display an error message to the user
+    }
+
+    }
     const updateThePassword = async (newPassword) => {
       if(newPassword != confirmedPassword)
       {
         Alert.alert('The passwords are not equal');
       }
+      else{
       try {
-        
-        console.log(newPassword);
-        const user = await signInWithEmailAndPassword(auth, newEmail, confirmedPassword);
-
-      
-    /*     console.log(getAuth().name);
-        console.log("1"); */
-
-      /*   const userDoc = doc(db,"users",auth.currentUser.providerId)
-        let currDaysDetails = [... auth.currentUser]
-
-        const newFields ={password : newPassword } 
-
-        await updateDoc(userDoc , newFields) 
- */
-        /* const user = auth.currentUser;
-  await updatePassword(user, newPassword); */
+        setPassword(newPassword)
+        Alert.alert(
+          'Password Changed',
+          'Your password has been successfully changed. You can now log into your account.',
+          [
+            { text: 'OK', onPress: () => signInWithNewPAssword() }
+          ]
+        );
+       
 
       } catch (error) {
         console.error('Failed to update password:', error);
         // Display an error message to the user
       }
+    }
     };
 
 const [falg99,setFlag99]=useState(false);
@@ -601,8 +600,8 @@ function EmailTextInput()
    function BirthdayTextInput(date){
 
 
-    console.log(date.getFullYear());
-    const currentDate = new Date();
+/*     console.log(date.getFullYear());
+ */    const currentDate = new Date();
     const ageDiff = currentDate.getFullYear() - date.getFullYear();
    
 
@@ -651,8 +650,8 @@ function EmailTextInput()
   function ChakePasswordError(text)
   {
 
-    console.log(text);
-    if(text.length > 5)
+/*     console.log(text);
+ */    if(text.length > 5)
     {
       console.log("found error");
       setErrorPassword(false)
@@ -664,8 +663,8 @@ function EmailTextInput()
   function ChakeFirstNameError(text)
   {
 
-    console.log(text);
-
+/*     console.log(text);
+ */
     if(text != "")
     {
       
@@ -678,8 +677,8 @@ function EmailTextInput()
   function ChakeLastNameError(text)
   {
 
-    console.log(text);
-    if(text != "")
+/*     console.log(text);
+ */    if(text != "")
     {
       
       setErrorLastName(false)
@@ -691,8 +690,8 @@ function EmailTextInput()
   function ChakePhoneError(text)
   {
 
-    console.log(phone);
-
+/*     console.log(phone);
+ */
     if(text > 999999999 || text < 99999999 )
     {
      console.log("ok....");

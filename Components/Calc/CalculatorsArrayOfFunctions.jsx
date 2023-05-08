@@ -329,8 +329,8 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
 
   const handleResOfProteintake = (text) => {
     
-console.log(text);
-
+/* console.log(text);
+ */
     setFinelText2(text)
     setFinelText(text)
     setResults([]);
@@ -390,10 +390,6 @@ function ChangeText()
 
 function Res()
 {
-
-
-  console.log(approval2);
-
 
     if(!data2.nutrients || !approval2)
      {
@@ -939,7 +935,6 @@ function SavingStatus(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiS
     
         if(!manisFocused)
         {
-         console.log(valueToMult +"  " +"sitt");
           setBmiSearchResult((  (88.36) + ( (13.39 * weightValue)+(4.7* heightValue)-(5.6 * selectedAgeValue))  * valueToMult ))
           
         }
@@ -1184,7 +1179,6 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
       })
       .then((data) => {
         setData1(data.parsed[0].food)
-        console.log(data1);
         
         
       })
@@ -1210,7 +1204,6 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
       })
       .then((data) => {
         setData2(data.parsed[0].food)
-        console.log(data2);
         
         
       })
@@ -1242,7 +1235,6 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
           })
           .then((data) => {
             setData1(data.parsed[0].food)
-            console.log(data1);
             
             
           })
@@ -1263,7 +1255,6 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
       })
       .then((data) => {
         setData2(data.parsed[0].food)
-        console.log(data2);
         
       })
       .catch(error => {
