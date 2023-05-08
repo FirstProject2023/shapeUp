@@ -346,15 +346,7 @@ const  handleSignUp =  async () => {
 
   setGoalIsVisible(false);
    setFirstScreenIsVisible(true);
-   
-  /*  let thePhone=null;
 
-   if(phone > 999999999 || phone < 99999999)
-   {
-    thePhone=phone;
-   }
-   
-   console.log(thePhone); */
     try{
         const user = await createUserWithEmailAndPassword(auth, email, password);
         await addDoc(userCollectionRef, {
@@ -567,6 +559,7 @@ function EmailTextInput()
               setErrorPhone(true);
               setGenderIsVisible(true);
               setNameIsVisible(false);
+              setphone(null);
             },
           },
         ],
