@@ -450,7 +450,7 @@ if(auth.currentUser)
                 <Text style={styles.modalButtonText}>Company Policy</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.modalButton} onPress={()=>hendleSingOut()}>
-                <Text style={styles.modalButtonText}>Log out</Text>
+                <Text style={styles.modalSignOutText}>sign out</Text>
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.modalCancelButton} onPress={toggleModalVisible}>
@@ -719,6 +719,11 @@ modalCancelButtonText: {
   fontSize: 18,
   fontWeight: 'bold',
   color: '#f00',
+},
+modalSignOutText: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  color: 'blue',
 },
 modalContainer7: {
   flex: 1,

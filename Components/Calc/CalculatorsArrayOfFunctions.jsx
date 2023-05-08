@@ -156,7 +156,7 @@ padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
  BMI calculator allows you to find out what your BMI is. The Body Mass Index is an index that measures the ratio between body weight and height. The result shows the ratio (proportion) between your height and weight. This index serves as a tool for measuring excess and underweight.   </Text>
 
 <TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
-<Feather name="x-circle" size={40} color="#fff"/>
+<Feather name="x-circle" size={30} color="#fff"/>
 </TouchableOpacity>
 </FadeInOut>
           
@@ -454,7 +454,7 @@ padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
  The nutrition / calorie calculator shows you the caloric and nutritional value of foods and drinks of your choice.   </Text>
 
 <TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
-<Feather name="x-circle" size={40} color="#fff"/>
+<Feather name="x-circle" size={30} color="#fff"/>
 </TouchableOpacity>
 </FadeInOut>
 
@@ -684,12 +684,12 @@ scale={true}
   alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5,left:2, 
 padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
 
- <Text style={{fontSize: 14,position: 'absolute', fontWeight: '600',top: 54}}>
+ <Text style={{fontSize: 13,position: 'absolute', fontWeight: '600',top: 54}}>
  The BMR (Basal Metabolic Rate) is a measure that represents the amount of energy the body burns at complete rest. That is, the amount of energy necessary to maintain necessary physical functions only, such as: cell multiplication, activation of respiratory muscles, heart muscle and smooth muscles, transmission of nerve impulses and active transmission through cell membranes.
 This calculator checks what your BMR is. That is, how many calories you burn in a day just to maintain necessary physical functions. </Text>
 
 <TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
-<Feather name="x-circle" size={40} color="#fff"/>
+<Feather name="x-circle" size={30} color="#fff"/>
 </TouchableOpacity>
 </FadeInOut>
 
@@ -984,7 +984,7 @@ According to the result in this calculator, you will be able to know how many ca
  </Text>
 
 <TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
-<Feather name="x-circle" size={40} color="#fff"/>
+<Feather name="x-circle" size={30} color="#fff"/>
 </TouchableOpacity>
 </FadeInOut>
 
@@ -1414,7 +1414,7 @@ Confused about what is better to eat? Here you can compare two foods and find ou
  </Text>
 
 <TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
-<Feather name="x-circle" size={40} color="#fff"/>
+<Feather name="x-circle" size={30} color="#fff"/>
 </TouchableOpacity>
 </FadeInOut>
 
@@ -1699,7 +1699,7 @@ padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
  מחשבון BMI מאפשר לך לברר מהו ה-BMI שלך. מדד מסת הגוף (Body Mass Index) הוא מדד המודד את היחס בין משקל הגוף לגובה. התוצאה מלמדת על היחס (פרופורציה) בין הגובה למשקל שלך. מדד זה משמש כלי למדידת עודף ותת-משקל. </Text>
 
 <TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
-<Feather name="x-circle" size={40} color="#fff"/>
+<Feather name="x-circle" size={30} color="#fff"/>
 </TouchableOpacity>
 </FadeInOut>
         {/*   <View style={{flexDirection:'row',justifyContent:'space-evenly',width:'100%'}}>
@@ -1920,7 +1920,7 @@ padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
  מחשבון התזונה / קלוריות  מציג בפניך את הערך הקלורי והתזונתי של מזונות ומשקאות לפי בחירתכם. </Text>
 
 <TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
-<Feather name="x-circle" size={40} color="#fff"/>
+<Feather name="x-circle" size={30} color="#fff"/>
 </TouchableOpacity>
 </FadeInOut>
       <View style={{width:'100%', flexDirection:'row' ,justifyContent:'space-evenly',marginTop:10}}>
@@ -2121,13 +2121,13 @@ scale={true}
   alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5,left:2, 
 padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
 
- <Text style={{fontSize: 14,position: 'absolute', fontWeight: '600',top: 60}}>
+ <Text style={{fontSize: 13,position: 'absolute', fontWeight: '600',top: 60}}>
  ה- BMR (הקצב המטאבולי הבסיסי - Basal Metabolic Rate) הוא מדד המייצג את כמות האנרגיה שהגוף שורף במצב מנוחה מוחלטת. כלומר, כמות האנרגיה הנחוצה לשם שמירה על תפקודים גופניים הכרחיים בלבד, כגון: הכפלת תאים, הפעלת שרירי הנשימה, שריר הלב ושרירים חלקים, העברת גירויים עצביים והעברה פעילה דרך קרומי תאים.
 מחשבון זה בודק מהו ה-BMR שלכם. כלומר כמה קלוריות אתם שורפים ביממה רק לשם שמירה על תפקודים גופניים הכרחיים.
  </Text>
 
 <TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
-<Feather name="x-circle" size={40} color="#fff"/>
+<Feather name="x-circle" size={30} color="#fff"/>
 </TouchableOpacity>
 </FadeInOut>
 
@@ -2425,7 +2425,7 @@ padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
  </Text>
 
 <TouchableOpacity style={{position: 'absolute', right: 5, top: 10, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setExplanation(false)}>
-<Feather name="x-circle" size={40} color="#fff"/>
+<Feather name="x-circle" size={30} color="#fff"/>
 </TouchableOpacity>
 </FadeInOut>
 

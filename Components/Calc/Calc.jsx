@@ -31,15 +31,63 @@ const [isEnglish,setIsEnglish]= useState(1);
   const [proteinValue,setProteinValue] = useState(0);
   const [caloriesValue,setCaloriesValue]= useState(-1);
 
+  
   const [calorValueA,setCalorValueA]= useState(0);
   const [calorValueB,setCalorValueB]= useState(0);
   const[moreCalory,setMoreCalory]= useState(0);
   const[isMan,setIsMan]=useState(1);
   const[whatPoint,setWhatPoint]=useState(1);
-
+  
   const flatListRef = useRef(null);
 
+  const [modalVisible7, setModalVisible7] = useState(false);
+  const [modalVisible8, setModalVisible8] = useState(false);
+
+  const hendleSingOut =()=>{
+    auth
+    .signOut()
+    .then(()=>{
+      navigation.navigate('Login')
+    })
+    .catch(error => log("error"))
+  }
  
+  const privacyPolicyText = `
+  Your privacy matters to us. We are committed to protecting your personal information and ensuring its confidentiality.
+  
+  We collect only the necessary data required to provide you with our services, and we never share or sell your information to third parties.
+  
+  Our privacy policy explains in detail what data we collect, how we use it, and the security measures we have in place to safeguard your information.
+  
+  We respect your choices and provide options to manage your privacy preferences. You are in control of your data.`;
+
+const termsOfServiceText = `
+  By using our app, you agree to abide by our Terms of Service, which outline the rules and guidelines for using our platform.
+  
+  We encourage responsible and respectful use of our app. Prohibited activities include harassment, hate speech, and any form of unlawful behavior.
+  
+  Our Terms of Service ensure fair usage, protect intellectual property rights, and maintain a positive community environment.
+  
+  We value your feedback and encourage you to report any violations or concerns regarding the Terms of Service.`;
+
+const contentGuidelinesText = `
+  Our app fosters a community where users can share content and engage with others. To maintain a safe and inclusive environment, we have content guidelines in place.
+  
+  We encourage you to express yourself freely, but please ensure that your content aligns with our guidelines.
+  
+  We do not tolerate any form of hate speech, harassment, explicit content, or violations of intellectual property rights.
+  
+  By adhering to these guidelines, you help us create a respectful and enjoyable experience for all users.`;
+
+const securityDataProtectionText = `
+  We take the security of your data seriously. We implement robust security measures to protect your personal information from unauthorized access.
+  
+  Your data is encrypted during transmission and securely stored on our servers. We regularly update our systems to stay ahead of potential threats.
+  
+  In the event of a security breach, we have procedures in place to promptly respond, mitigate the impact, and notify affected users as necessary.
+  
+  We are committed to transparency and will keep you informed about our security practices and any updates related to data protection.`;
+
   const darts = [
     { id: '4', score: 10 },
     { id: '3', score: 5 },
@@ -192,6 +240,10 @@ const panResponder = PanResponder.create({
 
 <View style={styles.container}>
 
+<TouchableOpacity style={{position:'absolute',top:10,right:15}} onPress={toggleModalVisible}>
+        <Entypo name="menu" size={40} color="#000" />
+      </TouchableOpacity>
+
 
 
       <TouchableOpacity style={[styles.buttonTosearch]} onPress={handleModalOpen}>
@@ -225,10 +277,115 @@ const panResponder = PanResponder.create({
         
         </View>
       </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={toggleModalVisible}
+      >
+        <TouchableWithoutFeedback onPress={toggleModalVisible}>
+          <View style={styles.modalContainer3}>
+            <View style={styles.modalView3}>
+              <TouchableOpacity style={styles.modalButton3} onPress={()=>  Linking.openSettings()}>
+                <Text style={styles.modalButtonText3}>Settings</Text>
+              </TouchableOpacity>
+          
+              <TouchableOpacity style={styles.modalButton3} onPress={()=>setModalVisible8(true)}>
+                <Text style={styles.modalButtonText3}>Contact Us</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalButton3} onPress={()=>setModalVisible7(true)}>
+                <Text style={styles.modalButtonText3}>Company Policy</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalButton3} onPress={()=>hendleSingOut()}>
+                <Text style={styles.modalSignOutText}>sign Out</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.modalCancelButton3} onPress={toggleModalVisible}>
+                <Text style={styles.modalCancelButtonText3}>Cancel</Text>
+              </TouchableOpacity>
+           
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+      <Modal
+        visible={modalVisible7}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalVisible7(false)}
+      >
+        <View style={styles.modalContainer7}>
+          <View style={styles.modalContent7}>
+            <ScrollView>
+              <Text style={styles.sectionTitle7}>Privacy Policy</Text>
+              <Text style={styles.policyText7}>{privacyPolicyText}</Text>
+
+              <Text style={styles.sectionTitle7}>Terms of Service</Text>
+              <Text style={styles.policyText7}>{termsOfServiceText}</Text>
+
+              <Text style={styles.sectionTitle7}>Content Guidelines</Text>
+              <Text style={styles.policyText7}>{contentGuidelinesText}</Text>
+
+              <Text style={styles.sectionTitle7}>Security and Data Protection</Text>
+              <Text style={styles.policyText7}>{securityDataProtectionText}</Text>
+            </ScrollView>
+
+            <Button title="Close" onPress={() => setModalVisible7(false)} />
+          </View>
+          </View>
+
+          </Modal>
+          <Modal
+        visible={modalVisible8}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalVisible8(false)}
+      >
+        <View style={styles.modalContainer8}>
+          <View style={styles.modalContent8}>
+            <Text style={styles.title8}>Contact Options</Text>
+
+            <View style={styles.buttonContainer8}>
+
+            <TouchableOpacity style={styles.contactButton} onPress={ ()=> Linking.openURL(whatsappToMaoz)}>
+              <Text style={styles.contactButtonText}>Contact via WhatsApp</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.contactButton}  onPress={()=>Linking.openURL('mailto:abhtur321@gmail.com')}>
+              <Text style={styles.contactButtonText}>Contact via Email</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.contactButton}  onPress={()=>Linking.openURL('tel:0585710584')}>
+              <Text style={styles.contactButtonText}>Contact via Phone</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.contactButton} onPress={()=>Linking.openURL('sms:0585710584')}>
+              <Text style={styles.contactButtonText}>Contact via SMS</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.contactButton2} onPress={()=>Linking.openURL(url)}>
+              <Text style={styles.contactButtonText}>Where are we located?</Text>
+            </TouchableOpacity>
+
+           
+
+
+            <TouchableOpacity style={{backgroundColor:'#0974c0', borderRadius: 8,paddingVertical: 10,paddingHorizontal: 16,marginBottom: 10,marginTop:20}}
+             onPress={() => setModalVisible8(false)}>
+              <Text style={styles.contactButtonText}>Close</Text>
+            </TouchableOpacity>
+           
+
+             
+            </View>
+
+           
+          </View>
+        </View>
+      </Modal>
+
 
 
       <Text style={{fontSize: 32,fontWeight: '200',color: '#333', textAlign: 'center',}}>Nutrition Calculators</Text>
       <View style={styles.line} />
+
+     
 
      
 
@@ -531,8 +688,119 @@ const styles = StyleSheet.create({
     backgroundColor:'red',
 
   },
-
-  
+  modalContainer3: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView3: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalButton3: {
+    marginVertical: 10,
+    padding: 10,
+    backgroundColor: '#f2f2f2',
+    borderRadius: 5,
+    width: '100%',
+    alignItems: 'center',
+  },
+  modalButtonText3: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  modalCancelButton3: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: '#f2f2f2',
+    borderRadius: 5,
+    width: '100%',
+    alignItems: 'center',
+  },
+  modalCancelButtonText3: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#f00',
+  },
+  modalSignOutText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'blue',
+  },
+  modalContainer7: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent7: {
+    backgroundColor: '#FFF',
+    padding: 20,
+    borderRadius: 8,
+    elevation: 5,
+    maxHeight: '80%', // Set a maximum height to allow scrolling
+  },
+  sectionTitle7: {
+    fontSize: 22, // Increase the font size
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  policyText7: {
+    fontSize: 14, // Increase the font size
+    marginBottom: 10,
+  },
+  modalContainer8: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent8: {
+    height:'60%',
+    width:'80%',
+    backgroundColor: '#FFF',
+    padding: 20,
+    borderRadius: 8,
+    elevation: 5,
+  },
+  title8: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    
+    marginBottom: 10,
+  },
+  buttonContainer8: {
+    marginBottom: 20,
+    
+  },
+  contactButton: {
+    backgroundColor: '#2ecc71',
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    marginBottom: 10,
+  },
+  contactButton2: {
+    backgroundColor: '#2ecca1',
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    marginBottom: 10,
+  },
+  contactButtonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 
 })
 
