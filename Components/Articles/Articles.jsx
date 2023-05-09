@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View , Button, FlatList, useWindowDimensions,
    TouchableOpacity, Image, TextInput, ImageBackground, ActivityIndicator,
-    KeyboardAvoidingView, StatusBar, Animated, PanResponder, Dimensions ,Modal ,Linking, TouchableWithoutFeedback, ScrollView } from 'react-native'
+    KeyboardAvoidingView, StatusBar, Animated, PanResponder, Dimensions ,Modal ,Linking, TouchableWithoutFeedback, ScrollView, Alert } from 'react-native'
 import React, { useState , useEffect} from 'react'
 import articlesData from '../Jsons/articles.json'
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -130,7 +130,17 @@ export default function Articles({navigation}) {
 
   const filteredArticlesData = ArticlesDataFilter();
 
+  const phoneNumber1 = '0542588518'; // Replace with the phone number you want to message
+  const message = `Thank you for choosing our application! We invite you to join and experience its features. Click the link to download: https://www.example.com/app`; // Customize the message and replace the link with your application's download link
 
+  const whatsappUrlTest2 = `whatsapp://send?text=${encodeURIComponent(message)}`;
+  const whatsappUrlTest = `whatsapp://send?phone=${phoneNumber1}&text=${encodeURIComponent(message)}`;
+
+  const whatsappToMaoz = `whatsapp://send?phone=${phoneNumber1}`;
+
+  const phoneNumber2 = '0542588518'; // Replace with the phone number you want to message
+
+  const whatsappUrlToShneor = `whatsapp://send?phone=${phoneNumber2}`;
   
   
   let firstPageApiRecipes = `https://api.edamam.com/api/recipes/v2?type=any&beta=false&q=${freeRecipesSearch}
@@ -280,19 +290,32 @@ export default function Articles({navigation}) {
 
   }
   
+  function CaloriesRange(){
+    
+      Alert.alert(
+      'error',
+      'You must choose a calorie range, both minimum and maximum',
+      [
+          { text: 'ok', onPress: () => console.log('OK Pressed') },
+          
+        ],
+      {cancelable: false},
+    ); 
+  }
+
   function RecipesFilters(){
     return(
       <View style={{width: '100%'}}>
 
       <View style={styles.recipesFiltersContainer}>
-      <TouchableOpacity onPress={()=> {[setFreeRecipesSearch(currFreeRecipesSearch), , AddToFilters(currFreeRecipesSearch, 5)]}}>
-        <FontAwesome5  name="search" size={30} color="#d89b5c" />
+      <TouchableOpacity style={{marginTop: 4}} onPress={()=> {[setFreeRecipesSearch(currFreeRecipesSearch), currFreeRecipesSearch != "" ? currFreeRecipesSearch != " " ? AddToFilters(currFreeRecipesSearch, 5) :  null: null]}}>
+        <FontAwesome5   name="search" size={28} color="#d89b5c" />
       </TouchableOpacity>
 
      <TextInput onChangeText={setCurrFreeRecipesSearch} style={styles.recipesSearch} placeholder='Search recipes...'/>
 
-      <TouchableOpacity onPress={()=> setIsRecipesFilters(!isRecipesFilters)}>
-        <Octicons name="filter" size={30} color="#d89b5c" />
+      <TouchableOpacity style={{marginTop: 4}} onPress={()=> setIsRecipesFilters(!isRecipesFilters)}>
+        <Octicons name="filter" size={28} color="#d89b5c" />
       </TouchableOpacity>
     </View>
     <View style={[styles.filter, {height: 65}]}>
@@ -354,7 +377,7 @@ export default function Articles({navigation}) {
       <Text style={{margin: 5, color: '#fff', fontSize: 16, fontWeight: '500'}}> Calories Range</Text>
       <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: '100%', marginTop: 5}}>
         <Text style={{color: '#fff', fontSize: 15, fontWeight: '600'}}>Max</Text>
-        <TouchableOpacity onPress={()=> [setCaloriesRangeRecipes(`calories=${minCalories}-${maxCalories}`), setIsRecipesFilters(!isRecipesFilters), AddToFilters(`${minCalories}-${maxCalories}`, 4)]}>
+        <TouchableOpacity onPress={()=> [minCalories != "" ? maxCalories != "" ? (setCaloriesRangeRecipes(`calories=${minCalories}-${maxCalories}`), setIsRecipesFilters(!isRecipesFilters), AddToFilters(`${minCalories}-${maxCalories}`, 4)): CaloriesRange() : CaloriesRange()]}>
         <AntDesign name="checkcircle" size={26} color="#fff" />
         </TouchableOpacity>
         <Text style={{color: '#fff', fontSize: 15, fontWeight: '600'}}>Min</Text>
@@ -946,14 +969,14 @@ const styles = StyleSheet.create({
 
   CardShadow:{
 
-    shadowColor: "#000000",
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    shadowOpacity:  0.21,
-    shadowRadius: 6.65,
-    elevation: 9
+    // shadowColor: "#000000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 6,
+    // },
+    // shadowOpacity:  0.21,
+    // shadowRadius: 6.65,
+    // elevation: 9
 
   },
 

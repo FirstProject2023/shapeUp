@@ -1,6 +1,6 @@
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert, Button, StatusBar, Image, Keyboard , Modal   } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Entypo } from '@expo/vector-icons'; 
+
 
 import FadeInOut from 'react-native-fade-in-out';
 
@@ -10,6 +10,8 @@ import {oreng,blue } from "../Globals/colors";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
 import { Picker } from '@react-native-picker/picker';
+import { Entypo } from '@expo/vector-icons'; 
+import { Feather } from '@expo/vector-icons';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
 
@@ -74,6 +76,7 @@ export default function Login({ navigation }) {
     const [loginIsVisible, setLoginIsVisible] = useState(false);
     const [signUpIsVisible, setSignUpIsVisible] = useState(false);
     const [nameIsVisible, setNameIsVisible] = useState(false);
+    const [phoneIsVisible, setPhoneIsVisible] = useState(false);
     const [genderIsVisible, setGenderIsVisible] = useState(false);
     const [heightAndWeightIsVisible, setHeightAndWeightIsVisible] = useState(false);
     const [averageActivityIsVisible, setAverageActivityIsVisible] = useState(false);
@@ -343,7 +346,6 @@ setBasicDayTarget(basicBalancePoint - calToLoseDay);
 
 const  handleSignUp =  async () => {
   
-
   setGoalIsVisible(false);
    setFirstScreenIsVisible(true);
 
@@ -890,12 +892,7 @@ The email address must be entered to restore the account
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Sign Up</Text>
     </TouchableOpacity>
-<TouchableOpacity style={[styles.loginButton2, {width: '60%', marginTop: 10, backgroundColor: '#fff'}]}
-onPress={ ()=> setVisible(true)}
->
-  
-<Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 17, fontWeight: '700'}}>Forgot the password</Text>
-</TouchableOpacity>
+
 
     <TouchableOpacity
     onPress={()=>{ navigation.navigate('Transition')}}
@@ -956,11 +953,18 @@ onPress={ ()=> setVisible(true)}
         
        
         />
+
+    <TouchableOpacity style={[{width: '60%', marginTop: 15, alignItems: 'center',}]}
+    onPress={ ()=> setVisible(true)}
+    >
+      
+    <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 17, fontWeight: '700'}}>Forgot the password</Text>
+    </TouchableOpacity>
     </View>
 
     <View style={styles.buttonContainer}>
     <TouchableOpacity
-    style={[styles.loginButton, {marginTop: 20}]}
+    style={[styles.loginButton, {marginTop: 70}]}
     onPress={handleLogin}
     >
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Login</Text>
@@ -1069,17 +1073,44 @@ onPress={ ()=> setVisible(true)}
        
        
         />
-
+      
+      <View style={{ width: '70%', height: '40%',}}>
+      <TouchableOpacity style={{position: 'absolute', top: 30, left: -40}} onPress={()=> setPhoneIsVisible(true)}>
+      <AntDesign  name="exclamationcircleo" size={26} color="rgba(255, 178, 71,0.9)" />
+      </TouchableOpacity>
       <TextInput 
-       style={[styles.textInput,{borderColor : errorPhone ? 'rgb(168,29,29)' : '#fff'   } ]}
+       style={[styles.textInput,{borderColor : errorPhone ? 'rgb(168,29,29)' : '#fff' ,width: '100%', height: '100%',  } ]}
       placeholder='phone number'
       keyboardType="phone-pad"
       placeholderTextColor={'#fff'}
       
         onChangeText={text => ChakePhoneError(text)}
        
-       
         />
+      </View>
+
+      <FadeInOut style={{ 
+        //phoneScreen
+        borderRadius: 8,
+        marginTop: 15,
+        width: phoneIsVisible ? 240: 0,
+        height:  phoneIsVisible ? 150: 0,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: phoneIsVisible ?  999 : 0,}}
+        visible={phoneIsVisible}
+        duration={!phoneIsVisible ? 0 : 800}
+        scale={true}
+        >
+        <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setPhoneIsVisible(false)}>
+        <Feather name="x-circle" size={25} color="#fff"/>
+        </TouchableOpacity>
+
+        <Text style={{padding: 5, fontWeight: '600'}}>Entering your phone number is optional, but will allow us to send you mobile messages</Text>
+      
+        </FadeInOut>
+
     </View>
     <View style={styles.buttonContainer}>
     <TouchableOpacity
@@ -1483,8 +1514,8 @@ onPress={ ()=> setVisible(true)}
         duration={!startViewIsVisible ? 400 : 800}
         scale={true}
         >
-        <Text style={{fontSize: 20, fontWeight: '700', marginTop: 100}}>The registration process is complete!</Text>
-        <AntDesign name="stepforward" size={24} color="black"  onPress={()=>setStartViewIsVisible(false)}/>
+        <Text style={{fontSize: 20, fontWeight: '700', marginTop: 200}}>The registration process is complete!</Text>
+        {/* <AntDesign name="stepforward" size={24} color="black"  onPress={()=>setStartViewIsVisible(false)}/> */}
 
         <View style={{ width: startViewIsVisible ? 250 : 0, height: startViewIsVisible ? 250 : 0, marginTop: startViewIsVisible ? 100 : 0 }}>
         <LottieView  style={{ flex: 1 }}  autoPlay source={require('../lottieAnimation/success_sign_up2.json')}/>

@@ -314,7 +314,7 @@ if(auth.currentUser)
 <Modal visible={showTip} animationType="slide" transparent={true}>
         <View style={styles.modalContainer9}>
           <View style={styles.modalContent9}>
-            <Text style={styles.tipTitle9}>Daily Tip</Text>
+            <Text style={styles.tipTitle9}>The Daily Tip</Text>
             <Text style={styles.tipText9}>
               {tips[counter].tip}
             </Text>
@@ -387,7 +387,7 @@ if(auth.currentUser)
             <TouchableOpacity style={styles.contactButton} onPress={ ()=> Linking.openURL(whatsappToMaoz)}>
               <Text style={styles.contactButtonText}>Contact via WhatsApp</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.contactButton}  onPress={()=>Linking.openURL('mailto:abhtur321@gmail.com')}>
+            <TouchableOpacity style={styles.contactButton}  onPress={()=>Linking.openURL('mailto:shmproject2023@gmail.com')}>
               <Text style={styles.contactButtonText}>Contact via Email</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.contactButton}  onPress={()=>Linking.openURL('tel:0585710584')}>
@@ -481,13 +481,14 @@ if(auth.currentUser)
 
     <View style={styles.detailsHomeContainer}>
   
-    <Text style={{fontSize:30,color:blue,fontWeight:'800'}}>hey {currentUserData ? currentUserData.firstName : null} !</Text>
+    <Text style={{fontSize:40,color:blue,fontWeight:'200'}}>hey {currentUserData ? currentUserData.firstName : null} !</Text>
 
 
     <View style={styles.detailsHome}>
     <TouchableOpacity style={[styles.sidesDetails, {position: 'absolute', left: 20, top: 80}]}>
     
     <Text style={{fontSize: 20, fontWeight: '800',color: '#fff'}}> {currentUserData ? currentUserData.weightGoal : null}kg</Text>
+    <Text style={{fontSize: 11, fontWeight: '600',color: '#fff'}}>goal weight</Text>
 
   
     </TouchableOpacity>
@@ -495,14 +496,14 @@ if(auth.currentUser)
      
     <TouchableOpacity style={styles.mainDetail}>
       <View style={{alignItems:'center',justifyContent:'center'}}>
-    <Text style={{fontSize: 35, fontWeight: '600', color: '#fff'}}>{currentUserData  ? currentUserData.daysDetails[0].dailyCalories : null}</Text>
-    <Text style={{fontSize: 22, fontWeight: '400', color: '#fff'}}>cal</Text>
+    <Text style={{fontSize: 35, fontWeight: '800', color: '#fff'}}>{currentUserData  ? currentUserData.daysDetails[0].dailyCalories : null}</Text>
+    <Text style={{fontSize: 22, fontWeight: '600', color: '#fff'}}>cal</Text>
       </View>
 
     </TouchableOpacity>
     <TouchableOpacity style={[styles.sidesDetails, , {position: 'absolute', right: 20, top: 80}]}>
     <Text style={{fontSize: 20,color: '#fff', fontWeight: '600'}}>{currentUserData ? currentUserData.weight : null}kg</Text>
-
+    <Text style={{fontSize: 11, fontWeight: '600',color: '#fff'}}>starting weight</Text>          
     </TouchableOpacity>
     
     </View>
@@ -511,16 +512,16 @@ if(auth.currentUser)
   
       <View style={{width: '100%', height: '25%', marginTop: 70, alignItems: 'center', justifyContent: 'center'}}>
       
-      <Text style={{padding: 10, fontSize: 30, fontWeight: '900',color: blue, padding: 10 }}> your progress</Text>
+      <Text style={{padding: 10, fontSize: 28, fontWeight: '600',color: blue, padding: 10 }}> your progress</Text>
 
       <View style={{backgroundColor: '#f5ecdc',width: '85%', height: '24%', borderRadius: 8, borderWidth: 1.5, flexDirection: 'row', justifyContent: 'flex-end', marginTop: 20}}>
       <Text style={{position: 'absolute', right: 5, top: -21, fontWeight: '600'}}>{(currentUserData ? currentUserData.indexDeyFirebase: null)}/{(currentUserData ? currentUserData.daysDetails.length : null)} days</Text>
       <Foundation style={{ color: '#fff', fontWeight: '700', position: 'absolute', left: -25, top: 8}}  name="target-two" size={22} color="red" />
   
-      <View style={{backgroundColor: oreng ,height: '100%', width: `${((currentUserData ? currentUserData.indexDeyFirebase: null) / (currentUserData ? currentUserData.daysDetails.length : null)  ) * 100 }%`,borderTopEndRadius: 7, borderBottomEndRadius: 7,borderTopStartRadius: 5, borderBottomStartRadius: 5, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{backgroundColor: '#36a605' ,height: '100%', width: `${((currentUserData ? currentUserData.indexDeyFirebase: null) / (currentUserData ? currentUserData.daysDetails.length : null)  ) * 100 }%`,borderTopEndRadius: 7, borderBottomEndRadius: 7,borderTopStartRadius: 5, borderBottomStartRadius: 5, justifyContent: 'center', alignItems: 'center'}}>
       {
         (currentUserData ? currentUserData.daysDetails.length : null) != (currentUserData ? currentUserData.indexDeyFirebase: null) ?
-      <LottieView style={{height: 50, position: 'absolute', left: -7.7}}  autoPlay source={require('../lottieAnimation/walk_progress.json')}/> :
+      <LottieView style={{height: 53, position: 'absolute', left: -7.7}}  autoPlay source={require('../lottieAnimation/walk_progress.json')}/> :
       <LottieView style={{height: 50, position: 'absolute', left: -7.7}}  autoPlay source={require('../lottieAnimation/standing_man.json.json')}/> 
 
       }
@@ -583,17 +584,17 @@ else{
     
     <ImageBackground source={{uri: "https://images.creativemarket.com/0.1.0/ps/8436210/1820/1214/m1/fpnw/wm1/m44uvmmozdjmkaqion0pl0hrji1w6bklbgvybnufi8zayuvvg6brwped97rcsa0n-.jpg?1590762533&s=a010240a0998e1429431994509765bc0"}} resizeMode= 'cover'>
     <StatusBar backgroundColor="rgb(255, 178, 71)" />
-    <View style={styles.container}>
+    <View style={{width: '100%', height: '100%', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)'}}>
 
 
-    <Text style={{fontSize:30,color:'white', marginTop: 60}}>Welcome to ShapeUp</Text>
+    <Text style={{fontSize:32,color:'white', marginTop: 60, fontWeight: '300'}}>Welcome to ShapeUp</Text>
     <Text style={{fontSize:20,color:'white', padding: 10}}>to be able to use all the features you must open a free account</Text>
     <AntDesign name="arrowdown" size={55} color="#fff" />
     <TouchableOpacity
     style={styles.loginButton}
     onPress={hendleSingOut}
     >
-        <Text style={{color: '#fff', fontSize: 20}}>Create a user</Text>
+        <Text style={{color: '#fff', fontSize: 22, fontWeight: '500'}}>Create a user</Text>
     </TouchableOpacity>  
 
     
@@ -664,7 +665,7 @@ const styles = StyleSheet.create({
   loginButton:{
     width: '60%',
     height: '10%',
-    backgroundColor: 'rgba(255, 178, 71,0.8)',
+    backgroundColor: 'rgb(255, 178, 71)',
     marginTop: 15,
     borderWidth: 2,
     justifyContent: 'center',

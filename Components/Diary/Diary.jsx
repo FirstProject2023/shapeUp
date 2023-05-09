@@ -971,7 +971,7 @@ if(auth.currentUser)
         }}
     
         >
-    <ImageBackground source={{uri: "https://images.indianexpress.com/2021/12/GettyImages-fasting-diet-plan-1200.jpg"}} resizeMode= 'cover'>
+    <ImageBackground source={{uri: "https://img.freepik.com/free-photo/elevated-view-measuring-tape-healthy-food-white-background_23-2147882055.jpg?size=626&ext=jpg&uid=R102133553&ga=GA1.2.212730937.1683613067&semt=ais"}} resizeMode= 'cover'>
      {/* <ScrollView> */}
 
 {/* al models!! */}
@@ -1033,7 +1033,7 @@ if(auth.currentUser)
     <FadeInOut
     visible={isWaterInstructions}
     scale={true}
-     style={{backgroundColor: '#a9d7f9' ,marginTop: 30, width: 280,  height: isWaterInstructions ? 320: 0, alignItems: 'center', position: 'absolute', top: 150,left: 60, padding: 10, borderRadius: 8, zIndex: isWaterInstructions ? 999: 0, borderWidth: 1}}>
+     style={{backgroundColor: '#d9fcc9' ,marginTop: 30, width: 280,  height: isWaterInstructions ? 320: 0, alignItems: 'center', position: 'absolute', top: 150,left: 40, padding: 10, borderRadius: 8, zIndex: isWaterInstructions ? 999: 0, borderWidth: 1}}>
       
     <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsWaterInstructions(false)}>
     <Feather name="x-circle" size={30} color="#fff"/>
@@ -1051,7 +1051,7 @@ if(auth.currentUser)
     <FadeInOut
     visible={isSleepInstructions}
     scale={true}
-     style={{backgroundColor: '#FFE7C3' ,marginTop: 30, width: 320,  height: isSleepInstructions ? 225: 0, alignItems: 'center', position: 'absolute', top: 255,left: 35, padding: 10, borderRadius: 8, zIndex: isSleepInstructions ? 999: 0, borderWidth: 1}}>
+     style={{backgroundColor: '#d9fcc9' ,marginTop: 30, width: 320,  height: isSleepInstructions ? 225: 0, alignItems: 'center', position: 'absolute', top: 255,left: 15, padding: 10, borderRadius: 8, zIndex: isSleepInstructions ? 999: 0, borderWidth: 1}}>
       
     <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsSleepInstructions(false)}>
     <Feather name="x-circle" size={30} color="#fff"/>
@@ -1069,7 +1069,7 @@ if(auth.currentUser)
     <FadeInOut
     visible={isActivityInstructions}
     scale={true}
-     style={{backgroundColor: '#FFE7C3' ,marginTop: 30, width: 300,  height: isActivityInstructions ? 260: 0, alignItems: 'center', position: 'absolute', top: 5,left: 40, padding: 10, borderRadius: 8, zIndex: isActivityInstructions ? 999: 0, borderWidth: 1}}>
+     style={{backgroundColor: '#d9fcc9' ,marginTop: 30, width: 300,  height: isActivityInstructions ? 260: 0, alignItems: 'center', position: 'absolute', top: 5,left: 30, padding: 10, borderRadius: 8, zIndex: isActivityInstructions ? 999: 0, borderWidth: 1}}>
       
     <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsActivityInstructions(false)}>
     <Feather name="x-circle" size={30} color="#fff"/>
@@ -1083,7 +1083,7 @@ if(auth.currentUser)
     <FadeInOut
     visible={isFoodInstructions}
     scale={true}
-     style={{backgroundColor: '#FFE7C3' ,marginTop: 30, width: 220,  height: isFoodInstructions ? 270: 0, alignItems: 'center', position: 'absolute', top: 120,left: 30, padding: 10, borderRadius: 8, zIndex: isFoodInstructions ? 999: 0, borderWidth: 1}}>
+     style={{backgroundColor: '#d9fcc9' ,marginTop: 30, width: 220,  height: isFoodInstructions ? 270: 0, alignItems: 'center', position: 'absolute', top: 120,left: 30, padding: 10, borderRadius: 8, zIndex: isFoodInstructions ? 999: 0, borderWidth: 1}}>
       
     <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsFoodInstructions(false)}>
     <Feather name="x-circle" size={30} color="#fff"/>
@@ -1097,7 +1097,7 @@ if(auth.currentUser)
     <FadeInOut
     visible={isCaloriesInstructions}
     scale={true}
-     style={{backgroundColor: '#FFE7C3' ,marginTop: 30, width: 300,  height: isCaloriesInstructions ? 280: 0, alignItems: 'center', position: 'absolute', top: 180,left: 30, padding: 10, borderRadius: 8, zIndex: isCaloriesInstructions ? 999: 0, borderWidth: 1}}>
+     style={{backgroundColor: '#d9fcc9' ,marginTop: 30, width: 300,  height: isCaloriesInstructions ? 280: 0, alignItems: 'center', position: 'absolute', top: 180,left: 30, padding: 10, borderRadius: 8, zIndex: isCaloriesInstructions ? 999: 0, borderWidth: 1}}>
       
     <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsCaloriesInstructions(false)}>
     <Feather name="x-circle" size={30} color="#fff"/>
@@ -1108,12 +1108,12 @@ if(auth.currentUser)
 
     {/* instructions */}
     <TouchableOpacity onPress={()=> setIsInstructions(true)} style={{position: 'absolute', right: 5, top: 5}}>
-    <AntDesign name="questioncircleo" size={25} color="#fff" />
+    <AntDesign name="questioncircleo" size={28} color="#fff" />
     </TouchableOpacity>
     <FadeInOut
     visible={isInstructions}
     scale={true}
-     style={{backgroundColor: '#FFE7C3' ,marginTop: 30, width:'80%',  height: isInstructions ? '75%': 0, alignItems: 'center', position: 'absolute', top: 25, padding: 10, borderRadius: 8, zIndex: isInstructions ? 999: 0, borderWidth: 1}}>
+     style={{backgroundColor: '#d9fcc9' ,marginTop: 30, width:'80%',  height: isInstructions ? '55%': 0, alignItems: 'center', position: 'absolute', top: 75, padding: 10, borderRadius: 8, zIndex: isInstructions ? 999: 0, borderWidth: 1}}>
       
     <TouchableOpacity style={{position: 'absolute', right: 2.5, top: 2.5, backgroundColor: '#0a2946', borderRadius: 100}} onPress={()=> setIsInstructions(false)}>
     <Feather name="x-circle" size={30} color="#fff"/>
@@ -1137,7 +1137,7 @@ if(auth.currentUser)
       <Text style={{color:'#fff', fontSize: 16, fontWeight: '600'}}>how much water did you drink today?</Text>
      
     <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '12%', marginTop: 14, borderRadius: 8, flexDirection: 'row'}}>
-    <Entypo style={{position: 'absolute',top: 16, right: -30}} name="cup" size={28} color="#fff" />
+    {/* <Entypo style={{position: 'absolute',top: 16, right: -30}} name="cup" size={28} color="#fff" /> */}
     <TouchableOpacity  onPress={()=> [setWater(3), updateWater(currentUserData.id,3,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopStartRadius: 8, borderBottomLeftRadius: 8,
      alignItems: 'center', justifyContent: 'center',borderColor: 'rgb(255, 178, 71)', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 3 ? 'rgb(255, 178, 71)' : '#FFE7C3' : null}}>
       <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].water == 3 ? '#fff' : '#000' : null}}>12-17</Text>
@@ -1164,7 +1164,7 @@ if(auth.currentUser)
     <Text style={{color:'#fff',fontSize: 16, fontWeight: '600', marginTop: 10}}>How many hours did you sleep last night?</Text>
 
     <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '12%', marginTop: 20, borderRadius: 8, flexDirection: 'row'}}>
-    <FontAwesome style={{position: 'absolute',top: 16, right: -32}} name="bed" size={25} color="#fff" />
+    {/* <FontAwesome style={{position: 'absolute',top: 16, right: -32}} name="bed" size={25} color="#fff" /> */}
     <TouchableOpacity  onPress={()=> [setSleep(3),updateSleep(currentUserData.id,3,copyIndexDay)]}  style={{height: '100%', width: '33.3333333333%', borderWidth: 2, borderTopStartRadius: 8, borderBottomLeftRadius: 8,
      alignItems: 'center', justifyContent: 'center', borderColor: 'rgb(255, 178, 71)', backgroundColor: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 3 ? 'rgb(255, 178, 71)' : '#FFE7C3' : null}}>
       <Text style={{fontSize: 20, fontWeight: '500', color: currentUserData ? currentUserData.daysDetails[copyIndexDay].sleep == 3 ? '#fff' : '#000' : null}}>8-11</Text>
@@ -1190,7 +1190,7 @@ if(auth.currentUser)
     <Text style={{color:'#fff', fontSize: 16, fontWeight: '600', marginTop: 10}}>how much did you move today?</Text>
 
     <View style={{backgroundColor: '#FFE7C3', width: '90%', height: '12%', marginTop: 10, borderRadius: 8, alignItems: 'center', justifyContent: 'center'}}>
-    <Ionicons style={{position: 'absolute',top: 16, right: -32}} name="ios-barbell" size={28} color="#fff" />
+    {/* <Ionicons style={{position: 'absolute',top: 16, right: -32}} name="ios-barbell" size={28} color="#fff" /> */}
     <Picker
     
   style={{
@@ -1221,7 +1221,7 @@ onValueChange={(itemValue) => [setActiveValue(itemValue), updateActivityLevel(cu
 
     <Text style={{color:'#fff', fontSize: 16, fontWeight: '600', marginTop: 10}}>what did you eat today?</Text>
     <TouchableOpacity onPress={()=> setIsFoodArea(true)} style={{backgroundColor: '#FFE7C3', width: '90%', height: '12%', marginTop: 10, borderRadius: 8, alignItems: 'center', justifyContent: 'center'}}>
-    <FontAwesome5 style={{position: 'absolute',top: 16, right: -32}} name="apple-alt" size={28} color="#fff" />
+    {/* <FontAwesome5 style={{position: 'absolute',top: 16, right: -32}} name="apple-alt" size={28} color="#fff" /> */}
       <Text style={{fontSize: 21}}>Food selection area</Text>
 
     {/* foodInstructions */}
@@ -1764,7 +1764,7 @@ null}
    
      
        // by basic activity
-        <View style={{width: '85%', height: '15%', borderRadius: 8, borderWidth: 1.5, marginTop: 25, flexDirection: 'row', justifyContent: 'flex-end'}}>
+        <View style={{borderColor: '#fff', width: '85%', height: '15%', borderRadius: 8, borderWidth: 2, marginTop: 25, flexDirection: 'row', justifyContent: 'flex-end'}}>
      {/*  {console.log("basicBalancePoint:" + " " + currentUserData ? currentUserData.basicBalancePoint : null)}
       {console.log("basicDayTarget:" + " " + currentUserData ? currentUserData.basicDayTarget : null)} */}
 
@@ -1793,7 +1793,7 @@ null}
 
 
         // by daley activity
-      :  <View style={{width: '85%', height: '15%', borderRadius: 8, borderWidth: 1.5, marginTop: 25, flexDirection: 'row', justifyContent: 'flex-end'}}>
+      :  <View style={{borderColor: '#fff', borderColor: '#fff', width: '85%', height: '15%', borderRadius: 8, borderWidth: 2, marginTop: 25, flexDirection: 'row', justifyContent: 'flex-end'}}>
 
       {/* red */}
 
@@ -1842,14 +1842,14 @@ else{
         <View style={styles.container}>
 
 
-<Text style={{fontSize:35,color:'white', marginTop: 60}}>Diary</Text>
-<Text style={{fontSize:20,color:'white', padding: 10}}>To use the diary you must open an account</Text>
+<Text style={{fontSize:45,color:'#fff', marginTop: 60, fontWeight: '200'}}>Diary</Text>
+<Text style={{fontSize:20,color:'#fff', padding: 10}}>To use the diary you must open an account</Text>
 <AntDesign name="arrowdown" size={55} color="#fff" />
 <TouchableOpacity
 style={styles.loginButton}
 onPress={hendleSingOut}
 >
-    <Text style={{color: '#fff', fontSize: 20}}>Create a user</Text>
+    <Text style={{color: '#fff', fontSize: 22, fontWeight: '500'}}>Create a user</Text>
 </TouchableOpacity>  
 
 </View>
@@ -1975,7 +1975,7 @@ const styles = StyleSheet.create({
     
 
   container: {
-        backgroundColor: 'rgba(0,0,0,0.6)',
+        backgroundColor: 'rgba(0,0,0,0.5)',
     width: '100%',
     height: '100%',
     alignItems: 'center',
@@ -1984,7 +1984,7 @@ const styles = StyleSheet.create({
   loginButton:{
     width: '60%',
     height: '10%',
-    backgroundColor: 'rgba(255, 178, 71,0.8)',
+    backgroundColor: 'rgb(255, 178, 71)',
     marginTop: 15,
     borderWidth: 2,
     justifyContent: 'center',
