@@ -105,20 +105,163 @@ const toggleModalVisible = () => {
   setModalVisible(!modalVisible);
 };
 
+const phoneNumber1 = '0542588518'; // Replace with the phone number you want to message
+    const message = `Thank you for choosing our application! We invite you to join and experience its features. Click the link to download: https://www.example.com/app`; // Customize the message and replace the link with your application's download link
 
+    const whatsappUrlTest2 = `whatsapp://send?text=${encodeURIComponent(message)}`;
+    const whatsappUrlTest = `whatsapp://send?phone=${phoneNumber1}&text=${encodeURIComponent(message)}`;
+  
+    const whatsappToMaoz = `whatsapp://send?phone=${phoneNumber1}`;
+
+    const phoneNumber2 = '0542588518'; // Replace with the phone number you want to message
+  
+    const whatsappUrlToShneor = `whatsapp://send?phone=${phoneNumber2}`;
+
+const [modalVisible9, setModalVisible9] = useState(false);
+const [selectedItems, setSelectedItems] = useState([]);
 const [modalVisible4, setModalVisible4] = useState(false);
 const [selectedOption, setSelectedOption] = useState(null);
 
+
+const checkWord = (word) => {
+  if (selectedItems.includes(word)) {
+    return true;
+  }
+  return false ;
+};
+
+// Example usage
+const wordToCheck = 'goal';
+const result = checkWord(wordToCheck);
+
+
+/* const items = [
+  'Date of birth',
+  'email',
+  'end date',
+  'goal',
+  'height',
+  'weight',
+  'age',
+  'password',
+ 
+]; */
+
 const shareContent = () => {
+  
+
+  const sentence = selectedItems.join(': ');
+
+  const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(
+    `Hey !
+I signed up for the shapeUp app
+I wanted to share with you that my goal weight is *${currentUserData ? currentUserData.weightGoal : null}* \n
+ details:\מ ${
+      checkWord("email") ? `\nEmail: *${currentUserData.email}*` : ''
+    }${
+      checkWord("Date of birth")
+        ? `\nDate of birth: *${currentUserData.birthDate.day}/${currentUserData.birthDate.month}/${currentUserData.birthDate.year}*`
+        : ''
+    }${
+      checkWord("end date")
+        ? `\nThe process end date: *${currentUserData.finelDate.day}/${currentUserData.finelDate.month}/${currentUserData.finelDate.year}*`
+        : ''
+    }${
+      checkWord("height")
+        ? `\nHeight: *${currentUserData.height}*`
+        : ''
+    }${
+      checkWord("weight")
+        ? `\nWeight: *${currentUserData.weight}*`
+        : ''
+    }${
+      checkWord("password")
+        ? `\nPassword: *${currentUserData.password}*`
+        : ''
+    }  \n\n I invite you to download *ShapeUp* and try it yourself!`
+
+  )}`;
+  
+  const subject = 'Email Subject';
+  const mailtoUrl = `mailto:${currentUserData.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+    `Hey !
+I signed up for the shapeUp app
+I wanted to share with you that my goal weight is ${currentUserData ? currentUserData.weightGoal : null} \n
+ details:\n ${
+          checkWord("email") ? `\nEmail: ${currentUserData.email}` : ''
+        }${
+          checkWord("Date of birth")
+            ? `\nDate of birth: ${currentUserData.birthDate.day}/${currentUserData.birthDate.month}/${currentUserData.birthDate.year}`
+            : ''
+        }${
+          checkWord("end date")
+            ? `\nThe process end date: ${currentUserData.finelDate.day}/${currentUserData.finelDate.month}/${currentUserData.finelDate.year}`
+            : ''
+        }${
+          checkWord("height")
+            ? `\nHeight: ${currentUserData.height}`
+            : ''
+        }${
+          checkWord("weight")
+            ? `\nWeight: ${currentUserData.weight}`
+            : ''
+        }${
+          checkWord("password")
+            ? `\nPassword: ${currentUserData.password}`
+            : ''
+        }  \n\n I invite you to download ShapeUp and try it yourself!`
+
+  )}`;
+
+
+  const phoneNumber = currentUserData.phone ? currentUserData.phone : null ;
+  
+  const smsUrl = `sms:${phoneNumber}?body=${encodeURIComponent(
+
+    `Hey !
+I signed up for the shapeUp app
+I wanted to share with you that my goal weight is ${currentUserData ? currentUserData.weightGoal : null} \n
+ details:\n ${
+          checkWord("email") ? `\nEmail: ${currentUserData.email}` : ''
+        }${
+          checkWord("Date of birth")
+            ? `\nDate of birth: ${currentUserData.birthDate.day}/${currentUserData.birthDate.month}/${currentUserData.birthDate.year}`
+            : ''
+        }${
+          checkWord("end date")
+            ? `\nThe process end date: ${currentUserData.finelDate.day}/${currentUserData.finelDate.month}/${currentUserData.finelDate.year}`
+            : ''
+        }${
+          checkWord("height")
+            ? `\nHeight: ${currentUserData.height}`
+            : ''
+        }${
+          checkWord("weight")
+            ? `\nWeight: ${currentUserData.weight}`
+            : ''
+        }${
+          checkWord("password")
+            ? `\nPassword: ${currentUserData.password}`
+            : ''
+        }  \n\n I invite you to download ShapeUp and try it yourself!`
+
+
+
+  )}`;
+
   // Implement your share content logic based on the selectedOption
   switch (selectedOption) {
     case 'whatsapp':
       // Share via WhatsApp
+      Linking.openURL(whatsappUrl);
       break;
     case 'email':
       // Share via Email
+      Linking.openURL(mailtoUrl);
       break;
     case 'sms':
+      Linking.openURL(smsUrl);
+
       // Share via SMS
       break;
     default:
@@ -131,7 +274,17 @@ const shareContent = () => {
 };
 
 
+const toContinue = async()=>{
 
+if(selectedItems.length<1)
+{
+Alert.alert("Must select at least one item")
+}
+else{ 
+  setModalVisible9(false),
+  setModalVisible4(true)
+}
+}
 
 const updateWeightGoalUser = async (id,newWeightGoal) => {
 
@@ -292,21 +445,21 @@ const days = diffInDays - (years * 365) - (months * 30);
     .catch(error => log("error"))
   }
 
-  const [modalVisible9, setModalVisible9] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
+
 
 /*   Date of birth, email, end date, goal, password, height, weight, age,
  */  const items = [
     'Date of birth',
     'email',
     'end date',
-    'goal',
     'height',
     'weight',
-    'age',
     'password',
    
   ];
+
+  
+
 
   const toggleItem = (item) => {
     const updatedItems = selectedItems.includes(item)
@@ -745,7 +898,7 @@ if(auth.currentUser&& currentUserData)
               </TouchableOpacity>
             ))}
 
-            <TouchableOpacity onPress={() => [setModalVisible9(false),setModalVisible4(true)]}>
+            <TouchableOpacity onPress={() => [toContinue()]}>
               <Text style={styles.continueButton9}>Continue</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setModalVisible9(false)}>
@@ -769,6 +922,7 @@ if(auth.currentUser&& currentUserData)
             >
               <View style={[styles.circle4, selectedOption === 'whatsapp' && styles.selectedCircle4]} />
               <Text style={styles.itemText4}>WhatsApp</Text>
+              <Ionicons style={{marginStart:60}} name="logo-whatsapp" size={32} color= {selectedOption === 'whatsapp' ? "green"  : "black" } />
             </TouchableOpacity>
             <TouchableOpacity
               style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}
@@ -776,17 +930,29 @@ if(auth.currentUser&& currentUserData)
             >
               <View style={[styles.circle4, selectedOption === 'email' && styles.selectedCircle4]} />
               <Text style={styles.itemText4}>Email</Text>
+              <MaterialCommunityIcons style={{marginStart:115}} name="email" size={32} color= {selectedOption === 'email' ? "green"  : "black" }/>
             </TouchableOpacity>
+
+            {currentUserData.phone ? 
             <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}
-              onPress={() => setSelectedOption('sms')}
-            >
-              <View style={[styles.circle4, selectedOption === 'sms' && styles.selectedCircle4]} />
-              <Text style={styles.itemText4}>SMS</Text>
+            style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}
+            onPress={() => setSelectedOption('sms')}
+          >
+            <View style={[styles.circle4, selectedOption === 'sms' && styles.selectedCircle4]} />
+            <Text style={styles.itemText4}>SMS</Text>
+            <MaterialIcons style={{marginStart:125}} name="sms" size={32} color= {selectedOption === 'sms' ? "green"  : "black" } />
+          </TouchableOpacity>
+            : 
+            null}
+            
+            <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
+            <TouchableOpacity onPress={()=>setModalVisible4(false)}>
+              <Text style={styles.closeModalButton4}>close</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={shareContent}>
-              <Text style={styles.closeModalButton4}>Share</Text>
+              <Text style={[styles.closeModalButton4,{color:blue}]}>Share</Text>
             </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -808,7 +974,7 @@ if(auth.currentUser&& currentUserData)
       <TouchableOpacity style={{height:"130%",width:"28%",borderRadius:100, position:'absolute',top:-21,left:20,zIndex:100,backgroundColor:'#F0FFFF'
       ,borderWidth:2,justifyContent:'center',alignItems:'center'}}>
              <Text style={{fontSize:17,color:oreng,textAlign:'center',fontWeight: '700'}}> {currentUserData ? currentUserData.weightGoal : null } kg </Text>
-          <Text style={{fontSize:20,color:"black",textAlign:'center',fontWeight: '700'}}> Purpose</Text>
+          <Text style={{fontSize:16,color:"black",textAlign:'center',fontWeight: '700'}}> goal weight</Text>
           </TouchableOpacity>
 
         <TouchableOpacity style={styles.weightContainer}>
@@ -1056,8 +1222,7 @@ if(auth.currentUser&& currentUserData)
             
           <AntDesign style={{marginLeft:15}} name="lock" size={24} color="black"  />
           <Text style={{fontSize:15,color:"black",textAlign:'center',marginStart:50}}>{currentUserData ? currentUserData.phone : null}</Text>
-          <MaterialIcons style={{marginEnd:20}} name="email" size={24} color="black" />
-
+<Feather style={{marginEnd:20}} name="phone-call" size={24} color="black" />
           </View>
 
           : 
@@ -1257,7 +1422,7 @@ null
     style={styles.sendDetails}
     onPress={()=>setModalVisible9(true)}
     >
-        <Text style={{color: '#fff', fontSize: 18}}>Share items</Text>
+        <Text style={{color: '#fff', fontSize: 17}}>Share the process</Text>
     </TouchableOpacity>  
 
       <TouchableOpacity
@@ -1289,14 +1454,14 @@ else{
     <View style={styles.guestContainer}>
 
 
-    <Text style={{fontSize:35,color:'white', marginTop: 60}}>Profile</Text>
+    <Text style={{fontSize:45,color:'white', marginTop: 60,fontWeight:'200'}}>Profile</Text>
     <Text style={{fontSize:20,color:'white', padding: 10}}>Profile information is only visible to registered users</Text>
     <AntDesign name="arrowdown" size={55} color="#fff" />
     <TouchableOpacity
     style={styles.loginButton}
     onPress={hendleSingOut}
     >
-        <Text style={{color: '#fff', fontSize: 20}}>Create a user</Text>
+        <Text style={{color: '#fff', fontSize: 22 ,fontWeight:'500'}}>Create a user</Text>
     </TouchableOpacity>  
 
     </View>
@@ -1323,7 +1488,7 @@ const styles = StyleSheet.create({
   loginButton:{
     width: '60%',
     height: '10%',
-    backgroundColor: 'rgba(255, 178, 71,0.8)',
+    backgroundColor: 'rgb(255, 178, 71)',
     marginTop: 15,
     borderWidth: 2,
     justifyContent: 'center',
@@ -1343,14 +1508,14 @@ singOutButton:{
 
 },
 sendDetails:{
-  width: '45%',
-  height: '20%',
+  width: '48%',
+  height: '19%',
   backgroundColor:'#394cb0',
   marginTop: 15,
   borderWidth: 2,
   justifyContent: 'center',
   alignItems: 'center',
-  borderRadius: 15,
+  borderRadius: 10,
 
 },
 profileImg:

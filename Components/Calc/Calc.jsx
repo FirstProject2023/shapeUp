@@ -166,6 +166,18 @@ const[showSubjects,setShowSubjects] = useState();
   const [isOpened, setIsOpened] = useState(false);
   const [isTipsView, setIsTipsView] = useState(false);
 
+  const phoneNumber1 = '0542588518'; // Replace with the phone number you want to message
+    const message = `Thank you for choosing our application! We invite you to join and experience its features. Click the link to download: https://www.example.com/app`; // Customize the message and replace the link with your application's download link
+
+    const whatsappUrlTest2 = `whatsapp://send?text=${encodeURIComponent(message)}`;
+    const whatsappUrlTest = `whatsapp://send?phone=${phoneNumber1}&text=${encodeURIComponent(message)}`;
+  
+    const whatsappToMaoz = `whatsapp://send?phone=${phoneNumber1}`;
+
+    const phoneNumber2 = '0542588518'; // Replace with the phone number you want to message
+  
+    const whatsappUrlToShneor = `whatsapp://send?phone=${phoneNumber2}`;
+
 
 
 
