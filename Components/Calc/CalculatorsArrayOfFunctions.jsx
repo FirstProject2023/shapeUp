@@ -480,7 +480,7 @@ padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
 
       <TextInput
       placeholder='   Enter here ...' 
-      style={{backgroundColor:'#fff',borderColor:'black',borderWidth:2,width:'55%',marginTop:10, borderRadius:4}}
+      style={{backgroundColor:'#fff',borderColor:'black',borderWidth:2,width:'55%',marginTop:10, borderRadius:4,paddingRight:8}}
       
       value={query}
         onChangeText={handleSearch}
@@ -1428,7 +1428,7 @@ Confused about what is better to eat? Here you can compare two foods and find ou
 <Text style={{marginTop:19}}>Type the name of food number one</Text>
       <TextInput
       placeholder=' Enter here ...' 
-      style={{backgroundColor:'#fff',borderColor:'black',borderWidth:2,borderRadius:4,  width:'80%',marginTop:15}}
+      style={{backgroundColor:'#fff',borderColor:'black',borderWidth:2,borderRadius:4,  width:'80%',marginTop:15,paddingRight:8}}
        
         value={query2}
         onChangeText={handleSearch2}
@@ -1480,7 +1480,7 @@ Confused about what is better to eat? Here you can compare two foods and find ou
 <Text style={{marginTop:19}}>Type the name of food number two</Text>
       <TextInput
       placeholder=' Enter here ...' 
-      style={{backgroundColor:'#fff',borderColor:'black',borderWidth:2,borderRadius:4,  width:'80%',marginTop:15}}
+      style={{backgroundColor:'#fff',borderColor:'black',borderWidth:2,borderRadius:4,  width:'80%',marginTop:15,paddingRight:8}}
        
         value={query1}
         onChangeText={handleSearch1}
@@ -1933,7 +1933,7 @@ padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
 
       <View style={{flexDirection:'row'}}>
 <TextInput placeholder=' הקלד כאן ...' 
-style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'70%',marginTop:10}}
+style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'70%',marginTop:10,paddingLeft:8}}
 onChangeText={text => setText(text)}
 value={text}
 ></TextInput>
@@ -2763,7 +2763,7 @@ padding: 10, borderRadius: 8 , shadowColor:"blue" ,}}>
 <View style={{flexDirection:'row'}}>
 
 <TextInput placeholder=' הקלד כאן ...' 
-style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'20%',marginTop:10,marginLeft:5}}
+style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'20%',marginTop:10,marginLeft:5,paddingLeft:8}}
 onChangeText={textA => setTextA(textA)}
 value={textA}
 ></TextInput>
@@ -2773,7 +2773,7 @@ value={textA}
 </View>
 
       <TextInput placeholder=' הקלד כאן ...' 
-style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'20%',marginTop:10}}
+style={{backgroundColor:'#fff',borderColor:'black',borderWidth:1,width:'20%',marginTop:10,paddingLeft:8}}
 onChangeText={textB => setTextB(textB)}
 value={textB}
 ></TextInput>
