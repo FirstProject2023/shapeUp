@@ -405,7 +405,7 @@ const panResponder = PanResponder.create({
 
 visible={isTipsView}
 scale={true}
- style={{   zIndex: isTipsView ? 900 : 0 , backgroundColor: '#d8f3dc' ,marginTop: 20, width: isTipsView ? '90%' : '0%', height: isTipsView ? '25%' : '0%',
+ style={{   zIndex: isTipsView ? 900 : 0 , backgroundColor: '#d9fcc9' ,marginTop: 20, width: isTipsView ? '90%' : '0%', height: isTipsView ? '25%' : '0%',
   alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 5, 
   padding: 10, borderRadius: 8 , shadowColor:'red' ,shadowOpacity: 0.8, shadowRadius: 2,elevation: 35,}}>
  <Text style={{fontSize: 16,position: 'absolute', fontWeight: '600',top: 30}}>In front of you are five nutrition and fitness calculators, you are welcome to browse through them and enjoy their service To switch between calculators you have to move the screen with your finger to the left</Text>

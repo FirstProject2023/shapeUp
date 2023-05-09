@@ -296,7 +296,7 @@ if(auth.currentUser)
 <TouchableOpacity>
 <FontAwesome style={{  marginLeft:20}} name="envelope" size={35} color="rgb(255, 178, 71)" onPress={()=>[setShowTip(true),updateDailyTipDay(currentUserData ? currentUserData.id : null , currentUserData.indexDeyFirebase ) ]}/>
 {
-  currentUserData && !(currentUserData.daysDetails[0].WatchTheTip) ?
+  currentUserData && !(currentUserData.daysDetails[currentUserData ? currentUserData.indexDeyFirebase : 0].WatchTheTip) ?
 
 <MaterialIcons style={{position:'absolute',left:12,top:-2}} name="brightness-1" size={15} color="red" />
 

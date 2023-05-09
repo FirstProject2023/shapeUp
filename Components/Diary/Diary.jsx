@@ -41,13 +41,11 @@ export default function Diary({ navigation }) {
   const [activeValue, setActiveValue] = useState(0);
 
   const[index , setIndex]=useState(0);
-  const[testIndex , setTestIndex]=useState(0);
+  // const[testIndex , setTestIndex]=useState(0);
 
-  const[indexDay,setIndexDay] = useState(9);
-  const[copyIndexDay,setCopyIndexDay] = useState(testIndex);  // change to indexDay.
+  const[copyIndexDay,setCopyIndexDay] = useState(index);  // change to indexDay.
 
-  const [foodNameAdd, setFoodNameAdd] = useState('');
-  const [foodAmountAdd, setFoodAmountAdd] = useState('');
+ 
   const [foodCalories, setFoodCalories] = useState('');
   const [foodProteins, setFoodProteins] = useState('');
   const [foodFat, setFoodFat] = useState('');
@@ -79,6 +77,7 @@ export default function Diary({ navigation }) {
   const [text, setText] = useState('');
   const [quantity,setQuantity]=useState('');
  
+  const[ dailyDate,setDailyDate]=useState(new Date())
 
 
   const [data2, setData2] = useState([""]);  
@@ -96,6 +95,7 @@ export default function Diary({ navigation }) {
   const [showModal, setShowModal] = useState(false);
   
 
+  
 
   const policies = [
     'Policy 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -196,7 +196,6 @@ export default function Diary({ navigation }) {
     // logic to add product to favorites
 
 
-    console.log(itemFat);
 
 if(isCreation==1)
 {
@@ -376,9 +375,6 @@ sum += e.calories ;
 const updateFavoriteFood = async (isCreation,id,foodName,foodAmount,itemCalories,itemProteins,itemCarbs,itemFat,data3) => {
 
 
-console.log(itemCarbs);
-console.log("efllo");
-
   setShowOnAddFood(!ShowOnAddFood)
   if(currentUserData)
   {
@@ -391,8 +387,8 @@ console.log("efllo");
 if(isCreation==0)
 {
 
-  console.log(FavoriteFoodCal);
-  console.log("test-0");
+/*   console.log(FavoriteFoodCal);
+ */  console.log("test-0");
 
   
   currentUserData.dailyFavoriteFood[size] = {
@@ -707,64 +703,24 @@ const date2 = new Date();
 const diffInDays = differenceInDays(date2, date1);
 const years = Math.floor(diffInDays / 365);
 
- 
+
 useEffect(() => {
   const intervalId = setInterval(() => {
     if (currentUserData) {
  
-      if(testIndex < 10){
-      // if(testIndex < (currentUserData ? currentUserData.daysDetails.length : null)){
+
+      /* if(testIndex < 10){ */
+       if(index < (currentUserData ? currentUserData.daysDetails.length : null)){
 
         //real code
         setIndex(differenceInDays(new Date(), currentUserData.daysDetails[0].singleDate.toDate()));
         updateIndexDeyFirebase(currentUserData.id, index);
-       /*  console.log(new Date(now));
-        console.log(currentUserData.daysDetails[0].singleDate.toDate()); */
+        setDailyDate(currentUserData.daysDetails[index].singleDate)
+      //copy 
+        setCopyIndexDay((index + 1))
         
         //test code
-        setTestIndex(testIndex + 1)
-        setCopyIndexDay(testIndex + 1)
-
-  //      setWeight(currentUserData ? currentUserData.weight : null);
-  //   setHeight(currentUserData ? currentUserData.height : null);
-  //   setActivityLevel(currentUserData ? currentUserData.daysDetails[copyIndexDay].activityLevel : null);
-  // if(currentUserData ? currentUserData.gender == 1 : null){
-
-  //   if(activityLevel != 0){
-  //     updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     activityLevel )) , copyIndexDay);
-  //   }
-  //   else{
-  //     updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     (currentUserData ? currentUserData.averageActivity : null)  )) , copyIndexDay);
-  //   }
-
-  //   // updateDailyBalancePoint(currentUserData ? currentUserData.id: null, Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *   (currentUserData ? currentUserData.daysDetails[copyIndexDay].activityLevel : null) )) , copyIndexDay);
-  //   updateDailyDayTarget(currentUserData ? currentUserData.id: null, (Math.floor(currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint : null)) - (currentUserData ? currentUserData.calToLoseDay : null), copyIndexDay);
-  
-  //       console.log("copyIndexDay:" + "  " + copyIndexDay);
-  //       console.log("weight:" + "  " + weight);
-  //       console.log("height:" + "  " + height);
-  //       console.log("years:" + "  " + years);
-  //       console.log("activityLevel:" + "  " + activityLevel);
-  //       console.log("balancePoint:" + "  " + (currentUserData ? currentUserData.daysDetails[copyIndexDay].dailyBalancePoint: null));
-  //       console.log("dayTarget:" + "  " + (currentUserData ? currentUserData.daysDetails[copyIndexDay].dayTarget: null));
-
-
-
-
-  //       // dayTarget
-
-        
-
-  //     }
-      
-  //     else{
-        
-        
-  //       // setRmrPerDay(( (447.593) + ( (9.25 * weightValue)+(3* heightValue)-(4.3 * selectedAgeValue)) * valueToMult ));    
-  //     } 
-
-
-
+        // setTestIndex(testIndex + 1)
 
       }
       else
@@ -775,27 +731,14 @@ useEffect(() => {
 
       }
     }
-  }, 200000); 
+  }, 24 * 60 * 60 * 1000); 
 
 
-   
-
-  // console.log("index in useEffect" +  " " + index);
-/*   console.log("_______");
-  console.log("test index in useEffect" +  " " + testIndex); */
+  
 
   return () => clearInterval(intervalId);
 
-}, [currentUserData, testIndex, weight, height]);
-
-// console.log("index after useEffect" +  " " + index);
-/* console.log("test index after useEffect" +  " " + testIndex); */
-
-
-
-
- /*  const future = new Date(today.setDate(today.getDate() +4)); */
- 
+}, [currentUserData, index, weight, height]);
 
 
  const handleSubmit = () => {
@@ -1003,7 +946,7 @@ if(auth.currentUser)
     <View style={{ width: '90%', height: '8%',marginTop: 15, borderRadius: 8 ,flexDirection:'row',justifyContent:'space-evenly',alignItems:'center'}}>
 
     {
-      copyIndexDay!=testIndex ?
+      copyIndexDay!=index ?
     <TouchableOpacity onPress={()=>setCopyIndexDay(copyIndexDay+1)} >
     <FontAwesome5 name="arrow-circle-right" size={34} color="#fff" />
     </TouchableOpacity>
@@ -1011,11 +954,7 @@ if(auth.currentUser)
 
     }
 
-   {/*  <Text style={{color:'#fff'}}>{(copyIndexDay + 1)}</Text>
-      <Text style={{color:'#fff'}}>{(index + 1)}</Text>
-      <Text style={{color:'#fff'}}>{testIndex + 1}</Text> */}
-      {/* <Text style={{color:'#fff'}}>{(currentUserData ? currentUserData.indexDeyFirebase: null)}</Text> */}
-      <Text style={{color:'#fff' ,fontSize:28,fontWeight:'700'}}>{(futureDate.getDate())}/{futureDate.getMonth()+1}/{futureDate.getFullYear()}</Text>
+      <Text style={{color:'#fff' ,fontSize:28,fontWeight:'700'}}>{dailyDate.getDate() + "/" + (dailyDate.getMonth() + 1) + "/" + dailyDate.getFullYear() }</Text>
 
     {  
       copyIndexDay > 0 ?
@@ -1123,9 +1062,10 @@ if(auth.currentUser)
     <Text style={{fontWeight: '600'}}>May you be able to track your progress in the process, good luck!</Text>
     </FadeInOut>
 
-    <View style={{borderColor: '#fff',borderWidth: 3,borderRadius: 12, width: '28%', height: '10%',marginBottom: 20, flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
+    <View style={{borderColor: '#fff',borderWidth: 3,borderRadius: 12, width: '28%', height: '13%',marginBottom: 20, flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center'}}>
     {/* Today */}
-    <Text style={{color: '#fff', fontSize: 24, fontWeight: '400'}}>
+    <Text  style={{color: '#fff', fontSize: 17, fontWeight: '400'}} >day</Text>
+    <Text style={{color: '#fff', fontSize: 22, fontWeight: '400'}}>
     {copyIndexDay + 1}
     </Text>
     
