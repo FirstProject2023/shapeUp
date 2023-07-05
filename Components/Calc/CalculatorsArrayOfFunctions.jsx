@@ -36,13 +36,10 @@ export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeig
          SavingStatusEb(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick),
            WhatIsFatterEb( finelText,setFinelText,setFinelTextB,calorValueA,calorValueB,setCalorValueA,setCalorValueB,
             setHeightOfResView,setWhatCalcIs,setMoreCalory,handleButtonClick)
-      
-      
-      
+    
       ];
   
-      return (
-        
+      return (  
           isEnglish ?
           arrOfFunctions[num]
           :
@@ -53,7 +50,6 @@ export default function CalculatorsArrayOfFunctions({num,heightOfResView,setHeig
 
 function Bmi(heightOfResView,setHeightOfResView,bmiSearchResult,setBmiSearchResult,setWhatCalcIs,handleButtonClick) {
   
-
   const {width} = useWindowDimensions();
   const [heightValue, setHeightValue] = useState(0);
   const [weightValue,setWeightValue] = useState(0);

@@ -1,12 +1,6 @@
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert, Button, StatusBar, Image, Keyboard , Modal   } from 'react-native'
 import React, { useEffect, useState } from 'react'
-
-
 import FadeInOut from 'react-native-fade-in-out';
-
-
-import {oreng,blue } from "../Globals/colors";
-
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
 import { Picker } from '@react-native-picker/picker';
@@ -14,20 +8,12 @@ import { Entypo } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
-
-
-// import {  } from '@react-native-community/datetimepicker';
-
 import LottieView from 'lottie-react-native';
 
 import {createUserWithEmailAndPassword,signInWithEmailAndPassword ,
    sendPasswordResetEmail, updatePassword, confirmPasswordReset, verifyPasswordResetCode, getAuth } from 'firebase/auth'
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
-import { FirebaseAuth } from '@react-native-firebase/auth';
-
-
-
 
 export default function Login({ navigation }) {
   
@@ -1183,7 +1169,7 @@ The email address must be entered to restore the account
 
 
     <View style={{width: '100%', height: '35%', alignItems: 'center' , marginTop: 20}}>
-     <TouchableOpacity onPress={()=> [setHeightAndWeightIsVisible(false), setGenderIsVisible(true)]} /*style={{position:'absolute', top: -130, right: 30}}*/>
+     <TouchableOpacity onPress={()=> [setHeightAndWeightIsVisible(false), setGenderIsVisible(true)]} >
     <Entypo  name="back" size={40} color="#fff" />
     </TouchableOpacity>
     <View style={{width: '100%', height: '85%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly'}}>

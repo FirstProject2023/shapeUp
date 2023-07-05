@@ -16,51 +16,32 @@ import { Picker } from '@react-native-picker/picker';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-
-
-
-
-
-
-
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc} from 'firebase/firestore';
 
 
 export default function Profile({ navigation }) {
 
-const[hy,setHy]=useState(0);
-
-  const [selectedImage, setSelectedImage] = useState(null);
 
   const userCollectionRef = collection(db,"users");
   const [users,setUsers]=useState([]);
   const [currentUserData, setCurrentUserData] = useState(null);
-
-
-const [password,setPassword]=useState('12378asd3');
-const [nameInputPresented,setNameInputPresented] = useState(1);
-const [ageInputPresented,setAgeInputPresented] = useState(1);
-const [emailInputPresented,setEmailInputPresented] = useState(1);
-const [phoneInputPresented,setPhoneInputPresented] = useState(1);
-const [purposeInputPresented,setPurposeInputPresented] = useState(1);
-const [goalInputPresented,setGoalInputPresented] = useState(1);
-const [dateInputPresented,setDateInputPresented] = useState(1);
-const [passwordInputPresented,setPasswordInputPresented] = useState(1);
-
-const[newPurpose,setNewPurpose]=useState("");
-const[newFirstName,setNewFirstName]=useState("");
-const[newLastName,setNewLastName]=useState("");
-const[newpassword,setNewpassword]=useState("");
-const[eye,setEye]=useState(false);
-
-const [enterVasibal,setEnterVasibal] = useState(1);
-const [showModal2, setShowModal2] = useState(false);
-const [showModal3, setShowModal3] = useState(false);
-
-
-const [modalVisible7, setModalVisible7] = useState(false);
-const [modalVisible8, setModalVisible8] = useState(false);
+  const [nameInputPresented,setNameInputPresented] = useState(1);
+  const [ageInputPresented,setAgeInputPresented] = useState(1);
+  const [emailInputPresented,setEmailInputPresented] = useState(1);
+  const [phoneInputPresented,setPhoneInputPresented] = useState(1);
+  const [purposeInputPresented,setPurposeInputPresented] = useState(1);
+  const [goalInputPresented,setGoalInputPresented] = useState(1);
+  const [dateInputPresented,setDateInputPresented] = useState(1);
+  const [passwordInputPresented,setPasswordInputPresented] = useState(1);
+  const[newFirstName,setNewFirstName]=useState("");
+  const[newLastName,setNewLastName]=useState("");
+  const[newpassword,setNewpassword]=useState("");
+  const[eye,setEye]=useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
+  const [modalVisible7, setModalVisible7] = useState(false);
+  const [modalVisible8, setModalVisible8] = useState(false);
 
 
 const privacyPolicyText = `
@@ -149,6 +130,7 @@ const result = checkWord(wordToCheck);
 
 const shareContent = () => {
   
+ 
 
   const sentence = selectedItems.join(': ');
 
@@ -156,7 +138,7 @@ const shareContent = () => {
     `Hey !
 I signed up for the shapeUp app
 I wanted to share with you that my goal weight is *${currentUserData ? currentUserData.weightGoal : null}* \n
- details:\מ ${
+ details:\n ${
       checkWord("email") ? `\nEmail: *${currentUserData.email}*` : ''
     }${
       checkWord("Date of birth")

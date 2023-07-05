@@ -7,7 +7,6 @@ import { oreng,blue } from '../Globals/colors';
 import {Picker} from '@react-native-picker/picker';
 import FadeInOut from 'react-native-fade-in-out';
 import {openBrowserAsync} from 'expo-web-browser';
-// שניאור
 import { v4 as uuidv4 } from 'uuid';
 import { AntDesign } from '@expo/vector-icons'; 
 import { Entypo } from '@expo/vector-icons'; 
@@ -16,18 +15,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Fontisto } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-
-import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 
 export default function Diary({ navigation }) {
 
   const userCollectionRef = collection(db,"users");
   const [users,setUsers]=useState([]);
   const [currentUserData, setCurrentUserData] = useState(null);
-
   const [isInstructions, setIsInstructions] = useState(false);
   const [isWaterInstructions, setIsWaterInstructions] = useState(false);
   const [isSleepInstructions, setIsSleepInstructions] = useState(false);
@@ -35,25 +30,14 @@ export default function Diary({ navigation }) {
   const [isFoodInstructions, setIsFoodInstructions] = useState(false);
   const [isCaloriesInstructions, setIsCaloriesInstructions] = useState(false);
   const [isFoodArea, setIsFoodArea] = useState(false);
-  
-  const [water, setWater] = useState(0);
-  const [sleep, setSleep] = useState(0);
-  const [activeValue, setActiveValue] = useState(0);
-
   const[index , setIndex]=useState(0);
-  // const[testIndex , setTestIndex]=useState(0);
-
   const[copyIndexDay,setCopyIndexDay] = useState(index);  // change to indexDay.
-
- 
   const [foodCalories, setFoodCalories] = useState('');
   const [foodProteins, setFoodProteins] = useState('');
   const [foodFat, setFoodFat] = useState('');
   const [foodCarbs, setFoodCarbs] = useState('');
   const [onAddFood ,setOnAddFood] = useState(false);
   const [ShowOnAddFood ,setShowOnAddFood] = useState(false);
-
-
   const [foodName, setFoodName] = useState('');
   const [foodAmount, setFoodAmount] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -915,10 +899,6 @@ if(auth.currentUser)
     
         >
     <ImageBackground source={{uri: "https://img.freepik.com/free-photo/elevated-view-measuring-tape-healthy-food-white-background_23-2147882055.jpg?size=626&ext=jpg&uid=R102133553&ga=GA1.2.212730937.1683613067&semt=ais"}} resizeMode= 'cover'>
-     {/* <ScrollView> */}
-
-{/* al models!! */}
-
 
      <Modal 
   visible={modalVisible6}
