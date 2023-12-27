@@ -251,11 +251,7 @@ const hendelUpdateGool = async () => {
   
 }
 
-                console.log({
-                  day: futureDate.getDate(),
-                  month: futureDate.getMonth() + 1,
-                  year: futureDate.getFullYear(),
-                });
+               
               
 
 
@@ -359,15 +355,14 @@ const  handleSignUp =  async () => {
             basicBalancePoint: basicBalancePoint,
             basicDayTarget: basicDayTarget,
             indexDeyFirebase: 0,
+            isTryToContact:false
             
           });
           setWeeklyGoal(0);
           setEndDate({day: null})
           setFinelDate({day: null})
-        console.log("a");
        
     } catch (error){
-        console.log("b");
        
     }
 
@@ -389,7 +384,6 @@ const  handleSignUp =  async () => {
     const [isReset,setIsreset]= useState(false);
 
     const handleForgotPassword = async (email) => {
-      console.log(email);
       try {
         const user  = await sendPasswordResetEmail(auth, email);
 
@@ -466,20 +460,13 @@ const [falg99,setFlag99]=useState(false);
           }
           
           setFlag99(true)
-          console.log("i cal you!.......");
         }, 3000);
       };
       
       removeStartAnimation();
     }, []);
 
-    
-  // const BalanceEndTargetCreate = () => {
-  //   setBasicBalancePoint(Math.floor(((88.36) + ( (13.39 * weight)+(4.7 * height)-(5.6 * years))  *     activity)));
-  //   setBasicDayTarget(basicBalancePoint);
-  // }
-
-
+  
   const [errorEmail,setErrorEmail] = useState(false);
   const [errorPassword,setErrorPassword] = useState(false);
   const [errorFirstName,setErrorFirstName] = useState(false);
@@ -490,8 +477,6 @@ const [falg99,setFlag99]=useState(false);
 
 function EmailTextInput()
  {
- /*  console.log(email);
-  console.log(password); */
 
   const emailRegex = /\S+@\S+\.\S+/;
   if (!emailRegex.test(email)  ) {
@@ -507,7 +492,6 @@ function EmailTextInput()
     );
   } 
   else {
-   /*  Alert.alert('Valid Email', 'Email address is valid.'); */
     setSignUpIsVisible(false), setNameIsVisible(true)
   }
  
@@ -543,7 +527,6 @@ function EmailTextInput()
             text: 'Yes',
             style: 'destructive',
             onPress: () => {
-              // Perform action when user confirms
               setErrorPhone(true);
               setGenderIsVisible(true);
               setNameIsVisible(false);
@@ -703,7 +686,6 @@ setErrorPhone(false)
   
 
   const handleEnterAsGuest = () => {
-    // Logic to handle entering as a guest
     Alert.alert('You have entered as a guest!');
 
     navigation.navigate('Nav')
@@ -740,7 +722,6 @@ const [visible ,setVisible]=useState(false);
         <View style={styles.modalContent2}>
 
       
-
           {
             !isReset   ?
             
@@ -944,6 +925,7 @@ The email address must be entered to restore the account
     onPress={ ()=> setVisible(true)}
     >
       
+      
     <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 17, fontWeight: '700'}}>Forgot the password</Text>
     </TouchableOpacity>
     </View>
@@ -956,7 +938,24 @@ The email address must be entered to restore the account
         <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Login</Text>
     </TouchableOpacity>
 
+  
+
     </View>
+    <View>
+
+      {email == "Abhtur321@gmail.com"  && password === "Admin123" && (
+        <TouchableOpacity
+        
+        onPress={() => {
+          navigation.navigate('Admin');
+        }}
+
+        style={styles.loginButton}
+        >
+          <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Admin</Text>
+        </TouchableOpacity>
+        )}
+        </View>
     </FadeInOut>
 
 
@@ -1516,29 +1515,9 @@ The email address must be entered to restore the account
              <Text style={{color: 'rgba(255, 178, 71,0.9)', fontSize: 20, fontWeight: '800'}}>Start</Text>
           </TouchableOpacity>
 
-        {/* <TouchableOpacity
-            onPress={handleSignUp}
-            style={[{marginTop: 50, height: 195, width: 350}]}
-    >
-    <LottieView  style={{ flex: 1 }}  autoPlay source={require('../lottieAnimation/start_button2.json')}/>
-             
-          </TouchableOpacity> */}
-
         </FadeInOut>
 
-    {/* <FadeInOut style={{ 
-        //startView
-        width: '70%',
-        height: '60%',
-        alignItems: 'center',
-        position: 'absolute',
-        top: 160,
-        zIndex: startViewIsVisible ?  999 : 0,}}
-
-        visible={startViewIsVisible}
-        duration={!startViewIsVisible ? 400 : 800}
-        scale={true}
-        ></FadeInOut> */}
+   
 
     <TouchableOpacity
     onPress={()=>{ [ContinueAsAGuest()]}}
@@ -1547,19 +1526,12 @@ The email address must be entered to restore the account
         <Text style={{color: '#000', fontSize: 17,}}>Continue as  a guest</Text>
     </TouchableOpacity>
 
-
-
-
-
-  
-
     </View>
     </FadeInOut>
-
-    
     </View>
-
+    
     </ImageBackground>
+    
     
   )
 }
@@ -1725,6 +1697,12 @@ const styles = StyleSheet.create({
       fontSize: 21,
       fontWeight: 'bold',
       textAlign: 'center',
+    },
+    buttonAdmin: {
+      marginTop: 10,
+      backgroundColor: 'blue',
+      color: 'white',
+      backgroundColor:'red'
     },
   
 })

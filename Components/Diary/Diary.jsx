@@ -54,6 +54,10 @@ export default function Diary({ navigation }) {
   const [FavoriteFoodPro,setFavoriteFoodPro] = useState('');
   const [FavoriteFoodFat,setFavoriteFoodFat] = useState('');
   const [FavoriteFoodCarbs,setFavoriteFoodCarbs] = useState('');
+  const [water,setWater] = useState('');
+  const [sleep,setSleep] = useState('');
+  const [activeValue,setActiveValue] = useState('');
+
 
 
 

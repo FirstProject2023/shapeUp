@@ -11,6 +11,9 @@ import RecipeCard from './Components/Articles/RecipeCard';
 import { Header } from '@react-navigation/stack';
 import Login from './Components/Login/Login';
 import Transition from './Components/Transition/transitionScreen';
+import Admin from './Components/Admin/Admin';
+import UserStatus from './Components/Admin/UserStatus';
+import AddArticle from './Components/Admin/AddArticle';
 
 
 
@@ -37,6 +40,9 @@ export default function App() {
     <Stack.Screen name='Home' component={Home}/>
     <Stack.Screen name='Article' component={ArticleCard} options={{headerShown: false}}/>
     <Stack.Screen name='Recipe' component={RecipeCard} options={{headerShown: false}}/>
+    <Stack.Screen name='Admin' component={Admin} options={{headerShown: false}}/>
+    <Stack.Screen name='UserStatus' component={UserStatus} options={{headerShown: false}}/>
+    <Stack.Screen name='AddArticle' component={AddArticle} options={{headerShown: false}}/>
   </Stack.Navigator>
 </NavigationContainer>
 

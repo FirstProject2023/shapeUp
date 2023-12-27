@@ -102,6 +102,7 @@ const securityDataProtectionText = `
     const getUsers = async () => {
       const data = await getDocs(userCollectionRef);
       setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
+      console.log(users);
     }
     getUsers();
   },[]);
@@ -156,11 +157,7 @@ const panResponder = PanResponder.create({
     }
     return false;
   },
-  /* onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
 
-    position.setValue({x: gestureState.dx, y: 0})
-    
-  } */
   onPanResponderRelease: (evt, gestureState) => {
     // If swipe is greater than 50 pixels and it's a left swipe, navigate to another component
     if (gestureState.dx < -150) {
@@ -266,6 +263,14 @@ const latitude = 32.187434 ; // Example latitude
       await updateDoc(userDoc , newFields)
     
     }
+
+    const tryToContact = async () => {
+
+      const userDoc = doc(db,"users",currentUserData.id)
+        const newFields ={isTryToContact:true} 
+        await updateDoc(userDoc , newFields) 
+      
+      }
 
 
 
@@ -443,7 +448,7 @@ if(auth.currentUser)
              
 
     
-              <TouchableOpacity style={styles.modalButton} onPress={()=>setModalVisible8(true)}>
+              <TouchableOpacity style={styles.modalButton} onPress={()=>[tryToContact(),setModalVisible8(true) ]}>
                 <Text style={styles.modalButtonText}>Contact Us</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.modalButton} onPress={()=>setModalVisible7(true)}>
