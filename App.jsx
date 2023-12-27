@@ -1,14 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View} from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import Nav from './Components/Nav/Nav';
 import Home from './Components/Home/Home';
 import ArticleCard from './Components/Articles/ArticleCard';
 import RecipeCard from './Components/Articles/RecipeCard';
-import { Header } from '@react-navigation/stack';
 import Login from './Components/Login/Login';
 import Transition from './Components/Transition/transitionScreen';
 import Admin from './Components/Admin/Admin';
@@ -31,9 +27,7 @@ export default function App() {
       headerShown: false,
     }}/>
     <Stack.Screen name='Transition' component={Transition} options={{
-      // headerBackVisible: false,
-      // // headerBackground:  'rgb(255, 178, 71)',
-      // title: "",
+     
       headerShown: false,
     }}/>
     <Stack.Screen name="Nav" component={Nav} options={{headerShown: false}}/>
@@ -50,11 +44,3 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
