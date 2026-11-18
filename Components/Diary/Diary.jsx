@@ -156,6 +156,7 @@ export default function Diary({ navigation }) {
   useEffect(()=>{
 
     const getUsers = async () => {
+      if (!auth.currentUser) return;
       const data = await getDocs(userCollectionRef);
       setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
     }

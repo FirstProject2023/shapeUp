@@ -1,4 +1,4 @@
-
+import { Platform, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Nav from './Components/Nav/Nav';
@@ -14,12 +14,12 @@ import AddArticle from './Components/Admin/AddArticle';
 
 
 
+const Stack = createNativeStackNavigator();
+
 export default function App() {
 
-  const Stack = createNativeStackNavigator();
 
-
-  return (
+  const navigation = (
    
 <NavigationContainer>
   <Stack.Navigator>
@@ -41,6 +41,16 @@ export default function App() {
 </NavigationContainer>
 
 
+  );
+
+  if (Platform.OS !== 'web') return navigation;
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#eee7dc' }}>
+      <View style={{ flex: 1, width: '100%', maxWidth: 800, backgroundColor: '#fff' }}>
+        {navigation}
+      </View>
+    </View>
   );
 }
 

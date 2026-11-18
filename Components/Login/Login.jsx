@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+import BrowserDatePicker from '../Globals/BrowserDatePicker';
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View,Alert, Button, StatusBar, Image, Keyboard , Modal   } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import FadeInOut from 'react-native-fade-in-out';
@@ -8,12 +10,12 @@ import { Entypo } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns';
-import LottieView from 'lottie-react-native';
+import LottieView from '../Globals/Animation';
 
 import {createUserWithEmailAndPassword,signInWithEmailAndPassword ,
    sendPasswordResetEmail, updatePassword, confirmPasswordReset, verifyPasswordResetCode, getAuth } from 'firebase/auth'
 import { auth, db } from '../../firebase'
-import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 
 export default function Login({ navigation }) {
   
@@ -55,7 +57,6 @@ export default function Login({ navigation }) {
   const [basicBalancePoint, setBasicBalancePoint] = useState(1);
   const [basicDayTarget, setBasicDayTarget] = useState(1);
   
-  const [users,setUsers]=useState([]);
   
   const [openingScreenIsVisible, setOpeningScreenIsVisible] = useState(true);
   const [firstScreenIsVisible, setFirstScreenIsVisible] = useState(false);
@@ -85,27 +86,25 @@ export default function Login({ navigation }) {
       setModalVisible(false);
     };
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setDate(currentDate);
-   
-   
-  };
+  const [datePickerVisible, setDatePickerVisible] = useState(false);
 
-  const showMode = (currentMode) => {
-    const currentDate = new Date();
-
+  const showDatepicker = () => {
+    if (Platform.OS === 'web') {
+      setDatePickerVisible(true);
+      return;
+    }
     DateTimePickerAndroid.open({
-      value: currentDate,
-      onChange,
-      mode: currentMode,
-      is24Hour: true,
+      value: new Date(),
+      mode: 'date',
+      onChange: (_, selectedDate) => {
+        if (selectedDate) setDate(selectedDate);
+      },
     });
   };
 
-  const showDatepicker = () => {
-    showMode('date');
-  };
+  const browserDatePicker = datePickerVisible && (
+    <BrowserDatePicker date={date} onSelect={setDate} onClose={() => setDatePickerVisible(false)} />
+  );
 
 
     const [goalIsVisible, setGoalIsVisible] = useState(false);
@@ -139,16 +138,6 @@ export default function Login({ navigation }) {
     
       return unSubscribe;
     }, []);
-
-useEffect(()=>{
-
- 
-  const getUsers = async () => {
-    const data = await getDocs(userCollectionRef);
-    setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
-  }
-  getUsers();
-},[]);
 
 const hendelUpdateGool = async () => {
 
@@ -670,6 +659,10 @@ setErrorPhone(false)
   function ContinueAsAGuest()
   {
 
+    if (Platform.OS === 'web') {
+      handleEnterAsGuest();
+      return;
+    }
     Alert.alert(
       'Enter as Guest',
       'Are you sure you want to enter as a guest?',
@@ -686,7 +679,7 @@ setErrorPhone(false)
   
 
   const handleEnterAsGuest = () => {
-    Alert.alert('You have entered as a guest!');
+    if (Platform.OS !== 'web') Alert.alert('You have entered as a guest!');
 
     navigation.navigate('Nav')
     setGoalIsVisible(false)
@@ -707,7 +700,7 @@ const [visible ,setVisible]=useState(false);
 
   return (
     
-    <ImageBackground source={{uri: "https://d3h2k7ug3o5pb3.cloudfront.net/image/2020-11-23/3b788920-2d79-11eb-9dcd-8b2ef5358591.jpg"}} resizeMode='cover'>
+    <ImageBackground style={Platform.OS === 'web' ? { flex: 1, backgroundColor: '#564631' } : undefined} source={{uri: "https://d3h2k7ug3o5pb3.cloudfront.net/image/2020-11-23/3b788920-2d79-11eb-9dcd-8b2ef5358591.jpg"}} resizeMode='cover'>
     <StatusBar backgroundColor="rgb(255, 178, 71)" />
     
     <View style={styles.loginContainer}>
@@ -1319,7 +1312,7 @@ The email address must be entered to restore the account
     <Entypo  name="back" size={40} color="#fff" />
     </TouchableOpacity>
 
-      <TouchableOpacity onPress={showDatepicker} style={{width: '75%', height: '30%', backgroundColor: 'rgba(255, 178, 71,0.9)', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginTop: 80}}>
+        <TouchableOpacity onPress={showDatepicker} style={{width: '75%', height: '30%', backgroundColor: 'rgba(255, 178, 71,0.9)', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginTop: 80}}>
       <Text style={{color: '#fff', fontSize: 18, fontWeight: '700'}}>Press to select your birth date</Text>
       </TouchableOpacity>
 
@@ -1530,6 +1523,7 @@ The email address must be entered to restore the account
     </FadeInOut>
     </View>
     
+    {browserDatePicker}
     </ImageBackground>
     
     

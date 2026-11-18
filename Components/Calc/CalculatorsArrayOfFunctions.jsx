@@ -293,6 +293,7 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
 
   useEffect(() => {
     
+    if (!query?.trim()) return;
     fetch(`https://api.edamam.com/auto-complete?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&q=${query}`)
     .then((response) => response.json())
     .then((data) => setResults(data))
@@ -301,6 +302,7 @@ function ProteinIntake(heightOfResView,setHeightOfResView,bmiSearchResult,setBmi
   }, [query]);
 
    useEffect(() => {
+    if (!finelText2?.trim()) return;
     fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&ingr=${finelText2}`)
       .then((response) => {
         return response.json();
@@ -1161,6 +1163,7 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
 
   useEffect(() => {
     
+    if (!query1?.trim()) return;
     fetch(`https://api.edamam.com/auto-complete?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&q=${query1}`)
     .then((response) => response.json())
     .then((data) => setResults1(data))
@@ -1169,6 +1172,7 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
   }, [query1]);
 
    useEffect(() => {
+    if (!finelText2?.trim()) return;
     fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&ingr=${finelText2}`)
       .then((response) => {
         return response.json();
@@ -1186,6 +1190,7 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
 
   useEffect(() => {
     
+    if (!query2?.trim()) return;
     fetch(`https://api.edamam.com/auto-complete?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&q=${query2}`)
     .then((response) => response.json())
     .then((data) => setResults2(data))
@@ -1194,6 +1199,7 @@ function WhatIsFatter(finelText,setFinelText,setFinelTextB,calorValueA,calorValu
   }, [query2]);
 
    useEffect(() => {
+    if (!finelText3?.trim()) return;
     fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=63a20e43&app_key=%20c023c52205e56f3248f01d54785dba20&ingr=${finelText3}`)
       .then((response) => {
         return response.json();
@@ -1285,6 +1291,7 @@ const [enter2,setEnter2]=useState(false);
   }
   
       useEffect(() => {
+        if (!finelText?.trim()) return;
         fetch(`https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&q=${finelText}`)
           .then((response) => {
             return response.json();
@@ -1293,10 +1300,11 @@ const [enter2,setEnter2]=useState(false);
             setData(data.result)
            
      
-          });
+          }).catch(error => console.warn('Food search failed:', error.message));
         
         }, [finelText]);
       useEffect(() => {
+        if (!finelA?.trim()) return;
         fetch(`https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&q=${finelA}`)
           .then((response) => {
             return response.json();
@@ -1304,11 +1312,12 @@ const [enter2,setEnter2]=useState(false);
           .then((data) => {
             setNewDataA(data.result)
           
-          });
+          }).catch(error => console.warn('Food search failed:', error.message));
         
         }, [finelA]);
 
       useEffect(() => {
+        if (!finelB?.trim()) return;
         fetch(`https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&q=${finelB}`)
           .then((response) => {
             return response.json();
@@ -1316,7 +1325,7 @@ const [enter2,setEnter2]=useState(false);
           .then((data) => {
             setNewDataB(data.result)
           
-          });
+          }).catch(error => console.warn('Food search failed:', error.message));
         
         }, [finelB]);
 
@@ -1820,6 +1829,7 @@ function ProteinIntakeEb(heightOfResView,setHeightOfResView,bmiSearchResult,setB
 
 
   useEffect(() => {
+    if (!finelText?.trim()) return;
     fetch(`https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&q=${finelText}`)
       .then((response) => {
         return response.json();
@@ -1827,7 +1837,7 @@ function ProteinIntakeEb(heightOfResView,setHeightOfResView,bmiSearchResult,setB
       .then((data) => {
           setData(data.result)
  
-      });
+      }).catch(error => console.warn('Food search failed:', error.message));
   }, [finelText]);
 
 
@@ -2590,6 +2600,7 @@ function WhatIsFatterEb(finelText,setFinelText,setFinelTextB,calorValueA,calorVa
   }
   
       useEffect(() => {
+        if (!finelText?.trim()) return;
         fetch(`https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&q=${finelText}`)
           .then((response) => {
             return response.json();
@@ -2598,10 +2609,11 @@ function WhatIsFatterEb(finelText,setFinelText,setFinelTextB,calorValueA,calorVa
             setData(data.result)
            
      
-          });
+          }).catch(error => console.warn('Food search failed:', error.message));
         
         }, [finelText]);
       useEffect(() => {
+        if (!finelA?.trim()) return;
         fetch(`https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&q=${finelA}`)
           .then((response) => {
             return response.json();
@@ -2609,11 +2621,12 @@ function WhatIsFatterEb(finelText,setFinelText,setFinelTextB,calorValueA,calorVa
           .then((data) => {
             setNewDataA(data.result)
           
-          });
+          }).catch(error => console.warn('Food search failed:', error.message));
         
         }, [finelA]);
 
       useEffect(() => {
+        if (!finelB?.trim()) return;
         fetch(`https://data.gov.il/api/3/action/datastore_search?resource_id=c3cb0630-0650-46c1-a068-82d575c094b2&q=${finelB}`)
           .then((response) => {
             return response.json();
@@ -2621,7 +2634,7 @@ function WhatIsFatterEb(finelText,setFinelText,setFinelTextB,calorValueA,calorVa
           .then((data) => {
             setNewDataB(data.result)
           
-          });
+          }).catch(error => console.warn('Food search failed:', error.message));
         
         }, [finelB]);
 

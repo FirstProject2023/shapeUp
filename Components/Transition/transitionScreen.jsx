@@ -1,21 +1,18 @@
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
-import React from 'react'
-import LottieView from 'lottie-react-native';
+import React, { useEffect } from 'react'
+import LottieView from '../Globals/Animation';
 
 export default function Transition({navigation}) {
-  function start() {
-    setTimeout(()=> {
-      
-      navigation.navigate('Nav')
-    },2500)
-    
-  }
+  useEffect(() => {
+    const timer = setTimeout(() => navigation.navigate('Nav'), 2500);
+    return () => clearTimeout(timer);
+  }, [navigation]);
+
   return (
     // <SafeAreaView style={{flex: 0, backgroundColor: 'rgb(255, 178, 71)'}}>
     <SafeAreaView style={styles.transitionScreenContainer}>
 
     <LottieView style={{width: 170, height: 170}} autoPlay speed={1} source={require('../lottieAnimation/animation_start.json')}/>
-      {start()}
       
     </SafeAreaView>
       // </SafeAreaView>

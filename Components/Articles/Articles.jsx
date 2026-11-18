@@ -9,7 +9,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons'; 
 import { Entypo } from '@expo/vector-icons'; 
 
-import LottieView from 'lottie-react-native';
+import LottieView from '../Globals/Animation';
 
 import { Picker } from '@react-native-picker/picker';
 

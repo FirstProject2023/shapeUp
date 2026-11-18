@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, FlatList, Button ,TouchableOpacity,ScrollView,Modal,
-  modelVisible,StatusBar,onScroll,Animated ,PanResponder,Dimensions,TouchableWithoutFeedback,Linking   } from 'react-native'
+  modelVisible,StatusBar,Animated ,PanResponder,Dimensions,TouchableWithoutFeedback,Linking   } from 'react-native'
 import FadeInOut from 'react-native-fade-in-out';
 import React, { useEffect, useState,useRef } from 'react'
 import CalculatorsArrayOfFunctions from './CalculatorsArrayOfFunctions'
@@ -9,7 +9,7 @@ import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'; 
 import { Entypo } from '@expo/vector-icons'; 
 import { blue, oreng } from '../Globals/colors';
-import LottieView from 'lottie-react-native';
+import LottieView from '../Globals/Animation';
 import { auth, db } from '../../firebase'
 import { deleteDoc, doc, getDocs, setDoc,collection,addDoc,updateDoc } from 'firebase/firestore';
 
@@ -443,7 +443,7 @@ scale={true}
 
     
 
-<FlatList  ref={flatListRef} onScroll={onScroll || handleScroll} data={numbers} renderItem={({item}) =>  <CalculatorsArrayOfFunctions num={item} 
+<FlatList  ref={flatListRef} onScroll={handleScroll} data={numbers} renderItem={({item}) =>  <CalculatorsArrayOfFunctions num={item}
 heightOfResView={heightOfResView} setHeightOfResView={setHeightOfResView} bmiSearchResult={bmiSearchResult} setIsMan={setIsMan}
 setBmiSearchResult={setBmiSearchResult} setWhatCalcIs={setWhatCalcIs} fatValue={fatValue} setFatValue={setFatValue}
  carbohydratesValue={carbohydratesValue} setCarbohydratesValue={setCarbohydratesValue}
@@ -466,7 +466,7 @@ setBmiSearchResult={setBmiSearchResult} setWhatCalcIs={setWhatCalcIs} fatValue={
  
   <View style={styles.FlatListContainer}>
 
-<FlatList onScroll={onScroll || handleScroll}  onEndReachedThreshold={0.1} data={numbers} renderItem={({item}) =>
+<FlatList onScroll={handleScroll}  onEndReachedThreshold={0.1} data={numbers} renderItem={({item}) =>
  <CalculatorsArrayOfFunctions num={item} onSelectItem={(selectedItemValue) => setWhatPoint(item)}
 heightOfResView={heightOfResView} setHeightOfResView={setHeightOfResView} bmiSearchResult={bmiSearchResult} setIsMan={setIsMan}
 setBmiSearchResult={setBmiSearchResult} setWhatCalcIs={setWhatCalcIs} fatValue={fatValue} setFatValue={setFatValue}
@@ -829,6 +829,7 @@ function BmiRes(heightOfResView,bmiSearchResult,setHeightOfResView,handleScrollT
   useEffect(()=>{
 
     const getUsers = async () => {
+      if (!auth.currentUser) return;
       const data = await getDocs(userCollectionRef);
       setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
     }
@@ -1134,6 +1135,7 @@ function BmrRes(heightOfResView,bmiSearchResult,setHeightOfResView,isMan,handleS
   useEffect(()=>{
 
     const getUsers = async () => {
+      if (!auth.currentUser) return;
       const data = await getDocs(userCollectionRef);
       setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
     }
@@ -1230,6 +1232,7 @@ function SavingStatusRes(heightOfResView,bmiSearchResult,setHeightOfResView,hand
   useEffect(()=>{
 
     const getUsers = async () => {
+      if (!auth.currentUser) return;
       const data = await getDocs(userCollectionRef);
       setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
     }
@@ -1391,6 +1394,7 @@ function BmiResEb(heightOfResView,bmiSearchResult,setHeightOfResView,handleScrol
   useEffect(()=>{
 
     const getUsers = async () => {
+      if (!auth.currentUser) return;
       const data = await getDocs(userCollectionRef);
       setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
     }
@@ -1694,6 +1698,7 @@ function BmrResEb(heightOfResView,bmiSearchResult,setHeightOfResView,isMan,handl
   useEffect(()=>{
 
     const getUsers = async () => {
+      if (!auth.currentUser) return;
       const data = await getDocs(userCollectionRef);
       setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
     }

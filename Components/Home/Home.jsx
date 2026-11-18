@@ -10,7 +10,7 @@ import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Foundation } from '@expo/vector-icons'; 
 
-import LottieView from 'lottie-react-native';
+import LottieView from '../Globals/Animation';
 
 import tipsData from '../Jsons/tips.json'
 import FadeInOut from 'react-native-fade-in-out';
@@ -100,6 +100,7 @@ const securityDataProtectionText = `
   useEffect(()=>{
 
     const getUsers = async () => {
+      if (!auth.currentUser) return;
       const data = await getDocs(userCollectionRef);
       setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
       console.log(users);

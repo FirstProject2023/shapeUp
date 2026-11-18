@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+import BrowserDatePicker from '../Globals/BrowserDatePicker';
 import { StyleSheet, Text, View,TouchableOpacity,ImageBackground,Image, ScrollView,TextInput,Button, StatusBar
   ,Animated,Modal,Alert ,PanResponder,Dimensions, Keyboard ,TouchableWithoutFeedback,Linking  } from 'react-native'
 import React, { useState,useEffect } from 'react'
@@ -347,7 +349,8 @@ const updateEndDay = async (id,date) => {
 useEffect(()=>{
 
   const getUsers = async () => {
-    const data = await getDocs(userCollectionRef);
+    if (!auth.currentUser) return;
+      const data = await getDocs(userCollectionRef);
     setUsers(data.docs.map((doc)=> ({...doc.data() , id: doc.id })));
   }
   getUsers();
@@ -453,24 +456,25 @@ const days = diffInDays - (years * 365) - (months * 30);
 
   const [date,setDate]=useState(new Date(0));
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setDate(currentDate);
-    
-  };
+  const [datePickerVisible, setDatePickerVisible] = useState(false);
 
-  const showMode = (currentMode) => {
+  const showDatepicker = () => {
+    if (Platform.OS === 'web') {
+      setDatePickerVisible(true);
+      return;
+    }
     DateTimePickerAndroid.open({
       value: date,
-      onChange,
-      mode: currentMode,
-      is24Hour: true,
+      mode: 'date',
+      onChange: (_, selectedDate) => {
+        if (selectedDate) setDate(selectedDate);
+      },
     });
   };
 
-  const showDatepicker = () => {
-    showMode('date');
-  };
+  const browserDatePicker = datePickerVisible && (
+    <BrowserDatePicker date={date} onSelect={setDate} onClose={() => setDatePickerVisible(false)} />
+  );
  
 
 
@@ -1139,6 +1143,7 @@ if(auth.currentUser&& currentUserData)
       <View style={{height:35,marginTop:10,marginLeft:14,marginRight:6}}>
 <Button  title='upDate' color='#0a2946'  onPress={()=> updateBirthDay(currentUserData.id,date)}  /> 
 </View>
+              {browserDatePicker}
               <TouchableOpacity onPress={showDatepicker} style={{width: '45%', marginLeft:30, backgroundColor: 'rgba(255, 178, 71,0.9)', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginTop:0}}>
       <Text style={{color: '#fff', fontSize: 18, fontWeight: '700'}}>Press to change your birth date</Text>
       </TouchableOpacity>
